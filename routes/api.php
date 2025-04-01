@@ -7,10 +7,6 @@ use App\Http\Controllers\DPPController;
 use App\Http\Controllers\DKPPController;
 use App\Http\Controllers\DTPHPController;
 
-// Route::get('/dkpp', function(){
-//     dd('tes');
-// });
-
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index']);
 Route::post('/dkpp', [DKPPController::class, 'store']);
