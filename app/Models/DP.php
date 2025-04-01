@@ -12,6 +12,7 @@ class DP extends Model
     protected $table = 'dinas_periakanan';
 
     protected $fillable = [
+        'user_id',
         'tanggal_input', 
         'jenis_ikan', 
         'ton_produksi'

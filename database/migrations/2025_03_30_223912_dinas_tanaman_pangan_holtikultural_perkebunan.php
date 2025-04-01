@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('jenis_komoditas');
             $table->dateTime('tanggal_input');
-            $table->float('ton_vlome_produksi');
+            $table->float('ton_volume_produksi');
             $table->float('hektar_luas_panen');
 
             // Foreign key constraint

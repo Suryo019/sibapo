@@ -12,6 +12,7 @@ class DPP extends Model
     protected $table = 'dinas_periakanan';
 
     protected $fillable = [
+        'user_id',
         'pasar', 
         'jenis_bahan_pokok', 
         'kg_harga',

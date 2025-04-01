@@ -12,6 +12,7 @@ class DKPP extends Model
     protected $table = 'dinas_ketahanan_pangan_peternakan';
 
     protected $fillable = [
+        'user_id',
         'jenis_komoditas', 
         'tanggal_input', 
         'ton_ketersediaan', 
