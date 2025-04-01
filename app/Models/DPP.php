@@ -18,4 +18,6 @@ class DPP extends Model
         'kg_harga',
         'tanggal_dibuat'
     ];
+
+    public $timestamps = false;
 }

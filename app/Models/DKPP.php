@@ -20,4 +20,6 @@ class DKPP extends Model
         'ton_neraca_mingguan', 
         'keterangan'
     ];
+
+    public $timestamps = false;
 }

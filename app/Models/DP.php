@@ -17,4 +17,6 @@ class DP extends Model
         'jenis_ikan', 
         'ton_produksi'
     ];
+
+    public $timestamps = false;
 }
