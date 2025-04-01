@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pegawai;
 
 use App\Models\DKPP;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DKPPController extends Controller
 {
@@ -27,6 +28,7 @@ class DKPPController extends Controller
         ]);
 
         $dkpp = DKPP::create($request->all());
+
 
         return response()->json([
             'message' => 'Data berhasil disimpan',

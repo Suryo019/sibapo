@@ -2,10 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DPController;
-use App\Http\Controllers\DPPController;
-use App\Http\Controllers\DKPPController;
-use App\Http\Controllers\DTPHPController;
+use App\Http\Controllers\Pegawai\DPController;
+use App\Http\Controllers\Pegawai\DPPController;
+use App\Http\Controllers\Pegawai\DKPPController;
+use App\Http\Controllers\Pegawai\DTPHPController;
+use App\Http\Controllers\Pimpinan\ReadDataController;
+
+// Read Data Pimpinan
+Route::get('/pimpinan', [ReadDataController::class, 'index']); // Get semua data
+Route::get('/pimpinan/{table}/{id}', [ReadDataController::class, 'show']);
 
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index']);

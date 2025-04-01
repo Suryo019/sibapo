@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pegawai;
 
 use App\Models\DTPHP;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DTPHPController extends Controller
 {
@@ -17,7 +18,6 @@ class DTPHPController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-        
         $request->validate([
             'jenis_komoditas' => 'required|string',
             'tanggal_input' => 'required|date',

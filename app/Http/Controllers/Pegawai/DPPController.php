@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pegawai;
 
-use App\Models\DP;
+use App\Models\DPP;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class DPController extends Controller
+class DPPController extends Controller
 {
     // Menampilkan semua data
     public function index()
     {
-        $data = DP::all();
+        $data = DPP::all();
         return response()->json($data);
     }
 
@@ -18,53 +19,56 @@ class DPController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
+            'pasar' => 'required|string',
+            'jenis_bahan_pokok' => 'required|string',
+            'kg_harga' => 'required|integer',
+            'tanggal_dibuat' => 'required|date'
         ]);
 
-        $dp = DP::create($request->all());
+        $dpp = DPP::create($request->all());
 
         return response()->json([
             'message' => 'Data berhasil disimpan',
-            'data' => $dp
+            'data' => $dpp
         ], 201);
     }
 
     // Mengupdate data
     public function update(Request $request, $id)
     {
-        $dp = DP::find($id);
+        $dpp = DPP::find($id);
 
-        if (!$dp) {
+        if (!$dpp) {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
 
         $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
+            'pasar' => 'required|string',
+            'jenis_bahan_pokok' => 'required|string',
+            'kg_harga' => 'required|integer',
+            'tanggal_dibuat' => 'required|date'
         ]);
 
-        $dp->update($request->all());
+        $dpp->update($request->all());
 
         return response()->json([
             'message' => 'Data berhasil diperbarui',
-            'data' => $dp
+            'data' => $dpp
         ]);
     }    
 
     // Menghapus data
     public function destroy($id)
     {
-        $dp = DP::find($id);
+        $dpp = DPP::find($id);
 
-        if (!$dp) {
+        if (!$dpp) {
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
 
-        $dp->delete();
+        $dpp->delete();
 
         return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }
+
