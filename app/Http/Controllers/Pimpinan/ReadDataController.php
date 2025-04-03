@@ -11,56 +11,39 @@ use App\Http\Controllers\Controller;
 
 class ReadDataController extends Controller
 {
-    public function index()
+    public function getDPP()
     {
-        $dpp = DPP::all();
-        $dtphp = DTPHP::all();
-        $dkpp = DKPP::all();
-        $dp = DP::all();
-
+        $data = DPP::all();
         return response()->json([
-            'message' => 'Data berhasil diambil',
-            'data' => [
-                'dpp' => $dpp,
-                'dtphp' => $dtphp,
-                'dkpp' => $dkpp,
-                'dp' => $dp,
-            ]
+            'message' => 'Data DPP berhasil diambil',
+            'data' => $data
+        ], 200);
+    }
+    
+    public function getDKPP()
+    {
+        $data = DKPP::all();
+        return response()->json([
+            'message' => 'Data DKPP berhasil diambil',
+            'data' => $data
         ], 200);
     }
 
-    public function show($table, $id)
+    public function getDTPHP()
     {
-        $model = null;
-
-        switch ($table) {
-            case 'dpp':
-                $model = DPP::find($id);
-                break;
-            case 'dtphp':
-                $model = DTPHP::find($id);
-                break;
-            case 'dkpp':
-                $model = DKPP::find($id);
-                break;
-            case 'dp':
-                $model = DP::find($id);
-                break;
-            default:
-                return response()->json([
-                    'message' => 'Tabel tidak ditemukan'
-                ], 404);
-        }
-
-        if (!$model) {
-            return response()->json([
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        }
-
+        $data = DTPHP::all();
         return response()->json([
-            'message' => 'Data berhasil ditemukan',
-            'data' => $model
+            'message' => 'Data DTPHP berhasil diambil',
+            'data' => $data
+        ], 200);
+    }
+
+    public function getDP()
+    {
+        $data = DP::all();
+        return response()->json([
+            'message' => 'Data DP berhasil diambil',
+            'data' => $data
         ], 200);
     }
 }

@@ -9,7 +9,7 @@ class DP extends Model
 {
     use HasFactory;
 
-    protected $table = 'dinas_periakanan';
+    protected $table = 'dinas_perikanan';
 
     protected $fillable = [
         'user_id',

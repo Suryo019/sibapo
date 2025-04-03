@@ -9,8 +9,11 @@ use App\Http\Controllers\Pegawai\DTPHPController;
 use App\Http\Controllers\Pimpinan\ReadDataController;
 
 // Read Data Pimpinan
-Route::get('/pimpinan', [ReadDataController::class, 'index']); // Get semua data
-Route::get('/pimpinan/{table}/{id}', [ReadDataController::class, 'show']);
+Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);
+Route::get('/pimpinan/dpp', [ReadDataController::class, 'getDPP']);
+Route::get('/pimpinan/dtphp', [ReadDataController::class, 'getDTPHP']);
+Route::get('/pimpinan/dkpp', [ReadDataController::class, 'getDKPP']);
+Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index']);

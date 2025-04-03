@@ -9,7 +9,7 @@ class DPP extends Model
 {
     use HasFactory;
 
-    protected $table = 'dinas_periakanan';
+    protected $table = 'dinas_perindustrian_perdagangan';
 
     protected $fillable = [
         'user_id',
