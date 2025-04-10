@@ -26,7 +26,7 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
-            <a href="Disperindag/Detail.html">
+            <a href="{{ route('disperindag.show', 1) }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
                     Lihat Detail Data
                 </button>
@@ -35,3 +35,16 @@
     </main>
 
 </x-admin-layout>
+
+<script>
+    $.ajax({
+        type: "GET",
+        url: "http://sibapo.test/api/dpp",
+        success: function(data) {
+            console.log(data);
+        }
+    })
+
+    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
+    
+</script>

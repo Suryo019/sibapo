@@ -7,10 +7,10 @@
         </li>
   
         <!-- DISPERINDAG -->
-        <x-admin-sidebar-link href="disperindag">
+        <x-admin-sidebar-link viewDataHref="disperindag" createDataHref="disperindag/create">
             <x-slot:name>DISPERINDAG</x-slot:name>
-            <x-slot:createData>Tambah Data</x-slot:createData>
-            <x-slot:viewData href="disperindag">Lihat Data</x-slot:viewData>
+            <x-slot:createData href="{{ route('disperindag.create') }}">Tambah Data</x-slot:createData>
+            <x-slot:viewData href="{{ route('disperindag.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
   
         <!-- DKPP -->
