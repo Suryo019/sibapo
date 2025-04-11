@@ -1,10 +1,12 @@
 <?php
 
 use App\Models\DPP;
+use App\Models\DKPP;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
+use App\Http\Controllers\Web\DtphpController;
+use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\DisperindagController;
-use App\Models\DKPP;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,6 +16,8 @@ Route::get('/dashboard', function () {
     return view('admin.admin-dashboard');
 })->name('dashboard');
 
+
+// Disperindag
 Route::resource('disperindag', DisperindagController::class)->names([
     'index' => 'disperindag.index',
     'create' => 'disperindag.create',
@@ -28,6 +32,8 @@ Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name
 
 // Route::get('/disperindag/detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
 
+
+// DKPP
 Route::resource('dkpp', DkppController::class)->names([
     'index' => 'dkpp.index',
     'create' => 'dkpp.create',
@@ -37,6 +43,7 @@ Route::resource('dkpp', DkppController::class)->names([
     'update' => 'dkpp.update',
     'destroy' => 'dkpp.destroy',
 ]);
+
 Route::get('dkpp-detail', function () {
     $dkpp = DKPP::all();
     return view('admin.dkpp.admin-dkpp-detail', [
@@ -49,11 +56,35 @@ Route::get('dkpp-detail', function () {
 //     return view('admin.admin-dkpp');
 // });
 
-Route::get('/dtphp', function () {
-    return view('admin.admin-dtphp');
-});
 
+// DTPHP
+Route::resource('dtphp', DtphpController::class)->names([
+    'index' => 'dtphp.index',
+    'create' => 'dtphp.create',
+    'store' => 'dtphp.store',
+    'show' => 'dtphp.show',
+    'edit' => 'dtphp.edit',
+    'update' => 'dtphp.update',
+    'destroy' => 'dtphp.destroy',
+]);
 
-Route::get('/perikanan', function () {
-    return view('admin.admin-perikanan');
-});
+// Route::get('dtphp-detail', function () {
+//     return view('admin.dtphp.admin-dtphp',[
+//         'title' => 'Lihat Detail Data',
+//         // 'data' => $dtphp
+//     ]);
+// })->name('dtphp.detail');
+
+Route::get('dtphp-detail', [DtphpController::class, 'detail'])->name('dtphp.detail');
+
+Route::resource('perikanan', PerikananController::class)->names([
+    'index' => 'perikanan.index',
+    'create' => 'perikanan.create',
+    'store' => 'perikanan.store',
+    'show' => 'perikanan.show',
+    'edit' => 'perikanan.edit',
+    'update' => 'perikanan.update',
+    'destroy' => 'perikanan.destroy',
+]);
+
+Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('perikanan.detail');
