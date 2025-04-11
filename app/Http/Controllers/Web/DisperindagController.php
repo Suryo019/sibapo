@@ -94,16 +94,33 @@ class DisperindagController extends Controller
                 return $item->periode;
             });
 
-        // dd($periodeUnikAngka); 
+        // dd($periodeUnikAngka);
         $periode = explode('-', $periodeUnikAngka[1]);
         $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
 
-        $periode = $periodeUnikAngka->first();
-        $dpp = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])->get();
+        $periode = $periodeUnikAngka[1];
+
+        // dd($periode);
+        $dppHargaHari = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])
+        ->get()
+        ->groupBy('jenis_bahan_pokok')
+        ->map(function ($items) {
+            $row = [
+                'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                'harga_per_tanggal' => []
+            ];
+    
+            foreach ($items as $item) {
+                $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+            }
+    
+            return $row;
+        })->values();
 
         return view('admin.disperindag.admin-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
-            'data' => $dpp,
+            'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
             'periods' => $periodeUnikNama,
             'daysInMonth' => $jumlahHari,
