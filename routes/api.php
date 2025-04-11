@@ -29,7 +29,7 @@ Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
 // DPP
 Route::get('/dpp', [DPPController::class, 'index']);
-Route::post('/dpp', [DPPController::class, 'store']);
+Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
 Route::put('/dpp/{id}', [DPPController::class, 'update']);
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 

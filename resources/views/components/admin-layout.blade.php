@@ -12,19 +12,41 @@
 
     {{-- Bootstrap Icon --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    {{-- Select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
+    <!-- Loader Overlay -->
+    <div id="loader" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+      <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
     <!-- Header -->
     <x-admin-header></x-admin-header>
     
-    <nav class="flex h-full">
+    <div class="h-full">
       <!-- Sidebar -->
       <x-admin-sidebar></x-admin-sidebar>
         
       <!-- Content -->
-      <main class="w-full">
+      <main class="w-full pl-64 pt-16">
         {{ $slot }}
       </main>
+    </div>
 
+    <script>
+      window.addEventListener('load', function () {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 500);
+        }
+      });
+    </script>
+    
 </body>
 </html>

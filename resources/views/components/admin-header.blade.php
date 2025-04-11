@@ -1,4 +1,4 @@
-<header class="bg-green-900 text-white p-4 flex justify-between items-center">
+<header class="bg-green-900 text-white p-4 flex justify-between items-center fixed w-full z-50">
     <img src="/img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg" 
          alt="logo" class="h-10 w-30 ml-4">  <!-- Tambah margin kiri -->
     
