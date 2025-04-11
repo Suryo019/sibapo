@@ -18,6 +18,11 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
+    <!-- Loader Overlay -->
+    <div id="loader" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+      <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
     <!-- Header -->
     <x-admin-header></x-admin-header>
     
@@ -31,5 +36,17 @@
       </main>
     </div>
 
+    <script>
+      window.addEventListener('load', function () {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 500);
+        }
+      });
+    </script>
+    
 </body>
 </html>

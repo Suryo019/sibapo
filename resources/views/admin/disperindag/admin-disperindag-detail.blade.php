@@ -66,7 +66,7 @@
                                     <td class="border p-2">{{ $item['jenis_bahan_pokok'] }}</td>
                                     
                                     @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
-                                        <td class="border px-4 py-2 text-center">
+                                        <td class="border px-4 py-2 text-center whitespace-nowrap">
                                             @if (isset($item['harga_per_tanggal'][$kolom]))
                                                 Rp. {{ number_format($item['harga_per_tanggal'][$kolom], 0, ',', '.') }}
                                             @else
