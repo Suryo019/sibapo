@@ -12,19 +12,24 @@
 
     {{-- Bootstrap Icon --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    {{-- Select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
     <!-- Header -->
     <x-admin-header></x-admin-header>
     
-    <nav class="flex h-full">
+    <div class="h-full">
       <!-- Sidebar -->
       <x-admin-sidebar></x-admin-sidebar>
         
       <!-- Content -->
-      <main class="w-full">
+      <main class="w-full pl-64 pt-16">
         {{ $slot }}
       </main>
+    </div>
 
 </body>
 </html>

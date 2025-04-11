@@ -1,23 +1,25 @@
-<aside class="w-64 bg-green-900 text-white p-4 h-screen">
+{{-- @dd(request()->is('dashboard')) --}}
+
+<aside class="w-64 bg-green-900 text-white p-4 pt-24 h-screen fixed">
     <nav>
       <ul>
         <!-- Dashboard -->
         <li class="mb-2">
-          <a href="dashboard" class="block py-2 px-4 rounded {{ request()->is('/dashboard') ? 'bg-green-600' : '' }}">Dashboard</a>
+          <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded {{ request()->is('dashboard') ? 'bg-green-600' : '' }}">Dashboard</a>
         </li>
   
         <!-- DISPERINDAG -->
-        <x-admin-sidebar-link viewDataHref="disperindag" createDataHref="disperindag/create">
+        <x-admin-sidebar-link dataHref="disperindag*">
             <x-slot:name>DISPERINDAG</x-slot:name>
             <x-slot:createData href="{{ route('disperindag.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('disperindag.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
   
         <!-- DKPP -->
-        <x-admin-sidebar-link href="dkpp">
+        <x-admin-sidebar-link dataHref="dkpp*">
             <x-slot:name>DKPP</x-slot:name>
-            <x-slot:createData>Tambah Data</x-slot:createData>
-            <x-slot:viewData href="dkpp">Lihat Data</x-slot:viewData>
+            <x-slot:createData href="{{ route('dkpp.create') }}">Tambah Data</x-slot:createData>
+            <x-slot:viewData href="{{ route('dkpp.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
   
         <!-- DTPHP -->

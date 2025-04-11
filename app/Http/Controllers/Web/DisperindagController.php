@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
 use App\Models\DPP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class DisperindagController extends Controller
 {
@@ -14,7 +16,8 @@ class DisperindagController extends Controller
     public function index()
     {
         $dpp = DPP::all();
-        return view('admin.admin-disperindag', [
+        return view('admin.disperindag.admin-disperindag', [
+            'title' => 'Data Aktivitas Harga Pasar',
             'data' => $dpp
         ]);
     }
@@ -24,7 +27,7 @@ class DisperindagController extends Controller
      */
     public function create()
     {
-        return view('admin.admin-create-disperindag', [
+        return view('admin.disperindag.admin-create-disperindag', [
             'title' => 'Tambah Data',
         ]);
     }
@@ -40,12 +43,12 @@ class DisperindagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dpp $dpp)
+    public function show()
     {
-        $dpp = DPP::all();
-        return view('admin.admin-disperindag', [
-            'data' => $dpp
-        ]);
+        // $dpp = DPP::all();
+        // return view('admin.admin-disperindag', [
+        //     'data' => $dpp
+        // ]);
     }
 
     /**
@@ -53,7 +56,9 @@ class DisperindagController extends Controller
      */
     public function edit(Dpp $dpp)
     {
-        //
+        return view('admin.disperindag.admin-update-disperindag', [
+            'title' => 'Ubah Data',
+        ]);
     }
 
     /**
@@ -70,5 +75,27 @@ class DisperindagController extends Controller
     public function destroy(Dpp $dpp)
     {
         //
+    }
+
+    public function detail()
+    {
+        Carbon::setLocale('id');
+
+        $dpp = DPP::all();
+        $periodeUnik = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+                    ->get()
+                    ->map(function ($item) {
+                        $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+                        $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+                        return $item->periode_indonesia;
+                    });
+    
+
+        return view('admin.disperindag.admin-disperindag-detail', [
+            'title' => 'Dinas Perindustrian dan Perdagangan',
+            'data' => $dpp,
+            'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
+            'periods' => $periodeUnik,
+        ]);
     }
 }
