@@ -81,21 +81,32 @@ class DisperindagController extends Controller
     {
         Carbon::setLocale('id');
 
-        $dpp = DPP::all();
-        $periodeUnik = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+        $periodeUnikNama = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
                     ->get()
                     ->map(function ($item) {
                         $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
                         $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
                         return $item->periode_indonesia;
                     });
-    
+        $periodeUnikAngka = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+            ->get()
+            ->map(function ($item) {
+                return $item->periode;
+            });
+
+        // dd($periodeUnikAngka); 
+        $periode = explode('-', $periodeUnikAngka[1]);
+        $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
+
+        $periode = $periodeUnikAngka->first();
+        $dpp = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])->get();
 
         return view('admin.disperindag.admin-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
             'data' => $dpp,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
-            'periods' => $periodeUnik,
+            'periods' => $periodeUnikNama,
+            'daysInMonth' => $jumlahHari,
         ]);
     }
 }
