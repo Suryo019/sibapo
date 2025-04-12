@@ -74,6 +74,7 @@ class DPPController extends Controller
                 'message' => 'Data berhasil diperbarui',
                 'data' => $dpp
             ]);
+            
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat memperbarui data',

@@ -46,24 +46,33 @@ class DPController extends Controller
     // Mengupdate data
     public function update(Request $request, $id)
     {
-        $dp = DP::find($id);
+        try{
+            
+            $dp = DP::find($id);
+            
+            if (!$dp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+            
+            $request->validate([
+                // 'tanggal_input' => 'required|date',
+                'jenis_ikan' => 'required|string',
+                'ton_produksi' => 'required|numeric'
+            ]);
 
-        if (!$dp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            $dp->update($request->all());
+            
+            return response()->json([
+                'message' => 'Data berhasil diperbarui',
+                'data' => $dp
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
-        ]);
-
-        $dp->update($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil diperbarui',
-            'data' => $dp
-        ]);
     }    
 
     // Menghapus data
