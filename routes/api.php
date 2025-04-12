@@ -29,8 +29,9 @@ Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
 // DPP
 Route::get('/dpp', [DPPController::class, 'index']);
+Route::get('/dpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dpp.listItem');
 Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
-Route::put('/dpp/{id}', [DPPController::class, 'update']);
+Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update');
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP

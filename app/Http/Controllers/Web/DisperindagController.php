@@ -54,10 +54,11 @@ class DisperindagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dpp $dpp)
+    public function edit(Dpp $disperindag)
     {
         return view('admin.disperindag.admin-update-disperindag', [
             'title' => 'Ubah Data',
+            'data' => $disperindag,
         ]);
     }
 
@@ -105,9 +106,14 @@ class DisperindagController extends Controller
         ->get()
         ->groupBy('jenis_bahan_pokok')
         ->map(function ($items) {
+            // dd($items);
             $row = [
+                'id' => $items[0]->id,
+                'user_id' => $items[0]->user_id,
+                'pasar' => $items[0]->pasar,
                 'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
-                'harga_per_tanggal' => []
+                'harga_per_tanggal' => [],
+                'data_asli' => $items, // Optional, untuk keperluan detail/debug
             ];
     
             foreach ($items as $item) {
@@ -117,12 +123,14 @@ class DisperindagController extends Controller
     
             return $row;
         })->values();
+    
 
         return view('admin.disperindag.admin-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
             'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
             'periods' => $periodeUnikNama,
+            'numberPeriods' => $periodeUnikAngka,
             'daysInMonth' => $jumlahHari,
         ]);
     }

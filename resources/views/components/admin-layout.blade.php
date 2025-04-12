@@ -18,6 +18,14 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
+      <!-- Loading overlay -->
+      <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
+        <div class="w-full h-full flex items-center justify-center flex-col">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400 border-solid mx-auto"></div>
+            <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
+        </div>
+    </div>
+
     <!-- Header -->
     <x-admin-header></x-admin-header>
     
@@ -31,5 +39,23 @@
       </main>
     </div>
 
+    <script>
+    function showLoading() {
+        document.getElementById("loading").style.display = "flex";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    $(document)
+        .ajaxStart(function () {
+            $("#loading").show();
+        })
+        .ajaxStop(function () {
+            $("#loading").hide();
+        });
+    </script>
+    
 </body>
 </html>
