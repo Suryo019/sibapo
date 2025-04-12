@@ -18,9 +18,12 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
-    <!-- Loader Overlay -->
-    <div id="loader" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
-      <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <!-- Loading overlay -->
+      <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
+        <div class="w-full h-full flex items-center justify-center flex-col">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400 border-solid mx-auto"></div>
+            <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
+        </div>
     </div>
 
     <!-- Header -->
@@ -37,15 +40,21 @@
     </div>
 
     <script>
-      window.addEventListener('load', function () {
-        const loader = document.getElementById('loader');
-        if (loader) {
-          loader.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-          setTimeout(() => {
-            loader.style.display = 'none';
-          }, 500);
-        }
-      });
+    function showLoading() {
+        document.getElementById("loading").style.display = "flex";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    $(document)
+        .ajaxStart(function () {
+            $("#loading").show();
+        })
+        .ajaxStop(function () {
+            $("#loading").hide();
+        });
     </script>
     
 </body>

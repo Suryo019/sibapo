@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.spinner-ring {
+    border-radius: 50%;
+    border-width: 4px;
+    width: 40px;
+    height: 40px;
+    border-top-color: #3490dc; /* Warna biru Tailwind */
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    margin: 0 auto;
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
