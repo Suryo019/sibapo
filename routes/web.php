@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
+use App\Models\DTPHP;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
 use App\Http\Controllers\Web\DtphpController;
@@ -17,6 +19,7 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 
+
 // Disperindag
 Route::resource('disperindag', DisperindagController::class)->names([
     'index' => 'disperindag.index',
@@ -28,9 +31,13 @@ Route::resource('disperindag', DisperindagController::class)->names([
     'destroy' => 'disperindag.destroy',
 ]);
 
-Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
-
-// Route::get('/disperindag/detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
+Route::get('disperindag-detail', function () {
+    $disperindag = DPP::all();
+    return view('admin.disperindag.admin-disperindag-detail', [
+        'title' => 'Lihat Detail Data',
+        'data' => $disperindag
+    ]);
+})->name('disperindag.detail');
 
 
 // DKPP
@@ -52,9 +59,6 @@ Route::get('dkpp-detail', function () {
     ]);
 })->name('dkpp.detail');
 
-// Route::get('/dkpp', function () {
-//     return view('admin.admin-dkpp');
-// });
 
 
 // DTPHP
@@ -68,15 +72,17 @@ Route::resource('dtphp', DtphpController::class)->names([
     'destroy' => 'dtphp.destroy',
 ]);
 
-// Route::get('dtphp-detail', function () {
-//     return view('admin.dtphp.admin-dtphp',[
-//         'title' => 'Lihat Detail Data',
-//         // 'data' => $dtphp
-//     ]);
-// })->name('dtphp.detail');
+Route::get('dtphp-detail', function () {
+    $dtphp = DTPHP::all();
+    return view('admin.dtphp.admin-dtphp-detail', [
+        'title' => 'Lihat Detail Data',
+        'data' => $dtphp
+    ]);
+})->name('dtphp.detail');
 
-Route::get('dtphp-detail', [DtphpController::class, 'detail'])->name('dtphp.detail');
 
+
+// PERIKANAN
 Route::resource('perikanan', PerikananController::class)->names([
     'index' => 'perikanan.index',
     'create' => 'perikanan.create',
@@ -87,4 +93,10 @@ Route::resource('perikanan', PerikananController::class)->names([
     'destroy' => 'perikanan.destroy',
 ]);
 
-Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('perikanan.detail');
+Route::get('perikanan-detail', function () {
+    $perikanan = DP::all();
+    return view('admin.perikanan.admin-perikanan-detail', [
+        'title' => 'Lihat Detail Data',
+        'data' => $perikanan
+    ]);
+})->name('perikanan.detail');

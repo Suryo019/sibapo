@@ -18,18 +18,29 @@ class DPController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
-        ]);
+        try{
+            $validated = $request->validate([
+                // 'tanggal_input' => 'required|date',
+                'jenis_ikan' => 'required|string',
+                'ton_produksi' => 'required|numeric'
+            ]);
+            
+            $validated['tanggal_input'] = now();
+            $validated['user_id'] = 1;
+            
+            $dp = DP::create($validated);
 
-        $dp = DP::create($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
-            'data' => $dp
-        ], 201);
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+                'data' => $dp
+            ], 201);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     // Mengupdate data

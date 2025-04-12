@@ -25,7 +25,6 @@
         <!-- DTPHP -->
         <x-admin-sidebar-link href="dtphp">
             <x-slot:name>DTPHP</x-slot:name>
-            <x-slot:createData>Tambah Data</x-slot:createData>
             <x-slot:createData href="{{ route('dtphp.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('dtphp.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
@@ -33,7 +32,6 @@
         <!-- PERIKANAN -->
         <x-admin-sidebar-link href="perikanan">
             <x-slot:name>PERIKANAN</x-slot:name>
-            <x-slot:createData>Tambah Data</x-slot:createData>
             <x-slot:createData href="{{ route('perikanan.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('perikanan.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>

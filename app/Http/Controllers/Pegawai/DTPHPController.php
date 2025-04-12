@@ -18,20 +18,33 @@ class DTPHPController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'jenis_komoditas' => 'required|string',
-            'tanggal_input' => 'required|date',
-            'ton_volume_produksi' => 'required|numeric',
-            'hektar_luas_panen' => 'required|numeric'
-        ]);
-
-        $dtphp = DTPHP::create($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
-            'data' => $dtphp
-        ], 201);
+        try {
+            $validated = $request->validate([
+                'jenis_komoditas' => 'required|string',
+                // 'tanggal_input' => 'required|date',
+                'ton_volume_produksi' => 'required|numeric',
+                'hektar_luas_panen' => 'required|numeric'
+            ]);
+    
+            // Tambahkan data tambahan kalau dibutuhkan, misalnya user_id
+            $validated['tanggal_input'] = now();
+            $validated['user_id'] = 1;
+    
+            $dtphp = DTPHP::create($validated);
+    
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+                'data' => $dtphp
+            ], 201);
+    
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
+    
 
     // Mengupdate data
     public function update(Request $request, $id)

@@ -23,7 +23,7 @@ Route::delete('/dkpp/{id}', [DKPPController::class, 'destroy']);
 
 // DP
 Route::get('/dp', [DPController::class, 'index']);
-Route::post('/dp', [DPController::class, 'store']);
+Route::post('/dp', [DPController::class, 'store'])->name('api.dp.store');
 Route::put('/dp/{id}', [DPController::class, 'update']);
 Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
@@ -35,6 +35,6 @@ Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP
 Route::get('/dtphp', [DTPHPController::class, 'index']);
-Route::post('/dtphp', [DTPHPController::class, 'store']);
+Route::post('/dtphp', [DTPHPController::class, 'store'])->name('api.dtphp.store');
 Route::put('/dtphp/{id}', [DTPHPController::class, 'update']);
 Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
