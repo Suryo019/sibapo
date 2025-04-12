@@ -18,22 +18,33 @@ class DKPPController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'jenis_komoditas' => 'required|string',
-            'tanggal_input' => 'required|date',
-            'ton_ketersediaan' => 'required|numeric',
-            'ton_kebutuhan_perminggu' => 'required|numeric',
-            'ton_neraca_mingguan' => 'required|numeric',
-            'keterangan' => 'nullable|string'
-        ]);
-
-        $dkpp = DKPP::create($request->all());
-
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
-            'data' => $dkpp
-        ], 201);
+        try{
+            $validated = $request->validate([
+                'jenis_komoditas' => 'required|string',
+                // 'tanggal_input' => 'required|date',
+                'ton_ketersediaan' => 'required|numeric',
+                'ton_kebutuhan_perminggu' => 'required|numeric',
+                'ton_neraca_mingguan' => 'required|numeric',
+                'keterangan' => 'nullable|string'
+            ]);
+            
+            $validated['tanggal_input'] = now();
+            $validated['user_id'] = 1;
+            
+            $dkpp = DKPP::create($validated);
+            
+            
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+                'data' => $dkpp
+            ], 201);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     // Mengupdate data

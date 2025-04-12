@@ -3,7 +3,8 @@
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
         <div class="bg-white p-6 rounded shadow-md mt-4">
-            <form>
+            <form action="{{ route('api.dtphp.store') }}" method="post">
+                @csrf
                 <div class="mb-4">
                     <label class="block text-gray-700">Jenis Komoditas</label>
                     <input type="text" placeholder="Contoh: Padi" 

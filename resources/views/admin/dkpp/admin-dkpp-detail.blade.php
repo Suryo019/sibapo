@@ -55,7 +55,7 @@
                                     <button class="bg-yellow-400 text-center text-white rounded-md w-10 h-10">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    </a>
+                                </a>
                                     <button class="bg-red-500 text-center text-white rounded-md w-10 h-10">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
