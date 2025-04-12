@@ -46,7 +46,6 @@ class DPPController extends Controller
                 'pasar' => 'required|string',
                 'jenis_bahan_pokok' => 'required|string',
                 'kg_harga' => 'required|integer',
-                // 'tanggal_dibuat' tidak perlu divalidasi jika kamu override nilainya
             ]);
             
             $validated['tanggal_dibuat'] = now();
