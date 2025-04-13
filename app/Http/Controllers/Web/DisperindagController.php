@@ -15,10 +15,26 @@ class DisperindagController extends Controller
      */
     public function index()
     {
-        $dpp = DPP::all();
+        $periodeUnikNama = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+        ->get()
+        ->map(function ($item) {
+            $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+            $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+            return $item->periode_indonesia;
+        });
+
+        // $dpp = DPP::all();
+
+        $dpp = DPP::whereMonth('tanggal_dibuat', 4)
+            ->whereYear('tanggal_dibuat', 2025)
+            ->distinct()
+            ->pluck('jenis_bahan_pokok');
+
         return view('admin.disperindag.admin-disperindag', [
             'title' => 'Data Aktivitas Harga Pasar',
-            'data' => $dpp
+            'data' => $dpp,
+            'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
+            'periods' => $periodeUnikNama,
         ]);
     }
 

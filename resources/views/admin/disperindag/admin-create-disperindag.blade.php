@@ -49,12 +49,32 @@
                 jenis_bahan_pokok: $('#jenis_bahan_pokok').val(),
                 kg_harga: $('#kg_harga').val(),
                 },
-            success: function(data) {
-                console.log(data);
-                },
+            success: function(data) {   
+                $('#pasar').val('');
+                $('#jenis_bahan_pokok').val('');
+                $('#kg_harga').val('');
+
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: `Data ${data.data.jenis_bahan_pokok} telah disimpan.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            },
             error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                }
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
         });
     });
 </script>

@@ -78,11 +78,29 @@
                 tanggal_dibuat: $('#tanggal_dibuat').val(),
                 },
             success: function(data) {
-                console.log(data);
-                },
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: `Data ${data.data.jenis_bahan_pokok} berhasil diperbarui!`,
+                    confirmButtonColor: '#16a34a'
+                });
+
+                window.location.href = "{{ route('disperindag.detail') }}";
+            },
             error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                }
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
         });
     });
 </script>
