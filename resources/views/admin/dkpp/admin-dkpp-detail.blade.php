@@ -9,8 +9,11 @@
             <!-- Search dan Dropdown -->
             <div class="flex justify-between my-4">
                 <div class="relative">
-                    <input type="text" placeholder="Cari..." class="border p-2 rounded pl-8 w-64">
-                    <span class="absolute left-2 top-2 text-gray-400">🔍</span>
+                    {{-- Search --}}
+                    <div class="flex items-center  border bg-white rounded-full w-64 flex-row h-9">
+                        <span class="bi bi-search pl-5 pr-4"></span>
+                        <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
+                    </div>
                 </div>
                 <div class="flex gap-4">
                     <select class="border p-2 rounded bg-white">
@@ -32,7 +35,7 @@
             <div class="overflow-x-auto">
                 <table class="min-w-full border border-gray-300 table-fixed ">
                     <thead>
-                        <tr class="bg-gray-200">
+                        <tr>
                             <th rowspan="2" class="border p-2">No</th>
                             <th rowspan="2" class="border p-2">Jenis Komoditas</th>
                             <th rowspan="1" class="border p-2">Ketersediaan (ton)</th>

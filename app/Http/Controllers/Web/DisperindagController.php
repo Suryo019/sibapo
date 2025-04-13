@@ -54,10 +54,11 @@ class DisperindagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dpp $dpp)
+    public function edit(Dpp $disperindag)
     {
         return view('admin.disperindag.admin-update-disperindag', [
             'title' => 'Ubah Data',
+            'data' => $disperindag,
         ]);
     }
 
@@ -81,21 +82,56 @@ class DisperindagController extends Controller
     {
         Carbon::setLocale('id');
 
-        $dpp = DPP::all();
-        $periodeUnik = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+        $periodeUnikNama = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
                     ->get()
                     ->map(function ($item) {
                         $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
                         $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
                         return $item->periode_indonesia;
                     });
+        $periodeUnikAngka = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
+            ->get()
+            ->map(function ($item) {
+                return $item->periode;
+            });
+
+        // dd($periodeUnikAngka);
+        $periode = explode('-', $periodeUnikAngka[1]);
+        $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
+
+        $periode = $periodeUnikAngka[1];
+
+        // dd($periode);
+        $dppHargaHari = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])
+        ->get()
+        ->groupBy('jenis_bahan_pokok')
+        ->map(function ($items) {
+            // dd($items);
+            $row = [
+                'id' => $items[0]->id,
+                'user_id' => $items[0]->user_id,
+                'pasar' => $items[0]->pasar,
+                'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                'harga_per_tanggal' => [],
+                'data_asli' => $items, // Optional, untuk keperluan detail/debug
+            ];
+    
+            foreach ($items as $item) {
+                $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+            }
+    
+            return $row;
+        })->values();
     
 
         return view('admin.disperindag.admin-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
-            'data' => $dpp,
+            'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
-            'periods' => $periodeUnik,
+            'periods' => $periodeUnikNama,
+            'numberPeriods' => $periodeUnikAngka,
+            'daysInMonth' => $jumlahHari,
         ]);
     }
 }

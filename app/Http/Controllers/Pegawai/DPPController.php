@@ -11,64 +11,113 @@ class DPPController extends Controller
     // Menampilkan semua data
     public function index()
     {
-        $data = DPP::all();
-        return response()->json($data);
+        try {
+            $data = DPP::all();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
+
+    public function listItem($namaBahanPokok)
+    {
+        try {
+            $data = DPP::where('jenis_bahan_pokok', $namaBahanPokok)
+            ->whereMonth('tanggal_dibuat', 4)
+            ->whereYear('tanggal_dibuat', 2025)
+            ->get();
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
 
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'pasar' => 'required|string',
-            'jenis_bahan_pokok' => 'required|string',
-            'kg_harga' => 'required|integer',
-            'tanggal_dibuat' => 'required|date'
-        ]);
-
-        $dpp = DPP::create($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
-            'data' => $dpp
-        ], 201);
+        try {
+            $validated = $request->validate([
+                'pasar' => 'required|string',
+                'jenis_bahan_pokok' => 'required|string',
+                'kg_harga' => 'required|integer',
+                // 'tanggal_dibuat' tidak perlu divalidasi jika kamu override nilainya
+            ]);
+            
+            $validated['tanggal_dibuat'] = now();
+            $validated['user_id'] = 1;
+            
+            $dpp = DPP::create($validated);
+            
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+                'data' => $dpp
+            ], 201);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     // Mengupdate data
     public function update(Request $request, $id)
     {
-        $dpp = DPP::find($id);
+        try {
+            $dpp = DPP::find($id);
 
-        if (!$dpp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if (!$dpp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            $request->validate([
+                'pasar' => 'required|string',
+                'jenis_bahan_pokok' => 'required|string',
+                'kg_harga' => 'required|integer',
+                'tanggal_dibuat' => 'required|date'
+            ]);
+
+            $dpp->update($request->all());
+
+            return response()->json([
+                'message' => 'Data berhasil diperbarui',
+                'data' => $dpp
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'pasar' => 'required|string',
-            'jenis_bahan_pokok' => 'required|string',
-            'kg_harga' => 'required|integer',
-            'tanggal_dibuat' => 'required|date'
-        ]);
-
-        $dpp->update($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil diperbarui',
-            'data' => $dpp
-        ]);
     }    
 
     // Menghapus data
     public function destroy($id)
     {
-        $dpp = DPP::find($id);
+        try {
+            $dpp = DPP::find($id);
 
-        if (!$dpp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if (!$dpp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            $dpp->delete();
+
+            return response()->json(['message' => 'Data berhasil dihapus']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $dpp->delete();
-
-        return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }
+
 
