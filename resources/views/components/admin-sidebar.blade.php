@@ -1,6 +1,10 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
-<aside class="w-64 bg-green-900 text-white p-4 pt-24 h-screen fixed">
+<aside {{ $attributes }}>
+  <div class="mb-7 w-full flex justify-center">
+    <img src="/img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg" 
+    alt="logo" class="h-10 w-30 ml-4">  <!-- Tambah margin kiri -->
+  </div>
     <nav>
       <ul>
         <!-- Dashboard -->

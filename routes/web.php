@@ -37,13 +37,7 @@ Route::resource('dkpp', DkppController::class)->names([
     'update' => 'dkpp.update',
     'destroy' => 'dkpp.destroy',
 ]);
-Route::get('dkpp-detail', function () {
-    $dkpp = DKPP::all();
-    return view('admin.dkpp.admin-dkpp-detail', [
-        'title' => 'Lihat Detail Data',
-        'data' => $dkpp
-    ]);
-})->name('dkpp.detail');
+Route::get('dkpp-detail', [DkppController::class, 'detail'])->name('dkpp.detail');
 
 // Route::get('/dkpp', function () {
 //     return view('admin.admin-dkpp');

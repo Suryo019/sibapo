@@ -186,11 +186,8 @@
     
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
-                <a href="/Public/Disperindag.html">
+                <a href="{{ route('disperindag.index') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="Tambah.html">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
                 </a>
             </div>
         </div>
@@ -210,11 +207,20 @@
         $.ajax({
             type: 'DELETE',
             url: `/api/dpp/${dataId}`,
-            success: function() {
-                window.location.reload();
+            success: function(data) {
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: `Data ${data.data.jenis_bahan_pokok} telah dihapus.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
             },
-            error: function(xhr) {
-                console.log(xhr.responseText);
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: error
+                });
             }
         });
     });
