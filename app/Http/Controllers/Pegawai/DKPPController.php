@@ -50,27 +50,35 @@ class DKPPController extends Controller
     // Mengupdate data
     public function update(Request $request, $id)
     {
-        $dkpp = DKPP::find($id);
+        try{
+            $dkpp = DKPP::find($id);
 
-        if (!$dkpp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if (!$dkpp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+    
+            $request->validate([
+                'jenis_komoditas' => 'required|string',
+                'tanggal_input' => 'required|date',
+                'ton_ketersediaan' => 'required|numeric',
+                'ton_kebutuhan_perminggu' => 'required|numeric',
+                'ton_neraca_mingguan' => 'required|numeric',
+                'keterangan' => 'nullable|string'
+            ]);
+    
+            $dkpp->update($request->all());
+    
+            return response()->json([
+                'message' => 'Data berhasil diperbarui',
+                'data' => $dkpp
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'jenis_komoditas' => 'required|string',
-            'tanggal_input' => 'required|date',
-            'ton_ketersediaan' => 'required|numeric',
-            'ton_kebutuhan_perminggu' => 'required|numeric',
-            'ton_neraca_mingguan' => 'required|numeric',
-            'keterangan' => 'nullable|string'
-        ]);
-
-        $dkpp->update($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil diperbarui',
-            'data' => $dkpp
-        ]);
     }    
 
     // Menghapus data

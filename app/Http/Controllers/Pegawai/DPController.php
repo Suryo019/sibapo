@@ -55,7 +55,7 @@ class DPController extends Controller
             }
             
             $request->validate([
-                // 'tanggal_input' => 'required|date',
+                'tanggal_input' => 'required|date',
                 'jenis_ikan' => 'required|string',
                 'ton_produksi' => 'required|numeric'
             ]);

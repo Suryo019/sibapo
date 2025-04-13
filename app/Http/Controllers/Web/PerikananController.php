@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\DP;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -36,10 +37,11 @@ class PerikananController extends Controller
         //
     }    
 
-    public function edit(DP $dP)
+    public function edit(DP $perikanan)
     {
         return view('admin.perikanan.admin-update-perikanan', [
-            'title' => 'Ubah Data'
+            'title' => 'Ubah Data',
+            'data' => $perikanan,
         ]);
     }
 
@@ -51,5 +53,10 @@ class PerikananController extends Controller
     public function destroy(DP $dP)
     {
         //
+    }
+    
+    public function detail()
+    {
+        Carbon::setLocale('id');
     }
 }

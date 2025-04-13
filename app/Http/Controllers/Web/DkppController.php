@@ -49,10 +49,11 @@ class DkppController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DKPP $dKPP)
+    public function edit(DKPP $dkpp)
     {
         return view('admin.dkpp.admin-update-dkpp', [
-            'title' => 'Ubah Data'
+            'title' => 'Ubah Data',
+            'data' => $dkpp,
         ]);
     }
 

@@ -18,23 +18,23 @@ Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index']);
 Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
-Route::put('/dkpp/{id}', [DKPPController::class, 'update']);
+Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');
 Route::delete('/dkpp/{id}', [DKPPController::class, 'destroy']);
 
 // DP
 Route::get('/dp', [DPController::class, 'index']);
 Route::post('/dp', [DPController::class, 'store'])->name('api.dp.store');
-Route::put('/dp/{id}', [DPController::class, 'update']);
+Route::put('/dp/{id}', [DPController::class, 'update'])->name('api.dp.update');
 Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
 // DPP
 Route::get('/dpp', [DPPController::class, 'index']);
 Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
-Route::put('/dpp/{id}', [DPPController::class, 'update']);
+Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update'); // Belum Ngganti
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP
 Route::get('/dtphp', [DTPHPController::class, 'index']);
 Route::post('/dtphp', [DTPHPController::class, 'store'])->name('api.dtphp.store');
-Route::put('/dtphp/{id}', [DTPHPController::class, 'update']);
+Route::put('/dtphp/{id}', [DTPHPController::class, 'update'])->name('api.dtphp.update');
 Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);

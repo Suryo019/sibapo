@@ -36,10 +36,11 @@ class DtphpController extends Controller
         //
     }    
 
-    public function edit(DTPHP $dTPHP)
+    public function edit(DTPHP $dtphp)
     {
         return view('admin.dtphp.admin-update-dtphp', [
-            'title' => 'Ubah Data'
+            'title' => 'Ubah Data',
+            'data' => $dtphp,
         ]);
     }
 
