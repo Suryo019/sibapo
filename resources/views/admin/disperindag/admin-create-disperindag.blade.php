@@ -50,6 +50,10 @@
                 kg_harga: $('#kg_harga').val(),
                 },
             success: function(data) {   
+                $('#pasar').val('');
+                $('#jenis_bahan_pokok').val('');
+                $('#kg_harga').val('');
+
                 Swal.fire({
                     title: 'Berhasil!',
                     text: `Data ${data.data.jenis_bahan_pokok} telah disimpan.`,
