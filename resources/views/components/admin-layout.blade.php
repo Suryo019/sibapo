@@ -18,17 +18,21 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="bg-green-100 h-screen">
-    <!-- Header -->
-    <x-admin-header></x-admin-header>
     
-    <div class="h-full">
+    
+    <div class="h-full flex">
       <!-- Sidebar -->
       <x-admin-sidebar></x-admin-sidebar>
-        
-      <!-- Content -->
-      <main class="w-full pl-64 pt-16">
+      
+      <div >
+          <!-- Header -->
+          <x-admin-header></x-admin-header>
+          <!-- Content -->
+          <main class="w-full pl-64 pt-16">
         {{ $slot }}
-      </main>
+          </main>
+      </div>
+      
     </div>
 
 </body>

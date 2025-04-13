@@ -1,6 +1,10 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
 <aside class="w-64 bg-green-900 text-white p-4 pt-24 h-screen fixed">
+    <div class="w-full mb-7 flex justify-center">
+      <img src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" 
+      alt="logo" class="h-10 w-30 ml-4">
+    </div>
     <nav>
       <ul>
         <!-- Dashboard -->
