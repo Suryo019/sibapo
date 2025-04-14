@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\DisperindagController;
 
+// ADMIN
 Route::get('/', function () {
     return view('admin.admin-dashboard');
 });
@@ -45,7 +46,6 @@ Route::resource('dkpp', DkppController::class)->names([
     'destroy' => 'dkpp.destroy',
 ]);
 Route::get('dkpp-detail', [DkppController::class, 'detail'])->name('dkpp.detail');
-
 
 
 // DTPHP
