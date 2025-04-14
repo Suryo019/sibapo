@@ -1,6 +1,4 @@
-{{-- @dd($periods) --}}
-
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">Lihat Detail Data</h2>
     
@@ -70,7 +68,7 @@
                                     {{ $keterangan }}
                                 </td>
                                 <td class="border p-2 flex justify-center gap-2">
-                                    <a href="{{ route('dkpp.edit', $item->id) }}">
+                                    <a href="{{ route('pegawai.dkpp.edit', $item->id) }}">
                                         <button class="bg-yellow-400 text-center text-white rounded-md w-10 h-10">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
@@ -88,7 +86,7 @@
     
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
-                <a href="{{ route('dkpp.index') }}">
+                <a href="{{ route('pegawai.dkpp.index') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                 </a>
             </div>
@@ -113,9 +111,8 @@
                     </div>
                 </div>
             </div>
-
     </main>    
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     // Tombol Delete
@@ -156,4 +153,3 @@
         $('#modal').hide();
     });
 </script>
-
