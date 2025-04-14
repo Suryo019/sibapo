@@ -3,7 +3,7 @@ $pegawai = match(true) {
     request()->is('pegawai/disperindag*') => 'disperindag',
     request()->is('pegawai/dkpp*') => 'dkpp',
     request()->is('pegawai/dtphp*') => 'dtphp',
-    request()->is('pegawai/dp*') => 'dp',
+    request()->is('pegawai/perikanan*') => 'perikanan',
 };
 @endphp
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pegawai;
 use App\Models\DP;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 
 class DPController extends Controller
 {
@@ -12,8 +13,15 @@ class DPController extends Controller
     public function index()
     {
         try {
-            $data = DP::all();
-            return response()->json($data);
+            $dp = DP::whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->where('jenis_ikan', 'Tongkol')
+            ->select('jenis_ikan', 'ton_produksi')
+            ->get();
+
+            return response()->json([
+                'data' => $dp
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -21,6 +29,7 @@ class DPController extends Controller
             ], 500);
         }
     }
+
 
     public function listItem($namaIkan)
     {
@@ -58,6 +67,12 @@ class DPController extends Controller
                 'data' => $dp
             ], 201);
             
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menyimpan data',

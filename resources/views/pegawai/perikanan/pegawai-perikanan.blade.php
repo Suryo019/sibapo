@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-pegawai-layout>
 
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
@@ -49,7 +49,7 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
-            <a href="{{ route('perikanan.detail') }}">
+            <a href="{{ route('pegawai.perikanan.detail') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
                     Lihat Detail Data
                 </button>
@@ -57,7 +57,7 @@
         </div>
     </main>
 
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $.ajax({

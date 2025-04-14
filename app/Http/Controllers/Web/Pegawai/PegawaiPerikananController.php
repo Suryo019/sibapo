@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Pegawai;
 
 use App\Models\DP;
 use Carbon\Carbon;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class PerikananController extends Controller
+class PegawaiPerikananController extends Controller
 {
     // View
     public function index()
@@ -28,7 +28,7 @@ class PerikananController extends Controller
             ->distinct()
             ->pluck('jenis_ikan');
 
-        return view('admin.perikanan.admin-perikanan', [
+        return view('pegawai.perikanan.pegawai-perikanan', [
             'title' => 'Data Aktivitas Produksi Ikan',
             'data' => $dp,
             'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
@@ -39,7 +39,7 @@ class PerikananController extends Controller
     // Create
     public function create()
     {
-        return view('admin.perikanan.admin-create-perikanan', [
+        return view('pegawai.perikanan.pegawai-create-perikanan', [
             'title' => 'Tambah Data'
         ]);
     }
@@ -56,7 +56,7 @@ class PerikananController extends Controller
 
     public function edit(DP $perikanan)
     {
-        return view('admin.perikanan.admin-update-perikanan', [
+        return view('pegawai.perikanan.pegawai-update-perikanan', [
             'title' => 'Ubah Data',
             'data' => $perikanan,
         ]);
@@ -88,7 +88,7 @@ class PerikananController extends Controller
         });
 
         if ($periodeUnikAngka->isEmpty()) {
-            return view('admin.perikanan.admin-perikanan-detail', [
+            return view('pegawai.perikanan.pegawai-perikanan-detail', [
                 'title' => 'Dinas Perikanan',
                 'data' => [],
                 'periods' => [],
@@ -140,7 +140,7 @@ class PerikananController extends Controller
                 return $row;
             })->values();               
 
-        return view('admin.perikanan.admin-perikanan-detail', [
+        return view('pegawai.perikanan.pegawai-perikanan-detail', [
             'title' => 'Dinas Perikanan',
             // 'data' => $dpProduksiHari,
             'data' => $dpProduksiBulanan,
