@@ -11,7 +11,7 @@ use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\DisperindagController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.admin-dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -31,13 +31,7 @@ Route::resource('disperindag', DisperindagController::class)->names([
     'destroy' => 'disperindag.destroy',
 ]);
 
-Route::get('disperindag-detail', function () {
-    $disperindag = DPP::all();
-    return view('admin.disperindag.admin-disperindag-detail', [
-        'title' => 'Lihat Detail Data',
-        'data' => $disperindag
-    ]);
-})->name('disperindag.detail');
+Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
 
 
 // DKPP
@@ -72,14 +66,9 @@ Route::resource('dtphp', DtphpController::class)->names([
     'destroy' => 'dtphp.destroy',
 ]);
 
-Route::get('dtphp-detail', function () {
-    $dtphp = DTPHP::all();
-    return view('admin.dtphp.admin-dtphp-detail', [
-        'title' => 'Lihat Detail Data',
-        'data' => $dtphp
-    ]);
-})->name('dtphp.detail');
-
+// Route::get('dtphp-detail', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail');
+Route::get('dtphp-detail-produksi', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail.produksi');
+Route::get('dtphp-detail-panen', [DtphpController::class, 'detailPanen'])->name('dtphp.detail.panen');
 
 
 // PERIKANAN
@@ -93,10 +82,4 @@ Route::resource('perikanan', PerikananController::class)->names([
     'destroy' => 'perikanan.destroy',
 ]);
 
-Route::get('perikanan-detail', function () {
-    $perikanan = DP::all();
-    return view('admin.perikanan.admin-perikanan-detail', [
-        'title' => 'Lihat Detail Data',
-        'data' => $perikanan
-    ]);
-})->name('perikanan.detail');
+Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('perikanan.detail');

@@ -11,9 +11,32 @@ class DPController extends Controller
     // Menampilkan semua data
     public function index()
     {
-        $data = DP::all();
-        return response()->json($data);
+        try {
+            $data = DP::all();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
+
+    public function listItem($namaIkan)
+    {
+        try {
+            $data = DP::where('jenis_ikan', $namaIkan)
+            ->whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->get();
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }  
 
     // Menyimpan data baru
     public function store(Request $request)
@@ -78,14 +101,21 @@ class DPController extends Controller
     // Menghapus data
     public function destroy($id)
     {
-        $dp = DP::find($id);
+        try {
+            $dp = DP::find($id);
 
-        if (!$dp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if (!$dp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            $dp->delete();
+
+            return response()->json(['message' => 'Data berhasil dihapus']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $dp->delete();
-
-        return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }
