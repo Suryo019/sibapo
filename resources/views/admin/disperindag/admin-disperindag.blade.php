@@ -8,14 +8,20 @@
             <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
             </div>
             <div class="flex gap-4">
-                <select class="border p-2 rounded bg-white">
-                    <option>Pilih Pasar</option>
-                    <option>Pasar Tanjung</option>
-                </select>
-                <select class="border p-2 rounded bg-white">
-                    <option>Pilih Periode</option>
-                    <option>Januari 2025</option>
-                </select>
+                <div>
+                    <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                    <select class="border p-2 rounded bg-white " id="pilih_pasar">
+                        <option>Pilih Pasar</option>
+                        <option>Pasar Tanjung</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                    <select class="border p-2 rounded bg-white" id="pilih_periode">
+                        <option>Pilih Periode</option>
+                        <option>Januari 2025</option>
+                    </select>
+                </div>
             </div>
         </div>
         
