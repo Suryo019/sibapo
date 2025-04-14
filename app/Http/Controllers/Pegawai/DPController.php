@@ -11,61 +11,111 @@ class DPController extends Controller
     // Menampilkan semua data
     public function index()
     {
-        $data = DP::all();
-        return response()->json($data);
+        try {
+            $data = DP::all();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
+
+    public function listItem($namaIkan)
+    {
+        try {
+            $data = DP::where('jenis_ikan', $namaIkan)
+            ->whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->get();
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }  
 
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
-        ]);
+        try{
+            $validated = $request->validate([
+                // 'tanggal_input' => 'required|date',
+                'jenis_ikan' => 'required|string',
+                'ton_produksi' => 'required|numeric'
+            ]);
+            
+            $validated['tanggal_input'] = now();
+            $validated['user_id'] = 1;
+            
+            $dp = DP::create($validated);
 
-        $dp = DP::create($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
-            'data' => $dp
-        ], 201);
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+                'data' => $dp
+            ], 201);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     // Mengupdate data
     public function update(Request $request, $id)
     {
-        $dp = DP::find($id);
+        try{
+            
+            $dp = DP::find($id);
+            
+            if (!$dp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+            
+            $request->validate([
+                'tanggal_input' => 'required|date',
+                'jenis_ikan' => 'required|string',
+                'ton_produksi' => 'required|numeric'
+            ]);
 
-        if (!$dp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            $dp->update($request->all());
+            
+            return response()->json([
+                'message' => 'Data berhasil diperbarui',
+                'data' => $dp
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'tanggal_input' => 'required|date',
-            'jenis_ikan' => 'required|string',
-            'ton_produksi' => 'required|numeric'
-        ]);
-
-        $dp->update($request->all());
-
-        return response()->json([
-            'message' => 'Data berhasil diperbarui',
-            'data' => $dp
-        ]);
     }    
 
     // Menghapus data
     public function destroy($id)
     {
-        $dp = DP::find($id);
+        try {
+            $dp = DP::find($id);
 
-        if (!$dp) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            if (!$dp) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            $dp->delete();
+
+            return response()->json(['message' => 'Data berhasil dihapus']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus data',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $dp->delete();
-
-        return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
+use App\Models\DTPHP;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
 use App\Http\Controllers\Web\DtphpController;
@@ -9,12 +11,13 @@ use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\DisperindagController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.admin-dashboard');
 });
 
 Route::get('/dashboard', function () {
     return view('admin.admin-dashboard');
 })->name('dashboard');
+
 
 
 // Disperindag
@@ -30,8 +33,6 @@ Route::resource('disperindag', DisperindagController::class)->names([
 
 Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
 
-// Route::get('/disperindag/detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
-
 
 // DKPP
 Route::resource('dkpp', DkppController::class)->names([
@@ -45,9 +46,6 @@ Route::resource('dkpp', DkppController::class)->names([
 ]);
 Route::get('dkpp-detail', [DkppController::class, 'detail'])->name('dkpp.detail');
 
-// Route::get('/dkpp', function () {
-//     return view('admin.admin-dkpp');
-// });
 
 
 // DTPHP
@@ -61,15 +59,12 @@ Route::resource('dtphp', DtphpController::class)->names([
     'destroy' => 'dtphp.destroy',
 ]);
 
-// Route::get('dtphp-detail', function () {
-//     return view('admin.dtphp.admin-dtphp',[
-//         'title' => 'Lihat Detail Data',
-//         // 'data' => $dtphp
-//     ]);
-// })->name('dtphp.detail');
+// Route::get('dtphp-detail', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail');
+Route::get('dtphp-detail-produksi', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail.produksi');
+Route::get('dtphp-detail-panen', [DtphpController::class, 'detailPanen'])->name('dtphp.detail.panen');
 
-Route::get('dtphp-detail', [DtphpController::class, 'detail'])->name('dtphp.detail');
 
+// PERIKANAN
 Route::resource('perikanan', PerikananController::class)->names([
     'index' => 'perikanan.index',
     'create' => 'perikanan.create',

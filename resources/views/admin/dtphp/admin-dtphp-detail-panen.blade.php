@@ -4,7 +4,7 @@
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
         <div class="bg-white p-6 rounded shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center">Data Volume Produksi Ikan Tahun 2025</h3>
+            <h3 class="text-lg font-semibold text-center">Data Volume Produksi Tahun 2025 (Hektar)</h3>
             
             <!-- Search dan Dropdown -->
             <div class="flex justify-between my-4">
@@ -14,11 +14,11 @@
                 </div>
                 <div class="flex gap-4">
                     <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
-                            {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
+                        <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
+                            {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
+                            <option value="" selected>Suket Teki</option>
+                            @foreach ($commodities as $commodity)
+                                <option value="{{ $commodity }}">{{ $commodity }}</option>
                             @endforeach
                         </select>
                         <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
@@ -31,15 +31,31 @@
                     </form>
                 </div>
             </div>
-    
+        
             <!-- Tabel -->
-            @if (isset($data))
+            @if (isset($data_panen))
                 <div class="overflow-x-auto">
+
+                    <!-- Tombol Switch Produksi / Panen -->
+                    <div class="flex gap-4 mb-4">
+                        <a href="{{ route('dtphp.detail.produksi') }}">
+                            <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
+                                Volume Produksi
+                            </button>
+                        </a>
+                        <a href="{{ route('dtphp.detail.panen') }}">
+                            <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
+                                Luas Panen
+                            </button>
+                        </a>
+                    </div>
+                    
                     <table class="table-auto">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="border px-16 py-2 whitespace-nowrap">Jenis Ikan</th>
-                                <th colspan="12" class="border px-5 py-2">Produksi</th>
+                                <th rowspan="2" class="border px-10 py-2 whitespace-nowrap">Jenis Komoditas</th>
+                                <th colspan="12" class="border px-5 py-2">Tahun 2025</th>
+                                <th rowspan="2" class="border px-5 py-2">Total</th>
                                 <th rowspan="2" class="border px-5 py-2">Aksi</th>
                             </tr>
                             <tr>
@@ -78,15 +94,15 @@
                                 </div>
                             </div>
                             
-                            @foreach ($data as $item)
+                            @foreach ($data_panen as $item)
                                 <tr class="border">
-                                    <td class="border p-2">{{ $item['jenis_ikan'] }}</td>
+                                    <td class="border p-2">{{ $item['jenis_komoditas'] }}</td>
                                     
                                     {{-- per hari --}}
                                     {{-- @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
                                     <td class="border px-4 py-2 text-center whitespace-nowrap">
-                                        @if (isset($item['produksi_per_tanggal'][$kolom]))
-                                        {{ number_format($item['produksi_per_tanggal'][$kolom], 0, ',', '.') }}
+                                        @if (isset($item['panen_per_tanggal'][$kolom]))
+                                        {{ number_format($item['panen_per_tanggal'][$kolom], 0, ',', '.') }}
                                         @else
                                         -
                                         @endif
@@ -95,28 +111,32 @@
 
                                     {{-- per bulan --}}
                                     @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td class="border px-8 py-2 text-center whitespace-nowrap">
-                                        @if (isset($item['produksi_per_bulan'][$bulan]))
-                                            {{ number_format($item['produksi_per_bulan'][$bulan], 0, ',', '.') }}
+                                    <td class="border px-6 py-2 text-center whitespace-nowrap">
+                                        @if (isset($item['panen_per_bulan'][$bulan]))
+                                            {{ number_format($item['panen_per_bulan'][$bulan], 1, ',', '.') }}
                                         @else
                                             -
                                         @endif
                                     </td>
                                     @endfor
 
+                                    <td class="border px-8 py-2 text-center font-semibold whitespace-nowrap">
+                                        {{ number_format(array_sum($item['panen_per_bulan'] ?? []), 1, ',', '.') }}
+                                    </td>
+
                                     <td class="p-2 flex justify-center gap-2 whitespace-nowrap">
-                                        {{-- <a href="{{ route('perikanan.edit', $item['id']) }}">
+                                        {{-- <a href="{{ route('dtphp.edit', $item['id']) }}">
                                             <button class="bg-yellow-400 text-center text-white rounded-md w-10 h-10">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                         </a> --}}
                                         <button
                                             class="editBtn bg-yellow-400 text-center text-white rounded-md w-10 h-10"
-                                            data-ikan="{{ $item['jenis_ikan'] }}">
+                                            data-komoditas="{{ $item['jenis_komoditas'] }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     
-                                        <button class="deleteBtn bg-red-500 text-center text-white rounded-md w-10 h-10" data-ikan="{{ $item['jenis_ikan'] }}">
+                                        <button class="deleteBtn bg-red-500 text-center text-white rounded-md w-10 h-10" data-komoditas="{{ $item['jenis_komoditas'] }}">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </td>
@@ -130,11 +150,11 @@
                                         const modal = $("#modal");
                                         modal.removeClass("hidden").addClass("flex");
                                 
-                                        const jenisIkan = $(this).data('ikan');
+                                        const jenisKomoditas = $(this).data('komoditas');
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `api/dtphp/${jenisKomoditas}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -143,10 +163,12 @@
                                                     let listCard = `
                                                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                                                             <div>
-                                                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                                                <p class="text-sm text-gray-500">Jenis Komoditas: <span class="font-medium">${element.jenis_komoditas}</span></p>
+                                                                <p class="text-sm text-gray-500">Volume Produksi (Ton): <span class="font-medium">${element.ton_volume_produksi}</span></p>
+                                                                <p class="text-sm text-gray-500">Luas Panen (Hektar): <span class="font-medium">${element.hektar_luas_panen}</span></p>
                                                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                                             </div>
-                                                            <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                                                            <a href="dtphp/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -162,11 +184,11 @@
                                         const modal = $("#modal");
                                         modal.removeClass("hidden").addClass("flex");
                                 
-                                        const jenisIkan = $(this).data('ikan');
+                                        const jenisKomoditas = $(this).data('komoditas');
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `api/dtphp/${jenisKomoditas}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -175,7 +197,9 @@
                                                     let listCard = `
                                                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                                                             <div>
-                                                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                                                <p class="text-sm text-gray-500">Jenis Komoditas: <span class="font-medium">${element.jenis_komoditas}</span></p>
+                                                                <p class="text-sm text-gray-500">Volume Produksi (Ton): <span class="font-medium">${element.ton_volume_produksi}</span></p>
+                                                                <p class="text-sm text-gray-500">Luas Panen (Hektar): <span class="font-medium">${element.hektar_luas_panen}</span></p>
                                                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                                                 
                                                             </div>
@@ -197,27 +221,17 @@
 
                             @php
                             $totalPerBulan = [];
-                            foreach ($data as $item) {
+                            foreach ($data_panen as $item) {
                                 for ($bulan = 1; $bulan <= 12; $bulan++) {
-                                    if (isset($item['produksi_per_bulan'][$bulan])) {
+                                    if (isset($item['panen_per_bulan'][$bulan])) {
                                         if (!isset($totalPerBulan[$bulan])) {
                                             $totalPerBulan[$bulan] = 0;
                                         }
-                                        $totalPerBulan[$bulan] += $item['produksi_per_bulan'][$bulan];
+                                        $totalPerBulan[$bulan] += $item['panen_per_bulan'][$bulan];
                                     }
                                 }
                             }
                         @endphp
-                        
-                        <tr class="border font-bold">
-                            <td class="border p-2">Jumlah</td>
-                            @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                <td class="border px-8 py-2 text-center whitespace-nowrap">
-                                    {{ isset($totalPerBulan[$bulan]) ? number_format($totalPerBulan[$bulan], 0, ',', '.') : '-' }}
-                                </td>
-                            @endfor
-                            <td class="border p-2"></td>
-                        </tr>
                         
                         </tbody>
                     </table>
@@ -233,10 +247,10 @@
     
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
-                <a href="{{ route('perikanan.index') }}">
+                <a href="{{ route('dtphp.index') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                 </a>
-                <a href="{{ route('perikanan.create') }}">
+                <a href="{{ route('dtphp.create') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
                 </a>
             </div>
@@ -256,7 +270,7 @@
 
         $.ajax({
             type: 'DELETE',
-            url: `/api/dp/${dataId}`,
+            url: `/api/dtphp/${dataId}`,
             success: function() {
                 window.location.reload();
             },
@@ -271,12 +285,12 @@
         $('.select2').select2();
 
         // Filter Value
-        $('#pilih_ikan').on('change', function() {
+        $('#pilih_komoditas').on('change', function() {
             $('#pilih_periode').removeAttr('disabled');
         });
 
         $('#pilih_periode').on('change', function() {
-            let pasar = $('#pilih_ikan').val();
+            let pasar = $('#pilih_komoditas').val();
             let periode = $('#pilih_periode').val();
 
             console.log(pasar);

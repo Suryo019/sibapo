@@ -25,7 +25,7 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
-            <a href="/Public/DTPHP/">
+            <a href="{{ route('dtphp.detail.produksi') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
                     Lihat Detail Data
                 </button>
