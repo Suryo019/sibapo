@@ -16,20 +16,68 @@
     {{-- Select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    {{-- SweetAlert2 --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- ApexChart --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
 </head>
 <body class="bg-green-100 h-screen">
-    <!-- Header -->
-    <x-admin-header></x-admin-header>
-    
-    <div class="h-full">
-      <!-- Sidebar -->
-      <x-admin-sidebar></x-admin-sidebar>
-        
-      <!-- Content -->
-      <main class="w-full pl-64 pt-16">
-        {{ $slot }}
-      </main>
+      <!-- Loading overlay -->
+      <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
+        <div class="w-full h-full flex items-center justify-center flex-col">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400 border-solid mx-auto"></div>
+            <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
+        </div>
     </div>
 
+    
+    <div class="h-full w-full">
+        <!-- Sidebar -->
+        <x-admin-sidebar class="col-span-2 w-64 bg-green-900 text-white p-4 h-screen z-10 fixed"></x-admin-sidebar>
+
+        <div class="w-full pl-64 mb-10">
+            <!-- Header -->
+            @php
+                $judul = match(true) {
+                    request()->is('disperindag*') => 'Dinas Perindustrian dan Perdagangan',
+                    request()->is('dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
+                    request()->is('dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
+                    request()->is('dinasperikanan*') => 'Dinas Perikanan',
+                    default => 'Dinas Tidak Dikenal'
+                };
+            @endphp
+
+            <x-admin-header>{{ $judul }}</x-admin-header>
+
+
+            <!-- Content -->
+            <main class="w-full">
+                {{ $slot }}
+            </main>
+        </div>
+    </div>
+
+    <script>
+    function showLoading() {
+        document.getElementById("loading").style.display = "flex";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    $(document)
+        .ajaxStart(function () {
+            $("#loading").show();
+        })
+        .ajaxStop(function () {
+            $("#loading").hide();
+        });
+    </script>
+    
 </body>
 </html>

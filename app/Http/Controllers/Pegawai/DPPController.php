@@ -5,15 +5,23 @@ namespace App\Http\Controllers\Pegawai;
 use App\Models\DPP;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 
 class DPPController extends Controller
 {
-    // Menampilkan semua data
     public function index()
     {
         try {
-            $data = DPP::all();
-            return response()->json($data);
+            $dpp = DPP::whereMonth('tanggal_dibuat', 4)
+            ->whereYear('tanggal_dibuat', 2025)
+            ->where('pasar', 'Pasar Tanjung')
+            ->where('jenis_bahan_pokok', 'Daging')
+            ->select('jenis_bahan_pokok', 'kg_harga')
+            ->get();
+
+            return response()->json([
+                'data' => $dpp
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -22,7 +30,22 @@ class DPPController extends Controller
         }
     }
 
-    // Menyimpan data baru
+    public function listItem($namaBahanPokok)
+    {
+        try {
+            $data = DPP::where('jenis_bahan_pokok', $namaBahanPokok)
+                ->whereMonth('tanggal_dibuat', 4)
+                ->whereYear('tanggal_dibuat', 2025)
+                ->get();
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -30,19 +53,23 @@ class DPPController extends Controller
                 'pasar' => 'required|string',
                 'jenis_bahan_pokok' => 'required|string',
                 'kg_harga' => 'required|integer',
-                // 'tanggal_dibuat' tidak perlu divalidasi jika kamu override nilainya
             ]);
-            
+
             $validated['tanggal_dibuat'] = now();
             $validated['user_id'] = 1;
-            
+
             $dpp = DPP::create($validated);
-            
+
             return response()->json([
                 'message' => 'Data berhasil disimpan',
                 'data' => $dpp
             ], 201);
-            
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menyimpan data',
@@ -51,7 +78,6 @@ class DPPController extends Controller
         }
     }
 
-    // Mengupdate data
     public function update(Request $request, $id)
     {
         try {
@@ -61,28 +87,32 @@ class DPPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $request->validate([
+            $validated = $request->validate([
                 'pasar' => 'required|string',
                 'jenis_bahan_pokok' => 'required|string',
                 'kg_harga' => 'required|integer',
                 'tanggal_dibuat' => 'required|date'
             ]);
 
-            $dpp->update($request->all());
+            $dpp->update($validated);
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
                 'data' => $dpp
             ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat memperbarui data',
                 'error' => $th->getMessage()
             ], 500);
         }
-    }    
+    }
 
-    // Menghapus data
     public function destroy($id)
     {
         try {
@@ -94,7 +124,7 @@ class DPPController extends Controller
 
             $dpp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus']);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dpp]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',
@@ -103,5 +133,3 @@ class DPPController extends Controller
         }
     }
 }
-
-

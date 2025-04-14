@@ -16,9 +16,9 @@ Route::get('/pimpinan/dkpp', [ReadDataController::class, 'getDKPP']);
 Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
 // DKPP
-Route::get('/dkpp', [DKPPController::class, 'index']);
-Route::post('/dkpp', [DKPPController::class, 'store']);
-Route::put('/dkpp/{id}', [DKPPController::class, 'update']);
+Route::get('/dkpp', [DKPPController::class, 'index'])->name('api.dkpp.index');
+Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
+Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');
 Route::delete('/dkpp/{id}', [DKPPController::class, 'destroy']);
 
 // DP
@@ -28,9 +28,10 @@ Route::put('/dp/{id}', [DPController::class, 'update']);
 Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
 // DPP
-Route::get('/dpp', [DPPController::class, 'index']);
+Route::get('/dpp', [DPPController::class, 'index'])->name('api.dpp.index');
+Route::get('/dpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dpp.listItem');
 Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
-Route::put('/dpp/{id}', [DPPController::class, 'update']);
+Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update');
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP

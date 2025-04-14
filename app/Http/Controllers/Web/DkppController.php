@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\DKPP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class DkppController extends Controller
 {
@@ -13,10 +15,19 @@ class DkppController extends Controller
      */
     public function index()
     {
-        $data = DKPP::all();
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        ->get()
+        ->map(function ($item) {
+            $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+            $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+            return $item->periode_indonesia;
+        });
+
+        // $data = DKPP::all();
         return view('admin.dkpp.admin-dkpp', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
-            'data' => $data
+            // 'data' => $data,
+            'periods' => $periodeUnikNama,
         ]);
     }
 
@@ -49,10 +60,11 @@ class DkppController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DKPP $dKPP)
+    public function edit(DKPP $dkpp)
     {
         return view('admin.dkpp.admin-update-dkpp', [
-            'title' => 'Ubah Data'
+            'title' => 'Ubah Data',
+            'data' => $dkpp
         ]);
     }
 
@@ -70,5 +82,27 @@ class DkppController extends Controller
     public function destroy(DKPP $dKPP)
     {
         //
+    }
+
+    public function detail()
+    {
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+            ->get()
+            ->map(function ($item) {
+                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+                return $item->periode_indonesia;
+            });
+
+        $data = DKPP::whereYear('tanggal_input', 2025)
+        ->whereMonth('tanggal_input', 4)
+        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [2])
+        ->get();
+
+        return view('admin.dkpp.admin-dkpp-detail', [
+            'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
+            'data' => $data,
+            'periods' => $periodeUnikNama,
+        ]);
     }
 }

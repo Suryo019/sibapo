@@ -1,3 +1,4 @@
+{{-- @dd($data) --}}
 <x-admin-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
@@ -12,20 +13,31 @@
                 <option>Pasar Tanjung</option>
               </select>
               <select class="border p-2 rounded bg-white">
-                <option>Pilih Periode</option>
-                <option>Januari 2025</option>
+                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                @foreach ($periods as $period)
+                    <option value="{{ $period }}">{{ $period }}</option>
+                @endforeach
               </select>
               <select class="border p-2 rounded bg-white">
-                <option>Minggu ke</option>
+                <option value="" disabled>Minggu Ke</option>
+                <option>1</option>
+                <option selected>2</option>
+                <option>3</option>
                 <option>4</option>
-              </select>
+            </select>
             </div>
           </div>
           
         
         <!-- Chart Placeholder -->
-        <div class="w-full h-64 bg-white rounded shadow-md flex items-center justify-center">
-            <p class="text-gray-400">[Chart Placeholder]</p>
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
+          <div class="flex items-center flex-col mb-3 font-bold text-green-910">
+            <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
+            <h3>Minggu ke 2 Bulan April 2025</h3>
+          </div>
+          <div id="chart" class="w-full">
+            {{-- Chartt --}}
+          </div>
         </div>
     
         <!-- Button -->
@@ -38,3 +50,50 @@
         </div>
     </main>
 </x-admin-layout>
+
+<div id="chart"></div>
+
+<script>
+  $.ajax({
+    type: 'GET',
+    url: `{{ route('api.dkpp.index') }}`,
+    success: function(response) {
+      let dataset = response.data;
+      
+      let ketersediaan = [];
+      let kebutuhan = [];
+      let komoditas = [];
+
+      $.each(dataset, function(key, value) {
+        ketersediaan.push(value.ton_ketersediaan);
+        kebutuhan.push(value.ton_kebutuhan_perminggu);
+        komoditas.push(value.jenis_komoditas);
+      });
+
+      var options = {
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        series: [{
+            name: 'Ketersediaan',
+            data: ketersediaan
+        }, {
+            name: 'Kebutuhan',
+            data: kebutuhan
+        }],
+        xaxis: {
+            categories: komoditas,
+        }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+      },
+    error: function(xhr, status, error) {
+      console.log(xhr.responseText);
+    }
+
+  });
+</script>
+
