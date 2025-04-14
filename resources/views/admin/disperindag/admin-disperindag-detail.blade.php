@@ -1,11 +1,9 @@
 {{-- @dd($numberPeriods) --}}
-{{-- @dd($numberPeriods) --}}
 <x-admin-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
         <div class="bg-white p-6 rounded shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center">Data Bulan April 2025</h3>
             <h3 class="text-lg font-semibold text-center">Data Bulan April 2025</h3>
             
             <!-- Search dan Dropdown -->
@@ -44,7 +42,6 @@
                                 <th rowspan="2" class="border px-5 py-2">Aksi</th>
                                 <th rowspan="2" class="border px-5 py-2 whitespace-nowrap">Jenis Bahan Pokok</th>
                                 <th colspan="30" class="border px-5 py-2">Harga April 2025</th>
-                                <th colspan="30" class="border px-5 py-2">Harga April 2025</th>
                             </tr>
                             <tr>
                                 @for ($i = 1; $i <= $daysInMonth; $i++)
@@ -70,40 +67,14 @@
                                 </div>
                             </div>
                             
-                            {{-- Edit Modal --}}
-                            <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
-                                <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
-                                    <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Diedit</h2>
-                            
-                                    <!-- Data List -->
-                                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4">
-                                        {{-- Diisi pake ajax --}}
-                                    </div>
-                            
-                                    <!-- Tombol Tutup -->
-                                    <div class="text-right" id="closeBtn">
-                                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             @foreach ($data as $item)
                                 <tr class="border">
                                     <td class="border p-2">{{ $loop->iteration }}</td>
                                     <td class="p-2 flex justify-center gap-2">
                                         {{-- <a href="{{ route('disperindag.edit', $item['id']) }}">
-                                        {{-- <a href="{{ route('disperindag.edit', $item['id']) }}">
                                             <button class="bg-yellow-400 text-center text-white rounded-md w-10 h-10">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                        </a> --}}
-                                        <button
-                                            class="editBtn bg-yellow-400 text-center text-white rounded-md w-10 h-10"
-                                            data-bahan-pokok="{{ $item['jenis_bahan_pokok'] }}">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                    
-                                        <button class="deleteBtn bg-red-500 text-center text-white rounded-md w-10 h-10" data-bahan-pokok="{{ $item['jenis_bahan_pokok'] }}">
                                         </a> --}}
                                         <button
                                             class="editBtn bg-yellow-400 text-center text-white rounded-md w-10 h-10"
@@ -119,7 +90,6 @@
                                     
                                     @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
                                         <td class="border px-4 py-2 text-center whitespace-nowrap">
-                                        <td class="border px-4 py-2 text-center whitespace-nowrap">
                                             @if (isset($item['harga_per_tanggal'][$kolom]))
                                                 Rp. {{ number_format($item['harga_per_tanggal'][$kolom], 0, ',', '.') }}
                                             @else
@@ -128,79 +98,6 @@
                                         </td>
                                     @endfor
                                 </tr>
-                                <script>
-                                    $('#closeBtn').on('click', function() {
-                                        $(this).closest('#modal').removeClass("flex").addClass("hidden");
-                                    });
-                                
-                                    $('.editBtn').on('click', function() {
-                                        const modal = $("#modal");
-                                        modal.removeClass("hidden").addClass("flex");
-                                
-                                        const bahanPokok = $(this).data('bahan-pokok');
-                                
-                                        $.ajax({
-                                            type: "GET",
-                                            url: `api/dpp/${bahanPokok}`,
-                                            success: function(response) {
-                                                const data = response.data;
-                                                $('#editDataList').empty();
-                                
-                                                data.forEach(element => {
-                                                    let listCard = `
-                                                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                            <div>
-                                                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.jenis_bahan_pokok}</span></p>
-                                                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                                                            </div>
-                                                            <a href="disperindag/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
-                                                        </div>
-                                                    `;
-                                                    $('#editDataList').append(listCard);
-                                                });
-                                            },
-                                            error: function(xhr) {
-                                                console.log(xhr.responseText);
-                                            }
-                                        });
-                                    });
-                                
-                                    $('.deleteBtn').on('click', function() {
-                                        const modal = $("#modal");
-                                        modal.removeClass("hidden").addClass("flex");
-                                
-                                        const bahanPokok = $(this).data('bahan-pokok');
-                                
-                                        $.ajax({
-                                            type: "GET",
-                                            url: `api/dpp/${bahanPokok}`,
-                                            success: function(response) {
-                                                const data = response.data;
-                                                $('#editDataList').empty();
-                                
-                                                data.forEach(element => {
-                                                    let listCard = `
-                                                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                            <div>
-                                                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.jenis_bahan_pokok}</span></p>
-                                                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                                                            </div>
-                                                            
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
-                                                        </div>
-                                                    `;
-                                                    $('#editDataList').append(listCard);
-                                                });
-                                            },
-                                            error: function(xhr) {
-                                                console.log(xhr.responseText);
-                                            }
-                                        });
-                                    });
-                                </script>
-                                
                                 <script>
                                     $('#closeBtn').on('click', function() {
                                         $(this).closest('#modal').removeClass("flex").addClass("hidden");
@@ -343,7 +240,6 @@
 
             console.log(pasar);
             console.log(periode);
-        });
         });
     });
 </script>

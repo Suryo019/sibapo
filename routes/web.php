@@ -59,7 +59,6 @@ Route::resource('dtphp', DtphpController::class)->names([
     'destroy' => 'dtphp.destroy',
 ]);
 
-// Route::get('dtphp-detail', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail');
 Route::get('dtphp-detail-produksi', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail.produksi');
 Route::get('dtphp-detail-panen', [DtphpController::class, 'detailPanen'])->name('dtphp.detail.panen');
 
