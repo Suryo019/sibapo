@@ -37,21 +37,21 @@
     
     <div class="h-full w-full">
         <!-- Sidebar -->
-        <x-admin-sidebar class="col-span-2 w-64 bg-green-900 text-white p-4 h-screen z-10 fixed"></x-admin-sidebar>
+        <x-pegawai-sidebar class="col-span-2 w-64 bg-green-900 text-white p-4 h-screen z-10 fixed"></x-pegawai-sidebar>
 
         <div class="w-full pl-64 mb-10">
             <!-- Header -->
             @php
                 $judul = match(true) {
-                    request()->is('disperindag*') => 'Dinas Perindustrian dan Perdagangan',
-                    request()->is('dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
-                    request()->is('dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
-                    request()->is('dinasperikanan*') => 'Dinas Perikanan',
+                    request()->is('pegawai/disperindag*') => 'Dinas Perindustrian dan Perdagangan',
+                    request()->is('pegawai/dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
+                    request()->is('pegawai/dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
+                    request()->is('pegawai/dp*') => 'Dinas Perikanan',
                     default => 'Dinas Tidak Dikenal'
                 };
             @endphp
 
-            <x-admin-header>{{ $judul }}</x-admin-header>
+            <x-pegawai-header>{{ $judul }}</x-pegawai-header>
 
 
             <!-- Content -->

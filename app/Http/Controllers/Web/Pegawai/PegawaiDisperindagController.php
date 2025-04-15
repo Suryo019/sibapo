@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Pegawai;
 
 use App\Models\DPP;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
-class DisperindagController extends Controller
+class PegawaiDisperindagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,7 +30,7 @@ class DisperindagController extends Controller
             ->distinct()
             ->pluck('jenis_bahan_pokok');
 
-        return view('admin.disperindag.admin-disperindag', [
+        return view('pegawai.disperindag.pegawai-disperindag', [
             'title' => 'Data Aktivitas Harga Pasar',
             'data' => $dpp,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
@@ -43,7 +43,7 @@ class DisperindagController extends Controller
      */
     public function create()
     {
-        return view('admin.disperindag.admin-create-disperindag', [
+        return view('pegawai.disperindag.pegawai-create-disperindag', [
             'title' => 'Tambah Data',
         ]);
     }
@@ -59,12 +59,9 @@ class DisperindagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(string $id)
     {
-        // $dpp = DPP::all();
-        // return view('admin.admin-disperindag', [
-        //     'data' => $dpp
-        // ]);
+        //
     }
 
     /**
@@ -72,7 +69,7 @@ class DisperindagController extends Controller
      */
     public function edit(Dpp $disperindag)
     {
-        return view('admin.disperindag.admin-update-disperindag', [
+        return view('pegawai.disperindag.pegawai-update-disperindag', [
             'title' => 'Ubah Data',
             'data' => $disperindag,
         ]);
@@ -81,7 +78,7 @@ class DisperindagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dpp $dpp)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -89,7 +86,7 @@ class DisperindagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dpp $dpp)
+    public function destroy(string $id)
     {
         //
     }
@@ -141,7 +138,7 @@ class DisperindagController extends Controller
         })->values();
     
 
-        return view('admin.disperindag.admin-disperindag-detail', [
+        return view('pegawai.disperindag.pegawai-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
             'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),

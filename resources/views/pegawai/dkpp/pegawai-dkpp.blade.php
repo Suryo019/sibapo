@@ -1,5 +1,4 @@
-{{-- @dd($data) --}}
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
@@ -42,58 +41,55 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
-            <a href="{{ route('dkpp.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
+            <a href="{{ route('pegawai.dkpp.detail') }}">
+                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-</x-admin-layout>
-
-<div id="chart"></div>
+</x-pegawai-layout>
 
 <script>
-  $.ajax({
-    type: 'GET',
-    url: `{{ route('api.dkpp.index') }}`,
-    success: function(response) {
-      let dataset = response.data;
-      
-      let ketersediaan = [];
-      let kebutuhan = [];
-      let komoditas = [];
-
-      $.each(dataset, function(key, value) {
-        ketersediaan.push(value.ton_ketersediaan);
-        kebutuhan.push(value.ton_kebutuhan_perminggu);
-        komoditas.push(value.jenis_komoditas);
-      });
-
-      var options = {
-        chart: {
-            type: 'line',
-            height: 350
+    $.ajax({
+      type: 'GET',
+      url: `{{ route('api.dkpp.index') }}`,
+      success: function(response) {
+        let dataset = response.data;
+        
+        let ketersediaan = [];
+        let kebutuhan = [];
+        let komoditas = [];
+  
+        $.each(dataset, function(key, value) {
+          ketersediaan.push(value.ton_ketersediaan);
+          kebutuhan.push(value.ton_kebutuhan_perminggu);
+          komoditas.push(value.jenis_komoditas);
+        });
+  
+        var options = {
+          chart: {
+              type: 'line',
+              height: 350
+          },
+          series: [{
+              name: 'Ketersediaan',
+              data: ketersediaan
+          }, {
+              name: 'Kebutuhan',
+              data: kebutuhan
+          }],
+          xaxis: {
+              categories: komoditas,
+          }
+        };
+  
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
         },
-        series: [{
-            name: 'Ketersediaan',
-            data: ketersediaan
-        }, {
-            name: 'Kebutuhan',
-            data: kebutuhan
-        }],
-        xaxis: {
-            categories: komoditas,
-        }
-      };
-
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
-      chart.render();
-      },
-    error: function(xhr, status, error) {
-      console.log(xhr.responseText);
-    }
-
-  });
-</script>
-
+      error: function(xhr, status, error) {
+        console.log(xhr.responseText);
+      }
+  
+    });
+  </script>

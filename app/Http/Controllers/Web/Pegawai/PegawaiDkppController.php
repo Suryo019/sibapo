@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DKPP;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class DkppController extends Controller
+class PegawaiDkppController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class DkppController extends Controller
         });
 
         // $data = DKPP::all();
-        return view('admin.dkpp.admin-dkpp', [
+        return view('pegawai.dkpp.pegawai-dkpp', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             // 'data' => $data,
             'periods' => $periodeUnikNama,
@@ -36,7 +36,7 @@ class DkppController extends Controller
      */
     public function create()
     {
-        return view('admin.dkpp.admin-create-dkpp', [
+        return view('pegawai.dkpp.pegawai-create-dkpp', [
             'title' => 'Tambah Data'
         ]);
     }
@@ -62,7 +62,7 @@ class DkppController extends Controller
      */
     public function edit(DKPP $dkpp)
     {
-        return view('admin.dkpp.admin-update-dkpp', [
+        return view('pegawai.dkpp.pegawai-update-dkpp', [
             'title' => 'Ubah Data',
             'data' => $dkpp
         ]);
@@ -99,7 +99,7 @@ class DkppController extends Controller
         ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [2])
         ->get();
 
-        return view('admin.dkpp.admin-dkpp-detail', [
+        return view('pegawai.dkpp.pegawai-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             'data' => $data,
             'periods' => $periodeUnikNama,
