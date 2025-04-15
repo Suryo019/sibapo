@@ -42,5 +42,23 @@
       </main>
     </div>
 
+    <script>
+    function showLoading() {
+        document.getElementById("loading").style.display = "flex";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    $(document)
+        .ajaxStart(function () {
+            $("#loading").show();
+        })
+        .ajaxStop(function () {
+            $("#loading").hide();
+        });
+    </script>
+    
 </body>
 </html>

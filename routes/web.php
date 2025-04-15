@@ -11,7 +11,6 @@ Route::get('/', function () {
 });
 
 
-<<<<<<< Updated upstream
 Route::get('/dashboard', function () {
     return view('admin.admin-dashboard');
 })->name('dashboard');
@@ -19,13 +18,6 @@ Route::get('/dashboard', function () {
 
 
 
-<<<<<<< HEAD
-=======
-Route::get('/disperindag', function () {
-    return view('admin.admin-disperindag');
-});
-=======
->>>>>>> 6f67c51ef471f4b8d5e0ae82eec373c00230df86
 Route::resource('disperindag', DisperindagController::class)->names([
     'index' => 'disperindag.index',
     'create' => 'disperindag.create',
@@ -35,7 +27,6 @@ Route::resource('disperindag', DisperindagController::class)->names([
     'update' => 'disperindag.update',
     'destroy' => 'disperindag.destroy',
 ]);
-<<<<<<< HEAD
 
 Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
 
@@ -61,10 +52,6 @@ Route::get('dkpp-detail', function () {
 // Route::get('/dkpp', function () {
 //     return view('admin.admin-dkpp');
 // });
-=======
-Route::get('disperindag/detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
->>>>>>> Stashed changes
->>>>>>> 6f67c51ef471f4b8d5e0ae82eec373c00230df86
 
 Route::get('/dtphp', function () {
     return view('admin.admin-dtphp');
