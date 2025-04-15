@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pegawai;
 
+use Carbon\Carbon;
 use App\Models\DPP;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,13 +10,18 @@ use Illuminate\Validation\ValidationException;
 
 class DPPController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $dpp = DPP::whereMonth('tanggal_dibuat', 4)
-            ->whereYear('tanggal_dibuat', 2025)
-            ->where('pasar', 'Pasar Tanjung')
-            ->where('jenis_bahan_pokok', 'Daging')
+            Carbon::setLocale('id');
+            $date = Carbon::createFromFormat('F Y', $request->periode);
+            $month = $date->month;
+            $year = $date->year;
+            // return response()->json(['month' => $month, 'year' => $year]);
+            $dpp = DPP::whereMonth('tanggal_dibuat', $month)
+            ->whereYear('tanggal_dibuat', $year)
+            ->where('pasar', $request->pasar)
+            ->where('jenis_bahan_pokok', $request->bahan_pokok)
             ->select('jenis_bahan_pokok', 'kg_harga')
             ->get();
 
