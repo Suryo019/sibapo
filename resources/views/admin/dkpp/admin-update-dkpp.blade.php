@@ -32,8 +32,11 @@
                            class="border p-2 w-full rounded" placeholder="Contoh: 100">
                 </div>
 
+
                 <!-- Tombol -->
                 <div class="flex justify-between mt-4">
+                    <a href="{{ route('dkpp.detail') }}">
+                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                     <a href="{{ route('dkpp.detail') }}">
                         <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                     </a>
