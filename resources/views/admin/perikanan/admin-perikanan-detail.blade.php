@@ -1,4 +1,5 @@
-{{-- @dd($numberPeriods) --}}
+{{-- @dd($data) --}}
+
 <x-admin-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>

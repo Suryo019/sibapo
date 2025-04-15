@@ -91,6 +91,7 @@ class PegawaiPerikananController extends Controller
             return view('pegawai.perikanan.pegawai-perikanan-detail', [
                 'title' => 'Dinas Perikanan',
                 'data' => [],
+                'fishes' => [],
                 'periods' => [],
                 'numberPeriods' => [],
                 'daysInMonth' => 0,

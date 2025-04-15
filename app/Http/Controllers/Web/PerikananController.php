@@ -91,6 +91,7 @@ class PerikananController extends Controller
             return view('admin.perikanan.admin-perikanan-detail', [
                 'title' => 'Dinas Perikanan',
                 'data' => [],
+                'fishes' => [],
                 'periods' => [],
                 'numberPeriods' => [],
                 'daysInMonth' => 0,

@@ -120,4 +120,44 @@ class DTPHPController extends Controller
             ], 500);
         }
     }
+
+    public function panen()
+    {
+        try {
+            $dtphp = DTPHP::whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->where('jenis_komoditas', 'Suket Teki')
+            ->select('jenis_komoditas', 'hektar_luas_panen')
+            ->get();
+
+            return response()->json([
+                'data' => $dtphp
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
+
+    public function produksi()
+    {
+        try {
+            $dtphp = DTPHP::whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->where('jenis_komoditas', 'Suket Teki')
+            ->select('jenis_komoditas', 'ton_volume_produksi')
+            ->get();
+
+            return response()->json([
+                'data' => $dtphp
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
 }

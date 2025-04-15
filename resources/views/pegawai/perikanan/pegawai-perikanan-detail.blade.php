@@ -134,7 +134,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -167,7 +167,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();

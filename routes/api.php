@@ -38,6 +38,8 @@ Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP
 Route::get('/dtphp', [DTPHPController::class, 'index'])->name('api.dtphp.index');
+Route::get('/dtphp/panen', [DTPHPController::class, 'panen'])->name('api.dtphp.panen');
+Route::get('/dtphp/produksi', [DTPHPController::class, 'produksi'])->name('api.dtphp.produksi');
 Route::get('/dtphp/{jenisKomoditas}', [DTPHPController::class, 'listItem'])->name('api.dtphp.listItem');  // Prosses
 Route::post('/dtphp', [DTPHPController::class, 'store'])->name('api.dtphp.store');
 Route::put('/dtphp/{id}', [DTPHPController::class, 'update'])->name('api.dtphp.update');

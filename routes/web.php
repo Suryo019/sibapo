@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\DisperindagController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
+use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
@@ -64,6 +65,8 @@ Route::resource('dtphp', DtphpController::class)->names([
 
 Route::get('dtphp-detail-produksi', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail.produksi');
 Route::get('dtphp-detail-panen', [DtphpController::class, 'detailPanen'])->name('dtphp.detail.panen');
+Route::get('dtphp-panen', [DtphpController::class, 'panen'])->name('dtphp.panen');
+Route::get('dtphp-produksi', [DtphpController::class, 'produksi'])->name('dtphp.produksi');
 
 
 // PERIKANAN
@@ -116,19 +119,25 @@ Route::resource('/pegawai/dkpp', PegawaiDkppController::class)->names([
 Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->name('pegawai.dkpp.detail');
 
 
-// // DTPHP
-// Route::resource('dtphp', DtphpController::class)->names([
-//     'index' => 'dtphp.index',
-//     'create' => 'dtphp.create',
-//     'store' => 'dtphp.store',
-//     'show' => 'dtphp.show',
-//     'edit' => 'dtphp.edit',
-//     'update' => 'dtphp.update',
-//     'destroy' => 'dtphp.destroy',
-// ]);
+// DTPHP
+Route::get('/pegawai/dtphp/dashboard', function () {
+    return view('pegawai.dtphp.pegawai-dtphp-dashboard');
+})->name('pegawai.dtphp.dashboard');
 
-// Route::get('dtphp-detail-produksi', [DtphpController::class, 'detailProduksi'])->name('dtphp.detail.produksi');
-// Route::get('dtphp-detail-panen', [DtphpController::class, 'detailPanen'])->name('dtphp.detail.panen');
+Route::resource('/pegawai/dtphp', PegawaiDtphpController::class)->names([
+    'index' => 'pegawai.dtphp.index',
+    'create' => 'pegawai.dtphp.create',
+    'store' => 'pegawai.dtphp.store',
+    'show' => 'pegawai.dtphp.show',
+    'edit' => 'pegawai.dtphp.edit',
+    'update' => 'pegawai.dtphp.update',
+    'destroy' => 'pegawai.dtphp.destroy',
+]);
+
+Route::get('/pegawai/dtphp-detail-produksi', [PegawaiDtphpController::class, 'detailProduksi'])->name('pegawai.dtphp.detail.produksi');
+Route::get('/pegawai/dtphp-detail-panen', [PegawaiDtphpController::class, 'detailPanen'])->name('pegawai.dtphp.detail.panen');
+Route::get('/pegawai/dtphp-panen', [PegawaiDtphpController::class, 'panen'])->name('pegawai.dtphp.panen');
+Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'])->name('pegawai.dtphp.produksi');
 
 
 // PERIKANAN
