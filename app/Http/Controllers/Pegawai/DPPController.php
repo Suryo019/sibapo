@@ -37,6 +37,32 @@ class DPPController extends Controller
             ], 500);
         }
     }    
+        try {
+            $data = DPP::all();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function listItem($namaBahanPokok)
+    {
+        try {
+            $data = DPP::where('jenis_bahan_pokok', $namaBahanPokok)
+            ->whereMonth('tanggal_dibuat', 4)
+            ->whereYear('tanggal_dibuat', 2025)
+            ->get();
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
 
     // Menyimpan data baru
     public function store(Request $request)
@@ -46,7 +72,6 @@ class DPPController extends Controller
                 'pasar' => 'required|string',
                 'jenis_bahan_pokok' => 'required|string',
                 'kg_harga' => 'required|integer',
-                // 'tanggal_dibuat' tidak perlu divalidasi jika kamu override nilainya
             ]);
             
             $validated['tanggal_dibuat'] = now();

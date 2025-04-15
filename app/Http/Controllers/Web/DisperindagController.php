@@ -96,10 +96,10 @@ class DisperindagController extends Controller
             });
 
         // dd($periodeUnikAngka);
-        $periode = explode('-', $periodeUnikAngka[0]);
+        $periode = explode('-', $periodeUnikAngka[1]);
         $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
 
-        $periode = $periodeUnikAngka[0];
+        $periode = $periodeUnikAngka[1];
 
         // dd($periode);
         $dppHargaHari = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])
