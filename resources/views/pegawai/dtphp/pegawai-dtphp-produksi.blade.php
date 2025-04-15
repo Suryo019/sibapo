@@ -1,0 +1,114 @@
+<x-pegawai-layout>
+    <main class="flex-1 p-6">
+        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+    
+        <!-- Dropdown -->
+        <div class="flex justify-between my-4">
+            <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
+            </div>
+            <div class="flex gap-4">
+                <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
+                    {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
+                    <option value="" selected>Suket Teki</option>
+                    @foreach ($commodities as $commodity)
+                        <option value="{{ $commodity }}">{{ $commodity }}</option>
+                    @endforeach
+                </select>
+
+                <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                    <option value="" disabled selected>April 2025</option>
+                    @foreach ($periods as $period)
+                        <option value="{{ $period }}">{{ $period }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        
+        <div class="flex gap-4 mb-4">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
+                <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.produksi') ? 'font-bold' : '' }}">
+                    Volume Produksi
+                </button>
+            </a>
+            <a href="{{ route('pegawai.dtphp.panen') }}">
+                <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.panen') ? 'font-bold' : '' }}">
+                    Luas Panen
+                </button>
+            </a>
+        </div>
+
+        <!-- Chart Placeholder -->
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
+            <div class="flex items-center flex-col mb-3 font-bold text-green-910">
+              <h3>Hektar Luas Panen April 2025</h3>
+            </div>
+            <div id="chart" class="w-full">
+                {{-- Chartt --}}
+            </div>
+        </div>
+    
+        <!-- Button -->
+        <div class="flex justify-center mt-4">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
+                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                    Lihat Detail Data
+                </button>
+            </a>
+        </div>
+    </main>
+</x-pegawai-layout>
+
+<script>
+    $.ajax({
+        type: "GET",
+        url: "{{ route('api.dtphp.produksi') }}",
+        success: function(response) {
+            let dataset = response.data;
+            
+            let jenis_komoditas = [];
+            let produksi = [];
+
+            $.each(dataset, function(key, value) {
+                jenis_komoditas.push(value.jenis_komoditas);
+                produksi.push(value.ton_volume_produksi);
+            });
+
+            console.log(jenis_komoditas);
+            console.log(produksi);
+
+
+            var options = {
+                chart: {
+                    type: 'line',
+                    height: 350
+                },
+                series: [{
+                    name: 'Produksi',
+                    data: produksi
+                }],
+                xaxis: {
+                    categories: jenis_komoditas
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+        }
+    });
+
+
+    $('#pilih_pasar').on('change', function() {
+        $('#pilih_periode').removeAttr('disabled');
+    });
+
+    $('#pilih_periode').on('change', function() {
+        $('#pilih_jenis_komoditas').removeAttr('disabled');
+    });
+
+    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
+    
+</script>

@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">Data Produksi Tanaman</h2>
     
@@ -8,8 +8,8 @@
             </div>
             <div class="flex gap-4">
                 <select class="border p-2 rounded bg-white">
-                    <option>Pilih Pasar</option>
-                    <option>Pasar Tanjung</option>
+                    <option>Pilih Komoditas</option>
+                    <option>Suket Teki</option>
                 </select>
                 <select class="border p-2 rounded bg-white">
                     <option>Pilih Periode</option>
@@ -25,11 +25,11 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
-            <a href="/Public/DTPHP/">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
+                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-</x-admin-layout>
+</x-pegawai-layout>

@@ -17,14 +17,16 @@ Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index'])->name('api.dkpp.index');
+Route::get('/dkpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dkpp.listItem');
 Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
 Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');
 Route::delete('/dkpp/{id}', [DKPPController::class, 'destroy']);
 
 // DP
-Route::get('/dp', [DPController::class, 'index']);
-Route::post('/dp', [DPController::class, 'store']);
-Route::put('/dp/{id}', [DPController::class, 'update']);
+Route::get('/dp', [DPController::class, 'index'])->name('api.dp.index');
+Route::get('/dp/{jenisIkan}', [DPController::class, 'listItem'])->name('api.dp.listItem');
+Route::post('/dp', [DPController::class, 'store'])->name('api.dp.store');
+Route::put('/dp/{id}', [DPController::class, 'update'])->name('api.dp.update');
 Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
 // DPP
@@ -35,7 +37,10 @@ Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update'
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
 
 // DTPHP
-Route::get('/dtphp', [DTPHPController::class, 'index']);
-Route::post('/dtphp', [DTPHPController::class, 'store']);
-Route::put('/dtphp/{id}', [DTPHPController::class, 'update']);
+Route::get('/dtphp', [DTPHPController::class, 'index'])->name('api.dtphp.index');
+Route::get('/dtphp/panen', [DTPHPController::class, 'panen'])->name('api.dtphp.panen');
+Route::get('/dtphp/produksi', [DTPHPController::class, 'produksi'])->name('api.dtphp.produksi');
+Route::get('/dtphp/{jenisKomoditas}', [DTPHPController::class, 'listItem'])->name('api.dtphp.listItem');  // Prosses
+Route::post('/dtphp', [DTPHPController::class, 'store'])->name('api.dtphp.store');
+Route::put('/dtphp/{id}', [DTPHPController::class, 'update'])->name('api.dtphp.update');
 Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
