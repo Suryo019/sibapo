@@ -189,6 +189,9 @@
                 <a href="{{ route('disperindag.index') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                 </a>
+                <a href="Tambah.html">
+                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
+                </a>
             </div>
         </div>
     </main>  

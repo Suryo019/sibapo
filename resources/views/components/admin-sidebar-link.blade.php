@@ -4,7 +4,7 @@
 
 <li class="mb-2" id={{ $name }}>
     <details class="group rounded-md cursor-pointer">
-      <summary class="list-none rounded-md {{ request()->is($attributes->get('dataHref')) ? 'bg-green-600' : '' }}">
+      <summary class="list-none rounded-md {{ request()->is($attributes->get('dataHref')) ? 'text-yellow-300' : '' }}">
         <div class="flex justify-between items-center py-2 px-4 rounded hover:bg-green-800">
           <span>{{ $name }}</span>
           <i class="caret-icon bi bi-caret-down-fill scale-50"></i>
