@@ -14,21 +14,39 @@
                     <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
-                            {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                    <form class="flex gap-4" action="" method="get">
+                        <div>
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
+                            <select class="border p-2 rounded bg-white select2" id="pilih_urutan">
+                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                                <option value="" selected>Ascending</option>
+                                {{-- @foreach ($fishes as $fish)
+                                    <option value="{{ $fish }}">{{ $fish }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
+                            <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
+                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                                <option value="" selected>Teri</option>
+                                @foreach ($fishes as $fish)
+                                    <option value="{{ $fish }}">{{ $fish }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border p-2 rounded bg-white select2" id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -234,17 +252,19 @@
             </div>
             @endif
     
-            <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('perikanan.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="{{ route('perikanan.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
-                </a>
-            </div>
         </div>
-    </main>  
+    </main> 
+
+    <!-- Button Kembali & Tambah Data -->
+    <div class="flex justify-between mt-4">
+        <a href="{{ route('perikanan.index') }}">
+        <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
+        </a>
+        <a href="{{ route('perikanan.create') }}">
+        <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
+        </a>
+    </div>
+
 </x-admin-layout>
 
 <script>

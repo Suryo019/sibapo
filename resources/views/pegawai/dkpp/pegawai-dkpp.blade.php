@@ -7,23 +7,33 @@
             <div class="relative"> 
             </div>
             <div class="flex gap-4">
-              <select class="border p-2 rounded bg-white">
-                <option>Pilih Pasar</option>
-                <option>Pasar Tanjung</option>
+              <div>
+                <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                <select class="border p-2 rounded bg-white" id="pilih_pasar">
+                  <option>Pilih Pasar</option>
+                  <option>Pasar Tanjung</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                <select class="border p-2 rounded bg-white" id="pilih_periode">
+                  {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                  @foreach ($periods as $period)
+                      <option value="{{ $period }}">{{ $period }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div>
+                <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+                <select class="border p-2 rounded bg-white" id="pilih_minggu">
+                  <option>1</option>
+                  <option selected>2</option>
+                  <option>3</option>
+                  <option>4</option>
               </select>
-              <select class="border p-2 rounded bg-white">
-                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                @foreach ($periods as $period)
-                    <option value="{{ $period }}">{{ $period }}</option>
-                @endforeach
-              </select>
-              <select class="border p-2 rounded bg-white">
-                <option value="" disabled>Minggu Ke</option>
-                <option>1</option>
-                <option selected>2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
+              </div>
             </div>
           </div>
           
@@ -42,7 +52,7 @@
         <!-- Button -->
         <div class="flex justify-center mt-4">
             <a href="{{ route('pegawai.dkpp.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>

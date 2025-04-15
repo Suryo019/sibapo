@@ -13,21 +13,27 @@
                     <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
-                            {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
-                            <option value="" selected>Pasar Tanjung</option>
-                            @foreach ($markets as $market)
-                                <option value="{{ $market }}">{{ $market }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                    <form class="flex gap-2" action="" method="get">
+                        <div>
+                            <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                            <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
+                                {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
+                                <option value="" selected>Pasar Tanjung</option>
+                                @foreach ($markets as $market)
+                                    <option value="{{ $market }}">{{ $market }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                            <select class="border p-2 rounded bg-white select2" id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -185,14 +191,11 @@
             @endif
     
             <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('disperindag.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="Tambah.html">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
-                </a>
-            </div>
+        </div>
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('disperindag.index') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
         </div>
     </main>  
 </x-admin-layout>

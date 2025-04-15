@@ -7,14 +7,18 @@
             <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
             </div>
             <div class="flex gap-4">
-                <select class="border p-2 rounded bg-white">
-                    <option>Pilih Komoditas</option>
-                    <option>Suket Teki</option>
-                </select>
-                <select class="border p-2 rounded bg-white">
-                    <option>Pilih Periode</option>
-                    <option>Januari 2025</option>
-                </select>
+                <div>
+                    <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
+                    <select class="border p-2 rounded bg-white" id="pilih_komoditas">
+                        <option>Suket Teki</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                    <select class="border p-2 rounded bg-white" id="pilih_periode">
+                        <option>Januari 2025</option>
+                    </select>
+                </div>
             </div>
         </div>
         
@@ -26,7 +30,7 @@
         <!-- Button -->
         <div class="flex justify-center mt-4">
             <a href="{{ route('pegawai.dtphp.produksi') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>

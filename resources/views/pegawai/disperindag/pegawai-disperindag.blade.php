@@ -8,31 +8,40 @@
             </div>
             <div class="flex gap-4">
                 {{-- Filter Pasar --}}
-                <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
-                    {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
-                    <option value="" selected>Pasar Tanjung</option>
-                    @foreach ($markets as $market)
-                        <option value="{{ $market }}">{{ $market }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                    <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
+                        {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
+                        <option value="" selected>Pasar Tanjung</option>
+                        @foreach ($markets as $market)
+                            <option value="{{ $market }}">{{ $market }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 {{-- Filter Periode --}}
-                <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                    <option value="" disabled selected>April 2025</option>
-                    @foreach ($periods as $period)
-                        <option value="{{ $period }}">{{ $period }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                        <option value="" disabled selected>April 2025</option>
+                        @foreach ($periods as $period)
+                            <option value="{{ $period }}">{{ $period }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 {{-- Filter Bakpokting --}}
-                <select class="border p-2 rounded bg-white select2" disabled id="pilih_bahan_pokok">
-                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                    <option value="" disabled selected>Daging</option>
-                    @foreach ($data as $item)
-                        <option value="{{ $item }}">{{ $item }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1">Pilih Bahan Pokok</label>
+                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_bahan_pokok">
+                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                        <option value="" disabled selected>Daging</option>
+                        @foreach ($data as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         
@@ -49,7 +58,7 @@
         <!-- Button -->
         <div class="flex justify-center mt-4">
             <a href="{{ route('pegawai.disperindag.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>

@@ -8,23 +8,24 @@
             <div class="relative"> 
             </div>
             <div class="flex gap-4">
-              <select class="border p-2 rounded bg-white">
-                <option>Pilih Pasar</option>
+
+              <div>
+              <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+              <select class="border p-2 rounded bg-white" id="pilih_pasar">
                 <option>Pasar Tanjung</option>
               </select>
-              <select class="border p-2 rounded bg-white">
-                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                @foreach ($periods as $period)
-                    <option value="{{ $period }}">{{ $period }}</option>
-                @endforeach
-              </select>
-              <select class="border p-2 rounded bg-white">
-                <option value="" disabled>Minggu Ke</option>
+              </div>
+
+              <div>
+              <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+              <select class="border p-2 rounded bg-white" id="pilih_minggu">
                 <option>1</option>
                 <option selected>2</option>
                 <option>3</option>
                 <option>4</option>
-            </select>
+              </select>
+              </div>
+
             </div>
           </div>
           

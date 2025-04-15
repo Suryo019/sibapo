@@ -34,16 +34,16 @@
 
 
                 <!-- Tombol -->
-                <div class="flex justify-between mt-4">
-                    <a href="{{ route('dkpp.detail') }}">
-                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                    <a href="{{ route('dkpp.detail') }}">
-                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                    </a>
-                    <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Ubah</button>
-                </div>
             </form>
         </div>
+
+        <div class="flex justify-between w-full mt-4">
+            <a href="{{ route('dkpp.detail') }}">
+                <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
+            <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Ubah</button>
+        </div>
+
     </main>
 </x-admin-layout>
 

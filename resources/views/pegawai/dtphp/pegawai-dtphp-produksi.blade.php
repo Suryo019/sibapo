@@ -7,32 +7,38 @@
             <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
             </div>
             <div class="flex gap-4">
-                <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
-                    {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
-                    <option value="" selected>Suket Teki</option>
-                    @foreach ($commodities as $commodity)
-                        <option value="{{ $commodity }}">{{ $commodity }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
+                    <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
+                        {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
+                        <option value="" selected>Suket Teki</option>
+                        @foreach ($commodities as $commodity)
+                            <option value="{{ $commodity }}">{{ $commodity }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                    <option value="" disabled selected>April 2025</option>
-                    @foreach ($periods as $period)
-                        <option value="{{ $period }}">{{ $period }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                        <option value="" disabled selected>April 2025</option>
+                        @foreach ($periods as $period)
+                            <option value="{{ $period }}">{{ $period }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         
         <div class="flex gap-4 mb-4">
             <a href="{{ route('pegawai.dtphp.produksi') }}">
-                <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.produksi') ? 'font-bold' : '' }}">
+                <button class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.produksi') ? 'font-bold' : '' }}">
                     Volume Produksi
                 </button>
             </a>
             <a href="{{ route('pegawai.dtphp.panen') }}">
-                <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.panen') ? 'font-bold' : '' }}">
+                <button class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 {{ request()->routeIs('pegawai.dtphp.panen') ? 'font-bold' : '' }}">
                     Luas Panen
                 </button>
             </a>

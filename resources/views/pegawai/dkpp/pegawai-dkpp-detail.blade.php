@@ -17,24 +17,34 @@
                 </div>
                 <div class="flex gap-4">
                     <form action="" method="get">
-                        <select class="border p-2 rounded bg-white">
-                            <option value="" disabled selected>Urutkan</option>
-                            <option>Ascending</option>
-                            <option>Descending</option>
-                        </select>
-                        <select class="border p-2 rounded bg-white">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white">
-                            <option value="" disabled>Minggu Ke</option>
-                            <option>1</option>
-                            <option selected>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
+                        <div>
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                            <select class="border p-2 rounded bg-white" id="pilih_urutan">
+                                <option value="" disabled selected>Urutkan</option>
+                                <option>Ascending</option>
+                                <option>Descending</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border p-2 rounded bg-white" id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+                            <select class="border p-2 rounded bg-white" id="pilih_minggu">
+                                <option>1</option>
+                                <option selected>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -84,12 +94,12 @@
                 </table>
             </div>
     
-            <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('pegawai.dkpp.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-            </div>
+        </div>
+        <!-- Button Kembali & Tambah Data -->
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('pegawai.dkpp.index') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
         </div>
 
             {{-- Modal --}}

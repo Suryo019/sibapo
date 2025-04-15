@@ -1,4 +1,4 @@
-{{-- @dd($periods) --}}
+{{-- @dd($data) --}}
 
 <x-admin-layout>
     <main class="flex-1 p-6">
@@ -18,25 +18,33 @@
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
-                        <select class="border p-2 rounded bg-white">
-                            <option value="" disabled selected>Urutkan</option>
+                    <form class="flex gap-3" action="" method="get">
+                        <div>
+                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                        <select class="border p-2 rounded bg-white" id="pilih_urutan">
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
-                        <select class="border p-2 rounded bg-white">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white">
-                            <option value="" disabled>Minggu Ke</option>
-                            <option>1</option>
-                            <option selected>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
+                        </div>
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border p-2 rounded bg-white" id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+                            <select class="border p-2 rounded bg-white" id="pilih_minggu">
+                                <option>1</option>
+                                <option selected>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -87,11 +95,12 @@
             </div>
     
             <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('dkpp.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-            </div>
+        </div>
+        
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('dkpp.index') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
         </div>
 
             {{-- Modal --}}
@@ -103,11 +112,11 @@
                         <div class="flex justify-evenly">
                             <!-- Tombol Batal -->
                             <div class="text-right" id="closeBtn">
-                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded">Tutup</button>
+                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
                             </div>
                             <!-- Tombol Yakin -->
                             <div class="text-right">
-                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded" id="yesBtn">Yakin</button>
+                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
                             </div>
                         </div>
                     </div>

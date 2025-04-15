@@ -1,6 +1,6 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
-<aside class="w-64 bg-green-900 text-white p-4 pt-24 h-screen fixed">
+<aside class="w-64 bg-green-900 text-white p-4 h-screen fixed">
     <div class="w-full mb-7 flex justify-center">
       <img src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" 
       alt="logo" class="h-10 w-30 ml-4">
@@ -27,14 +27,14 @@
         </x-admin-sidebar-link>
   
         <!-- DTPHP -->
-        <x-admin-sidebar-link href="dtphp">
+        <x-admin-sidebar-link dataHref="dtphp*">
             <x-slot:name>DTPHP</x-slot:name>
             <x-slot:createData href="{{ route('dtphp.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('dtphp.produksi') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
   
         <!-- PERIKANAN -->
-        <x-admin-sidebar-link href="perikanan">
+        <x-admin-sidebar-link dataHref="perikanan">
             <x-slot:name>PERIKANAN</x-slot:name>
             <x-slot:createData href="{{ route('perikanan.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('perikanan.index') }}">Lihat Data</x-slot:viewData>
