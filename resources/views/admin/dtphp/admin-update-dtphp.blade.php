@@ -88,7 +88,7 @@
                     text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
-                        location.reload();
+                    window.location.href = "{{ route('dtphp.detail.produksi') }}";
                     });
             },
             error: function(xhr, status, error) {
