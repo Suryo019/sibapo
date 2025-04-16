@@ -153,7 +153,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -186,7 +186,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -201,7 +201,7 @@
                                                                 
                                                             </div>
                                                             
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                                                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -258,60 +258,51 @@
             <a href="{{ route('perikanan.index') }}">
             <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
             </a>
-            <a href="{{ route('perikanan.create') }}">
-            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
-            </a>
         </div>
 
-    </main> 
+        {{-- Modal Delete --}}
+        <div id="deleteModal" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
 
-
-    {{-- Modal --}}
-    <div id="modaldel" class="hidden w-full h-full">
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
-            <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
-                <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
-
-                <div class="flex justify-evenly">
-                    <!-- Tombol Batal -->
-                    <div class="text-right" id="closeBtnDel">
-                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
-                    </div>
-                    <!-- Tombol Yakin -->
-                    <div class="text-right">
-                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                    <div class="flex justify-evenly">
+                        <!-- Tombol Batal -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                        </div>
+                        <!-- Tombol Yakin -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main> 
 </x-admin-layout>
 
 <script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        let id = $(this).data('id');
-        $('#modaldel').show();
+    $(document).on('click', '.btnConfirm', function() { 
+        let dataId = $(this).data('id');
+        $('#deleteModal').show();
+        // console.log(data);
 
-        $('#yesBtn').on('click', function() {
-            $('#modaldel').hide();
-
+        $('#yesBtn').off('click').on('click', function() {
             $.ajax({
                 type: 'DELETE',
-                url: `/api/dp/${id}`,
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function(data) {   
-                    console.log(data)                 
+                url: `/api/dp/${dataId}`,
+                success: function(data) {
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_ikan} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
-                    console.log(error)  
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -319,11 +310,13 @@
                     });
                 }
             });
+
+            $('#deleteModal').hide();
         });
     });
 
-    $('#closeBtnDel').on('click', function() {
-        $('#modaldel').hide();
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
     });
 
     

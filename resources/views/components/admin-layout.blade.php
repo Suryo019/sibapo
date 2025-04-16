@@ -46,7 +46,7 @@
                     request()->is('disperindag*') => 'Dinas Perindustrian dan Perdagangan',
                     request()->is('dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
                     request()->is('dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
-                    request()->is('dinasperikanan*') => 'Dinas Perikanan',
+                    request()->is('perikanan*') => 'Dinas Perikanan',
                     default => 'Dinas Tidak Dikenal'
                 };
             @endphp

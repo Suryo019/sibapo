@@ -34,7 +34,7 @@
         </x-admin-sidebar-link>
   
         <!-- PERIKANAN -->
-        <x-admin-sidebar-link dataHref="perikanan">
+        <x-admin-sidebar-link dataHref="perikanan*">
             <x-slot:name>PERIKANAN</x-slot:name>
             <x-slot:createData href="{{ route('perikanan.create') }}">Tambah Data</x-slot:createData>
             <x-slot:viewData href="{{ route('perikanan.index') }}">Lihat Data</x-slot:viewData>

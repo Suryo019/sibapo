@@ -74,9 +74,9 @@
                     title: 'Berhasil',
                     text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
-                });
+                }).then(() => {
 
-                window.location.href = "{{ route('perikanan.detail') }}";
+                window.location.href = "{{ route('perikanan.detail') }}";});
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
