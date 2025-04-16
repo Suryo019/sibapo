@@ -2,8 +2,22 @@
 <x-admin-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+
+        <!-- Tombol Switch Produksi / Panen -->
+        <div class="flex gap-4 mb-4">
+            <a href="{{ route('dtphp.detail.produksi') }}">
+                <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-7 shadow-md left-4{{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
+                    Volume Produksi
+                </button>
+            </a>
+            <a href="{{ route('dtphp.detail.panen') }}">
+                <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-5 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
+                    Luas Panen
+                </button>
+            </a>
+        </div>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4 relative z-10">
             <h3 class="text-lg font-semibold text-center">Data Volume Produksi Tahun 2025 (Hektar)</h3>
             
             <!-- Search dan Dropdown -->
@@ -13,21 +27,29 @@
                     <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
-                            {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
-                            <option value="" selected>Suket Teki</option>
-                            @foreach ($commodities as $commodity)
-                                <option value="{{ $commodity }}">{{ $commodity }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                    <form class="flex gap-3" action="" method="get">
+
+                        <div>
+                            <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_komoditas">
+                                {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
+                                <option value="" selected>Suket Teki</option>
+                                @foreach ($commodities as $commodity)
+                                    <option value="{{ $commodity }}">{{ $commodity }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -36,19 +58,7 @@
             @if (isset($data_panen))
                 <div class="overflow-x-auto">
 
-                    <!-- Tombol Switch Produksi / Panen -->
-                    <div class="flex gap-4 mb-4">
-                        <a href="{{ route('dtphp.detail.produksi') }}">
-                            <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
-                                Volume Produksi
-                            </button>
-                        </a>
-                        <a href="{{ route('dtphp.detail.panen') }}">
-                            <button class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
-                                Luas Panen
-                            </button>
-                        </a>
-                    </div>
+                    
                     
                     <table class="table-auto">
                         <thead>
@@ -244,42 +254,76 @@
                 </div>
             </div>
             @endif
-    
-            <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('dtphp.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="{{ route('dtphp.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
-                </a>
+        </div>
+
+
+        {{-- Modal --}}
+        <div id="modaldel" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
+
+                    <div class="flex justify-evenly">
+                        <!-- Tombol Batal -->
+                        <div class="text-right" id="closeBtnDel">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
+                        </div>
+                        <!-- Tombol Yakin -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        <!-- Button Kembali & Tambah Data -->
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('dtphp.produksi') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
+            <a href="{{ route('dtphp.create') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
+            </a>
         </div>
     </main>  
 </x-admin-layout>
 
 <script>
     $(document).on('click', '.btnConfirm', function(e) {
-        const confirmed = confirm('Yakin ingin mengubah data ini?');
-        if (!confirmed) {
-            e.preventDefault();
-            return;
-        }
+        let id = $(this).data('id');
+        $('#modaldel').show();
 
-        let dataId = $(this).data('id');
+        $('#yesBtn').on('click', function() {
+            $('#modaldel').hide();
 
-        $.ajax({
-            type: 'DELETE',
-            url: `/api/dtphp/${dataId}`,
-            success: function() {
-                window.location.reload();
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-            }
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dtphp/${id}`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(data) {                    
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
+            });
         });
     });
 
+    $('#closeBtnDel').on('click', function() {
+        $('#modaldel').hide();
+    });
     
     $(document).ready(function() {
         $('.select2').select2();

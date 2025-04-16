@@ -56,7 +56,7 @@
         <!-- Button -->
         <div class="flex justify-center mt-4">
             <a href="{{ route('disperindag.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>

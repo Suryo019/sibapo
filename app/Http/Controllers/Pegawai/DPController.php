@@ -119,6 +119,8 @@ class DPController extends Controller
         try {
             $dp = DP::find($id);
 
+            return response()->json($dp);
+
             if (!$dp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }

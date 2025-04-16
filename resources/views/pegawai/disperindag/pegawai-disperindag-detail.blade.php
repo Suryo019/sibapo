@@ -13,20 +13,27 @@
                 </div>
                 <div class="flex gap-4">
                     <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
-                            {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
-                            <option value="" selected>Pasar Tanjung</option>
-                            @foreach ($markets as $market)
-                                <option value="{{ $market }}">{{ $market }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                        <div>
+                            <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_pasar">
+                                {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
+                                <option value="" selected>Pasar Tanjung</option>
+                                @foreach ($markets as $market)
+                                    <option value="{{ $market }}">{{ $market }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -157,7 +164,7 @@
                                                                 <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
                                                             </div>
                                                             
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                                                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -186,45 +193,69 @@
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
                 <a href="{{ route('pegawai.disperindag.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
                 </a>
+            </div>
+        </div>
+
+        {{-- Modal Delete --}}
+        <div id="deleteModal" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
+
+                    <div class="flex justify-evenly">
+                        <!-- Tombol Batal -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                        </div>
+                        <!-- Tombol Yakin -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 </x-pegawai-layout>
 
 <script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        const confirmed = confirm('Yakin ingin menghapus data ini?');
-        if (!confirmed) {
-            e.preventDefault();
-            return;
-        }
-
+    $(document).on('click', '.btnConfirm', function() { 
         let dataId = $(this).data('id');
+        $('#deleteModal').show();
 
-        $.ajax({
-            type: 'DELETE',
-            url: `/api/dpp/${dataId}`,
-            success: function(data) {
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ${data.data.jenis_bahan_pokok} telah dihapus.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: error
-                });
-            }
+        $('#yesBtn').off('click').on('click', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dpp/${dataId}`,
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_bahan_pokok} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
+            });
+
+            $('#deleteModal').hide();
         });
     });
 
-    
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
+    });
+
     $(document).ready(function() {
         $('.select2').select2();
 

@@ -24,7 +24,7 @@ class DKPPController extends Controller
 
             $data = DKPP::whereYear('tanggal_input', 2025)
             ->whereMonth('tanggal_input', 4)
-            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [2])
+            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [3])
             ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
             ->get();
             
