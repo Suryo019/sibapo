@@ -30,7 +30,7 @@
         <x-admin-sidebar-link href="dtphp">
             <x-slot:name>DTPHP</x-slot:name>
             <x-slot:createData href="{{ route('dtphp.create') }}">Tambah Data</x-slot:createData>
-            <x-slot:viewData href="{{ route('dtphp.index') }}">Lihat Data</x-slot:viewData>
+            <x-slot:viewData href="{{ route('dtphp.produksi') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
   
         <!-- PERIKANAN -->

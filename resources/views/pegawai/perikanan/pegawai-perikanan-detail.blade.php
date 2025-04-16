@@ -1,6 +1,5 @@
-{{-- @dd($data) --}}
-
-<x-admin-layout>
+{{-- @dd($numberPeriods) --}}
+<x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
@@ -135,7 +134,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -148,7 +147,7 @@
                                                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
                                                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                                             </div>
-                                                            <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                                                            <a href="pegawai/perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -168,7 +167,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -236,16 +235,16 @@
     
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
-                <a href="{{ route('perikanan.index') }}">
+                <a href="{{ route('pegawai.perikanan.index') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                 </a>
-                <a href="{{ route('perikanan.create') }}">
+                <a href="{{ route('pegawai.perikanan.create') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
                 </a>
             </div>
         </div>
     </main>  
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $(document).on('click', '.btnConfirm', function(e) {

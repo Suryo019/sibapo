@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
@@ -47,7 +47,7 @@
 
                 <!-- Tombol -->
                 <div class="flex justify-between mt-4">
-                    <a href="{{ route('perikanan.detail') }}">
+                    <a href="{{ route('pegawai.perikanan.detail') }}">
                         <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                     </a>
                     <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Simpan</button>
@@ -55,7 +55,7 @@
             </form>
         </div>
     </main>
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $('#submitBtn').on('click', function() {
@@ -76,7 +76,7 @@
                     confirmButtonColor: '#16a34a'
                 });
 
-                window.location.href = "{{ route('perikanan.detail') }}";
+                window.location.href = "{{ route('pegawai.perikanan.detail') }}";
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;

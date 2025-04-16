@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DTPHP;
@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class DtphpController extends Controller
+class PegawaiDtphpController extends Controller
 {
     // View
     public function index()
     {
         $dtphp = DTPHP::all();
-        return view('admin.dtphp.admin-dtphp', [
+        return view('pegawai.dtphp.pegawai-dtphp', [
             'title' => 'Data Tanaman',
             'data' => $dtphp
         ]);
@@ -23,7 +23,7 @@ class DtphpController extends Controller
     // Create
     public function create()
     {
-        return view('admin.dtphp.admin-create-dtphp', [
+        return view('pegawai.dtphp.pegawai-create-dtphp', [
             'title' => 'Tambah Data'
         ]);
     }
@@ -40,7 +40,7 @@ class DtphpController extends Controller
 
     public function edit(DTPHP $dtphp)
     {
-        return view('admin.dtphp.admin-update-dtphp', [
+        return view('pegawai.dtphp.pegawai-update-dtphp', [
             'title' => 'Ubah Data',
             'data' => $dtphp,
         ]);
@@ -120,7 +120,7 @@ class DtphpController extends Controller
                 return $row;
             })->values();  
 
-        return view('admin.dtphp.admin-dtphp-detail-produksi', [
+        return view('pegawai.dtphp.pegawai-dtphp-detail-produksi', [
             'title' => 'Dinas Tanaman Pangan dan Holtikultura',
             // 'data_produksi' => $dtphpProduksiHari,
             'data_produksi' => $dtphpProduksiBulan,
@@ -235,7 +235,7 @@ class DtphpController extends Controller
                 return $row;
             })->values();  
 
-        return view('admin.dtphp.admin-dtphp-detail-panen', [
+        return view('pegawai.dtphp.pegawai-dtphp-detail-panen', [
             'title' => 'Dinas Tanaman Pangan dan Holtikultura',
             // 'data_panen' => $dtphpPanenHari,
             'data_panen' => $dtphpPanenBulan,
@@ -263,7 +263,7 @@ class DtphpController extends Controller
             ->distinct()
             ->pluck('jenis_komoditas');
 
-        return view('admin.dtphp.admin-dtphp-panen', [
+        return view('pegawai.dtphp.pegawai-dtphp-panen', [
             'title' => 'Data Luas Panen',
             'data' => $dp,
             'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
@@ -288,7 +288,7 @@ class DtphpController extends Controller
             ->distinct()
             ->pluck('jenis_komoditas');
 
-        return view('admin.dtphp.admin-dtphp-produksi', [
+        return view('pegawai.dtphp.pegawai-dtphp-produksi', [
             'title' => 'Volume Produksi Panen',
             'data' => $dp,
             'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),

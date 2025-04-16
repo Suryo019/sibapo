@@ -10,8 +10,8 @@
             <div class="flex gap-4">
                 {{-- Filter Pasar --}}
                 <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
-                    {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
-                    <option value="" selected>Pasar Tanjung</option>
+                    <option value="" disabled selected>Pilih Pasar</option>
+                    {{-- <option value="" selected>Pasar Tanjung</option> --}}
                     @foreach ($markets as $market)
                         <option value="{{ $market }}">{{ $market }}</option>
                     @endforeach
@@ -19,8 +19,8 @@
 
                 {{-- Filter Periode --}}
                 <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                    <option value="" disabled selected>April 2025</option>
+                    <option value="" disabled selected>Pilih Periode</option>
+                    {{-- <option value="" disabled selected>April 2025</option> --}}
                     @foreach ($periods as $period)
                         <option value="{{ $period }}">{{ $period }}</option>
                     @endforeach
@@ -28,8 +28,8 @@
 
                 {{-- Filter Bakpokting --}}
                 <select class="border p-2 rounded bg-white select2" disabled id="pilih_bahan_pokok">
-                    {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                    <option value="" disabled selected>Daging</option>
+                    <option value="" disabled selected>Pilih Periode</option>
+                    {{-- <option value="" disabled selected>Daging</option> --}}
                     @foreach ($data as $item)
                         <option value="{{ $item }}">{{ $item }}</option>
                     @endforeach
@@ -38,14 +38,20 @@
         </div>
         
         <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8" id="chart_container">
             <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-              <h3>Data Harga Bahan Pokok Pasar Tanjung April 2025</h3>
+                <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <b id="pasar"></b> <b id="periode"></b></h3>
             </div>
-            <div id="chart" class="w-full">
-                {{-- Chartt --}}
+            
+            <!-- Placeholder saat chart belum tersedia -->
+            <div id="chart_placeholder" class="text-gray-500 text-center">
+                Silakan pilih pasar, periode, dan bahan pokok untuk menampilkan data grafik.
             </div>
+        
+            <!-- Chart akan muncul di sini -->
+            <div id="chart" class="w-full hidden"></div>
         </div>
+        
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
@@ -60,46 +66,61 @@
 </x-admin-layout>
 
 <script>
-    $.ajax({
-        type: "GET",
-        url: "{{ route('api.dpp.index') }}",
-        success: function(response) {
-            let dataset = response.data;
-            
-            let jenis_bahan_pokok = [];
-            let harga = [];
+    var chart;
 
-            $.each(dataset, function(key, value) {
-                jenis_bahan_pokok.push(value.jenis_bahan_pokok);
-                harga.push(value.kg_harga);
-            });
+    $('#pilih_bahan_pokok').on('change', function() {
+        $.ajax({
+            type: "GET",
+            url: "{{ route('api.dpp.index') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                pasar: $('#pilih_pasar').val(),
+                periode: $('#pilih_periode').val(),
+                bahan_pokok: $('#pilih_bahan_pokok').val()
+            },
+            success: function(response) {
+                $('#bahan_pokok').html($('#pilih_bahan_pokok').val());
+                $('#pasar').html($('#pilih_pasar').val());
+                $('#periode').html($('#pilih_periode').val());
 
-            console.log(jenis_bahan_pokok);
-            console.log(harga);
+                let dataset = response.data;
+                let jenis_bahan_pokok = [];
+                let harga = [];
 
+                $.each(dataset, function(key, value) {
+                    jenis_bahan_pokok.push(value.jenis_bahan_pokok);
+                    harga.push(value.kg_harga);
+                });
 
-            var options = {
-                chart: {
-                    type: 'line',
-                    height: 350
-                },
-                series: [{
-                    name: 'Harga',
-                    data: harga
-                }],
-                xaxis: {
-                    categories: jenis_bahan_pokok
+                if (chart) {
+                    chart.destroy();
                 }
-            };
 
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-        }
+                $('#chart_placeholder').hide();
+                $('#chart').removeClass('hidden');
+
+                var options = {
+                    chart: {
+                        type: 'line',
+                        height: 350
+                    },
+                    series: [{
+                        name: 'Harga',
+                        data: harga
+                    }],
+                    xaxis: {
+                        categories: jenis_bahan_pokok
+                    }
+                };
+
+                chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
     });
-
 
     $('#pilih_pasar').on('change', function() {
         $('#pilih_periode').removeAttr('disabled');
@@ -107,8 +128,11 @@
 
     $('#pilih_periode').on('change', function() {
         $('#pilih_bahan_pokok').removeAttr('disabled');
+        $('#chart_placeholder').show();
+        $('#chart').addClass('hidden');
+        if (chart) {
+            chart.destroy();
+        }
     });
 
-    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
-    
 </script>
