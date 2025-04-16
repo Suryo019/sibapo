@@ -92,12 +92,10 @@
                     harga.push(value.kg_harga);
                 });
 
-                // Destroy chart jika sudah ada sebelumnya
                 if (chart) {
                     chart.destroy();
                 }
 
-                // Sembunyikan placeholder, tampilkan chart
                 $('#chart_placeholder').hide();
                 $('#chart').removeClass('hidden');
 
