@@ -59,7 +59,7 @@
 
                 <!-- Tombol -->
                 <div class="flex justify-between mt-4">
-                    <a href="{{ route('dtphp.detail') }}">
+                    <a href="{{ route('dtphp.detail.produksi') }}">
                         <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
                     </a>
                     <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Simpan</button>
@@ -81,12 +81,30 @@
                 hektar_luas_panen: $('#hektar_luas_panen').val(),
                 tanggal_input: $('#tanggal_input').val(),
                 },
-            success: function(data) {
-                console.log(data);
-                },
+                success: function(data) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
+                    confirmButtonColor: '#16a34a'
+                });
+
+                window.location.href = "{{ route('dtphp.detail.produksi') }}";
+            },
             error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                }
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
         });
     });
 </script>
