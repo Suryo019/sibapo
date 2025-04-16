@@ -9,7 +9,7 @@
       <ul>
         <!-- Dashboard -->
         <li class="mb-2">
-          <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded {{ request()->is('dashboard') ? 'bg-green-600' : '' }}">Dashboard</a>
+          <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded {{ request()->is('dashboard') ? 'text-yellow-300' : '' }}">Dashboard</a>
         </li>
   
         <!-- DISPERINDAG -->

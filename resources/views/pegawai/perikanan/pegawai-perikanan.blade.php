@@ -11,7 +11,7 @@
                 {{-- Filter Pasar --}}
                 <div>
                     <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                    <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
+                    <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
                         {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
                         <option value="" selected>Ikan Teri</option>
                         @foreach ($fishes as $fish)
@@ -23,7 +23,7 @@
                 <div>
                     {{-- Filter Periode --}}
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                         {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                         <option value="" disabled selected>April 2025</option>
                         @foreach ($periods as $period)
@@ -35,7 +35,7 @@
                 <div>
                     {{-- Filter Bakpokting --}}
                     <label for="pilih_jenis_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Jenis Ikan</label>
-                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_jenis_ikan">
+                    <select class="border border-black p-2 rounded-full bg-white select2 w-24" disabled id="pilih_jenis_ikan">
                         {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                         <option value="" disabled selected>Teri</option>
                         @foreach ($data as $item)
@@ -59,7 +59,7 @@
         <!-- Button -->
         <div class="flex justify-center mt-4">
             <a href="{{ route('pegawai.perikanan.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
                     Lihat Detail Data
                 </button>
             </a>

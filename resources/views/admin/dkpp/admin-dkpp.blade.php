@@ -11,14 +11,14 @@
 
               <div>
               <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-              <select class="border p-2 rounded bg-white" id="pilih_pasar">
+              <select class="border border-black p-2 rounded-full bg-white" id="pilih_pasar">
                 <option>Pasar Tanjung</option>
               </select>
               </div>
 
               <div>
               <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-              <select class="border p-2 rounded bg-white" id="pilih_minggu">
+              <select class="border border-black p-2 rounded-full bg-white w-24" id="pilih_minggu">
                 <option>1</option>
                 <option selected>2</option>
                 <option>3</option>

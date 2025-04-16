@@ -31,7 +31,7 @@
 
                         <div>
                             <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_komoditas">
                                 {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
                                 <option value="" selected>Suket Teki</option>
                                 @foreach ($commodities as $commodity)
@@ -42,7 +42,7 @@
 
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 <option value="" disabled selected>April 2025</option>
                                 @foreach ($periods as $period)

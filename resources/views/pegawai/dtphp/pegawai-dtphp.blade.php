@@ -9,13 +9,13 @@
             <div class="flex gap-4">
                 <div>
                     <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
-                    <select class="border p-2 rounded bg-white" id="pilih_komoditas">
+                    <select class="border border-black p-2 rounded-full bg-white" id="pilih_komoditas">
                         <option>Suket Teki</option>
                     </select>
                 </div>
                 <div>
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border p-2 rounded bg-white" id="pilih_periode">
+                    <select class="border border-black p-2 rounded-full bg-white" id="pilih_periode">
                         <option>Januari 2025</option>
                     </select>
                 </div>

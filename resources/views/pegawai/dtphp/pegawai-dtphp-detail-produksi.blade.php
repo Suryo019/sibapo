@@ -3,21 +3,21 @@
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
 
-                    <!-- Tombol Switch Produksi / Panen -->
-                    <div class="flex gap-4 mb-4">
-                        <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
-                            <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-5 left-4 {{ request()->routeIs('pegawai.dtphp.detail.produksi') ? 'font-bold' : '' }}">
-                                Volume Produksi
-                            </button>
-                        </a>
-                        <a href="{{ route('pegawai.dtphp.detail.panen') }}">
-                            <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-7 shadow-md {{ request()->routeIs('pegawai.dtphp.detail.panen') ? 'font-bold' : '' }}">
-                                Luas Panen
-                            </button>
-                        </a>
-                    </div>
+        <!-- Tombol Switch Produksi / Panen -->
+        <div class="flex gap-4 mb-4">
+            <a href="{{ route('dtphp.detail.produksi') }}">
+                <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-5 left-4 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
+                    Volume Produksi
+                </button>
+            </a>
+            <a href="{{ route('dtphp.detail.panen') }}">
+                <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-7 shadow-md {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
+                    Luas Panen
+                </button>
+            </a>
+        </div>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4 z-10 relative">
+        <div class="bg-white p-6 rounded shadow-md mt-4 relative z-10 ">
             <h3 class="text-lg font-semibold text-center">Data Volume Produksi Tahun 2025 (Ton)</h3>
             
             <!-- Search dan Dropdown -->
@@ -31,7 +31,7 @@
 
                         <div>
                             <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Komoditas</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_komoditas">
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_komoditas">
                                 {{-- <option value="" disabled selected>Pilih Komoditas</option> --}}
                                 <option value="" selected>Suket Teki</option>
                                 @foreach ($commodities as $commodity)
@@ -42,7 +42,7 @@
 
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 <option value="" disabled selected>April 2025</option>
                                 @foreach ($periods as $period)

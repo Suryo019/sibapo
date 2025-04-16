@@ -1,4 +1,4 @@
-{{-- @dd($numberPeriods) --}}
+{{-- @dd($data) --}}
 <x-admin-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
@@ -15,8 +15,16 @@
                 <div class="flex gap-4">
                     <form class="flex gap-2" action="" method="get">
                         <div>
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                            <select class="border border-black p-2 rounded-ful bg-white select2" id="pilih_urutan">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" >Ascending</option>
+                                <option value="" >Decending</option>
+                            </select>
+                        </div>
+                        <div>
                             <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_pasar">
                                 {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
                                 <option value="" selected>Pasar Tanjung</option>
                                 @foreach ($markets as $market)
@@ -25,8 +33,8 @@
                             </select>
                         </div>
                         <div>
-                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_periode">
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih periode</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 <option value="" disabled selected>April 2025</option>
                                 @foreach ($periods as $period)

@@ -9,7 +9,7 @@
             <div class="flex gap-4">
               <div>
                 <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                <select class="border p-2 rounded bg-white" id="pilih_pasar">
+                <select class="border border-black p-2 rounded-full bg-white" id="pilih_pasar">
                   <option>Pilih Pasar</option>
                   <option>Pasar Tanjung</option>
                 </select>
@@ -17,7 +17,7 @@
 
               <div>
                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                <select class="border p-2 rounded bg-white" id="pilih_periode">
+                <select class="border border-black p-2 rounded-full bg-white" id="pilih_periode">
                   {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                   @foreach ($periods as $period)
                       <option value="{{ $period }}">{{ $period }}</option>
@@ -27,7 +27,7 @@
 
               <div>
                 <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                <select class="border p-2 rounded bg-white" id="pilih_minggu">
+                <select class="border border-black p-2 rounded-full bg-white w-24" id="pilih_minggu">
                   <option>1</option>
                   <option selected>2</option>
                   <option>3</option>

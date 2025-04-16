@@ -10,7 +10,7 @@
                 {{-- Filter Pasar --}}
                 <div>
                     <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                    <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
+                    <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_pasar">
                         {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
                         <option value="" selected>Pasar Tanjung</option>
                         @foreach ($markets as $market)
@@ -22,7 +22,7 @@
                 {{-- Filter Periode --}}
                 <div>
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                         {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                         <option value="" disabled selected>April 2025</option>
                         @foreach ($periods as $period)
@@ -34,7 +34,7 @@
                 {{-- Filter Bakpokting --}}
                 <div>
                     <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1">Pilih Bahan Pokok</label>
-                    <select class="border p-2 rounded bg-white select2" disabled id="pilih_bahan_pokok">
+                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_bahan_pokok">
                         {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                         <option value="" disabled selected>Daging</option>
                         @foreach ($data as $item)

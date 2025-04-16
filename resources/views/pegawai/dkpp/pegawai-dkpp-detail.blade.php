@@ -19,7 +19,7 @@
                     <form action="" method="get">
                         <div>
                             <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                            <select class="border p-2 rounded bg-white" id="pilih_urutan">
+                            <select class="border border-black p-2 rounded-full bg-white" id="pilih_urutan">
                                 <option value="" disabled selected>Urutkan</option>
                                 <option>Ascending</option>
                                 <option>Descending</option>
@@ -28,7 +28,7 @@
 
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            <select class="border p-2 rounded bg-white" id="pilih_periode">
+                            <select class="border border-black p-2 rounded-full bg-white" id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 @foreach ($periods as $period)
                                     <option value="{{ $period }}">{{ $period }}</option>
@@ -38,7 +38,7 @@
 
                         <div>
                             <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                            <select class="border p-2 rounded bg-white" id="pilih_minggu">
+                            <select class="border border-black p-2 rounded-full bg-white" id="pilih_minggu">
                                 <option>1</option>
                                 <option selected>2</option>
                                 <option>3</option>

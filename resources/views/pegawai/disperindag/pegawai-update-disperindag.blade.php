@@ -2,7 +2,7 @@
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
@@ -14,7 +14,7 @@
                            name="pasar"
                            id="pasar"
                            placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('pasar', $data->pasar) }}">
                 </div>
             
@@ -25,7 +25,7 @@
                            name="jenis_bahan_pokok"
                            id="jenis_bahan_pokok"
                            placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok) }}">
                 </div>
             
@@ -36,7 +36,7 @@
                            name="kg_harga"
                            id="kg_harga"
                            placeholder="Contoh: 100000,-" 
-                           class="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('kg_harga', $data->kg_harga) }}">
                 </div>
             
@@ -46,16 +46,16 @@
                     <input type="date" 
                            name="tanggal_dibuat"
                            id="tanggal_dibuat"
-                           class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="border border-gray-300 p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
                            value="{{ old('tanggal_dibuat', \Carbon\Carbon::parse($data->tanggal_dibuat)->format('Y-m-d')) }}">
                 </div>
             
                 <!-- Tombol -->
                 <div class="flex justify-between mt-4">
                     <a href="{{ route('pegawai.disperindag.detail') }}">
-                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
+                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
                     </a>
-                    <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Simpan</button>
+                    <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Simpan</button>
                 </div>
             </form>
             

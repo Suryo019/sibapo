@@ -15,7 +15,7 @@
                     <form action="" method="get">
                         <div>
                             <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_pasar">
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_pasar">
                                 {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
                                 <option value="" selected>Pasar Tanjung</option>
                                 @foreach ($markets as $market)
@@ -26,7 +26,7 @@
 
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 <option value="" disabled selected>April 2025</option>
                                 @foreach ($periods as $period)
@@ -193,7 +193,7 @@
             <!-- Button Kembali & Tambah Data -->
             <div class="flex justify-between mt-4">
                 <a href="{{ route('pegawai.disperindag.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-ful hover:bg-green-800">Kembali</button>
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
                 </a>
             </div>
         </div>

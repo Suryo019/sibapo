@@ -17,7 +17,7 @@
 
                         <div>
                             <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                            <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
                                 {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
                                 <option value="" selected>Teri</option>
                                 @foreach ($fishes as $fish)
@@ -27,7 +27,7 @@
                         </div>
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih periode</label>
-                            <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
                                 {{-- <option value="" disabled selected>Pilih Periode</option> --}}
                                 <option value="" disabled selected>April 2025</option>
                                 @foreach ($periods as $period)
