@@ -64,9 +64,10 @@
                     title: 'Berhasil',
                     text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
+                }).then(() => {
+                    window.location.href = "{{ route('dkpp.detail') }}";
                 });
 
-                window.location.href = "{{ route('dkpp.detail') }}";
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;

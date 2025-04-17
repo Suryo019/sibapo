@@ -147,6 +147,8 @@
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {

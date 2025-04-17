@@ -266,7 +266,7 @@
     </main> 
 
 
-    {{-- Modal --}}
+    {{-- Modal Delete --}}
     <div id="modaldel" class="hidden w-full h-full">
         <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
             <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
@@ -274,8 +274,8 @@
 
                 <div class="flex justify-evenly">
                     <!-- Tombol Batal -->
-                    <div class="text-right" id="closeBtnDel">
-                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
+                    <div class="text-right">
+                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtnDel">Tutup</button>
                     </div>
                     <!-- Tombol Yakin -->
                     <div class="text-right">
@@ -288,8 +288,8 @@
 </x-admin-layout>
 
 <script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        let id = $(this).data('id');
+    $(document).on('click', '.btnConfirm', function() {
+        let dataId = $(this).data('id');
         $('#modaldel').show();
 
         $('#yesBtn').on('click', function() {
@@ -297,12 +297,11 @@
 
             $.ajax({
                 type: 'DELETE',
-                url: `/api/dp/${id}`,
+                url: `/api/dp/${dataId}`,
                 data: {
                     _token: '{{ csrf_token() }}',
                 },
-                success: function(data) {   
-                    console.log(data)                 
+                success: function(data) {         
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_ikan} telah dihapus.`,
@@ -322,14 +321,12 @@
         });
     });
 
-    $('#closeBtnDel').on('click', function() {
-        $('#modaldel').hide();
+    $(document).on('click', '#closeBtnDel', function() {
+        $('#modaldel').hide();  
     });
 
     
     $(document).ready(function() {
-        $('.select2').select2();
-
         // Filter Value
         $('#pilih_ikan').on('change', function() {
             $('#pilih_periode').removeAttr('disabled');

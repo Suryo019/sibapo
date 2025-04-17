@@ -301,7 +301,7 @@
                 data: {
                     _token: '{{ csrf_token() }}',
                 },
-                success: function(data) {                    
+                success: function(data) {
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,

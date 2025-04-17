@@ -112,7 +112,7 @@ class DTPHPController extends Controller
 
             $dtphp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus']);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dtphp]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

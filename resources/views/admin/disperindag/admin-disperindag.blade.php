@@ -68,7 +68,20 @@
 <script>
     var chart;
 
-    $('#pilih_bahan_pokok').on('change', function() {
+    $('#pilih_pasar').on('change', function() {
+        $('#pilih_periode').removeAttr('disabled');
+    });
+
+    $('#pilih_periode').on('change', function() {
+        $('#pilih_bahan_pokok').removeAttr('disabled');
+        $('#chart_placeholder').show();
+        $('#chart').addClass('hidden');
+        if (chart) {
+            chart.destroy();
+        }
+    });
+
+    $('#pilih_pasar, #pilih_periode, #pilih_bahan_pokok').on('change', function() {
         $.ajax({
             type: "GET",
             url: "{{ route('api.dpp.index') }}",
@@ -120,19 +133,6 @@
                 console.log(xhr.responseText);
             }
         });
-    });
-
-    $('#pilih_pasar').on('change', function() {
-        $('#pilih_periode').removeAttr('disabled');
-    });
-
-    $('#pilih_periode').on('change', function() {
-        $('#pilih_bahan_pokok').removeAttr('disabled');
-        $('#chart_placeholder').show();
-        $('#chart').addClass('hidden');
-        if (chart) {
-            chart.destroy();
-        }
     });
 
 </script>

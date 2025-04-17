@@ -11,26 +11,22 @@ use Illuminate\Validation\ValidationException;
 
 class DKPPController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
-            ->get()
-            ->map(function ($item) {
-                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-                return $item->periode_indonesia;
-            });
+            // return response()->json(['data' => $request]);
+            $date = Carbon::createFromFormat('F Y', $request->periode);
+            $month = $date->month;
+            $year = $date->year;
 
-            $data = DKPP::whereYear('tanggal_input', 2025)
-            ->whereMonth('tanggal_input', 4)
-            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [3])
+            $data = DKPP::whereYear('tanggal_input', $year)
+            ->whereMonth('tanggal_input', $month)
+            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', (int) $request->minggu)
             ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
             ->get();
             
             return response()->json([
                 'data' => $data,
-                'periods' => $periodeUnikNama,
             ]);
             
         } catch (\Throwable $th) {

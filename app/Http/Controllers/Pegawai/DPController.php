@@ -119,15 +119,13 @@ class DPController extends Controller
         try {
             $dp = DP::find($id);
 
-            return response()->json($dp);
-
             if (!$dp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
             $dp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus']);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dp]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

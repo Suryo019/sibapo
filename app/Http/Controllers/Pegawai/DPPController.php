@@ -13,7 +13,6 @@ class DPPController extends Controller
     public function index(Request $request)
     {
         try {
-            Carbon::setLocale('id');
             $date = Carbon::createFromFormat('F Y', $request->periode);
             $month = $date->month;
             $year = $date->year;

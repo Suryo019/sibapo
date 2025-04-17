@@ -268,7 +268,6 @@
 
     
     $(document).ready(function() {
-        $('.select2').select2();
 
         // Filter Value
         $('#pilih_pasar').on('change', function() {
