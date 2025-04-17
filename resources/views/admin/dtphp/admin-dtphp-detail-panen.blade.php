@@ -164,7 +164,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dtphp/${jenisKomoditas}`,
+                                            url: `/api/dtphp/${jenisKomoditas}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -198,7 +198,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dtphp/${jenisKomoditas}`,
+                                            url: `/api/dtphp/${jenisKomoditas}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -214,7 +214,7 @@
                                                                 
                                                             </div>
                                                             
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                                                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -257,16 +257,16 @@
         </div>
 
 
-        {{-- Modal --}}
-        <div id="modaldel" class="hidden w-full h-full">
+        {{-- Modal Delete --}}
+        <div id="deleteModal" class="hidden w-full h-full">
             <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
                 <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
                     <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
 
                     <div class="flex justify-evenly">
                         <!-- Tombol Batal -->
-                        <div class="text-right" id="closeBtnDel">
-                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
                         </div>
                         <!-- Tombol Yakin -->
                         <div class="text-right">
@@ -276,38 +276,33 @@
                 </div>
             </div>
         </div>
+
         <!-- Button Kembali & Tambah Data -->
         <div class="flex justify-between mt-4">
             <a href="{{ route('dtphp.produksi') }}">
             <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
-            </a>
-            <a href="{{ route('dtphp.create') }}">
-            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
             </a>
         </div>
     </main>  
 </x-admin-layout>
 
 <script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        let id = $(this).data('id');
-        $('#modaldel').show();
+    $(document).on('click', '.btnConfirm', function() { 
+        let dataId = $(this).data('id');
+        $('#deleteModal').show();
 
-        $('#yesBtn').on('click', function() {
-            $('#modaldel').hide();
-
+        $('#yesBtn').off('click').on('click', function() {
             $.ajax({
                 type: 'DELETE',
-                url: `/api/dtphp/${id}`,
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function(data) {                    
+                url: `/api/dtphp/${dataId}`,
+                success: function(data) {
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
@@ -318,11 +313,13 @@
                     });
                 }
             });
+
+            $('#deleteModal').hide();
         });
     });
 
-    $('#closeBtnDel').on('click', function() {
-        $('#modaldel').hide();
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
     });
     
     $(document).ready(function() {

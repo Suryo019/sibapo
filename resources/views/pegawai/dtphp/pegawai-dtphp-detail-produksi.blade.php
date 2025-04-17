@@ -5,12 +5,12 @@
 
         <!-- Tombol Switch Produksi / Panen -->
         <div class="flex gap-4 mb-4">
-            <a href="{{ route('dtphp.detail.produksi') }}">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
                 <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-5 left-4 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
                     Volume Produksi
                 </button>
             </a>
-            <a href="{{ route('dtphp.detail.panen') }}">
+            <a href="{{ route('pegawai.dtphp.detail.panen') }}">
                 <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-7 shadow-md {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
                     Luas Panen
                 </button>
@@ -259,9 +259,6 @@
                 <a href="{{ route('pegawai.dtphp.produksi') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
                 </a>
-                <a href="{{ route('pegawai.dtphp.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
-                </a>
             </div>
         </div>
 
@@ -307,6 +304,8 @@
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {

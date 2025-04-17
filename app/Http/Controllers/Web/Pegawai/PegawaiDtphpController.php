@@ -74,10 +74,10 @@ class PegawaiDtphpController extends Controller
             });
 
         // dd($periodeUnikAngka);
-        $periode = explode('-', $periodeUnikAngka[1]);
+        $periode = explode('-', '2025-04');
         $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
 
-        $periode = $periodeUnikAngka[1];
+        $periode = '2025-04';
 
         // dd($periode);
         $dtphpProduksiHari = DTPHP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periode])
@@ -149,10 +149,10 @@ class PegawaiDtphpController extends Controller
             });
 
         // dd($periodeUnikAngka);
-        $periode = explode('-', $periodeUnikAngka[1]);
+        $periode = explode('-', '2025-04');
         $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
 
-        $periode = $periodeUnikAngka[1];
+        $periode = '2025-04';
 
         // dd($periode);
         $dtphpProduksiHari = DTPHP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periode])

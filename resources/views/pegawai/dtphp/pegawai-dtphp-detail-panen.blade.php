@@ -260,9 +260,6 @@
                 <a href="{{ route('pegawai.dtphp.produksi') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
                 </a>
-                <a href="{{ route('pegawai.dtphp.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
-                </a>
             </div>
         </div>
 
@@ -309,6 +306,8 @@
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {

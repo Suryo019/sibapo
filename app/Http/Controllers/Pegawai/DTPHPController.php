@@ -26,7 +26,6 @@ class DTPHPController extends Controller
     {
         try {
             $data = DTPHP::where('jenis_komoditas', $namaKomoditas)
-            ->whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->get();
             return response()->json(['data' => $data]);
