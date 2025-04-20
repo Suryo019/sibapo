@@ -91,59 +91,105 @@ class PegawaiDisperindagController extends Controller
         //
     }
 
-    public function detail()
+    public function filter(Request $request)
+    {
+        // Map bulan Indonesia ke Engleshhh
+        $mapBulan = [
+            'Januari'   => 'January',
+            'Februari'  => 'February',
+            'Maret'     => 'March',
+            'April'     => 'April',
+            'Mei'       => 'May',
+            'Juni'      => 'June',
+            'Juli'      => 'July',
+            'Agustus'   => 'August',
+            'September' => 'September',
+            'Oktober'   => 'October',
+            'November'  => 'November',
+            'Desember'  => 'December'
+        ];
+    
+        // Konversi input $request->periode dari ID ke EN
+        $bagian = explode(' ', $request->periode ?? Carbon::now()->locale('en')->translatedFormat('F Y'));
+        $bulanIndonesia = $bagian[0] ?? '';
+        $tahun = $bagian[1] ?? now()->year;
+    
+        $bulanEn = $mapBulan[$bulanIndonesia] ?? $bulanIndonesia;
+        $tanggalEn = "$bulanEn $tahun";
+        $tanggalId = "$bulanIndonesia $tahun";
+    
+        // Validasi format dan konversi ke 'Y-m'
+        if (array_key_exists($bulanIndonesia, $mapBulan) && Carbon::hasFormat($tanggalEn, 'F Y')) {
+            $periodeUnikAngka = Carbon::createFromFormat('F Y', $tanggalEn)->format('Y-m');
+        } else {
+            $periodeUnikAngka = Carbon::now()->format('Y-m');
+        }
+    
+        $pasar = $request->pasar ?? 'Pasar Tanjung';
+    
+        return [$tanggalId, $periodeUnikAngka, $pasar];
+    }
+
+    public function detail(Request $request)
     {
         Carbon::setLocale('id');
 
+        $data = $this->filter($request);
+
+        // Ambil periode unik dari data dan ubah ke format Indonesia
         $periodeUnikNama = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
-                    ->get()
-                    ->map(function ($item) {
-                        $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-                        $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-                        return $item->periode_indonesia;
-                    });
-        $periodeUnikAngka = DPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_dibuat, "%Y-%m") as periode'))
             ->get()
             ->map(function ($item) {
-                return $item->periode;
+                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+                return $item->periode_indonesia;
             });
 
-        // dd($periodeUnikAngka);
-        $periode = explode('-', $periodeUnikAngka[1]);
-        $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
+        $tanggalId = $data[0];
 
-        $periode = $periodeUnikAngka[1];
-
-        // dd($periode);
-        $dppHargaHari = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periode])
-        ->get()
-        ->groupBy('jenis_bahan_pokok')
-        ->map(function ($items) {
-            // dd($items);
-            $row = [
-                'id' => $items[0]->id,
-                'user_id' => $items[0]->user_id,
-                'pasar' => $items[0]->pasar,
-                'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
-                'harga_per_tanggal' => [],
-                'data_asli' => $items, // Optional, untuk keperluan detail/debug
-            ];
+        // Default periode
+        $periodeUnikAngka = $data[1];
     
-            foreach ($items as $item) {
-                $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
-                $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
-            }
+        // Default pasar
+        $pasar = $data[2];
     
-            return $row;
-        })->values();
+        // Hitung jumlah hari di bulan
+        $splitPeriode = explode('-', $periodeUnikAngka);
+        $jumlahHari = Carbon::createFromDate($splitPeriode[0], $splitPeriode[1])->daysInMonth;
     
-
+        // Ambil data DPP berdasarkan periode dan pasar
+        $dppHargaHari = DPP::whereRaw('DATE_FORMAT(tanggal_dibuat, "%Y-%m") = ?', [$periodeUnikAngka])
+            ->when($pasar, function ($query) use ($pasar) {
+                return $query->where('pasar', $pasar);
+            })
+            ->get()
+            ->groupBy('jenis_bahan_pokok')
+            ->map(function ($items) {
+                $row = [
+                    'id' => $items[0]->id,
+                    'user_id' => $items[0]->user_id,
+                    'pasar' => $items[0]->pasar,
+                    'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                    'harga_per_tanggal' => [],
+                    'data_asli' => $items, // Optional untuk debugging
+                ];
+    
+                foreach ($items as $item) {
+                    $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                    $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+                }
+    
+                return $row;
+            })->values();
+    
         return view('pegawai.disperindag.pegawai-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
             'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
+            'market' => $pasar,
             'periods' => $periodeUnikNama,
-            'numberPeriods' => $periodeUnikAngka,
+            'period' => $tanggalId,
+            'splitNumberPeriod' => $splitPeriode,
             'daysInMonth' => $jumlahHari,
         ]);
     }

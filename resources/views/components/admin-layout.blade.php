@@ -46,7 +46,7 @@
                     request()->is('disperindag*') => 'Dinas Perindustrian dan Perdagangan',
                     request()->is('dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
                     request()->is('dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
-                    request()->is('dinasperikanan*') => 'Dinas Perikanan',
+                    request()->is('perikanan*') => 'Dinas Perikanan',
                     default => 'Dinas Tidak Dikenal'
                 };
             @endphp
@@ -62,20 +62,24 @@
     </div>
 
     <script>
-    function showLoading() {
-        document.getElementById("loading").style.display = "flex";
-    }
+        // Select2
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+        function showLoading() {
+            document.getElementById("loading").style.display = "flex";
+        }
 
-    function hideLoading() {
-        document.getElementById("loading").style.display = "none";
-    }
+        function hideLoading() {
+            document.getElementById("loading").style.display = "none";
+        }
 
-    $(document)
-        .ajaxStart(function () {
-            $("#loading").show();
-        })
-        .ajaxStop(function () {
-            $("#loading").hide();
+        $(document)
+            .ajaxStart(function () {
+                $("#loading").show();
+            })
+            .ajaxStop(function () {
+                $("#loading").hide();
         });
     </script>
     

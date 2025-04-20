@@ -35,7 +35,6 @@ class DPController extends Controller
     {
         try {
             $data = DP::where('jenis_ikan', $namaIkan)
-            ->whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->get();
             return response()->json(['data' => $data]);
@@ -125,7 +124,7 @@ class DPController extends Controller
 
             $dp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus']);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dp]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

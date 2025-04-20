@@ -2,7 +2,7 @@
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
 
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
             <form method="POST" action="{{ route('api.dkpp.store') }}">
                 @csrf
 
@@ -13,7 +13,7 @@
                         name="jenis_komoditas" 
                         id="jenis_komoditas"
                         placeholder="Contoh: Daging" 
-                        class="border p-2 w-full rounded">
+                        class="border p-2 w-full rounded-full">
                 </div>
 
                 <div class="mb-4">
@@ -23,7 +23,7 @@
                         name="ton_ketersediaan" 
                         id="ton_ketersediaan"
                         placeholder="Contoh: 100" 
-                        class="border p-2 w-full rounded">
+                        class="border p-2 w-full rounded-full">
                 </div>
 
                 <div class="mb-4">
@@ -33,18 +33,20 @@
                         name="ton_kebutuhan_perminggu" 
                         id="ton_kebutuhan_perminggu"
                         placeholder="Contoh: 100" 
-                        class="border p-2 w-full rounded">
+                        class="border p-2 w-full rounded-full">
                 </div>
 
-                <!-- Tombol -->
-                <div class="flex justify-between mt-4">
-                    <a href="{{ route('dkpp.index') }}">
-                        <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                    </a>
-                    <button type="button" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800" id="submitBtn">Tambah</button>
-                </div>
             </form>
         </div>
+        
+        <!-- Tombol -->
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('dkpp.detail') }}">
+                <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
+            <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800" id="submitBtn">Tambah</button>
+        </div>
+        
     </main>
 </x-admin-layout>
 

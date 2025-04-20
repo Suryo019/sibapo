@@ -26,7 +26,6 @@ class DTPHPController extends Controller
     {
         try {
             $data = DTPHP::where('jenis_komoditas', $namaKomoditas)
-            ->whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->get();
             return response()->json(['data' => $data]);
@@ -112,7 +111,7 @@ class DTPHPController extends Controller
 
             $dtphp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus']);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dtphp]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

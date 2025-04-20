@@ -14,21 +14,39 @@
                     <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
-                            {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                    <form class="flex gap-4" action="" method="get">
+                        <div>
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_urutan">
+                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                                <option value="" selected>Ascending</option>
+                                {{-- @foreach ($fishes as $fish)
+                                    <option value="{{ $fish }}">{{ $fish }}</option>
+                                @endforeach --}}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
+                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                                <option value="" selected>Teri</option>
+                                @foreach ($fishes as $fish)
+                                    <option value="{{ $fish }}">{{ $fish }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -135,7 +153,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -168,7 +186,7 @@
                                 
                                         $.ajax({
                                             type: "GET",
-                                            url: `api/dp/${jenisIkan}`,
+                                            url: `/api/dp/${jenisIkan}`,
                                             success: function(response) {
                                                 const data = response.data;
                                                 $('#editDataList').empty();
@@ -183,7 +201,7 @@
                                                                 
                                                             </div>
                                                             
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                                                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -233,46 +251,79 @@
                 </div>
             </div>
             @endif
-    
-            <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('perikanan.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="{{ route('perikanan.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
-                </a>
+        </div>
+
+        <!-- Button Kembali & Tambah Data -->
+        <div class="flex justify-between mt-4">
+            <a href="{{ route('perikanan.index') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
+        </div>
+
+        {{-- Modal Delete --}}
+        <div id="deleteModal" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
+
+                    <div class="flex justify-evenly">
+                        <!-- Tombol Batal -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                        </div>
+                        <!-- Tombol Yakin -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>  
+    </main> 
 </x-admin-layout>
 
 <script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        const confirmed = confirm('Yakin ingin mengubah data ini?');
-        if (!confirmed) {
-            e.preventDefault();
-            return;
-        }
-
+    $(document).on('click', '.btnConfirm', function() { 
         let dataId = $(this).data('id');
+        $('#deleteModal').show();
+        // console.log(data);
 
-        $.ajax({
-            type: 'DELETE',
-            url: `/api/dp/${dataId}`,
-            success: function() {
-                window.location.reload();
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-            }
+        $('#yesBtn').off('click').on('click', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dp/${dataId}`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(data) {         
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_ikan} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
+            });
+
+            $('#deleteModal').hide();
         });
+    });
+
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
     });
 
     
     $(document).ready(function() {
-        $('.select2').select2();
-
         // Filter Value
         $('#pilih_ikan').on('change', function() {
             $('#pilih_periode').removeAttr('disabled');

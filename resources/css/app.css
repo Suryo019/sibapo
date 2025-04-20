@@ -22,3 +22,18 @@
         transform: rotate(360deg);
     }
 }
+
+@layer components {
+    .split-table-container {
+        @apply flex;
+    }
+    .split-table-fixed {
+        @apply flex-none;
+    }
+    .split-table-scrollable {
+        @apply flex-1 overflow-x-auto;
+    }
+    .split-table {
+        @apply table-auto h-full border-collapse;
+    }
+}

@@ -14,20 +14,27 @@
                 </div>
                 <div class="flex gap-4">
                     <form action="" method="get">
-                        <select class="border p-2 rounded bg-white select2" id="pilih_ikan">
-                            {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                        <select class="border p-2 rounded bg-white select2" disabled id="pilih_periode">
-                            {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+
+                        <div>
+                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
+                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                                <option value="" selected>Teri</option>
+                                @foreach ($fishes as $fish)
+                                    <option value="{{ $fish }}">{{ $fish }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih periode</label>
+                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
+                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -147,7 +154,7 @@
                                                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
                                                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                                             </div>
-                                                            <a href="pegawai/perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                                                            <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);
@@ -233,14 +240,34 @@
             </div>
             @endif
     
-            <!-- Button Kembali & Tambah Data -->
-            <div class="flex justify-between mt-4">
-                <a href="{{ route('pegawai.perikanan.index') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Kembali</button>
-                </a>
-                <a href="{{ route('pegawai.perikanan.create') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Tambah Data</button>
-                </a>
+        </div>
+        <!-- Button Kembali & Tambah Data -->
+        <div class="flex justify-between w-full mt-4">
+            <a href="{{ route('pegawai.perikanan.index') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+            </a>
+            <a href="{{ route('pegawai.perikanan.create') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
+            </a>
+        </div>
+
+        {{-- Modal --}}
+        <div id="modaldel" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
+
+                    <div class="flex justify-evenly">
+                        <!-- Tombol Batal -->
+                        <div class="text-right" id="closeBtnDel">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
+                        </div>
+                        <!-- Tombol Yakin -->
+                        <div class="text-right">
+                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>  
@@ -248,25 +275,43 @@
 
 <script>
     $(document).on('click', '.btnConfirm', function(e) {
-        const confirmed = confirm('Yakin ingin mengubah data ini?');
-        if (!confirmed) {
-            e.preventDefault();
-            return;
-        }
+        let id = $(this).data('id');
+        $('#modaldel').show();
 
-        let dataId = $(this).data('id');
+        $('#yesBtn').on('click', function() {
+            $('#modaldel').hide();
 
-        $.ajax({
-            type: 'DELETE',
-            url: `/api/dp/${dataId}`,
-            success: function() {
-                window.location.reload();
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-            }
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dp/${id}`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(data) {                    
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_ikan} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
+            });
         });
     });
+
+    $('#closeBtnDel').on('click', function() {
+        $('#modaldel').hide();
+    });
+    
 
     
     $(document).ready(function() {
