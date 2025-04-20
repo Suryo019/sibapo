@@ -69,18 +69,18 @@
 
 <script>
   var chart;
+  var debounceTimer;
 
   $('#pilih_periode').on('change', function() {
-    $('#pilih_minggu').removeAttr('disabled');
+    $('#pilih_minggu').prop('disabled', false);
   });
 
-  // Saat salah satu berubah (periode / minggu)
-  $('#pilih_periode, #pilih_minggu').on('change', function () {
-    let periode = $('#pilih_periode').val();
-    let minggu = $('#pilih_minggu').val();
+  $('#pilih_periode, #pilih_minggu').on('change', function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      let periode = $('#pilih_periode').val();
+      let minggu = $('#pilih_minggu').val();
 
-    // Hanya jalankan kalau dua-duanya dipilih
-    if (periode && minggu) {
       $.ajax({
         type: 'GET',
         url: `{{ route('api.dkpp.index') }}`,
@@ -92,60 +92,93 @@
         success: function(response) {
           let dataset = response.data;
           
-          let ketersediaan = [];
-          let kebutuhan = [];
-          let komoditas = [];
-
           if (!dataset || dataset.length === 0) {
-            $('#chart_placeholder').html("<p>Data tidak tersedia untuk periode dan minggu ini</p>");
-            $('#chart').addClass('hidden');
+            if (chart) {
+              chart.destroy();
+              chart = null;
+            }
+            
+            $('#chart_placeholder').html(`
+              <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                <p class="text-gray-400">Tidak ada data untuk periode yang dipilih.</p>
+              </div>
+            `);
             return;
           }
 
-          $.each(dataset, function(_, value) {
-            ketersediaan.push(value.ton_ketersediaan);
-            kebutuhan.push(value.ton_kebutuhan_perminggu);
-            komoditas.push(value.jenis_komoditas);
-          });
+          let ketersediaan = dataset.map(item => item.ton_ketersediaan);
+          let kebutuhan = dataset.map(item => item.ton_kebutuhan_perminggu);
+          let komoditas = dataset.map(item => item.jenis_komoditas);
 
-          // Hapus chart lama jika ada
+          // Skip jika data sama
+          if (chart && JSON.stringify(chart.w.config.series[0].data) === JSON.stringify(ketersediaan)) {
+            return;
+          }
+
           if (chart) {
             chart.destroy();
           }
 
           var options = {
             chart: {
-                type: 'line',
-                height: 350
+              type: 'line',
+              height: 350,
+              animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800
+              }
             },
             series: [{
-                name: 'Ketersediaan',
-                data: ketersediaan
+              name: 'Ketersediaan (ton)',
+              data: ketersediaan
             }, {
-                name: 'Kebutuhan',
-                data: kebutuhan
+              name: 'Kebutuhan (ton)',
+              data: kebutuhan
             }],
             xaxis: {
-                categories: komoditas,
+              categories: komoditas,
+              labels: {
+                style: {
+                  fontSize: '12px'
+                }
+              }
+            },
+            yaxis: {
+              title: {
+                text: 'Ton'
+              }
+            },
+            tooltip: {
+              y: {
+                formatter: function(value) {
+                  return value + ' ton';
+                }
+              }
             }
           };
 
-          $('#chart_placeholder').hide();
+          $('#chart_placeholder').empty();
           $('#chart').removeClass('hidden');
-
+          
           chart = new ApexCharts(document.querySelector("#chart"), options);
           chart.render();
 
-          // Update label teks periode & minggu
-          $('#minggu').text("Minggu ke " + minggu);
-          $('#periode').text("Bulan " + periode);
-
+          $('#minggu').text("Minggu ke-" + minggu);
+          $('#periode').text(periode);
         },
         error: function(xhr) {
-          console.log("AJAX Error: ", xhr.responseText);
+          $('#chart_placeholder').html(`
+            <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
+              <h3 class="text-lg font-semibold text-red-500">Error</h3>
+              <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+            </div>
+          `);
+          console.error("AJAX Error:", xhr.responseText);
         }
       });
-    }
+    }, 300);
   });
 </script>
 

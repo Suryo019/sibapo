@@ -1,4 +1,5 @@
 <x-pegawai-layout>
+
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
@@ -8,52 +9,49 @@
             </div>
             <div class="flex gap-4">
                 {{-- Filter Pasar --}}
-                <div>
-                    <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_pasar">
-                        {{-- <option value="" disabled selected>Pilih Pasar</option> --}}
-                        <option value="" selected>Pasar Tanjung</option>
-                        @foreach ($markets as $market)
-                            <option value="{{ $market }}">{{ $market }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <select class="border bg-white select2" id="pilih_pasar">
+                    <option value="" disabled selected>Pilih Pasar</option>
+                    {{-- <option value="" selected>Pasar Tanjung</option> --}}
+                    @foreach ($markets as $market)
+                        <option value="{{ $market }}">{{ $market }}</option>
+                    @endforeach
+                </select>
 
                 {{-- Filter Periode --}}
-                <div>
-                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
-                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                        <option value="" disabled selected>April 2025</option>
-                        @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <select class="border bg-white select2" disabled id="pilih_periode">
+                    <option value="" disabled selected>Pilih Periode</option>
+                    {{-- <option value="" disabled selected>April 2025</option> --}}
+                    @foreach ($periods as $period)
+                        <option value="{{ $period }}">{{ $period }}</option>
+                    @endforeach
+                </select>
 
                 {{-- Filter Bakpokting --}}
-                <div>
-                    <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1">Pilih Bahan Pokok</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_bahan_pokok">
-                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                        <option value="" disabled selected>Daging</option>
-                        @foreach ($data as $item)
-                            <option value="{{ $item }}">{{ $item }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <select class="border bg-white select2" disabled id="pilih_bahan_pokok">
+                    <option value="" disabled selected>Pilih Periode</option>
+                    {{-- <option value="" disabled selected>Daging</option> --}}
+                    @foreach ($data as $item)
+                        <option value="{{ $item }}">{{ $item }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         
         <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8" id="chart_container">
             <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-              <h3>Data Harga Bahan Pokok Pasar Tanjung April 2025</h3>
+                <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
-            <div id="chart" class="w-full">
-                {{-- Chartt --}}
+            
+            <!-- Placeholder saat chart belum tersedia -->
+            <div id="chart_placeholder" class="text-gray-500 text-center">
+                Silakan pilih pasar, periode, dan bahan pokok untuk menampilkan data grafik.
             </div>
+        
+            <!-- Chart akan muncul di sini -->
+            <div id="chart" class="w-full hidden"></div>
         </div>
+        
     
         <!-- Button -->
         <div class="flex justify-center mt-4">
@@ -64,58 +62,136 @@
             </a>
         </div>
     </main>
+
 </x-pegawai-layout>
 
 <script>
-    $.ajax({
-        type: "GET",
-        url: "{{ route('api.dpp.index') }}",
-        success: function(response) {
-            let dataset = response.data;
-            
-            let jenis_bahan_pokok = [];
-            let harga = [];
-
-            $.each(dataset, function(key, value) {
-                jenis_bahan_pokok.push(value.jenis_bahan_pokok);
-                harga.push(value.kg_harga);
-            });
-
-            console.log(jenis_bahan_pokok);
-            console.log(harga);
-
-
-            var options = {
-                chart: {
-                    type: 'line',
-                    height: 350
-                },
-                series: [{
-                    name: 'Harga',
-                    data: harga
-                }],
-                xaxis: {
-                    categories: jenis_bahan_pokok
-                }
-            };
-
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-        }
-    });
-
+    var chart;
+    var debounceTimer;
 
     $('#pilih_pasar').on('change', function() {
-        $('#pilih_periode').removeAttr('disabled');
+        $('#pilih_periode').prop('disabled', false).val('');
+        $('#pilih_bahan_pokok').prop('disabled', true).val('');
     });
 
     $('#pilih_periode').on('change', function() {
-        $('#pilih_bahan_pokok').removeAttr('disabled');
+        $('#pilih_bahan_pokok').prop('disabled', false);
     });
 
-    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
-    
+    $('#pilih_pasar, #pilih_periode, #pilih_bahan_pokok').on('change', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const pasar = $('#pilih_pasar').val();
+            const periode = $('#pilih_periode').val();
+            const bahanPokok = $('#pilih_bahan_pokok').val();
+
+            if (!pasar || !periode || !bahanPokok) {
+                return;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('api.dpp.index') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    pasar: pasar,
+                    periode: periode,
+                    bahan_pokok: bahanPokok
+                },
+                success: function(response) {
+                    $('#bahan_pokok').text(bahanPokok);
+                    $('#pasar').text(pasar);
+                    $('#periode').text(periode);
+
+                    let dataset = response.data;
+                    
+                    if (!dataset || dataset.length === 0) {
+                        if (chart) {
+                            chart.destroy();
+                            chart = null;
+                        }
+                        $('#chart').addClass('hidden');
+                        $('#chart_placeholder').html(`
+                            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+                            </div>
+                        `).show();
+                        return;
+                    }
+
+                    let labels = dataset.map(item => item.hari);
+                    let data = dataset.map(item => item.kg_harga);
+
+                    // Hanya render jika data berbeda
+                    if (!chart || JSON.stringify(chart.w.config.series[0].data) !== JSON.stringify(data)) {
+                        $('#chart_placeholder').empty().hide();
+                        $('#chart').removeClass('hidden');
+
+                        if (chart) {
+                            chart.destroy();
+                        }
+
+                        chart = new ApexCharts(document.querySelector("#chart"), {
+                            chart: {
+                                type: 'line',
+                                height: 350,
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800
+                                }
+                            },
+                            series: [{
+                                name: 'Harga (Rp)',
+                                data: data
+                            }],
+                            xaxis: {
+                                categories: labels,
+                                labels: {
+                                    style: {
+                                        fontSize: '12px'
+                                    }
+                                }
+                            },
+                            yaxis: {
+                                title: {
+                                    text: 'Harga (Rp)'
+                                },
+                                labels: {
+                                    formatter: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                y: {
+                                    formatter: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                }
+                            }
+                        });
+                        
+                        chart.render();
+                    }
+                },
+                error: function(xhr) {
+                    $('#chart_placeholder').html(`
+                        <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
+                            <h3 class="text-lg font-semibold text-red-500">Error</h3>
+                            <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+                        </div>
+                    `);
+                    console.error("AJAX Error:", xhr.responseText);
+                }
+            });
+        }, 300); // Debounce 300ms
+    });
+
+    // Reset semua saat halaman dimuat
+    $(document).ready(function() {
+        $('#pilih_periode').prop('disabled', true);
+        $('#pilih_bahan_pokok').prop('disabled', true);
+    });
 </script>

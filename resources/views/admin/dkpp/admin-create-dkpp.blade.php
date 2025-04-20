@@ -41,7 +41,7 @@
         
         <!-- Tombol -->
         <div class="flex justify-between mt-4">
-            <a href="{{ route('dkpp.index') }}">
+            <a href="{{ route('dkpp.detail') }}">
                 <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
             </a>
             <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800" id="submitBtn">Tambah</button>

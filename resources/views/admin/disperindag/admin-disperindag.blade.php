@@ -40,7 +40,7 @@
         <!-- Chart Placeholder -->
         <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8" id="chart_container">
             <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-                <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <b id="pasar"></b> <b id="periode"></b></h3>
+                <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
             
             <!-- Placeholder saat chart belum tersedia -->
@@ -67,72 +67,131 @@
 
 <script>
     var chart;
+    var debounceTimer;
 
     $('#pilih_pasar').on('change', function() {
-        $('#pilih_periode').removeAttr('disabled');
+        $('#pilih_periode').prop('disabled', false).val('');
+        $('#pilih_bahan_pokok').prop('disabled', true).val('');
     });
 
     $('#pilih_periode').on('change', function() {
-        $('#pilih_bahan_pokok').removeAttr('disabled');
-        $('#chart_placeholder').show();
-        $('#chart').addClass('hidden');
-        if (chart) {
-            chart.destroy();
-        }
+        $('#pilih_bahan_pokok').prop('disabled', false);
     });
 
     $('#pilih_pasar, #pilih_periode, #pilih_bahan_pokok').on('change', function() {
-        $.ajax({
-            type: "GET",
-            url: "{{ route('api.dpp.index') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                pasar: $('#pilih_pasar').val(),
-                periode: $('#pilih_periode').val(),
-                bahan_pokok: $('#pilih_bahan_pokok').val()
-            },
-            success: function(response) {
-                $('#bahan_pokok').html($('#pilih_bahan_pokok').val());
-                $('#pasar').html($('#pilih_pasar').val());
-                $('#periode').html($('#pilih_periode').val());
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const pasar = $('#pilih_pasar').val();
+            const periode = $('#pilih_periode').val();
+            const bahanPokok = $('#pilih_bahan_pokok').val();
 
-                let dataset = response.data;
-                let jenis_bahan_pokok = [];
-                let harga = [];
-
-                $.each(dataset, function(key, value) {
-                    jenis_bahan_pokok.push(value.jenis_bahan_pokok);
-                    harga.push(value.kg_harga);
-                });
-
-                if (chart) {
-                    chart.destroy();
-                }
-
-                $('#chart_placeholder').hide();
-                $('#chart').removeClass('hidden');
-
-                var options = {
-                    chart: {
-                        type: 'line',
-                        height: 350
-                    },
-                    series: [{
-                        name: 'Harga',
-                        data: harga
-                    }],
-                    xaxis: {
-                        categories: jenis_bahan_pokok
-                    }
-                };
-
-                chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
+            if (!pasar || !periode || !bahanPokok) {
+                return;
             }
-        });
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('api.dpp.index') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    pasar: pasar,
+                    periode: periode,
+                    bahan_pokok: bahanPokok
+                },
+                success: function(response) {
+                    $('#bahan_pokok').text(bahanPokok);
+                    $('#pasar').text(pasar);
+                    $('#periode').text(periode);
+
+                    let dataset = response.data;
+                    
+                    if (!dataset || dataset.length === 0) {
+                        if (chart) {
+                            chart.destroy();
+                            chart = null;
+                        }
+                        $('#chart').addClass('hidden');
+                        $('#chart_placeholder').html(`
+                            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+                            </div>
+                        `).show();
+                        return;
+                    }
+
+                    let labels = dataset.map(item => item.hari);
+                    let data = dataset.map(item => item.kg_harga);
+
+                    // Hanya render jika data berbeda
+                    if (!chart || JSON.stringify(chart.w.config.series[0].data) !== JSON.stringify(data)) {
+                        $('#chart_placeholder').empty().hide();
+                        $('#chart').removeClass('hidden');
+
+                        if (chart) {
+                            chart.destroy();
+                        }
+
+                        chart = new ApexCharts(document.querySelector("#chart"), {
+                            chart: {
+                                type: 'line',
+                                height: 350,
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800
+                                }
+                            },
+                            series: [{
+                                name: 'Harga (Rp)',
+                                data: data
+                            }],
+                            xaxis: {
+                                categories: labels,
+                                labels: {
+                                    style: {
+                                        fontSize: '12px'
+                                    }
+                                }
+                            },
+                            yaxis: {
+                                title: {
+                                    text: 'Harga (Rp)'
+                                },
+                                labels: {
+                                    formatter: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                y: {
+                                    formatter: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
+                                }
+                            }
+                        });
+                        
+                        chart.render();
+                    }
+                },
+                error: function(xhr) {
+                    $('#chart_placeholder').html(`
+                        <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
+                            <h3 class="text-lg font-semibold text-red-500">Error</h3>
+                            <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+                        </div>
+                    `);
+                    console.error("AJAX Error:", xhr.responseText);
+                }
+            });
+        }, 300); // Debounce 300ms
     });
 
+    // Reset semua saat halaman dimuat
+    $(document).ready(function() {
+        $('#pilih_periode').prop('disabled', true);
+        $('#pilih_bahan_pokok').prop('disabled', true);
+    });
 </script>

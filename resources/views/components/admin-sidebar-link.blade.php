@@ -10,11 +10,11 @@
           <i class="caret-icon bi bi-caret-down-fill scale-50"></i>
         </div>
       </summary>
-      <ul class="ml-4 mt-1 pb-2">
-        <li>
+      <ul class="mt-1 pb-2">
+        <li class="pl-4 hover:bg-green-800">
           <a {{ $createData->attributes }} class="block py-1 px-2 rounded">{{ $createData }}</a>
         </li>
-        <li>
+        <li class="pl-4 hover:bg-green-800">
           <a {{ $viewData->attributes }} class="block py-1 px-2 rounded">{{ $viewData }}</a>
         </li>
       </ul>

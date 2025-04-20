@@ -21,7 +21,7 @@ class DPPController extends Controller
             ->whereYear('tanggal_dibuat', $year)
             ->where('pasar', $request->pasar)
             ->where('jenis_bahan_pokok', $request->bahan_pokok)
-            ->select('jenis_bahan_pokok', 'kg_harga')
+            ->selectRaw('jenis_bahan_pokok, kg_harga, tanggal_dibuat, DAY(tanggal_dibuat) as hari')
             ->get();
 
             return response()->json([
@@ -35,12 +35,35 @@ class DPPController extends Controller
         }
     }
 
-    public function listItem($namaBahanPokok)
+    public function detailDataFilter(Request $request)
+    {
+        try {
+            $date = Carbon::createFromFormat('F Y', $request->periode);
+            $month = $date->month;
+            $year = $date->year;
+            // return response()->json(['month' => $month, 'year' => $year]);
+            $dpp = DPP::whereMonth('tanggal_dibuat', $month)
+            ->whereYear('tanggal_dibuat', $year)
+            ->where('pasar', $request->pasar)
+            ->get();
+
+            return response()->json([
+                'data' => $dpp
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function listItem(Request $request, $namaBahanPokok)
     {
         try {
             $data = DPP::where('jenis_bahan_pokok', $namaBahanPokok)
-                ->whereMonth('tanggal_dibuat', 4)
-                ->whereYear('tanggal_dibuat', 2025)
+                ->whereMonth('tanggal_dibuat', $request->periode_bulan)
+                ->whereYear('tanggal_dibuat', $request->periode_tahun)
                 ->get();
             return response()->json(['data' => $data]);
         } catch (\Throwable $th) {
