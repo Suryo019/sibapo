@@ -96,7 +96,7 @@ class PegawaiDkppController extends Controller
 
         $data = DKPP::whereYear('tanggal_input', 2025)
         ->whereMonth('tanggal_input', 4)
-        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [2])
+        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [3])
         ->get();
 
         return view('pegawai.dkpp.pegawai-dkpp-detail', [

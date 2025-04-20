@@ -1,3 +1,5 @@
+{{-- @dd($data) --}}
+
 <x-pegawai-layout>
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">Lihat Detail Data</h2>
@@ -16,16 +18,14 @@
                     </div>
                 </div>
                 <div class="flex gap-4">
-                    <form action="" method="get">
+                    <form class="flex gap-3" action="" method="get">
                         <div>
-                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                            <select class="border border-black p-2 rounded-full bg-white" id="pilih_urutan">
-                                <option value="" disabled selected>Urutkan</option>
-                                <option>Ascending</option>
-                                <option>Descending</option>
-                            </select>
+                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                        <select class="border border-black p-2 rounded-full bg-white" id="pilih_urutan">
+                            <option>Ascending</option>
+                            <option>Descending</option>
+                        </select>
                         </div>
-
                         <div>
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
                             <select class="border border-black p-2 rounded-full bg-white" id="pilih_periode">
@@ -38,7 +38,7 @@
 
                         <div>
                             <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                            <select class="border border-black p-2 rounded-full bg-white" id="pilih_minggu">
+                            <select class="border border-black p-2 rounded-full bg-white w-24" id="pilih_minggu">
                                 <option>1</option>
                                 <option selected>2</option>
                                 <option>3</option>
@@ -94,8 +94,9 @@
                 </table>
             </div>
     
+            <!-- Button Kembali & Tambah Data -->
         </div>
-        <!-- Button Kembali & Tambah Data -->
+        
         <div class="flex justify-between mt-4">
             <a href="{{ route('pegawai.dkpp.index') }}">
             <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
@@ -111,16 +112,17 @@
                         <div class="flex justify-evenly">
                             <!-- Tombol Batal -->
                             <div class="text-right" id="closeBtn">
-                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded">Tutup</button>
+                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
                             </div>
                             <!-- Tombol Yakin -->
                             <div class="text-right">
-                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded" id="yesBtn">Yakin</button>
+                                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
     </main>    
 </x-pegawai-layout>
 
@@ -145,6 +147,8 @@
                         text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
@@ -163,3 +167,4 @@
         $('#modal').hide();
     });
 </script>
+
