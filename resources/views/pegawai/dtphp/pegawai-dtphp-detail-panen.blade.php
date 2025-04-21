@@ -178,7 +178,7 @@
                                                                 <p class="text-sm text-gray-500">Luas Panen (Hektar): <span class="font-medium">${element.hektar_luas_panen}</span></p>
                                                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                                             </div>
-                                                            <a href="pegawai.dtphp/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                                                            <a href="dtphp/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
                                                         </div>
                                                     `;
                                                     $('#editDataList').append(listCard);

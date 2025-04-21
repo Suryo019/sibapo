@@ -4,13 +4,13 @@
 
         <!-- Tombol Switch Produksi / Panen -->
         <div class="flex gap-4 mb-4">
-            <a href="{{ route('dtphp.produksi') }}">
-                <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-24 left-4 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
+                <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-24 left-4 {{ request()->routeIs('pegawai.dtphp.detail.produksi') ? 'font-bold' : '' }}">
                     Volume Produksi
                 </button>
             </a>
-            <a href="{{ route('dtphp.panen') }}">
-                <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-[98px] shadow-md {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
+            <a href="{{ route('pegawai.dtphp.panen') }}">
+                <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-[98px] shadow-md {{ request()->routeIs('pegawai.dtphp.detail.panen') ? 'font-bold' : '' }}">
                     Luas Panen
                 </button>
             </a>

@@ -13,8 +13,7 @@ class DPController extends Controller
     public function index()
     {
         try {
-            $dp = DP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
+            $dp = DP::whereYear('tanggal_input', 2025)
             ->where('jenis_ikan', 'Tongkol')
             ->select('jenis_ikan', 'ton_produksi')
             ->get();

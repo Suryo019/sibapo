@@ -13,10 +13,26 @@ class PegawaiDtphpController extends Controller
     // View
     public function index()
     {
-        $dtphp = DTPHP::all();
-        return view('pegawai.dtphp.pegawai-dtphp', [
-            'title' => 'Data Tanaman',
-            'data' => $dtphp
+        $periodeUnikNama = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        ->get()
+        ->map(function ($item) {
+            $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
+            $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
+            return $item->periode_indonesia;
+        });
+
+        // $dp = DP::all();
+
+        $dp = DTPHP::whereMonth('tanggal_input', 4)
+            ->whereYear('tanggal_input', 2025)
+            ->distinct()
+            ->pluck('jenis_komoditas');
+
+        return view('pegawai.dtphp.pegawai-dtphp-produksi', [
+            'title' => 'Volume Produksi Panen',
+            'data' => $dp,
+            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'periods' => $periodeUnikNama,
         ]);
     }
 
