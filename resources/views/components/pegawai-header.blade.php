@@ -1,9 +1,29 @@
-<header class="bg-green-900 text-white p-4 flex justify-between items-center w-full z-9">
-    <h2 class="text-lg font-semibold text-center">{{ $slot }}</h2>
+<header {{ $attributes }}>
+    <div class="flex md:hidden items-center w-2/3">
+        <div class="flex justify-center items-center text-green-900 bg-white rounded w-7 h-6 cursor-pointer" id="burger-menu">
+            <i class="bi bi-list text-xl"></i>
+        </div>
+        {{-- Nama Dinas (<= MD) --}}
+        <div class="justify-center flex md:hidden ml-4">
+            <h1 class="text-sm">{{ $slot }}</h1>
+        </div>
+    </div>
+
+    {{-- Nama Dinas --}}
+    <h2 class="text-lg font-semibold text-center hidden md:block">{{ $slot }}</h2>
     
     <div class="flex items-center gap-4 mr-4"> <!-- Tambah margin kanan -->
         <img src="https://via.placeholder.com/40" alt="Profile" 
-             class="w-10 h-10 rounded-full bg-gray-300">
-        <span class="text-sm">Hi, saya ini</span>
+             class="w-10 h-10 rounded-full bg-gray-300 scale-95 md:scale-100">
+        <span class="text-sm hidden md:block">Hi, saya ini</span>
     </div>
 </header>
+
+<script>
+    $('#burger-menu').on('click', function() {
+    $('#sidebar')
+        .removeClass('hidden')
+        .toggleClass('hidden')
+        .slideToggle('slow');
+    });
+</script>

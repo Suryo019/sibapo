@@ -34,12 +34,9 @@
         </div>
     </div>
 
-    
-    <div class="h-full w-full">
-        <!-- Sidebar -->
-        <x-pegawai-sidebar class="col-span-2 w-64 bg-green-900 text-white p-4 h-screen z-10 fixed"></x-pegawai-sidebar>
 
-        <div class="w-full pl-64 mb-10">
+    <div class="h-full w-full text-xs md:text-lg overflow-x-hidden">
+        <div class="flex flex-col flex-1">
             <!-- Header -->
             @php
                 $judul = match(true) {
@@ -51,15 +48,20 @@
                 };
             @endphp
 
-            <x-pegawai-header>{{ $judul }}</x-pegawai-header>
+            <x-pegawai-header class="bg-green-900 text-white p-4 flex justify-between items-center w-full z-10 md:pl-64">
+                {{ $judul }}
+            </x-pegawai-header>
 
+            <!-- Sidebar -->
+            <x-pegawai-sidebar class="order-1 hidden p-4 md:order-none col-span-2 bg-green-900 z-20 w-full bg-transparent text-white static md:h-screen md:block md:fixed md:w-64 md:bg-green-900" id="sidebar">
+            </x-pegawai-sidebar>
 
             <!-- Content -->
-            <main class="w-full">
+            <main class="w-full order-3 md:pl-64">
                 {{ $slot }}
             </main>
         </div>
-    </div>
+    </div>    
 
     <script>
     function showLoading() {

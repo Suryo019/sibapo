@@ -1,68 +1,62 @@
 <x-pegawai-layout>
 
-    <main class="flex-1 p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+    <main class="flex-1 p-6 max-md:p-4">
+        <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:text-xl max-md:text-center max-md:mb-10">{{ $title }}</h2>
     
         <!-- Dropdown -->
-        <div class="flex justify-between my-4">
-            <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
-            </div>
-            <div class="flex gap-4">
+        <div class="flex flex-wrap justify-end items-start gap-4 my-4">
+            <!-- Dropdown Filter -->
+            <div class="flex flex-wrap gap-4 max-md:gap-2">
                 {{-- Filter Pasar --}}
-                <select class="border bg-white select2" id="pilih_pasar">
-                    <option value="" disabled selected>Pilih Pasar</option>
-                    {{-- <option value="" selected>Pasar Tanjung</option> --}}
+                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
+                    <option value="" disabled selected class="text-xs">Pilih Pasar</option>
                     @foreach ($markets as $market)
                         <option value="{{ $market }}">{{ $market }}</option>
                     @endforeach
                 </select>
-
+    
                 {{-- Filter Periode --}}
-                <select class="border bg-white select2" disabled id="pilih_periode">
-                    <option value="" disabled selected>Pilih Periode</option>
-                    {{-- <option value="" disabled selected>April 2025</option> --}}
+                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
+                    <option value="" disabled selected class="text-xs">Pilih Periode</option>
                     @foreach ($periods as $period)
                         <option value="{{ $period }}">{{ $period }}</option>
                     @endforeach
                 </select>
-
-                {{-- Filter Bakpokting --}}
-                <select class="border bg-white select2" disabled id="pilih_bahan_pokok">
-                    <option value="" disabled selected>Pilih Periode</option>
-                    {{-- <option value="" disabled selected>Daging</option> --}}
+    
+                {{-- Filter Bahan Pokok --}}
+                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
+                    <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option>
                     @foreach ($data as $item)
                         <option value="{{ $item }}">{{ $item }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
-        
+    
         <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8" id="chart_container">
-            <div class="flex items-center flex-col mb-3 font-bold text-green-910">
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4" id="chart_container">
+            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px] max-md:mb-3">
                 <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
             
             <!-- Placeholder saat chart belum tersedia -->
-            <div id="chart_placeholder" class="text-gray-500 text-center">
+            <div id="chart_placeholder" class="text-gray-500 text-center text-sm max-md:text-[10px]">
                 Silakan pilih pasar, periode, dan bahan pokok untuk menampilkan data grafik.
             </div>
         
             <!-- Chart akan muncul di sini -->
             <div id="chart" class="w-full hidden"></div>
         </div>
-        
     
         <!-- Button -->
-        <div class="flex justify-center mt-4">
+        <div class="flex justify-center mt-6">
             <a href="{{ route('pegawai.disperindag.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-
 </x-pegawai-layout>
 
 <script>

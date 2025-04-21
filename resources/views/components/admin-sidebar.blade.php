@@ -1,14 +1,14 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
-<aside class="w-64 bg-green-900 text-white p-4 h-screen fixed">
-    <div class="w-full mb-7 flex justify-center">
-      <img src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" 
-      alt="logo" class="h-10 w-30 ml-4">
+<aside {{ $attributes }}>
+    <h2 class="md:hidden text-green-950 font-medium mb-3">Menu</h2>
+    <div class="mb-5 justify-center hidden md:flex">
+      <img class="scale-50 ml-4" src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" alt="logo">
     </div>
     <nav>
       <ul>
         <!-- Dashboard -->
-        <li class="mb-2">
+        <li class="mb-2 rounded-md bg-green-900 md:bg-transparent">
           <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded {{ request()->is('dashboard') ? 'text-yellow-300' : '' }}">Dashboard</a>
         </li>
   

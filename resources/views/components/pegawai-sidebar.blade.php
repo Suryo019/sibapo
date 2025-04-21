@@ -9,9 +9,11 @@ $pegawai = match(true) {
 
 <!-- Sidebar -->
 <aside {{ $attributes }}>
-    <div class="mb-7 w-full flex justify-center">
-        <img src="/img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg" 
-        alt="logo" class="h-10 w-30 ml-4">  <!-- Tambah margin kiri -->
+    <h2 class="md:hidden text-green-950 font-medium mb-3">Menu</h2>
+    <div class="mb-5 justify-center hidden md:flex">
+        <div class="mb-5 justify-center hidden md:flex">
+            <img class="scale-50 ml-4" src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" alt="logo">
+        </div>
     </div>
     <nav>
         <ul>

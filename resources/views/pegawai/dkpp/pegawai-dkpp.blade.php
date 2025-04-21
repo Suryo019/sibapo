@@ -1,69 +1,67 @@
 {{-- @dd($data) --}}
 <x-pegawai-layout>
-  <main class="flex-1 p-6">
-      <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
-  
-      <!-- Dropdown -->
-      <div class="flex justify-end my-4">
-        <!-- Dropdown Items -->
-        <div class="flex gap-6 items-end">
-          <!-- Pilih Pasar -->
-          <div>
-            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">
-              Pilih Periode
-            </label>
-            <select id="pilih_periode" class="select2 w-36 rounded-full border border-gray-300 p-2 bg-white text-sm">
-              <option value="" disabled selected>Pilih Periode</option>
-              @foreach ($periods as $period)
-                <option value="{{ $period }}">{{ $period }}</option>
-              @endforeach
-            </select>
-          </div>
+  <main class="flex-1 p-6 max-md:p-4">
+    <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2>
 
-          <!-- Minggu ke -->
-          <div>
-            <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">
-              Minggu ke
-            </label>
-            <select id="pilih_minggu" class="select2 w-36 rounded-full border border-gray-300 p-2 bg-white text-sm" disabled>
-              <option value="" disabled selected>Pilih Minggu</option>
-              <option value="1">Minggu 1</option>
-              <option value="2">Minggu 2</option>
-              <option value="3">Minggu 3</option>
-              <option value="4">Minggu 4</option>
-            </select>
-          </div>
+    <!-- Dropdown -->
+    <div class="flex justify-end my-4">
+        <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-end w-full">
+            <!-- Pilih Periode -->
+            <div class="flex flex-col">
+                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                    Pilih Periode
+                </label>
+                <select id="pilih_periode"
+                    class="select2 w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs">
+                    <option value="" disabled selected>Pilih Periode</option>
+                    @foreach ($periods as $period)
+                        <option value="{{ $period }}">{{ $period }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Pilih Minggu -->
+            <div class="flex flex-col">
+                <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                    Minggu ke
+                </label>
+                <select id="pilih_minggu"
+                    class="select2 w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs" disabled>
+                    <option value="" disabled selected>Pilih Minggu</option>
+                    <option value="1">Minggu 1</option>
+                    <option value="2">Minggu 2</option>
+                    <option value="3">Minggu 3</option>
+                    <option value="4">Minggu 4</option>
+                </select>
+            </div>
         </div>
-      </div>
+    </div>
 
-        
-      
-      <!-- Chart Placeholder -->
-      <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
-        <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-          <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
-          <h3><b id="minggu"></b> <b id="periode"></b></h3>
-          {{-- <h3>Minggu ke 2 Bulan April 2025</h3> --}}
+    <!-- Chart Placeholder -->
+    <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4">
+        <div class="flex items-center flex-col mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+            <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
+            <h3><b id="minggu"></b> <b id="periode"></b></h3>
         </div>
 
         <!-- Placeholder saat chart belum tersedia -->
-        <div id="chart_placeholder" class="text-gray-500 text-center">
+        <div id="chart_placeholder" class="text-gray-500 text-center text-sm max-md:text-xs">
             Silakan pilih pasar, periode, dan bahan pokok untuk menampilkan data grafik.
         </div>
 
         <div id="chart" class="w-full hidden">
-          {{-- Chartt --}}
+            {{-- Chart --}}
         </div>
-      </div>
-  
-      <!-- Button -->
-      <div class="flex justify-center mt-4">
-          <a href="{{ route('pegawai.dkpp.detail') }}">
-              <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
-                  Lihat Detail Data
-              </button>
-          </a>
-      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="flex justify-center mt-6">
+        <a href="{{ route('pegawai.dkpp.detail') }}">
+            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
+                Lihat Detail Data
+            </button>
+        </a>
+    </div>
   </main>
 </x-pegawai-layout>
 
