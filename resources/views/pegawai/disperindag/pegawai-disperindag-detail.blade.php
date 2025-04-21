@@ -96,10 +96,6 @@
                                         @endfor
                                     </tr>
                                     <script>
-                                        $('#closeListModal').on('click', function() {
-                                            $(this).closest('#modal').removeClass("flex").addClass("hidden");
-                                        });
-                                    
                                         $('.editBtn').on('click', function() {
                                             const modal = $("#modal");
                                             modal.removeClass("hidden").addClass("flex");
@@ -229,6 +225,9 @@
 </x-pegawai-layout>
 
 <script>
+    $('#closeListModal').on('click', function() {
+        $(this).closest('#modal').removeClass("flex").addClass("hidden");
+    });                                       
     $(document).on('click', '.btnConfirm', function() { 
         let dataId = $(this).data('id');
         $('#deleteModal').show();
