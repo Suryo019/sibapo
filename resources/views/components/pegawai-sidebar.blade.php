@@ -23,7 +23,7 @@ $pegawai = match(true) {
 
             <x-pegawai-sidebar-link 
                 href="{{ route('pegawai.' . $pegawai . '.index') }}" 
-                class="block py-2 px-4 rounded {{ request()->is('pegawai/' . $pegawai) || request()->is('pegawai/' . $pegawai . '-detail') ? 'bg-green-600' : '' }}">
+                class="block py-2 px-4 rounded {{ request()->is('pegawai/' . $pegawai . '-*') || request()->is('pegawai/' . $pegawai . '-detail' . '-*') ||request()->is('pegawai/' . $pegawai) ? 'bg-green-600' : '' }}">
                 Lihat Data
             </x-pegawai-sidebar-link>
             
