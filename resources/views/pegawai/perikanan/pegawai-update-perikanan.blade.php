@@ -1,97 +1,191 @@
-<x-pegawai-layout>
-    <main class="flex-1 p-6">
+<x-admin-layout>
+    <main class="flex-1 p-4 sm:p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
-            <formmethod="POST">
+        <div class="bg-green-50 p-4 sm:p-6 rounded-lg shadow-md mt-4">
+            <form id="editFishForm">
                 @csrf
                 @method('PUT')
 
+                <!-- Jenis Ikan -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Jenis Ikan</label>
-                    <input
-                      type="text"
-                      name="jenis_ikan"
-                      id="jenis_ikan"
-                      placeholder="Contoh: Lele"
-                      class="border p-2 w-full rounded-full"
-                      value="{{ old('jenis_ikan', $data->jenis_ikan) }}"
-                    />
+                    <label for="jenis_ikan" class="block text-sm font-medium text-gray-700 mb-1">Jenis Ikan</label>
+                    <input 
+                        type="text" 
+                        name="jenis_ikan" 
+                        id="jenis_ikan"
+                        value="{{ old('jenis_ikan', $data->jenis_ikan) }}"
+                        placeholder="Contoh: Lele" 
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        required>
+                    <p id="jenis_ikan_error" class="mt-1 text-sm text-red-600 hidden"></p>
                 </div>
     
+                <!-- Volume Produksi -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Volume Produksi (Ton)</label>
-                    <input
-                      type="text"
-                      name="ton_produksi"
-                      id="ton_produksi"
-                      placeholder="Contoh: 100"
-                      class="border p-2 w-full rounded-full"
-                      value="{{ old('ton_produksi', $data->ton_produksi) }}"
-                    />
+                    <label for="ton_produksi" class="block text-sm font-medium text-gray-700 mb-1">Volume Produksi (Ton)</label>
+                    <input 
+                        type="number" 
+                        name="ton_produksi" 
+                        id="ton_produksi"
+                        value="{{ old('ton_produksi', $data->ton_produksi) }}"
+                        placeholder="Contoh: 100" 
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        required
+                        min="0"
+                        step="0.01">
+                    <p id="ton_produksi_error" class="mt-1 text-sm text-red-600 hidden"></p>
                 </div>
-                
-                <!-- Terakhir Diubah -->
-                <div class="mb-4">
-                    <label class="block text-gray-700">Terakhir Diubah</label>
-                    <div class="relative">
-                        <input
-                        type="date"
-                        name="tanggal_input"
-                        id="tanggal_input"
-                        class="border border-gray-300 p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        value="{{ old('tanggal_input', \Carbon\Carbon::parse($data->tanggal_input)->format('Y-m-d')) }}"
-                      />
-                    </div>
-                </div>       
 
-                <!-- Tombol -->
+                <!-- Tanggal Input -->
+                <div class="mb-4">
+                    <label for="tanggal_input" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Input</label>
+                    <input 
+                        type="date" 
+                        name="tanggal_input" 
+                        id="tanggal_input"
+                        value="{{ old('tanggal_input', \Carbon\Carbon::parse($data->tanggal_input)->format('Y-m-d')) }}"
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        required>
+                    <p id="tanggal_input_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                </div>
             </form>
         </div>
-        <div class="flex justify-between mt-4">
-            <a href="{{ route('pegawai.perikanan.detail') }}">
-                <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-between mt-6">
+            <a href="{{ route('perikanan.detail') }}" class="inline-flex items-center px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Kembali
             </a>
-            <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Simpan</button>
+            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Simpan Perubahan
+            </button>
         </div>
     </main>
-</x-pegawai-layout>
 
-<script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: "{{ route('api.dp.update', $data->id) }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenis_ikan: $('#jenis_ikan').val(),
-                ton_produksi: $('#ton_produksi').val(),
-                tanggal_input: $('#tanggal_input').val(),
-                },
-                success: function(data) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
-                    confirmButtonColor: '#16a34a'
-                }).then(() => {
-                        window.location.href = "{{ route('pegawai.perikanan.detail') }}";;
-                    });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            const editFishForm = document.getElementById('editFishForm');
+            const jenisIkanInput = document.getElementById('jenis_ikan');
+            const tonProduksiInput = document.getElementById('ton_produksi');
+            const tanggalInput = document.getElementById('tanggal_input');
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                
+                // Validate Jenis Ikan
+                if (!jenisIkanInput.value.trim()) {
+                    document.getElementById('jenis_ikan_error').textContent = 'Jenis ikan harus diisi';
+                    document.getElementById('jenis_ikan_error').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('jenis_ikan_error').classList.add('hidden');
+                }
+                
+                // Validate Ton Produksi
+                if (!tonProduksiInput.value || isNaN(tonProduksiInput.value) || parseFloat(tonProduksiInput.value) <= 0) {
+                    document.getElementById('ton_produksi_error').textContent = 'Volume produksi harus berupa angka positif';
+                    document.getElementById('ton_produksi_error').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('ton_produksi_error').classList.add('hidden');
+                }
+                
+                // Validate Tanggal Input
+                if (!tanggalInput.value) {
+                    document.getElementById('tanggal_input_error').textContent = 'Tanggal input harus diisi';
+                    document.getElementById('tanggal_input_error').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('tanggal_input_error').classList.add('hidden');
+                }
+                
+                return isValid;
             }
+            
+            submitBtn.addEventListener('click', async function() {
+                // Validate form first
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // Disable button during submission
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Menyimpan...
+                `;
+                
+                try {
+                    const response = await fetch("{{ route('api.dp.update', $data->id) }}", {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'X-HTTP-Method-Override': 'PUT'
+                        },
+                        body: JSON.stringify({
+                            jenis_ikan: jenisIkanInput.value.trim(),
+                            ton_produksi: parseFloat(tonProduksiInput.value),
+                            tanggal_input: tanggalInput.value
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw data;
+                    }
+
+                    // Show success message
+                    await Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#16a34a'
+                    });
+
+                    // Redirect to detail page
+                    window.location.href = "{{ route('perikanan.detail') }}";
+
+                } catch (error) {
+                    let message = 'Terjadi kesalahan saat menyimpan perubahan';
+                    
+                    if (error.errors) {
+                        message = Object.values(error.errors).join('<br>');
+                    }
+
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: message
+                    });
+                    
+                    // Re-enable button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        Simpan Perubahan
+                    `;
+                }
+            });
         });
-    });
-</script>
+    </script>
+    @endpush
+</x-admin-layout>

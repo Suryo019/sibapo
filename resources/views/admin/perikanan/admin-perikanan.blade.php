@@ -1,110 +1,248 @@
 <x-admin-layout>
-
-    <main class="flex-1 p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
-    
-        <!-- Dropdown -->
-        <div class="flex justify-between my-4">
-            <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
-            </div>
-            <div class="flex gap-4">
-                {{-- Filter Pasar --}}
-                <div>
-                    <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
-                        {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                        <option value="" selected>Ikan Teri</option>
-                        @foreach ($fishes as $fish)
-                            <option value="{{ $fish }}">{{ $fish }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
-                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                        <option value="" disabled selected>April 2025</option>
-                        @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
-            <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-              <h3>Volume Produksi Ikan Tahun 2025</h3>
-            </div>
-            <div id="chart" class="w-full">
-                {{-- Chartt --}}
-            </div>
-        </div>
-    
-        <!-- Button -->
-        <div class="flex justify-center mt-4">
-            <a href="{{ route('perikanan.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
-                    Lihat Detail Data
-                </button>
-            </a>
-        </div>
+    <main class="flex-1 p-6 max-md:p-4">
+      <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2>
+  
+      <!-- Dropdown -->
+      <div class="flex justify-end my-4">
+          <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-end w-full">
+              <!-- Pilih Periode -->
+              <div class="flex flex-col">
+                  <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                      Pilih Periode
+                  </label>
+                  <select id="pilih_periode"
+                      class="w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                      <option value="" disabled selected>Pilih Periode</option>
+                      @foreach ($periods as $period)
+                          <option value="{{ $period }}">{{ $period }}</option>
+                      @endforeach
+                  </select>
+              </div>
+  
+              <!-- Pilih Minggu -->
+              <div class="flex flex-col">
+                  <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                      Minggu ke
+                  </label>
+                  <select id="pilih_minggu"
+                      class="w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                      disabled>
+                      <option value="" disabled selected>Pilih Minggu</option>
+                      <option value="1">Minggu 1</option>
+                      <option value="2">Minggu 2</option>
+                      <option value="3">Minggu 3</option>
+                      <option value="4">Minggu 4</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+  
+      <!-- Chart Container -->
+      <div class="w-full bg-white rounded-lg shadow-md flex items-center justify-center flex-col p-8 max-md:p-4">
+          <div class="flex items-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px]">
+              <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
+              <h3><span id="minggu" class="font-bold"></span> <span id="periode" class="font-bold"></span></h3>
+          </div>
+  
+          <!-- Placeholder -->
+          <div id="chart_placeholder" class="w-full text-center  ">
+              <p class="text-gray-500 text-sm max-md:text-xs">Silakan pilih periode dan minggu untuk menampilkan data</p>
+          </div>
+  
+          <!-- Chart -->
+          <div id="chart" class="w-full hidden"></div>
+      </div>
+  
+      <!-- Button -->
+      <div class="flex justify-center mt-6">
+          <a href="{{ route('dkpp.detail') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm max-md:text-xs max-md:px-4 max-md:py-1 rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+              Lihat Detail Data
+          </a>
+      </div>
     </main>
-
-</x-admin-layout>
-
-<script>
-    $.ajax({
-        type: "GET",
-        url: "{{ route('api.dp.index') }}",
-        success: function(response) {
-            let dataset = response.data;
-            
-            let jenis_ikan = [];
-            let produksi = [];
-
-            $.each(dataset, function(key, value) {
-                jenis_ikan.push(value.jenis_ikan);
-                produksi.push(value.ton_produksi);
-            });
-
-            console.log(jenis_ikan);
-            console.log(produksi);
-
-
-            var options = {
-                chart: {
-                    type: 'line',
-                    height: 350
-                },
-                series: [{
-                    name: 'Produksi',
-                    data: produksi
-                }],
-                xaxis: {
-                    categories: jenis_ikan
-                }
-            };
-
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
+  
+    @push('scripts')
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const periodeSelect = document.getElementById('pilih_periode');
+        const mingguSelect = document.getElementById('pilih_minggu');
+        const chartContainer = document.getElementById('chart');
+        const placeholder = document.getElementById('chart_placeholder');
+        let chart = null;
+        let debounceTimer;
+  
+        // Load ApexCharts dynamically
+        function loadApexCharts() {
+          return new Promise((resolve) => {
+            if (window.ApexCharts) {
+              resolve();
+            } else {
+              const script = document.createElement('script');
+              script.src = "{{ asset('js/apexcharts.min.js') }}";
+              script.onload = resolve;
+              document.head.appendChild(script);
+            }
+          });
         }
-    });
-
-
-    $('#pilih_ikan').on('change', function() {
-        $('#pilih_periode').removeAttr('disabled');
-    });
-
-    $('#pilih_periode').on('change', function() {
-        $('#pilih_ikan').removeAttr('disabled');
-    });
-
-    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
-    
-</script>
+  
+        periodeSelect.addEventListener('change', function() {
+          mingguSelect.disabled = !this.value;
+        });
+  
+        function fetchChartData() {
+          const periode = periodeSelect.value;
+          const minggu = mingguSelect.value;
+  
+          if (!periode || !minggu) return;
+  
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(async () => {
+            try {
+              const response = await fetch(`{{ route('api.dkpp.index') }}?periode=${periode}&minggu=${minggu}`, {
+                headers: {
+                  'Accept': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+              });
+  
+              if (!response.ok) throw new Error('Network response was not ok');
+  
+              const { data } = await response.json();
+  
+              if (!data || data.length === 0) {
+                showNoDataMessage();
+                return;
+              }
+  
+              await loadApexCharts();
+              renderChart(data, periode, minggu);
+            } catch (error) {
+              showErrorMessage();
+              console.error('Fetch error:', error);
+            }
+          }, 300);
+        }
+  
+        function renderChart(data, periode, minggu) {
+          const ketersediaan = data.map(item => item.ton_ketersediaan);
+          const kebutuhan = data.map(item => item.ton_kebutuhan_perminggu);
+          const komoditas = data.map(item => item.jenis_komoditas);
+  
+          const options = {
+            chart: {
+              type: 'line',
+              height: 350,
+              animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800
+              },
+              toolbar: {
+                show: true,
+                tools: {
+                  download: true,
+                  selection: true,
+                  zoom: true,
+                  zoomin: true,
+                  zoomout: true,
+                  pan: true,
+                  reset: true
+                }
+              }
+            },
+            series: [
+              {
+                name: 'Ketersediaan (ton)',
+                data: ketersediaan
+              },
+              {
+                name: 'Kebutuhan (ton)',
+                data: kebutuhan
+              }
+            ],
+            xaxis: {
+              categories: komoditas,
+              labels: {
+                style: {
+                  fontSize: '12px'
+                }
+              }
+            },
+            yaxis: {
+              title: {
+                text: 'Ton'
+              },
+              labels: {
+                formatter: function(value) {
+                  return value.toLocaleString();
+                }
+              }
+            },
+            colors: ['#10B981', '#EF4444'], // Green for availability, red for needs
+            stroke: {
+              width: 3,
+              curve: 'smooth'
+            },
+            markers: {
+              size: 5
+            },
+            tooltip: {
+              y: {
+                formatter: function(value) {
+                  return value.toLocaleString() + ' ton';
+                }
+              }
+            },
+            legend: {
+              position: 'top'
+            }
+          };
+  
+          if (chart) {
+            chart.updateOptions(options);
+          } else {
+            placeholder.classList.add('hidden');
+            chartContainer.classList.remove('hidden');
+            chart = new ApexCharts(chartContainer, options);
+            chart.render();
+          }
+  
+          document.getElementById('minggu').textContent = "Minggu ke-" + minggu;
+          document.getElementById('periode').textContent = periode;
+        }
+  
+        function showNoDataMessage() {
+          placeholder.innerHTML = `
+            <div class="text-center p-4">
+              <p class="text-gray-500 text-sm max-md:text-xs">Tidak ada data untuk periode yang dipilih</p>
+            </div>
+          `;
+          placeholder.classList.remove('hidden');
+          chartContainer.classList.add('hidden');
+          if (chart) {
+            chart.destroy();
+            chart = null;
+          }
+        }
+  
+        function showErrorMessage() {
+          placeholder.innerHTML = `
+            <div class="text-center p-4">
+              <p class="text-red-500 text-sm max-md:text-xs">Gagal memuat data. Silakan coba lagi.</p>
+            </div>
+          `;
+          placeholder.classList.remove('hidden');
+          chartContainer.classList.add('hidden');
+          if (chart) {
+            chart.destroy();
+            chart = null;
+          }
+        }
+  
+        periodeSelect.addEventListener('change', fetchChartData);
+        mingguSelect.addEventListener('change', fetchChartData);
+      });
+    </script>
+    @endpush
+  </x-admin-layout>

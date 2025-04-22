@@ -1,59 +1,63 @@
-{{-- @dd($numberPeriods) --}}
-<x-pegawai-layout>
-    <main class="flex-1 p-6">
+<x-admin-layout>
+    <main class="flex-1 p-4 sm:p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center">Data Volume Produksi Ikan Tahun 2025</h3>
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4">
+            <h3 class="text-lg font-semibold text-center mb-4">Data Volume Produksi Ikan Tahun 2025</h3>
             
             <!-- Search dan Dropdown -->
-            <div class="flex justify-between my-4">
-                <div class="flex items-center  border bg-white rounded-full w-64 flex-row h-9">
-                    <span class="bi bi-search pl-5 pr-4"></span>
-                    <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full">
+            <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+                <!-- Search -->
+                <div class="relative w-full lg:w-64">
+                    <div class="flex items-center border border-gray-300 bg-white rounded-full w-full h-10 shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500 transition-colors">
+                        <span class="bi bi-search pl-4 pr-2 text-gray-400"></span>
+                        <input type="text" placeholder="Cari..." class="w-full outline-none rounded-full text-sm pr-4 bg-transparent">
+                    </div>
                 </div>
-                <div class="flex gap-4">
-                    <form action="" method="get">
+    
+                <!-- Dropdowns -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                    <div class="w-full sm:w-36">
+                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
+                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                            <option value="" selected>Ascending</option>
+                            <option value="">Descending</option>
+                        </select>
+                    </div>
 
-                        <div>
-                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                            <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
-                                {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
-                                <option value="" selected>Teri</option>
-                                @foreach ($fishes as $fish)
-                                    <option value="{{ $fish }}">{{ $fish }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih periode</label>
-                            <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
-                                {{-- <option value="" disabled selected>Pilih Periode</option> --}}
-                                <option value="" disabled selected>April 2025</option>
-                                @foreach ($periods as $period)
-                                    <option value="{{ $period }}">{{ $period }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
+                    <div class="w-full sm:w-36">
+                        <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
+                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
+                            <option value="" selected>Teri</option>
+                            @foreach ($fishes as $fish)
+                                <option value="{{ $fish }}">{{ $fish }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="w-full sm:w-36">
+                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
+                            <option value="" disabled selected>April 2025</option>
+                            @foreach ($periods as $period)
+                                <option value="{{ $period }}">{{ $period }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
     
-            <!-- Tabel -->
+            <!-- Tabel Responsif -->
             @if (isset($data))
                 <div class="overflow-x-auto">
-                    <table class="table-auto">
-                        <thead>
+                    <table class="min-w-full border border-gray-300">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th rowspan="2" class="border px-16 py-2 whitespace-nowrap">Jenis Ikan</th>
-                                <th colspan="12" class="border px-5 py-2">Produksi</th>
-                                <th rowspan="2" class="border px-5 py-2">Aksi</th>
+                                <th rowspan="2" class="border px-4 py-2 whitespace-nowrap">Jenis Ikan</th>
+                                <th colspan="12" class="border px-4 py-2 text-center">Produksi</th>
+                                <th rowspan="2" class="border px-4 py-2">Aksi</th>
                             </tr>
                             <tr>
-                                {{-- @for ($i = 1; $i <= $daysInMonth; $i++)
-                                    <th class="border px-4 py-2">{{ $i }}</th>
-                                @endfor --}}
-                                
                                 @php
                                     $namaBulan = [
                                         1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
@@ -63,46 +67,17 @@
                                 @endphp
                                 
                                 @foreach ($namaBulan as $bulan)
-                                    <th class="border px-4 py-2 text-center whitespace-nowrap">{{ $bulan }}</th>
+                                    <th class="border px-2 py-2 text-center whitespace-nowrap">{{ $bulan }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Edit Modal --}}
-                            <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
-                                <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
-                                    <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Diedit</h2>
-                            
-                                    <!-- Data List -->
-                                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4">
-                                        {{-- Diisi pake ajax --}}
-                                    </div>
-                            
-                                    <!-- Tombol Tutup -->
-                                    <div class="text-right" id="closeBtn">
-                                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             @foreach ($data as $item)
-                                <tr class="border">
-                                    <td class="border p-2">{{ $item['jenis_ikan'] }}</td>
+                                <tr class="border hover:bg-gray-50">
+                                    <td class="border px-4 py-2">{{ $item['jenis_ikan'] }}</td>
                                     
-                                    {{-- per hari --}}
-                                    {{-- @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
-                                    <td class="border px-4 py-2 text-center whitespace-nowrap">
-                                        @if (isset($item['produksi_per_tanggal'][$kolom]))
-                                        {{ number_format($item['produksi_per_tanggal'][$kolom], 0, ',', '.') }}
-                                        @else
-                                        -
-                                        @endif
-                                    </td>
-                                    @endfor --}}
-
-                                    {{-- per bulan --}}
                                     @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td class="border px-8 py-2 text-center whitespace-nowrap">
+                                    <td class="border px-2 py-2 text-center whitespace-nowrap">
                                         @if (isset($item['produksi_per_bulan'][$bulan]))
                                             {{ number_format($item['produksi_per_bulan'][$bulan], 0, ',', '.') }}
                                         @else
@@ -111,97 +86,20 @@
                                     </td>
                                     @endfor
 
-                                    <td class="p-2 flex justify-center gap-2 whitespace-nowrap">
-                                        {{-- <a href="{{ route('perikanan.edit', $item['id']) }}">
-                                            <button class="bg-yellow-400 text-center text-white rounded-md w-10 h-10">
+                                    <td class="border px-4 py-2">
+                                        <div class="flex justify-center gap-2">
+                                            <button class="editBtn bg-yellow-400 hover:bg-yellow-500 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors"
+                                                data-ikan="{{ $item['jenis_ikan'] }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
-                                        </a> --}}
-                                        <button
-                                            class="editBtn bg-yellow-400 text-center text-white rounded-md w-10 h-10"
-                                            data-ikan="{{ $item['jenis_ikan'] }}">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                    
-                                        <button class="deleteBtn bg-red-500 text-center text-white rounded-md w-10 h-10" data-ikan="{{ $item['jenis_ikan'] }}">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
+                                        
+                                            <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors" 
+                                                data-ikan="{{ $item['jenis_ikan'] }}">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
-                                <script>
-                                    $('#closeBtn').on('click', function() {
-                                        $(this).closest('#modal').removeClass("flex").addClass("hidden");
-                                    });
-                                
-                                    $('.editBtn').on('click', function() {
-                                        const modal = $("#modal");
-                                        modal.removeClass("hidden").addClass("flex");
-                                
-                                        const jenisIkan = $(this).data('ikan');
-                                
-                                        $.ajax({
-                                            type: "GET",
-                                            url: `/api/dp/${jenisIkan}`,
-                                            success: function(response) {
-                                                const data = response.data;
-                                                $('#editDataList').empty();
-                                
-                                                data.forEach(element => {
-                                                    let listCard = `
-                                                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                            <div>
-                                                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
-                                                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
-                                                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
-                                                            </div>
-                                                            <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
-                                                        </div>
-                                                    `;
-                                                    $('#editDataList').append(listCard);
-                                                });
-                                            },
-                                            error: function(xhr) {
-                                                console.log(xhr.responseText);
-                                            }
-                                        });
-                                    });
-                                
-                                    $('.deleteBtn').on('click', function() {
-                                        const modal = $("#modal");
-                                        modal.removeClass("hidden").addClass("flex");
-                                
-                                        const jenisIkan = $(this).data('ikan');
-                                
-                                        $.ajax({
-                                            type: "GET",
-                                            url: `/api/dp/${jenisIkan}`,
-                                            success: function(response) {
-                                                const data = response.data;
-                                                $('#editDataList').empty();
-                                
-                                                data.forEach(element => {
-                                                    let listCard = `
-                                                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                            <div>
-                                                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
-                                                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
-                                                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
-                                                                
-                                                            </div>
-                                                            
-                                                            <button data-id="${element.id}" class="btnConfirm btnDelete bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
-                                                        </div>
-                                                    `;
-                                                    $('#editDataList').append(listCard);
-                                                });
-                                            },
-                                            error: function(xhr) {
-                                                console.log(xhr.responseText);
-                                            }
-                                        });
-                                    });
-                                </script>
-                                
                             @endforeach
 
                             @php
@@ -216,118 +114,189 @@
                                     }
                                 }
                             }
-                        @endphp
-                        
-                        <tr class="border font-bold">
-                            <td class="border p-2">Jumlah</td>
-                            @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                <td class="border px-8 py-2 text-center whitespace-nowrap">
-                                    {{ isset($totalPerBulan[$bulan]) ? number_format($totalPerBulan[$bulan], 0, ',', '.') : '-' }}
-                                </td>
-                            @endfor
-                            <td class="border p-2"></td>
-                        </tr>
-                        
+                            @endphp
+                            
+                            <tr class="border font-bold bg-gray-50">
+                                <td class="border px-4 py-2">Jumlah</td>
+                                @for ($bulan = 1; $bulan <= 12; $bulan++)
+                                    <td class="border px-2 py-2 text-center whitespace-nowrap">
+                                        {{ isset($totalPerBulan[$bulan]) ? number_format($totalPerBulan[$bulan], 0, ',', '.') : '-' }}
+                                    </td>
+                                @endfor
+                                <td class="border px-4 py-2"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             @else
-            <div class="flex items-center justify-center h-64">
-                <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
-                    <h3 class="text-lg font-semibold text-gray-500">Data Not Found</h3>
-                    <p class="text-gray-400">We couldn't find any data matching your request. Please try again later.</p>
-                </div>
-            </div>
-            @endif
-    
-        </div>
-        <!-- Button Kembali & Tambah Data -->
-        <div class="flex justify-between w-full mt-4">
-            <a href="{{ route('pegawai.perikanan.index') }}">
-            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
-            </a>
-            <a href="{{ route('pegawai.perikanan.create') }}">
-            <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah Data</button>
-            </a>
-        </div>
-
-        {{-- Modal --}}
-        <div id="modaldel" class="hidden w-full h-full">
-            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
-                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
-                    <h2 class="text-xl font-semibold mb-8 text-center">Yakin menghapus data?</h2>
-
-                    <div class="flex justify-evenly">
-                        <!-- Tombol Batal -->
-                        <div class="text-right" id="closeBtnDel">
-                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full">Tutup</button>
-                        </div>
-                        <!-- Tombol Yakin -->
-                        <div class="text-right">
-                            <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
-                        </div>
+                <div class="flex items-center justify-center h-64">
+                    <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                        <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                        <p class="text-gray-400">Tidak ada data yang sesuai dengan kriteria pencarian.</p>
                     </div>
                 </div>
+            @endif
+        </div>
+
+        <!-- Button Kembali -->
+        <div class="flex justify-start mt-6">
+            <a href="{{ route('perikanan.index') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                Kembali
+            </a>
+        </div>
+
+        <!-- Modal Edit -->
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40 p-4">
+            <div class="bg-white p-6 rounded-lg w-full max-w-2xl shadow-lg relative max-h-[90vh] flex flex-col">
+                <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Diedit</h2>
+        
+                <!-- Data List -->
+                <div id="editDataList" class="space-y-4 overflow-y-auto flex-grow mb-4">
+                    <!-- Diisi via AJAX -->
+                </div>
+        
+                <!-- Tombol Tutup -->
+                <div class="text-right">
+                    <button id="closeEditModal" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors">
+                        Tutup
+                    </button>
+                </div>
             </div>
         </div>
-    </main>  
-</x-pegawai-layout>
 
-<script>
-    $(document).on('click', '.btnConfirm', function(e) {
-        let id = $(this).data('id');
-        $('#modaldel').show();
+        <!-- Modal Delete -->
+        <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40 p-4">
+            <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
+                <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
+                <div class="flex justify-center gap-4">
+                    <button id="closeDeleteModal" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-full transition-colors">
+                        Batal
+                    </button>
+                    <button id="confirmDeleteBtn" class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-full transition-colors">
+                        Yakin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-        $('#yesBtn').on('click', function() {
-            $('#modaldel').hide();
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const pilihIkan = document.getElementById('pilih_ikan');
+            const pilihPeriode = document.getElementById('pilih_periode');
+            const editModal = document.getElementById('editModal');
+            const deleteModal = document.getElementById('deleteModal');
+            let deleteId = null;
 
-            $.ajax({
-                type: 'DELETE',
-                url: `/api/dp/${id}`,
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function(data) {                    
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan} telah dihapus.`,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        location.reload();
+            // Enable period select when fish is selected
+            pilihIkan.addEventListener('change', function() {
+                pilihPeriode.disabled = !this.value;
+            });
+
+            // Edit button handler
+            document.querySelectorAll('.editBtn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const jenisIkan = this.dataset.ikan;
+                    fetchEditData(jenisIkan);
+                    editModal.classList.remove('hidden');
+                    editModal.classList.add('flex');
+                });
+            });
+
+            // Delete button handler
+            document.querySelectorAll('.deleteBtn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    deleteId = this.dataset.ikan;
+                    deleteModal.classList.remove('hidden');
+                    deleteModal.classList.add('flex');
+                });
+            });
+
+            // Close modals
+            document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+            document.getElementById('closeDeleteModal').addEventListener('click', closeDeleteModal);
+
+            // Confirm delete
+            document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+
+            // Functions
+            async function fetchEditData(jenisIkan) {
+                try {
+                    const response = await fetch(`/api/dp/${jenisIkan}`);
+                    const { data } = await response.json();
+                    
+                    const editDataList = document.getElementById('editDataList');
+                    editDataList.innerHTML = '';
+                    
+                    data.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'border rounded-md p-4 shadow-sm flex items-center justify-between';
+                        card.innerHTML = `
+                            <div>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${item.jenis_ikan}</span></p>
+                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${item.ton_produksi}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${item.tanggal_input}</span></p>
+                            </div>
+                            <a href="perikanan/${item.id}/edit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-colors">Ubah</a>
+                        `;
+                        editDataList.appendChild(card);
                     });
-                },
-                error: function(xhr, status, error) {
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
+            async function confirmDelete() {
+                if (!deleteId) return;
+                
+                try {
+                    const response = await fetch(`/api/dp/${deleteId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: `Data ${data.data.jenis_ikan} telah dihapus.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        throw new Error(data.message || 'Gagal menghapus data');
+                    }
+                } catch (error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        html: error
+                        text: error.message
                     });
+                } finally {
+                    closeDeleteModal();
                 }
-            });
+            }
+
+            function closeEditModal() {
+                editModal.classList.add('hidden');
+                editModal.classList.remove('flex');
+            }
+
+            function closeDeleteModal() {
+                deleteModal.classList.add('hidden');
+                deleteModal.classList.remove('flex');
+                deleteId = null;
+            }
         });
-    });
-
-    $('#closeBtnDel').on('click', function() {
-        $('#modaldel').hide();
-    });
-    
-
-    
-    $(document).ready(function() {
-        $('.select2').select2();
-
-        // Filter Value
-        $('#pilih_ikan').on('change', function() {
-            $('#pilih_periode').removeAttr('disabled');
-        });
-
-        $('#pilih_periode').on('change', function() {
-            let pasar = $('#pilih_ikan').val();
-            let periode = $('#pilih_periode').val();
-
-            console.log(pasar);
-            console.log(periode);
-        });
-    });
-</script>
+    </script>
+    @endpush
+</x-admin-layout>
