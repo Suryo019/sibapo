@@ -1,15 +1,15 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6 max-md:p-4">
         <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2>
-        
+
         <!-- Tombol Switch Produksi / Panen -->
         <div class="flex gap-4 mb-4">
-            <a href="{{ route('dtphp.produksi') }}">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
                 <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-24 shadow-md left-4 text-sm {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
                     Volume Produksi
                 </button>
             </a>
-            <a href="{{ route('dtphp.panen') }}">
+            <a href="{{ route('pegawai.dtphp.panen') }}">
                 <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-24 text-sm {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 ">
                     Luas Panen
                 </button>
@@ -62,14 +62,14 @@
     
         <!-- Button-->
         <div class="flex justify-center mt-6">
-            <a href="{{ route('dtphp.detail.panen') }}">
+            <a href="{{ route('pegawai.dtphp.detail.panen') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $.ajax({

@@ -1,27 +1,27 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6 max-md:p-4">
         <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2>
 
         <!-- Tombol Switch Produksi / Panen -->
-        <div class="flex gap-4 mb-4 max-md:gap-2 ">
-            <a href="{{ route('dtphp.detail.produksi') }}">
+        <div class="flex gap-4 mb-4 max-md:gap-2 relative">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
                 <button class="text-green-700 rounded-t-md bg-white px-2 py-2 shadow-md relative top-5 left-4 max-md:left-2 max-md:px-3 max-md:py-2 max-md:text-xs text-xs {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }}">
                     Volume Produksi
                 </button>
             </a>
-            <a href="{{ route('dtphp.detail.panen') }}">
+            <a href="{{ route('pegawai.dtphp.detail.panen') }}">
                 <button class="text-gray-400 rounded-t-md bg-gray-100 px-2 py-2 relative top-5 max-md:top-5 max-md:py-2 max-md:text-xs shadow-md text-xs {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }}">
                     Luas Panen
                 </button>
             </a>
         </div>
     
-        <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4 z-10 relative">
+        <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4 relative z-10">
             <h3 class="text-lg font-semibold text-center max-md:text-base">Data Volume Produksi Tahun 2025 (Ton)</h3>
             
             <!-- Search dan Dropdown -->
             <div class="flex justify-between my-4 max-md:flex-col max-md:gap-4">
-                <div class="flex items-center border bg-white rounded-full w-64 max-md:w-full flex-row h-9 max-md:h-8">
+                <div class="flex items-center border bg-white rounded-full w-64 max-md:w-full h-9 max-md:h-8">
                     <span class="bi bi-search pl-5 pr-4 max-md:pl-3 max-md:pr-2"></span>
                     <input type="text" placeholder="Cari..." class="w-5/6 outline-none rounded-full max-md:text-xs">
                 </div>
@@ -149,14 +149,14 @@
 
         <!-- Button Kembali -->
         <div class="flex justify-start mt-6">
-            <a href="{{ route('dtphp.produksi') }}">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
                     Kembali
                 </button>
             </a>
         </div>
     </main> 
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $(document).ready(function() {

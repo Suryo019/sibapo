@@ -1,65 +1,64 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-4 sm:p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+        <h2 class="text-2xl font-semibold text-green-900 text-center sm:text-left">{{ $title }}</h2>
     
         <div class="bg-green-50 p-4 sm:p-6 rounded-lg shadow-md mt-4">
             <form id="agricultureForm">
                 @csrf
 
+                <!-- Jenis Komoditas -->
                 <div class="mb-4">
-                    <label for="jenis_komoditas" class="block text-sm font-medium text-gray-700 mb-1">Jenis Komoditas</label>
+                    <label for="jenis_komoditas" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Jenis Komoditas</label>
                     <input 
                         type="text" 
                         name="jenis_komoditas" 
                         id="jenis_komoditas"
                         placeholder="Contoh: Padi" 
-                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
                         required>
-                    <p id="jenis_komoditas_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                    <p id="jenis_komoditas_error" class="mt-1 text-xs sm:text-sm text-red-600 hidden"></p>
                 </div>
     
+                <!-- Volume Produksi -->
                 <div class="mb-4">
-                    <label for="ton_volume_produksi" class="block text-sm font-medium text-gray-700 mb-1">Volume Produksi (Ton)</label>
+                    <label for="ton_volume_produksi" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Volume Produksi (Ton)</label>
                     <input 
                         type="number" 
                         name="ton_volume_produksi" 
                         id="ton_volume_produksi"
                         placeholder="Contoh: 100" 
-                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
                         required
                         min="0"
                         step="0.01">
-                    <p id="ton_volume_produksi_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                    <p id="ton_volume_produksi_error" class="mt-1 text-xs sm:text-sm text-red-600 hidden"></p>
                 </div>
 
+                <!-- Luas Panen -->
                 <div class="mb-4">
-                    <label for="hektar_luas_panen" class="block text-sm font-medium text-gray-700 mb-1">Luas Panen (Hektar)</label>
+                    <label for="hektar_luas_panen" class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Luas Panen (Hektar)</label>
                     <input 
                         type="number" 
                         name="hektar_luas_panen" 
                         id="hektar_luas_panen"
                         placeholder="Contoh: 7" 
-                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
                         required
                         min="0"
                         step="0.01">
-                    <p id="hektar_luas_panen_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                    <p id="hektar_luas_panen_error" class="mt-1 text-xs sm:text-sm text-red-600 hidden"></p>
                 </div>
             </form>
         </div>
         
         <!-- Action Buttons -->
-        <div class="flex justify-between mt-6">
-            <a href="{{ route('dtphp.detail.produksi') }}" class="inline-flex items-center px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                </svg>
-                Kembali
+        <div class="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}" class="order-2 sm:order-1">
+                <button type="button" class="w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-2  bg-green-600 hover:bg-green-700 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    Kembali
+                </button>
             </a>
-            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                </svg>
+            <button id="submitBtn" class="order-1 sm:order-2 w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50">
                 Tambah Data
             </button>
         </div>
@@ -69,15 +68,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = document.getElementById('submitBtn');
-            const agricultureForm = document.getElementById('agricultureForm');
+            const form = document.getElementById('agricultureForm');
             
             // Form validation
             function validateForm() {
                 let isValid = true;
                 
                 // Validate Jenis Komoditas
-                const jenisKomoditas = document.getElementById('jenis_komoditas');
-                if (!jenisKomoditas.value.trim()) {
+                if (!document.getElementById('jenis_komoditas').value.trim()) {
                     document.getElementById('jenis_komoditas_error').textContent = 'Jenis komoditas harus diisi';
                     document.getElementById('jenis_komoditas_error').classList.remove('hidden');
                     isValid = false;
@@ -88,7 +86,7 @@
                 // Validate Volume Produksi
                 const volumeProduksi = document.getElementById('ton_volume_produksi');
                 if (!volumeProduksi.value || isNaN(volumeProduksi.value) || parseFloat(volumeProduksi.value) <= 0) {
-                    document.getElementById('ton_volume_produksi_error').textContent = 'Volume produksi harus berupa angka positif';
+                    document.getElementById('ton_volume_produksi_error').textContent = 'Harus berupa angka positif';
                     document.getElementById('ton_volume_produksi_error').classList.remove('hidden');
                     isValid = false;
                 } else {
@@ -98,7 +96,7 @@
                 // Validate Luas Panen
                 const luasPanen = document.getElementById('hektar_luas_panen');
                 if (!luasPanen.value || isNaN(luasPanen.value) || parseFloat(luasPanen.value) <= 0) {
-                    document.getElementById('hektar_luas_panen_error').textContent = 'Luas panen harus berupa angka positif';
+                    document.getElementById('hektar_luas_panen_error').textContent = 'Harus berupa angka positif';
                     document.getElementById('hektar_luas_panen_error').classList.remove('hidden');
                     isValid = false;
                 } else {
@@ -109,10 +107,7 @@
             }
             
             submitBtn.addEventListener('click', async function() {
-                // Validate form first
-                if (!validateForm()) {
-                    return;
-                }
+                if (!validateForm()) return;
                 
                 // Disable button during submission
                 submitBtn.disabled = true;
@@ -141,14 +136,11 @@
 
                     const data = await response.json();
 
-                    if (!response.ok) {
-                        throw data;
-                    }
+                    if (!response.ok) throw data;
 
                     // Reset form
-                    agricultureForm.reset();
+                    form.reset();
 
-                    // Show success message
                     await Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_komoditas} telah disimpan.`,
@@ -182,4 +174,4 @@
         });
     </script>
     @endpush
-</x-admin-layout>
+</x-pegawai-layout>

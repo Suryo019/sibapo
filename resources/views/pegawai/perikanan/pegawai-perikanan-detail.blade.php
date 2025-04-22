@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-4 sm:p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
@@ -17,14 +17,6 @@
     
                 <!-- Dropdowns -->
                 <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                            <option value="" selected>Ascending</option>
-                            <option value="">Descending</option>
-                        </select>
-                    </div>
-
                     <div class="w-full sm:w-36">
                         <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
                         <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
@@ -138,10 +130,13 @@
             @endif
         </div>
 
-        <!-- Button Kembali -->
-        <div class="flex justify-start mt-6">
-            <a href="{{ route('perikanan.index') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        <!-- Button Kembali & Tambah Data -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4 mt-6">
+            <a href="{{ route('pegawai.perikanan.index') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                 Kembali
+            </a>
+            <a href="{{ route('pegawai.perikanan.create') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                Tambah Data
             </a>
         </div>
 
@@ -299,4 +294,4 @@
         });
     </script>
     @endpush
-</x-admin-layout>
+</x-pegawai-layout>

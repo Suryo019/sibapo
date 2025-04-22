@@ -1,8 +1,8 @@
-<x-admin-layout>
-    <main class="flex-1 p-4 sm:p-6">
+<x-pegawai-layout>
+    <main class="relative flex-1 p-4 sm:p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
-        <div class="bg-green-50 p-4 sm:p-6 rounded-lg shadow-md mt-4">
+        <div class="relative bg-green-50 p-4 sm:p-6 rounded-lg shadow-md mt-4">
             <form id="fishForm">
                 @csrf
 
@@ -28,9 +28,8 @@
             </form>
         </div>
         
-        <!-- Tombol -->
         <div class="flex justify-between mt-6">
-            <a href="{{ route('perikanan.detail') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            <a href="{{ route('pegawai.perikanan.detail') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                 Kembali
             </a>
             <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
@@ -66,10 +65,8 @@
                         throw data;
                     }
 
-                    // Reset form
                     fishForm.reset();
 
-                    // Show success message
                     await Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${data.data.jenis_ikan} telah disimpan.`,
@@ -94,4 +91,4 @@
         });
     </script>
     @endpush
-</x-admin-layout>
+</x-pegawai-layout>

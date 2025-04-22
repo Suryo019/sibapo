@@ -1,22 +1,22 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6 max-md:p-4">
         <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2>
-        
+
         <!-- Tombol Switch Produksi / Panen -->
         <div class="flex gap-4 mb-4">
-            <a href="{{ route('dtphp.produksi') }}">
+            <a href="{{ route('pegawai.dtphp.produksi') }}">
                 <button class="text-green-700 rounded-t-md bg-white px-4 py-3 shadow-md relative top-24 left-4 text-sm {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
                     Volume Produksi
                 </button>
             </a>
-            <a href="{{ route('dtphp.panen') }}">
+            <a href="{{ route('pegawai.dtphp.panen') }}">
                 <button class="text-gray-400 rounded-t-md bg-gray-100 px-4 py-3 relative top-24 shadow-md text-sm {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 ">
                     Luas Panen
                 </button>
             </a>
         </div>
     
-        <!-- Dropdown  -->
+        <!-- Dropdown -->
         <div class="flex justify-end my-4">
             <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-end w-full">
                 <!-- Pilih Komoditas -->
@@ -50,9 +50,9 @@
         </div>
 
         <!-- Chart Container -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 relative z-10 ">
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 relative z-10">
             <div class="flex items-center flex-col mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
-                <h3>Hektar Luas Panen April 2025</h3>
+                <h3>Volume Produksi April 2025</h3>
             </div>
 
             <div id="chart" class="w-full">
@@ -62,14 +62,14 @@
     
         <!-- Button -->
         <div class="flex justify-center mt-6">
-            <a href="{{ route('dtphp.detail.produksi') }}">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
                 <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $.ajax({

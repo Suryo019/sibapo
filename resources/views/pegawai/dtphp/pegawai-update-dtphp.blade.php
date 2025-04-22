@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-pegawai-layout>
     <main class="flex-1 p-6 max-md:p-4">
         <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-6 max-md:text-xl max-md:text-center">{{ $title }}</h2>
     
@@ -62,7 +62,7 @@
 
                 <!-- Tombol -->
                 <div class="flex justify-between mt-6 max-md:mt-4">
-                    <a href="{{ route('dtphp.detail.produksi') }}">
+                    <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
                         <button type="button" class="bg-green-700 text-white px-6 py-2 max-md:px-4 max-md:py-1.5 rounded-full hover:bg-green-800 text-sm max-md:text-xs">
                             Kembali
                         </button>
@@ -74,7 +74,7 @@
             </form>
         </div>
     </main>
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
     $(document).ready(function() {
@@ -96,7 +96,7 @@
                         text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
                         confirmButtonColor: '#16a34a'
                     }).then(() => {
-                        window.location.href = "{{ route('dtphp.detail.produksi') }}";
+                        window.location.href = "{{ route('pegawai.dtphp.detail.produksi') }}";
                     });
                 },
                 error: function(xhr, status, error) {
