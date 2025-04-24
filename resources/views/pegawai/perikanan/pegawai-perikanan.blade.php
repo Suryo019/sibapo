@@ -1,18 +1,18 @@
 <x-pegawai-layout>
-
     <main class="flex-1 p-6">
         <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
-    
-        <!-- Dropdown -->
-        <div class="flex justify-between my-4">
-            <div class="relative"> <!--tambahan ben opsi bisa dikanan-->
+
+        <!-- Filter Section -->
+        <div class="flex flex-col md:flex-row justify-between gap-4 my-6">
+            <div class="relative w-full md:w-auto">
+                <!-- Optional content -->
             </div>
-            <div class="flex gap-4">
-                {{-- Filter Pasar --}}
-                <div>
+
+            <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+                {{-- Filter Ikan --}}
+                <div class="w-full md:w-auto">
                     <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" id="pilih_ikan">
-                        {{-- <option value="" disabled selected>Pilih Ikan</option> --}}
+                    <select id="pilih_ikan" class="w-full border border-black p-2 rounded-full bg-white select2">
                         <option value="" selected>Ikan Teri</option>
                         @foreach ($fishes as $fish)
                             <option value="{{ $fish }}">{{ $fish }}</option>
@@ -20,11 +20,10 @@
                     </select>
                 </div>
 
-                <div>
-                    {{-- Filter Periode --}}
+                {{-- Filter Periode --}}
+                <div class="w-full md:w-auto">
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2" disabled id="pilih_periode">
-                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                    <select id="pilih_periode" class="w-full border border-black p-2 rounded-full bg-white select2" disabled>
                         <option value="" disabled selected>April 2025</option>
                         @foreach ($periods as $period)
                             <option value="{{ $period }}">{{ $period }}</option>
@@ -32,11 +31,10 @@
                     </select>
                 </div>
 
-                <div>
-                    {{-- Filter Bakpokting --}}
+                {{-- Filter Jenis Ikan --}}
+                <div class="w-full md:w-auto">
                     <label for="pilih_jenis_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Jenis Ikan</label>
-                    <select class="border border-black p-2 rounded-full bg-white select2 w-24" disabled id="pilih_jenis_ikan">
-                        {{-- <option value="" disabled selected>Pilih Periode</option> --}}
+                    <select id="pilih_jenis_ikan" class="w-full md:w-24 border border-black p-2 rounded-full bg-white select2" disabled>
                         <option value="" disabled selected>Teri</option>
                         @foreach ($data as $item)
                             <option value="{{ $item }}">{{ $item }}</option>
@@ -45,27 +43,24 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8">
-            <div class="flex items-center flex-col mb-3 font-bold text-green-910">
-              <h3>Volume Produksi Ikan Tahun 2025</h3>
-            </div>
+
+        <!-- Chart Section -->
+        <div class="w-full bg-white rounded-2xl shadow-md p-8 flex flex-col items-center justify-center">
+            <h3 class="text-lg font-bold text-green-900 mb-4">Volume Produksi Ikan Tahun 2025</h3>
             <div id="chart" class="w-full">
-                {{-- Chartt --}}
+                {{-- Chart will render here --}}
             </div>
         </div>
-    
+
         <!-- Button -->
-        <div class="flex justify-center mt-4">
+        <div class="flex justify-center mt-6">
             <a href="{{ route('pegawai.perikanan.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">
+                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 transition duration-300">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
-
 </x-pegawai-layout>
 
 <script>
@@ -74,7 +69,6 @@
         url: "{{ route('api.dp.index') }}",
         success: function(response) {
             let dataset = response.data;
-            
             let jenis_ikan = [];
             let produksi = [];
 
@@ -82,10 +76,6 @@
                 jenis_ikan.push(value.jenis_ikan);
                 produksi.push(value.ton_produksi);
             });
-
-            console.log(jenis_ikan);
-            console.log(produksi);
-
 
             var options = {
                 chart: {
@@ -104,11 +94,10 @@
             var chart = new ApexCharts(document.querySelector("#chart"), options);
             chart.render();
         },
-        error: function(xhr, status, error) {
+        error: function(xhr) {
             console.log(xhr.responseText);
         }
     });
-
 
     $('#pilih_ikan').on('change', function() {
         $('#pilih_periode').removeAttr('disabled');
@@ -117,7 +106,4 @@
     $('#pilih_periode').on('change', function() {
         $('#pilih_ikan').removeAttr('disabled');
     });
-
-    // const data = fecth('http://sibapo.test/api/dpp').then(function(data) => console.log(data);
-    
 </script>
