@@ -1,30 +1,50 @@
-{{-- @dd($attributes) --}}
+{{-- @dd($attributes['icon']) --}}
 
-@props(['viewData', 'createData'])
+@props(['viewHref', 'createHref', 'viewData', 'createData', 'updateData' => null, 'dataHref', 'dinas' => null,'viewDetailHref' => null])
 
-<li class="mb-2" id={{ $name }}>
-    <details class="group rounded-md cursor-pointer">
-      <summary class="list-none rounded-md {{ request()->is($attributes->get('dataHref')) ? 'text-yellow-300' : '' }} bg-green-900 md:bg-transparent">
-        <div class="flex justify-between items-center py-2 px-4 rounded hover:bg-green-800">
-          <span>{{ $name }}</span>
-          <i class="caret-icon bi bi-caret-down-fill scale-50"></i>
-        </div>
-      </summary>
-      <ul class="mt-1 pb-2 bg-green-910 rounded-md overflow-hidden">
-        <li class="pl-4 hover:bg-green-800">
-          <a {{ $createData->attributes }} class="block py-1 px-2 rounded">{{ $createData }}</a>
-        </li>
-        <li class="pl-4 hover:bg-green-800">
-          <a {{ $viewData->attributes }} class="block py-1 px-2 rounded">{{ $viewData }}</a>
-        </li>
-      </ul>
-    </details>
+<li class="mb-2" id="{{ $name }}">
+  <div class="rounded-md cursor-pointer toggle-dropdown {{ request()->is($dataHref) ? 'text-yellow-300' : '' }} md:bg-transparent">
+    <div class="flex justify-between items-center py-2 rounded hover:bg-pink-600">
+      <span class="pl-7 flex items-center gap-5 text-sm">
+        <iconify-icon icon="{{ $attributes['icon'] }}" class="text-xl"></iconify-icon>
+        {{ $name }}
+      </span>
+      <i class="caret-icon bi bi-caret-down-fill scale-50 pr-5"></i>
+    </div>
+  </div>
+
+  <ul class="dropdown-content mt-1 {{ request()->is($dataHref) ? 'block' : 'hidden' }}">
+    <li class="pl-[52px] py-1 rounded-md hover:bg-pink-600 {{ request()->url() === $viewHref || request()->url() === $viewDetailHref ? 'bg-pink-450' : '' }}">
+      <a href="{{ $viewHref }}" class="rounded py-1 flex items-center gap-5 text-sm">
+        <i class="bi bi-eye-fill"></i>
+        {{ $viewData }}
+      </a>
+    </li>
+    <li class="pl-[52px] py-1 rounded-md hover:bg-pink-600 {{ request()->url() === $createHref ? 'bg-pink-450' : '' }}">
+      <a href="{{ $createHref }}" class="flex items-center gap-5 rounded py-1 text-sm">
+        <i class="bi bi-plus-circle-fill"></i>
+        {{ $createData }}
+      </a>
+    </li>
+    <li class="pl-[52px] py-1 rounded-md hover:bg-pink-600 {{ request()->is($dinas . '/*/edit') ? 'bg-pink-450 block' : 'hidden' }}" id="editNav">
+      <a href="{{ $createHref }}" class="flex items-center gap-5 rounded py-1 text-sm">
+        <i class="bi bi-pencil-fill"></i>
+        {{ $updateData }}
+      </a>
+    </li>
+  </ul>
 </li>
 
+
 <script>
-  $('#{{ $name }}').click(function(){
-    $(this).children().toggleClass("bg-green-910");
-    $(this).find('.caret-icon').toggleClass('bi-caret-down-fill');
-    $(this).find('.caret-icon').toggleClass('bi-caret-up-fill');
-  })
+  $(document).ready(function () {
+    $('#{{ $name }} .toggle-dropdown').on('click', function () {
+      const $parent = $(this).closest('li');
+      const $dropdown = $parent.find('.dropdown-content');
+      const $icon = $parent.find('.caret-icon');
+
+      $dropdown.slideToggle(200);
+      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill'); // ganti icon
+    });
+  });
 </script>

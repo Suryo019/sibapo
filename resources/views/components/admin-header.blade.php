@@ -6,13 +6,13 @@
         </div>
         {{-- Logo --}}
         <div class="justify-center flex md:hidden">
-            <img src="{{ asset('/img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" 
+            <img src="{{ asset('/img/logo.png') }}" 
             alt="logo" class="h-10 w-30 ml-2 scale-90">
         </div>
     </div>
 
     {{-- Nama Dinas --}}
-    <h2 class="text-lg font-semibold text-center hidden md:block">{{ $slot }}</h2>
+    <h2 class="text-2xl font-extrabold text-center hidden md:block">{{ $slot }}</h2>
     
     <div class="flex items-center gap-4 mr-4"> <!-- Tambah margin kanan -->
         <img src="https://via.placeholder.com/40" alt="Profile" 

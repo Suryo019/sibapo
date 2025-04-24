@@ -1,37 +1,41 @@
 <x-admin-layout>
 
-    <main class="flex-1 p-6 max-md:p-4">
+    <!-- Dropdown -->
+    <x-filter></x-filter>
+
+    {{-- Abaikan DULU! --}}
+    <div class="flex flex-wrap justify-end items-start gap-4 my-4 sm:hidden">
+        {{-- Dropdown Filter --}}
+        <div class="flex flex-wrap gap-4 max-md:gap-2">
+            {{-- Filter Pasar --}}
+            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
+                <option value="" disabled selected class="text-xs">Pilih Pasar</option>
+                @foreach ($markets as $market)
+                    <option value="{{ $market }}">{{ $market }}</option>
+                @endforeach
+            </select>
+
+            {{-- Filter Periode --}}
+            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
+                <option value="" disabled selected class="text-xs">Pilih Periode</option>
+                @foreach ($periods as $period)
+                    <option value="{{ $period }}">{{ $period }}</option>
+                @endforeach
+            </select>
+
+            {{-- Filter Bahan Pokok --}}
+            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
+                <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option>
+                @foreach ($data as $item)
+                    <option value="{{ $item }}">{{ $item }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:text-xl max-md:text-center max-md:mb-10">{{ $title }}</h2>
     
-        <!-- Dropdown -->
-        <div class="flex flex-wrap justify-end items-start gap-4 my-4">
-            <!-- Dropdown Filter -->
-            <div class="flex flex-wrap gap-4 max-md:gap-2">
-                {{-- Filter Pasar --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
-                    <option value="" disabled selected class="text-xs">Pilih Pasar</option>
-                    @foreach ($markets as $market)
-                        <option value="{{ $market }}">{{ $market }}</option>
-                    @endforeach
-                </select>
-    
-                {{-- Filter Periode --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
-                    <option value="" disabled selected class="text-xs">Pilih Periode</option>
-                    @foreach ($periods as $period)
-                        <option value="{{ $period }}">{{ $period }}</option>
-                    @endforeach
-                </select>
-    
-                {{-- Filter Bahan Pokok --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
-                    <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option>
-                    @foreach ($data as $item)
-                        <option value="{{ $item }}">{{ $item }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
     
         <!-- Chart Placeholder -->
         <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4" id="chart_container">
@@ -49,14 +53,15 @@
         </div>
     
         <!-- Button -->
-        <div class="flex justify-center mt-6">
+        <div class="flex justify-start mt-6">
             <a href="{{ route('disperindag.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
+                <button class="bg-yellow-550 text-md text-white px-3 py-2 rounded-lg hover:bg-green-800 max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>
         </div>
     </main>
+
     
 
 </x-admin-layout>

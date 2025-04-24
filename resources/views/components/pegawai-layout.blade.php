@@ -53,7 +53,7 @@
             </x-pegawai-header>
 
             <!-- Sidebar -->
-            <x-pegawai-sidebar class="order-1 hidden p-4 md:order-none col-span-2 bg-green-900 z-20 w-full bg-transparent text-white static md:h-screen md:block md:fixed md:w-64 md:bg-green-900" id="sidebar">
+            <x-pegawai-sidebar class="order-1 hidden p-4 md:order-none col-span-2 bg-pink-700 z-20 w-full bg-transparent text-white static md:h-screen md:block md:fixed md:w-64 md:bg-green-900" id="sidebar">
             </x-pegawai-sidebar>
 
             <!-- Content -->

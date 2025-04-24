@@ -12,11 +12,30 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Lato", ...defaultTheme.fontFamily.sans],
+            },
+            boxShadow: {
+                "pink-custom": "0px 0px 35px rgba(243, 26, 131, 1)",
             },
             colors: {
                 green: {
                     910: "#264226",
+                },
+                pink: {
+                    650: "#F31A83",
+                    450: "rgba(249, 181, 207, 0.42)",
+                },
+                gray: {
+                    10: "rgba(0, 0, 0, 0.05)",
+                },
+                yellow: {
+                    550: "#FF9F04",
+                    650: "#F57D1F",
+                },
+            },
+            borderColor: {
+                gray: {
+                    20: "rgba(0, 0, 0, 0.10)",
                 },
             },
         },

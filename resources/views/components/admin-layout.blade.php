@@ -25,45 +25,58 @@
     {{-- ApexChart --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    {{-- GG Font --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    {{-- Iconify Figma --}}
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
 </head>
-<body class="bg-green-100 h-screen">
+<body class="h-screen w-screen overflow-hidden">
       <!-- Loading overlay -->
       <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
-        <div class="w-full h-full flex items-center justify-center flex-col">
-            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400 border-solid mx-auto"></div>
-            <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
+            <div class="w-full h-full flex items-center justify-center flex-col">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-400 border-solid mx-auto"></div>
+                <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
+            </div>
         </div>
-    </div>
 
     
-    <div class="h-full w-full text-xs md:text-lg overflow-x-hidden">
-        <div class="flex flex-col flex-1">
-            <!-- Header -->
+    <div class="h-full w-full flex overflow-x-hidden py-5 relative z-10 mb-10">
+        <!-- Sidebar (Fixed) -->
+        <x-admin-sidebar class="w-[22rem] fixed left-0 top-0 h-screen px-10 py-5 z-30" id="sidebar">
+        </x-admin-sidebar>
+    
+        <!-- Content Area (Scrollable) -->
+        <div class="flex-1 ml-[22rem] h-screen mr-10 overflow-y-hidden">
             @php
                 $judul = match(true) {
-                    request()->is('disperindag*') => 'Dinas Perindustrian dan Perdagangan',
-                    request()->is('dkpp*') => 'Dinas Ketahanan Pangan dan Peternakan',
-                    request()->is('dtphp*') => 'Dinas Tanaman Pangan Hortikultura dan Perkebunan',
-                    request()->is('perikanan*') => 'Dinas Perikanan',
-                    default => 'Dinas Tidak Dikenal'
+                    request()->is('disperindag*') => 'DISPERINDAG',
+                    request()->is('dkpp*') => 'DKPP',
+                    request()->is('dtphp*') => 'DTPHP',
+                    request()->is('perikanan*') => 'PERIKANAN',
+                    default => 'DASHBOARD'
                 };
             @endphp
-
-            <x-admin-header class="bg-green-900 text-white p-4 flex justify-between items-center w-full z-10 md:pl-64">
+    
+            <x-admin-header class="text-black flex justify-between items-center h-16 mb-7">
                 {{ $judul }}
             </x-admin-header>
 
-            <!-- Sidebar -->
-            <x-admin-sidebar class="order-1 hidden p-4 md:order-none col-span-2 bg-green-900 z-20 w-full bg-transparent text-white static md:h-screen md:block md:fixed md:w-64 md:bg-green-900" id="sidebar">
-            </x-admin-sidebar>
-
-            <!-- Content -->
-            <main class="w-full order-3 md:pl-64">
+            
+            <main>
                 {{ $slot }}
             </main>
         </div>
-    </div>    
+    </div>
+
+    {{-- BG --}}
+    <div class="w-full h-screen fixed z-0 overflow-hidden">
+        <img src="{{ asset('img/kembang-sidebar-2.png') }}" class="fixed bottom-0 scale-90 -right-32" alt="">
+    </div>
+    
 
     <script>
         // Select2

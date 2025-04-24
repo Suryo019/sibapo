@@ -1,6 +1,13 @@
 {{-- @dd($splitNumberPeriod) --}}
 <x-admin-layout>
-    <main class="flex-1 p-4 md:p-6">
+    <div class="w-full flex justify-between">
+        <!-- Search bar -->
+        <x-search></x-search>
+
+        {{-- Filter --}}
+        <x-filter></x-filter>
+    </div>
+    <main class="flex-1">
         <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2>
     
         <div class="bg-white p-6 rounded shadow-md mt-4">
@@ -8,15 +15,8 @@
             
             <!-- Search dan Dropdown -->
             <div class="flex flex-col lg:flex-row lg:justify-between gap-4 my-4">
-
-                <!-- Search bar -->
-                <div class="flex items-center border bg-white rounded-full w-full lg:w-64 h-9 px-3">
-                    <span class="bi bi-search pr-2"></span>
-                    <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full">
-                </div>
-
                 <!-- Dropdown Form -->
-                <form class="flex flex-col md:flex-row gap-4 w-full lg:w-auto" action="{{ route('disperindag.detail') }}" method="get" id="filterForm">
+                {{-- <form class="flex flex-col md:flex-row gap-4 w-full lg:w-auto" action="{{ route('disperindag.detail') }}" method="get" id="filterForm">
                     <div class="w-full md:w-auto">
                         <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
                         <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full md:w-28 select2" id="pilih_urutan">
@@ -42,7 +42,7 @@
                             @endforeach
                         </select>
                     </div>
-                </form>
+                </form> --}}
             </div>
     
             <!-- Tabel -->

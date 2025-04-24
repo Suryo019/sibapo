@@ -1,44 +1,88 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
 <aside {{ $attributes }}>
-    <h2 class="md:hidden text-green-950 font-medium mb-3">Menu</h2>
-    <div class="mb-5 justify-center hidden md:flex">
-      <img class="scale-50 ml-4" src="{{ asset('img/WhatsApp Image 2025-04-03 at 12.16.37_3e08b726.jpg') }}" alt="logo">
-    </div>
-    <nav>
-      <ul>
+  <nav class="bg-pink-650 w-full h-full rounded-[30px] flex flex-col place-content-between text-white font-medium shadow-pink-custom overflow-hidden">
+    <div class="relative bg-pink-650 z-10 rounded-xl">
+      {{-- Header --}}
+      <h2 class="md:hidden text-green-950 font-medium mb-3">Menu</h2>
+      <div class="mb-5 justify-center mt-1 hidden md:flex">
+        <img class="scale-50 ml-4" src="{{ asset('img/logo.png') }}" alt="logo">
+      </div>
+
+      {{-- Link --}}
+      <ul class="">
         <!-- Dashboard -->
-        <li class="mb-2 rounded-md bg-green-900 md:bg-transparent">
-          <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded {{ request()->is('dashboard') ? 'text-yellow-300' : '' }}">Dashboard</a>
+        <li class="mb-2 rounded-md py-2 hover:bg-pink-600 md:bg-transparent">
+          <a href="{{ route('dashboard') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('dashboard') ? 'text-yellow-300' : '' }}">
+            <iconify-icon icon="bi:house-door-fill" class="text-xl"></iconify-icon>
+            Dashboard
+          </a>
         </li>
   
         <!-- DISPERINDAG -->
-        <x-admin-sidebar-link dataHref="disperindag*">
+        <x-admin-sidebar-link 
+            dataHref="disperindag*"
+            dinas="disperindag"
+            viewHref="{{ route('disperindag.index') }}"
+            viewDetailHref="{{ route('disperindag.detail') }}"
+            createHref="{{ route('disperindag.create') }}"
+            viewData="Lihat Data"
+            createData="Tambah Data"
+            updateData="Ubah Data"
+            icon="mage:basket-fill"
+            >
             <x-slot:name>DISPERINDAG</x-slot:name>
-            <x-slot:createData href="{{ route('disperindag.create') }}">Tambah Data</x-slot:createData>
-            <x-slot:viewData href="{{ route('disperindag.index') }}">Lihat Data</x-slot:viewData>
         </x-admin-sidebar-link>
-  
+
+
         <!-- DKPP -->
-        <x-admin-sidebar-link dataHref="dkpp*">
-            <x-slot:name>DKPP</x-slot:name>
-            <x-slot:createData href="{{ route('dkpp.create') }}">Tambah Data</x-slot:createData>
-            <x-slot:viewData href="{{ route('dkpp.index') }}">Lihat Data</x-slot:viewData>
+        <x-admin-sidebar-link 
+        dataHref="dkpp*"
+        dinas="dkpp"
+        viewHref="{{ route('dkpp.index') }}"
+        createHref="{{ route('dkpp.create') }}"
+        :viewData="'Lihat Data'"
+        :createData="'Tambah Data'"
+        updateData="Ubah Data"
+        icon="healthicons:plantation-worker-alt"
+        >
+        <x-slot:name>DKPP</x-slot:name>
         </x-admin-sidebar-link>
-  
+
         <!-- DTPHP -->
-        <x-admin-sidebar-link dataHref="dtphp*">
-            <x-slot:name>DTPHP</x-slot:name>
-            <x-slot:createData href="{{ route('dtphp.create') }}">Tambah Data</x-slot:createData>
-            <x-slot:viewData href="{{ route('dtphp.produksi') }}">Lihat Data</x-slot:viewData>
+        <x-admin-sidebar-link 
+        dataHref="dtphp*"
+        dinas="dtphp"
+        viewHref="{{ route('dtphp.produksi') }}"
+        createHref="{{ route('dtphp.create') }}"
+        :viewData="'Lihat Data'"
+        :createData="'Tambah Data'"
+        updateData="Ubah Data"
+        icon="carbon:agriculture-analytics"
+        >
+        <x-slot:name>DTPHP</x-slot:name>
         </x-admin-sidebar-link>
-  
+
         <!-- PERIKANAN -->
-        <x-admin-sidebar-link dataHref="perikanan*">
-            <x-slot:name>PERIKANAN</x-slot:name>
-            <x-slot:createData href="{{ route('perikanan.create') }}">Tambah Data</x-slot:createData>
-            <x-slot:viewData href="{{ route('perikanan.index') }}">Lihat Data</x-slot:viewData>
+        <x-admin-sidebar-link 
+        dataHref="perikanan*"
+        dinas="perikanan"
+        viewHref="{{ route('perikanan.index') }}"
+        createHref="{{ route('perikanan.create') }}"
+        :viewData="'Lihat Data'"
+        :createData="'Tambah Data'"
+        updateData="Ubah Data"
+        icon="majesticons:fish"
+        >
+        <x-slot:name>PERIKANAN</x-slot:name>
         </x-admin-sidebar-link>
       </ul>
-    </nav>
+    </div>
+  
+    {{-- Decoration --}}
+    <div class="w-[18rem] h-[15rem] p-2 fixed bottom-5">
+      <img src="{{ asset('img/kembang_sidebar.png') }}" class="h-full bg-contain" alt="Flower">
+    </div>
+  </nav>
+    
 </aside>
