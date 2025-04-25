@@ -44,13 +44,9 @@
         </div>
 
     
-    <div class="h-full w-full flex overflow-x-hidden py-5 relative z-10 mb-10">
-        <!-- Sidebar (Fixed) -->
-        <x-admin-sidebar class="w-[22rem] fixed left-0 top-0 h-screen px-10 py-5 z-30" id="sidebar">
-        </x-admin-sidebar>
-    
+    <div class="h-full w-full flex overflow-x-hidden py-5 relative z-10 mb-10 max-md:pt-0">
         <!-- Content Area (Scrollable) -->
-        <div class="flex-1 ml-[22rem] h-screen mr-10 overflow-y-hidden">
+        <div class="flex-1 ml-[22rem] h-screen mr-10 overflow-y-hidden max-md:mx-0 max-md:order-1">
             @php
                 $judul = match(true) {
                     request()->is('disperindag*') => 'DISPERINDAG',
@@ -61,12 +57,15 @@
                 };
             @endphp
     
-            <x-admin-header class="text-black flex justify-between items-center h-16 mb-7">
+            <x-admin-header class="text-black flex justify-between items-center h-16 mb-7 max-md:px-4 max-md:bg-pink-650 max-md:mb-4">
                 {{ $judul }}
             </x-admin-header>
 
+            <!-- Sidebar (Fixed) -->
+            <x-admin-sidebar class="w-[22rem] fixed left-0 top-0 h-screen max-md:h-auto px-10 py-5 z-30 max-md:hidden max-md:w-full max-md:static max-md:order-2 max-md:px-7 max-md:py-0 max-md:mb-10" id="sidebar">
+            </x-admin-sidebar>
             
-            <main>
+            <main class="max-md:px-3">
                 {{ $slot }}
             </main>
         </div>

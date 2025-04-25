@@ -1,10 +1,10 @@
 {{-- @dd(request()->is('dashboard')) --}}
 
 <aside {{ $attributes }}>
-  <nav class="bg-pink-650 w-full h-full rounded-[30px] flex flex-col place-content-between text-white font-medium shadow-pink-custom overflow-hidden">
-    <div class="relative bg-pink-650 z-10 rounded-xl">
+  <nav class="bg-pink-650 w-full h-full rounded-[30px] max-md:rounded-none flex flex-col place-content-between text-white font-medium shadow-pink-custom max-md:shadow-none overflow-hidden max-md:bg-transparent">
+    <div class="bg-pink-650 max-md:bg-transparent rounded-xl">
       {{-- Header --}}
-      <h2 class="md:hidden text-green-950 font-medium mb-3">Menu</h2>
+      <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
       <div class="mb-5 justify-center mt-1 hidden md:flex">
         <img class="scale-50 ml-4" src="{{ asset('img/logo.png') }}" alt="logo">
       </div>
@@ -12,7 +12,7 @@
       {{-- Link --}}
       <ul class="">
         <!-- Dashboard -->
-        <li class="mb-2 rounded-md py-2 hover:bg-pink-600 md:bg-transparent">
+        <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
           <a href="{{ route('dashboard') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('dashboard') ? 'text-yellow-300' : '' }}">
             <iconify-icon icon="bi:house-door-fill" class="text-xl"></iconify-icon>
             Dashboard
@@ -80,7 +80,7 @@
     </div>
   
     {{-- Decoration --}}
-    <div class="w-[18rem] h-[15rem] p-2 fixed bottom-5">
+    <div class="w-[18rem] h-[15rem] p-2 fixed bottom-5 max-md:hidden">
       <img src="{{ asset('img/kembang_sidebar.png') }}" class="h-full bg-contain" alt="Flower">
     </div>
   </nav>

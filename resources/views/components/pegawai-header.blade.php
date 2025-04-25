@@ -5,12 +5,12 @@
         </div>
         {{-- Nama Dinas (<= MD) --}}
         <div class="justify-center flex md:hidden ml-4">
-            <h1 class="text-sm">{{ $slot }}</h1>
+            <h1 class="text-lg font-extrabold text-white">{{ $slot }}</h1>
         </div>
     </div>
 
     {{-- Nama Dinas --}}
-    <h2 class="text-lg font-semibold text-center hidden md:block">{{ $slot }}</h2>
+    <h2 class="text-2xl font-extrabold text-center hidden md:block">{{ $slot }}</h2>
     
     <div class="flex items-center gap-4 mr-4"> <!-- Tambah margin kanan -->
         <img src="https://via.placeholder.com/40" alt="Profile" 
