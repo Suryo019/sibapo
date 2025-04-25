@@ -5,14 +5,7 @@
         <x-search></x-search>
 
         {{-- Filter --}}
-        {{-- <x-filter></x-filter> --}}
-
-        <!-- Button -->
-        <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
-            <i class="bi bi-funnel-fill text-xl"></i>
-            Filter
-            <i class="bi bi-chevron-down text-xs"></i>
-        </button>
+        <x-filter></x-filter>
 
         <!-- Modal Background -->
         <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
@@ -86,38 +79,6 @@
             <h3 class="text-lg font-semibold ">Data Harga {{ $market }} Bulan {{ $period }}</h3>
             </div>
             
-            <!-- Search dan Dropdown -->
-            <div class="flex flex-col lg:flex-row lg:justify-between gap-4 my-4">
-                <!-- Dropdown Form -->
-                {{-- <form class="flex flex-col md:flex-row gap-4 w-full lg:w-auto" action="{{ route('disperindag.detail') }}" method="get" id="filterForm">
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full md:w-28 select2" id="pilih_urutan">
-                            <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
-                            <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
-                        </select>
-                    </div>
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
-                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                            @foreach ($markets as $market)
-                                <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode" disabled>
-                            <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </form> --}}
-            </div>
-            
             <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <!-- Tabel -->
             @if (isset($data) && count($data) != 0) 
@@ -169,82 +130,7 @@
                                                 </td>
                                             @endfor
                                         </tr>
-                                        <script>
-                                            $('.editBtn').on('click', function() {
-                                                const modal = $("#modal");
-                                                modal.removeClass("hidden").addClass("flex");
-                                                $('#actionPlaceholder').html('edit');
-                                        
-                                                const bahanPokok = $(this).data('bahan-pokok');
-                                        
-                                                $.ajax({
-                                                    type: "GET",
-                                                    url: `/api/dpp/${bahanPokok}`,
-                                                    data: {
-                                                        periode_bulan: $(this).data('periode-bulan'),
-                                                        periode_tahun: $(this).data('periode-tahun')
-                                                    },
-                                                    success: function(response) {
-                                                        const data = response.data;
-                                                        $('#editDataList').empty();
-                                                        data.forEach(element => {
-                                                            let listCard = `
-                                                                <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                                    <div>
-                                                                        <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.jenis_bahan_pokok}</span></p>
-                                                                        <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.pasar}</span></p>
-                                                                        <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                                                        <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                                                                    </div>
-                                                                    <a href="/disperindag/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
-                                                                </div>
-                                                            `;
-                                                            $('#editDataList').append(listCard);
-                                                        });
-                                                    },
-                                                    error: function(xhr) {
-                                                        console.log(xhr.responseText);
-                                                    }
-                                                });
-                                            });
-                                        
-                                            $('.deleteBtn').on('click', function() {
-                                                const modal = $("#modal");
-                                                modal.removeClass("hidden").addClass("flex");
-                                                $('#actionPlaceholder').html('hapus');
-                                        
-                                                const bahanPokok = $(this).data('bahan-pokok');
-                                        
-                                                $.ajax({
-                                                    type: "GET",
-                                                    url: `/api/dpp/${bahanPokok}`,
-                                                    data: {
-                                                        periode_bulan: $(this).data('periode-bulan'),
-                                                        periode_tahun: $(this).data('periode-tahun')
-                                                    },
-                                                    success: function(response) {
-                                                        const data = response.data;
-                                                        $('#editDataList').empty();
-                                                        data.forEach(element => {
-                                                            let listCard = `
-                                                                <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                                                    <div>
-                                                                        <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.jenis_bahan_pokok}</span></p>
-                                                                        <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                                                        <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                                                                    </div>
-                                                                    <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
-                                                                </div>
-                                                            `;
-                                                            $('#editDataList').append(listCard);
-                                                        });
-                                                    },
-                                                    error: function(xhr) {
-                                                        console.log(xhr.responseText);
-                                                    }
-                                                });
-                                            });
-                                        </script>
+                                        <script src="{{ asset('js/admin-disperindag-detail-modal.js') }}"></script>
                                     @endforeach
                                 </tbody>
                             </table>

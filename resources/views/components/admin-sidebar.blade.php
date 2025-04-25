@@ -2,7 +2,7 @@
 
 <aside {{ $attributes }}>
   <nav class="bg-pink-650 w-full h-full rounded-[30px] max-md:rounded-none flex flex-col place-content-between text-white font-medium shadow-pink-custom max-md:shadow-none overflow-hidden max-md:bg-transparent">
-    <div class="bg-pink-650 max-md:bg-transparent rounded-xl">
+    <div class="bg-pink-650 max-md:bg-transparent rounded-xl relative z-10">
       {{-- Header --}}
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
       <div class="mb-5 justify-center mt-1 hidden md:flex">

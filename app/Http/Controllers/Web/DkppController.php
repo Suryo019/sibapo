@@ -94,10 +94,13 @@ class DkppController extends Controller
                 return $item->periode_indonesia;
             });
 
-        $data = DKPP::whereYear('tanggal_input', 2025)
-        ->whereMonth('tanggal_input', 4)
-        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [3])
+        $currentWeek = floor((now()->day - 1) / 7) + 1;
+
+        $data = DKPP::whereYear('tanggal_input', now()->year)
+        ->whereMonth('tanggal_input', now()->month)
+        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [$currentWeek])
         ->get();
+
 
         return view('admin.dkpp.admin-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',

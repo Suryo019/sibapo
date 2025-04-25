@@ -6,10 +6,7 @@
     {{-- Abaikan DULU! --}}
     <div class="flex flex-wrap justify-between gap-4 my-4">
 
-        <div class="flex items-center border bg-gray-100 rounded w-full lg:w-64 h-9 px-3">
-            <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full bg-gray-100">
-            <span class="bi bi-search pr-2 bg-gray-100"></span>
-        </div>
+        <x-search></x-search>
 
         <!-- Button -->
         <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
