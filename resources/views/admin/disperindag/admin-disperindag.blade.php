@@ -1,44 +1,123 @@
 <x-admin-layout>
 
     <!-- Dropdown -->
-    <x-filter></x-filter>
+    {{-- <x-filter></x-filter> --}}
 
     {{-- Abaikan DULU! --}}
-    <div class="flex flex-wrap justify-end items-start gap-4 my-4 sm:hidden">
+    <div class="flex flex-wrap justify-between gap-4 my-4">
+
+        <div class="flex items-center border bg-gray-100 rounded w-full lg:w-64 h-9 px-3">
+            <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full bg-gray-100">
+            <span class="bi bi-search pr-2 bg-gray-100"></span>
+        </div>
+
+        <!-- Button -->
+        <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
+            <i class="bi bi-funnel-fill text-xl"></i>
+                Filter
+            <i class="bi bi-chevron-down text-xs"></i>
+        </button>
+
+        <!-- Modal Background -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+            <!-- Modal Content -->
+            <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
+            <!-- Close Button -->
+            <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                <i class="bi bi-x text-4xl"></i> 
+            </button>
+            
+            <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">Filter</h2>
+
+            <div class="space-y-4">
+                <!-- Nama Pasar -->
+                <div class="flex flex-col">
+                    <label for="pilih_pasar" class="text-sm text-gray-700">Nama Pasar</label>
+                    <select class="border w-full max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
+                        {{-- <option value="" disabled selected class="text-xs">Pilih Pasar</option> --}}
+                        @foreach ($markets as $market)
+                            <option value="{{ $market }}">{{ $market }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Periode -->
+                <div class= "flex flex-col">
+                    <label for="pilih_periode" class="text-sm text-gray-700">Periode</label>
+                    <select class="border w-full max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]"  id="pilih_periode">
+                        {{-- <option value="" disabled selected class="text-xs">Pilih Periode</option> --}}
+                        @foreach ($periods as $period)
+                            <option value="{{ $period }}">{{ $period }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Bahan Pokok -->
+                <div for="pilih_bahan_pokok" class= "flex flex-col">
+                    <label class="text-sm text-gray-700">Bahan Pokok</label>
+                    <select class="border w-full max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]"  id="pilih_bahan_pokok">
+                        {{-- <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option> --}}
+                        @foreach ($data as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleModal() {
+            const modal = document.getElementById('filterModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+            }
+        </script>
+
         {{-- Dropdown Filter --}}
-        <div class="flex flex-wrap gap-4 max-md:gap-2">
+        {{-- <div class="flex flex-wrap gap-4 max-md:gap-2"> --}}
             {{-- Filter Pasar --}}
-            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
+            {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
                 <option value="" disabled selected class="text-xs">Pilih Pasar</option>
                 @foreach ($markets as $market)
                     <option value="{{ $market }}">{{ $market }}</option>
                 @endforeach
-            </select>
+            </select> --}}
 
             {{-- Filter Periode --}}
-            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
+            {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
                 <option value="" disabled selected class="text-xs">Pilih Periode</option>
                 @foreach ($periods as $period)
                     <option value="{{ $period }}">{{ $period }}</option>
                 @endforeach
-            </select>
+            </select> --}}
 
             {{-- Filter Bahan Pokok --}}
-            <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
+            {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
                 <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option>
                 @foreach ($data as $item)
                     <option value="{{ $item }}">{{ $item }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
     </div>
 
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-        <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:text-xl max-md:text-center max-md:mb-10">{{ $title }}</h2>
-    
+        <div class="w-full flex items-center gap-2 mb-4">
+            <a href="javascript:history.back()" class="text-decoration-none text-dark flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>                      
+            </a>
+            <h2 class="text-2xl font-semibold text-black max-md:text-xl max-md:text-center">
+                {{ $title }}
+            </h2>
+        </div>
+        
     
         <!-- Chart Placeholder -->
         <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4" id="chart_container">
+
             <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px] max-md:mb-3">
                 <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
@@ -55,7 +134,7 @@
         <!-- Button -->
         <div class="flex justify-start mt-6">
             <a href="{{ route('disperindag.detail') }}">
-                <button class="bg-yellow-550 text-md text-white px-3 py-2 rounded-lg hover:bg-green-800 max-md:text-xs max-md:px-4 max-md:py-1">
+                <button class="bg-yellow-550 text-md text-white px-3 py-2 rounded-lg hover:bg-yellow-500 max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>

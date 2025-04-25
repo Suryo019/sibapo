@@ -1,13 +1,23 @@
 <x-admin-layout>
     <main class="flex-1 p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
 
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
+
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('dkpp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h2 class="text-2xl font-semibold text-black">{{ $title }}</h2>
+            </div>
+    
+        <div class="bg-white p-6 rounded shadow-md mt-4">
             <form method="POST" action="{{ route('api.dkpp.store') }}">
                 @csrf
 
                 <div class="mb-4">
-                    <label for="jenis_komoditas" class="block text-gray-700">Jenis Komoditas</label>
+                    <label for="jenis_komoditas" class="block text-pink-500">Jenis Komoditas</label>
                     <input 
                         type="text" 
                         name="jenis_komoditas" 
@@ -17,7 +27,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="ton_ketersediaan" class="block text-gray-700">Ketersediaan (Ton)</label>
+                    <label for="ton_ketersediaan" class="block text-pink-500">Ketersediaan (Ton)</label>
                     <input 
                         type="text" 
                         name="ton_ketersediaan" 
@@ -27,7 +37,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="ton_kebutuhan_perminggu" class="block text-gray-700">Kebutuhan Perminggu (Ton)</label>
+                    <label for="ton_kebutuhan_perminggu" class="block text-pink-500">Kebutuhan Perminggu (Ton)</label>
                     <input 
                         type="text" 
                         name="ton_kebutuhan_perminggu" 
@@ -41,10 +51,7 @@
         
         <!-- Tombol -->
         <div class="flex justify-between mt-4">
-            <a href="{{ route('dkpp.detail') }}">
-                <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
-            </a>
-            <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800" id="submitBtn">Tambah</button>
+            <button type="button" class="bg-yellow-550 text-white px-6 py-2 rounded hover:bg-yellow-500" id="submitBtn">Simpan</button>
         </div>
         
     </main>

@@ -1,15 +1,24 @@
 <x-admin-layout>
     <main class="flex-1 p-4 sm:p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+        {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
     
-        <div class="bg-green-50 p-4 sm:p-6 rounded-lg shadow-md mt-4">
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('perikanan.detail') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h3 class="text-lg font-semibold text-center max-md:text-base">Ubah Data</h3>
+            </div>
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4">
             <form id="editFishForm">
                 @csrf
                 @method('PUT')
 
                 <!-- Jenis Ikan -->
                 <div class="mb-4">
-                    <label for="jenis_ikan" class="block text-sm font-medium text-gray-700 mb-1">Jenis Ikan</label>
+                    <label for="jenis_ikan" class="block text-sm font-medium text-pink-500 mb-1">Jenis Ikan</label>
                     <input 
                         type="text" 
                         name="jenis_ikan" 
@@ -23,7 +32,7 @@
     
                 <!-- Volume Produksi -->
                 <div class="mb-4">
-                    <label for="ton_produksi" class="block text-sm font-medium text-gray-700 mb-1">Volume Produksi (Ton)</label>
+                    <label for="ton_produksi" class="block text-sm font-medium text-pink-500 mb-1">Volume Produksi (Ton)</label>
                     <input 
                         type="number" 
                         name="ton_produksi" 
@@ -39,7 +48,7 @@
 
                 <!-- Tanggal Input -->
                 <div class="mb-4">
-                    <label for="tanggal_input" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Input</label>
+                    <label for="tanggal_input" class="block text-sm font-medium text-pink-500 mb-1">Tanggal Input</label>
                     <input 
                         type="date" 
                         name="tanggal_input" 
@@ -54,17 +63,8 @@
         
         <!-- Action Buttons -->
         <div class="flex justify-between mt-6">
-            <a href="{{ route('perikanan.detail') }}" class="inline-flex items-center px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                </svg>
-                Kembali
-            </a>
-            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                Simpan Perubahan
+            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-yellow-550 hover:bg-yellow-500 text-white rounded shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50">
+                Simpan 
             </button>
         </div>
     </main>

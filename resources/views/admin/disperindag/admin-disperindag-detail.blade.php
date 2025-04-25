@@ -5,13 +5,86 @@
         <x-search></x-search>
 
         {{-- Filter --}}
-        <x-filter></x-filter>
+        {{-- <x-filter></x-filter> --}}
+
+        <!-- Button -->
+        <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
+            <i class="bi bi-funnel-fill text-xl"></i>
+            Filter
+            <i class="bi bi-chevron-down text-xs"></i>
+        </button>
+
+        <!-- Modal Background -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
+            <!-- Modal Content -->
+            <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
+            <!-- Close Button -->
+            <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                <i class="bi bi-x text-4xl"></i> 
+            </button>
+            
+            <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
+                <i class="bi bi-funnel-fill text-xl"></i>
+                Filter
+                <i class="bi bi-chevron-down text-xs"></i>
+            </h2>
+
+            <div class="space-y-4">
+                <!-- Nama Pasar -->
+                <div class= "flex flex-col">
+                    <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                            <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
+                            <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
+                        </select>
+                </div>
+
+                <!-- Periode -->
+                <div class= "flex flex-col">
+                    <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
+                            @foreach ($markets as $market)
+                                <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
+                            @endforeach
+                        </select>
+                </div>
+
+                <!-- Bahan Pokok -->
+                <div class= "flex flex-col">
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode" disabled>
+                            <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
+                            @foreach ($periods as $period)
+                                <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                            @endforeach
+                        </select>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleModal() {
+            const modal = document.getElementById('filterModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+            }
+        </script>
+
     </div>
     <main class="flex-1">
-        <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2>
+        {{-- <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
     
         <div class="bg-white p-6 rounded shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center">Data Harga {{ $market }} Bulan {{ $period }}</h3>
+            <div class="w-full flex items-center gap-2 mb-4">
+            <a href="{{ route('disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>                      
+            </a>
+            <h3 class="text-lg font-semibold ">Data Harga {{ $market }} Bulan {{ $period }}</h3>
+            </div>
             
             <!-- Search dan Dropdown -->
             <div class="flex flex-col lg:flex-row lg:justify-between gap-4 my-4">
@@ -44,7 +117,8 @@
                     </div>
                 </form> --}}
             </div>
-    
+            
+            <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <!-- Tabel -->
             @if (isset($data) && count($data) != 0) 
                 <div class="overflow-x-auto">
@@ -199,13 +273,13 @@
         </div>
 
         <!-- Button Kembali & Tambah Data -->
-        <div class="flex justify-between mt-4">
+        {{-- <div class="flex justify-between mt-4">
             <a href="{{ route('disperindag.index') }}" class="w-full md:w-auto">
                 <button class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 w-full md:w-auto text-sm md:text-base">
                     Kembali
                 </button>
             </a>
-        </div>
+        </div> --}}
         
         {{-- Modal Delete --}}
         <div id="deleteModal" class="hidden w-full h-full">
