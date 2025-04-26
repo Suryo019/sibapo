@@ -5,70 +5,66 @@
         <x-search></x-search>
 
         {{-- Filter --}}
-        <x-filter></x-filter>
+        <div class="flex justify-end">
+            <x-filter></x-filter>
+    
+            <!-- Modal Background -->
+            <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50">
+                <!-- Modal Content -->
+                <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
+                <!-- Close Button -->
+                <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x text-4xl"></i> 
+                </button>
+                
+                <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
+                    Filter
+                </h2>
 
-        <!-- Modal Background -->
-        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
-            <!-- Modal Content -->
-            <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
-            <!-- Close Button -->
-            <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                <i class="bi bi-x text-4xl"></i> 
-            </button>
-            
-            <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
-                <i class="bi bi-funnel-fill text-xl"></i>
-                Filter
-                <i class="bi bi-chevron-down text-xs"></i>
-            </h2>
-
-            <div class="space-y-4">
-                <!-- Nama Pasar -->
-                <div class= "flex flex-col">
-                    <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
-                            <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
-                            <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
-                        </select>
+                <form action="" method="get">
+                    <div class="space-y-4">
+                        <!-- Nama Pasar -->
+                        <div class= "flex flex-col">
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                                <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                                    <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
+                                    <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
+                                </select>
+                        </div>
+        
+                        <!-- Periode -->
+                        <div class= "flex flex-col">
+                            <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                                <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                                    <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
+                                    @foreach ($markets as $market)
+                                        <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+        
+                        <!-- Bahan Pokok -->
+                        <div class= "flex flex-col">
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                                <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode">
+                                    <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
+                                    @foreach ($periods as $period)
+                                        <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-center gap-3 mt-10">
+                        {{-- <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button> --}}
+                        <button type="Submit" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Filter</button>
+                    </div>
+                </form>
                 </div>
-
-                <!-- Periode -->
-                <div class= "flex flex-col">
-                    <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
-                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                            @foreach ($markets as $market)
-                                <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
-                            @endforeach
-                        </select>
-                </div>
-
-                <!-- Bahan Pokok -->
-                <div class= "flex flex-col">
-                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode" disabled>
-                            <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                            @endforeach
-                        </select>
-                </div>
-            </div>
             </div>
         </div>
-
-        <script>
-            function toggleModal() {
-            const modal = document.getElementById('filterModal');
-            modal.classList.toggle('hidden');
-            modal.classList.toggle('flex');
-            }
-            $("#filterBtn").on("click", function() {
-                $("#filterModal").toggleClass("Hidden")
-            })
-        </script>
-
     </div>
+
+    {{-- Main Content --}}
     <main class="flex-1">
         {{-- <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
@@ -160,15 +156,6 @@
             </div>
             @endif
         </div>
-
-        <!-- Button Kembali & Tambah Data -->
-        {{-- <div class="flex justify-between mt-4">
-            <a href="{{ route('disperindag.index') }}" class="w-full md:w-auto">
-                <button class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 w-full md:w-auto text-sm md:text-base">
-                    Kembali
-                </button>
-            </a>
-        </div> --}}
         
         {{-- Modal Delete --}}
         <div id="deleteModal" class="hidden w-full h-full">
@@ -188,6 +175,20 @@
 </x-admin-layout>
 
 <script>
+
+    // Trigger Filter Modal
+    function toggleModal() {
+        const modal = document.getElementById('filterModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    $("#filterBtn").on("click", function() {
+        $("#filterModal").toggleClass("hidden");
+    });
+    // End Trigger Filter Modal
+
+
     $('#closeListModal').on('click', function() {
         $(this).closest('#modal').removeClass("flex").addClass("hidden");
     });
@@ -230,12 +231,8 @@
     $(document).ready(function() {
 
         // Filter Value
-        $('#pilih_pasar').on('change', function() {
-            $('#pilih_periode').removeAttr('disabled');
-
-            $('#pilih_periode, #pilih_periode').on('change', function() {
-                document.querySelector("#filterForm").submit();
-            });
+        $('#submitBtn').on('click', function() {
+            document.querySelector("#filterForm").submit();
         });
 
     });
