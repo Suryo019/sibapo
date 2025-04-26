@@ -13,7 +13,7 @@
                     <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
                 </div>
 
-        <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4">
+        <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
@@ -26,7 +26,7 @@
                       name="jenis_komoditas"
                       id="jenis_komoditas"
                       placeholder="Contoh: Padi"
-                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-full text-sm max-md:text-xs"
+                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs"
                       value="{{ old('jenis_komoditas', $data->jenis_komoditas) }}"
                     />
                 </div>
@@ -39,7 +39,7 @@
                       name="ton_volume_produksi"
                       id="ton_volume_produksi"
                       placeholder="Contoh: 100"
-                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-full text-sm max-md:text-xs"
+                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs"
                       value="{{ old('ton_volume_produksi', $data->ton_volume_produksi) }}"
                     />
                 </div>
@@ -52,7 +52,7 @@
                       name="hektar_luas_panen"
                       id="hektar_luas_panen"
                       placeholder="Contoh: 7"
-                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-full text-sm max-md:text-xs"
+                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs"
                       value="{{ old('hektar_luas_panen', $data->hektar_luas_panen) }}"
                     />
                 </div>
@@ -65,7 +65,7 @@
                         type="date"
                         name="tanggal_input"
                         id="tanggal_input"
-                        class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-full text-sm max-md:text-xs focus:outline-none focus:ring-2 focus:ring-green-400"
+                        class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs focus:outline-none focus:ring-2 focus:ring-pink-500"
                         value="{{ old('tanggal_input', \Carbon\Carbon::parse($data->tanggal_input)->format('Y-m-d')) }}"
                       />
                     </div>
@@ -73,7 +73,7 @@
 
                 <!-- Tombol -->
                 <div class="flex justify-between mt-6 max-md:mt-4">
-                    <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 max-md:px-4 max-md:py-1.5 rounded-full hover:bg-yellow-500 text-sm max-md:text-xs">
+                    <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 max-md:px-4 max-md:py-1.5 rounded-xl hover:bg-yellow-500 text-sm max-md:text-xs">
                         Simpan
                     </button>
                 </div>

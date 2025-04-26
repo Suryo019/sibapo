@@ -1,48 +1,31 @@
 <x-pegawai-layout>
     <main class="flex-1 p-4 sm:p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
-    
-        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center mb-4">Data Volume Produksi Ikan Tahun 2025</h3>
+        {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
+        <div class="w-full flex justify-between">  
+            <!-- Search bar -->
+            <x-search></x-search>
             
-            <!-- Search dan Dropdown -->
-            <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
-                <!-- Search -->
-                <div class="relative w-full lg:w-64">
-                    <div class="flex items-center border border-gray-300 bg-white rounded-full w-full h-10 shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500 transition-colors">
-                        <span class="bi bi-search pl-4 pr-2 text-gray-400"></span>
-                        <input type="text" placeholder="Cari..." class="w-full outline-none rounded-full text-sm pr-4 bg-transparent">
-                    </div>
-                </div>
+            {{-- Filter --}}
+            <x-filter></x-filter>
+        </div>
     
-                <!-- Dropdowns -->
-                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('pegawai.perikanan.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h3 class="text-xl font-extrabold text-center max-md:text-base">Volume Produksi</h3>
             </div>
+
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
     
             <!-- Tabel Responsif -->
             @if (isset($data))
                 <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                    <table class="min-w-full border border-gray-300 ">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th rowspan="2" class="border px-4 py-2 whitespace-nowrap">Jenis Ikan</th>
@@ -128,16 +111,6 @@
                     </div>
                 </div>
             @endif
-        </div>
-
-        <!-- Button Kembali & Tambah Data -->
-        <div class="flex flex-col sm:flex-row justify-between gap-4 mt-6">
-            <a href="{{ route('pegawai.perikanan.index') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                Kembali
-            </a>
-            <a href="{{ route('pegawai.perikanan.create') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                Tambah Data
-            </a>
         </div>
 
         <!-- Modal Edit -->

@@ -2,51 +2,28 @@
 
 <x-pegawai-layout>
     <main class="flex-1 p-4 sm:p-6">
-        <h2 class="text-2xl font-semibold text-green-900 text-center sm:text-left mb-4">Lihat Detail Data</h2>
+        {{-- <h2 class="text-2xl font-semibold text-green-900 text-center sm:text-left mb-4">Lihat Detail Data</h2> --}}
+
+        <div class="w-full flex justify-between">  
+            <!-- Search bar -->
+            <x-search></x-search>
+            
+            {{-- Filter --}}
+            <x-filter></x-filter>
+        </div>
     
-        <div class="bg-white p-4 sm:p-6 rounded shadow-md">
-            <h3 class="text-lg font-semibold text-center">Data Minggu 4 Per Januari 2025</h3>
-            <h3 class="text-lg font-semibold text-center mb-4">Kabupaten Jember</h3>
-    
-            <!-- Search dan Dropdown -->
-            <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
-                <!-- Search -->
-                <div class="relative">
-                    <div class="flex items-center border bg-white rounded-full w-full sm:w-64 h-10">
-                        <span class="bi bi-search pl-5 pr-4"></span>
-                        <input type="text" placeholder="Cari..." class="w-full outline-none rounded-full text-sm pr-4">
-                    </div>
-                </div>
-    
-                <!-- Dropdowns -->
-                <form class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_urutan">
-                            <option>Ascending</option>
-                            <option>Descending</option>
-                        </select>
-                    </div>
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_periode">
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="w-full sm:w-24">
-                        <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                        <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_minggu">
-                            <option>1</option>
-                            <option selected>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
-                    </div>
-                </form>
+
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('pegawai.dkpp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h3 class="text-xl font-extrabold text-center max-md:text-base">Neraca Ketersediaan</h3>
             </div>
-    
+
+        <div class="bg-white p-4 sm:p-6 rounded shadow-md border bg-gray-10 border-gray-20">
             <!-- Tabel Responsif -->
             <div class="overflow-x-auto">
                 <table class="min-w-[1000px] w-full border border-gray-300 table-auto">
@@ -89,13 +66,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-    
-            <!-- Tombol -->
-            <div class="flex justify-between mt-6">
-                <a href="{{ route('pegawai.dkpp.index') }}">
-                    <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
-                </a>
             </div>
         </div>
     

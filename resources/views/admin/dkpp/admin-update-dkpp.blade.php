@@ -14,7 +14,7 @@
             </div>
     
 
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
+        <div class="bg-green-50 p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="{{ route('dkpp.update', $data->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -24,7 +24,7 @@
                     <label for="jenis_komoditas" class="block text-pink-500">Jenis Komoditas</label>
                     <input type="text" name="jenis_komoditas" id="jenis_komoditas"
                            value="{{ old('jenis_komoditas', $data->jenis_komoditas) }}" 
-                           class="border p-2 w-full rounded-full" placeholder="Contoh: Daging">
+                           class="border p-2 w-full rounded-xl" placeholder="Contoh: Daging">
                 </div>
 
                 <!-- Ketersediaan -->
@@ -32,7 +32,7 @@
                     <label for="ton_ketersediaan" class="block text-pink-500">Ketersediaan (Ton)</label>
                     <input type="number" name="ton_ketersediaan" id="ton_ketersediaan"
                            value="{{ old('ton_ketersediaan', $data->ton_ketersediaan) }}" 
-                           class="border p-2 w-full rounded-full" placeholder="Contoh: 100">
+                           class="border p-2 w-full rounded-xl" placeholder="Contoh: 100">
                 </div>
 
                 <!-- Kebutuhan -->
@@ -40,13 +40,13 @@
                     <label for="ton_kebutuhan_perminggu" class="block text-pink-500">Kebutuhan Perminggu (Ton)</label>
                     <input type="number" name="ton_kebutuhan_perminggu" id="ton_kebutuhan_perminggu"
                            value="{{ old('ton_kebutuhan_perminggu', $data->ton_kebutuhan_perminggu) }}" 
-                           class="border p-2 w-full rounded-full" placeholder="Contoh: 100">
+                           class="border p-2 w-full rounded-xl" placeholder="Contoh: 100">
                 </div>
             </form>
         </div>
 
         <div class="flex justify-between w-full mt-4">
-            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-full hover:bg-yellow-500">Ubah</button>
+            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500">Ubah</button>
         </div>
 
     </main>

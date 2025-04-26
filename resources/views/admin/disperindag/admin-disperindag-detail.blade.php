@@ -63,23 +63,26 @@
             modal.classList.toggle('hidden');
             modal.classList.toggle('flex');
             }
+            $("#filterBtn").on("click", function() {
+                $("#filterModal").toggleClass("Hidden")
+            })
         </script>
 
     </div>
     <main class="flex-1">
         {{-- <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
-    
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+
             <div class="w-full flex items-center gap-2 mb-4">
-            <a href="{{ route('disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>                      
-            </a>
-            <h3 class="text-lg font-semibold ">Data Harga {{ $market }} Bulan {{ $period }}</h3>
-            </div>
-            
-            <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+                <a href="{{ route('disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h3 class="text-lg font-semibold ">Data Harga {{ $market }} Bulan {{ $period }}</h3>
+                </div>
+                
+        <div class="bg-white p-6 rounded shadow-md mt-4">
             <!-- Tabel -->
             @if (isset($data) && count($data) != 0) 
                 <div class="overflow-x-auto">
@@ -174,8 +177,8 @@
                     <div class="p-4 md:p-6">
                         <h2 class="text-lg md:text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                         <div class="flex flex-col sm:flex-row justify-center gap-4">
-                            <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full text-sm md:text-base" id="closeBtn">Batal</button>
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm md:text-base" id="yesBtn">Ya, Hapus</button>
+                            <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full text-sm md:text-base" id="closeBtn">Batal</button>
+                            <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full text-sm md:text-base" id="yesBtn">Ya</button>
                         </div>
                     </div>
                 </div>

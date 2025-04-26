@@ -11,7 +11,7 @@
                 </a>
                 <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
             </div>
-        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4">
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form id="fishForm">
                 @csrf
 
@@ -22,7 +22,7 @@
                         name="jenis_ikan" 
                         id="jenis_ikan"
                         placeholder="Contoh: Lele" 
-                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
                 </div>
     
                 <div class="mb-4">
@@ -32,14 +32,14 @@
                         name="ton_produksi" 
                         id="ton_produksi"
                         placeholder="Contoh: 100" 
-                        class="w-full border border-gray-300 p-2 rounded-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
                 </div>
             </form>
         </div>
         
         <!-- Tombol -->
         <div class="flex justify-between mt-6">
-            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-yellow-550 hover:bg-yellow-500 text-white rounded shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            <button id="submitBtn" class="inline-flex items-center px-6 py-2 bg-yellow-550 hover:bg-yellow-500 text-white rounded-xl shadow-sm transition-colors duration-200 ">
                 Simpan
             </button>
         </div>
