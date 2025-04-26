@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifikasi', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id');
-            $table->dateTime('tanggal_pesan');
-            $table->text('pesan');
+            $table->enum('role', ['admin', 'dpp', 'dkpp', 'dtphp', 'dp']);
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('notifikasi');
+        Schema::dropIfExists('roles');
     }
 };
