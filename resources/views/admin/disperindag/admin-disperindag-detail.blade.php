@@ -1,4 +1,4 @@
-{{-- @dd($splitNumberPeriod) --}}
+{{-- @dd($data) --}}
 <x-admin-layout>
     <div class="w-full flex justify-between">
         <!-- Search bar -->
