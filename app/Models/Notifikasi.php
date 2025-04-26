@@ -15,4 +15,8 @@ class Notifikasi extends Model
         'tanggal_pesan', 
         'pesan'
     ];
+
+    public function role() {
+        return $this->belongsTo(Role::class);
+    }
 }
