@@ -2,79 +2,18 @@
     <main class="flex-1 p-6 max-md:p-4">
         {{-- <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2> --}}
         
-        
-    
         <!-- Dropdown  -->
         <div class="flex justify-end my-4">
             <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-between w-full tabs">
+                <!-- Search Component -->
+                <x-search></x-search>
+            
+                <!-- Filter Component -->
+                <x-filter></x-filter>         
+            </div>
+        </div>
 
-                <div class="flex items-center border bg-gray-100 rounded w-full lg:w-64 h-9 px-3">
-                    <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full bg-gray-100">
-                    <span class="bi bi-search pr-2 bg-gray-100"></span>
-                </div>
-                
-                <!-- Button -->
-                <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
-                    <i class="bi bi-funnel-fill text-xl"></i>
-                    Filter
-                    <i class="bi bi-chevron-down text-xs"></i>
-                </button>
-
-
-                <!-- Modal Background -->
-                <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
-                    <!-- Modal Content -->
-                    <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
-                        <!-- Close Button -->
-                        <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                            <i class="bi bi-x text-4xl"></i> 
-                        </button>
-                        
-                        <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
-                            <i class="bi bi-funnel-fill text-xl"></i>
-                            Filter
-                            <i class="bi bi-chevron-down text-xs"></i>
-                        </h2>
-
-                        <div class="space-y-4">
-                            <!-- Nama Pasar -->
-                            <div class="flex flex-col">
-                                <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                                    Pilih Komoditas
-                                </label>
-                                <select id="pilih_komoditas"
-                                    class="select2 w-full max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs">
-                                    <option value="" selected>Suket Teki</option>
-                                    @foreach ($commodities as $commodity)
-                                        <option value="{{ $commodity }}">{{ $commodity }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Periode -->
-                            <div class="flex flex-col">
-                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                                    Pilih Periode
-                                </label>
-                                <select id="pilih_periode"
-                                    class="select2 w-full max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs" disabled>
-                                    <option value="" disabled selected>April 2025</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}">{{ $period }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    function toggleModal() {
-                        const modal = document.getElementById("filterModal");
-                        modal.classList.toggle("hidden");
-                        modal.classList.toggle("flex");
-                    }
-                </script>
+            
                 <!-- Pilih Komoditas -->
                 {{-- <div class="flex flex-col">
                     <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
@@ -102,9 +41,6 @@
                         @endforeach
                     </select>
                 </div> --}}
-                
-            </div>
-        </div>
 
         
 

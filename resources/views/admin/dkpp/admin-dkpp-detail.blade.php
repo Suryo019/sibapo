@@ -6,17 +6,15 @@
         <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
             <!-- Search -->
             <div class="w-full flex justify-between">
-                <div class="flex items-center border bg-gray-100 rounded w-full lg:w-64 h-9 px-3">
-                    <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full bg-gray-100">
-                    <span class="bi bi-search pr-2 bg-gray-100"></span>
-                </div>
+                <x-search></x-search>
+                <x-filter></x-filter>
 
                 <!-- Button -->
-                <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
+                {{-- <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
                     <i class="bi bi-funnel-fill text-xl"></i>
                     Filter
                     <i class="bi bi-chevron-down text-xs"></i>
-                </button>
+                </button> --}}
 
                 <!-- Modal Background -->
                 <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
@@ -78,28 +76,16 @@
         </div>
         
 
-        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-
-            <div class="w-full flex items-center gap-2 mb-4">
-                <a href="{{ route('disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>                      
-                </a>
-                <h2 class="text-lg font-semibold ">Neraca Ketersediaan </h2>
-            </div>
-
-        <div class="bg-white p-4 sm:p-6 rounded shadow-md">
-            {{-- <h3 class="text-lg font-semibold text-center">Data Minggu 4 Per Januari 2025</h3>
-            <h3 class="text-lg font-semibold text-center mb-4">Kabupaten Jember</h3> --}}
-    
-            <!-- Search dan Dropdown -->
-    
-                <!-- Dropdowns -->
-                {{-- <form class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_urutan">
+        {{-- <h3 class="text-lg font-semibold text-center">Data Minggu 4 Per Januari 2025</h3>
+        <h3 class="text-lg font-semibold text-center mb-4">Kabupaten Jember</h3> --}}
+        
+        <!-- Search dan Dropdown -->
+        
+        <!-- Dropdowns -->
+        {{-- <form class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            <div class="w-full sm:w-36">
+                <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_urutan">
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
@@ -108,7 +94,7 @@
                         <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
                         <select class="border border-black p-2 rounded-full bg-white w-full" id="pilih_periode">
                             @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
+                            <option value="{{ $period }}">{{ $period }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -122,6 +108,19 @@
                         </select>
                     </div>
                 </form> --}}
+                
+                <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+        
+                    <div class="w-full flex items-center gap-2 mb-4">
+                        <a href="{{ route('dkpp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>                      
+                        </a>
+                        <h2 class="text-lg font-semibold ">Neraca Ketersediaan </h2>
+                    </div>
+        
+                <div class="bg-white p-4 sm:p-6 rounded shadow-md border bg-gray-10 border-gray-20">
     
             <!-- Tabel Responsif -->
             <div class="overflow-x-auto">
@@ -177,8 +176,8 @@
                 <div class="bg-white p-6 rounded-lg w-[90%] max-w-md shadow-lg">
                     <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                     <div class="flex justify-around">
-                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
-                        <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                        <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
                     </div>
                 </div>
             </div>

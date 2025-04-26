@@ -1,41 +1,48 @@
 <x-pegawai-layout>
     <main class="flex-1 p-6">
-        <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2>
+        {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
+
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+        <div class="w-full flex items-center gap-2 mb-4">
+            <a href="{{ route('pegawai.disperindag.detail') }}" class="text-decoration-none text-dark flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>                      
+            </a>
+            <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
+        </div>
+
     
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4">
             <form action="{{ route('api.dpp.store') }}" method="post">
                 @csrf
                 <!-- Nama Pasar -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Nama Pasar</label>
+                    <label class="block text-pink-500">Nama Pasar</label>
                     <input type="text" placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded-full" id="pasar">
+                           class="border p-2 w-full rounded-xl" id="pasar">
                 </div>
     
                 <!-- Jenis Bahan Pokok -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Jenis Bahan Pokok</label>
+                    <label class="block text-pink-500">Jenis Bahan Pokok</label>
                     <input type="text" placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded-full" id="jenis_bahan_pokok">
+                           class="border p-2 w-full rounded-xl" id="jenis_bahan_pokok">
                 </div>
     
                 <!-- Harga Barang -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Harga Barang</label>
+                    <label class="block text-pink-500">Harga Barang</label>
                     <input type="text" placeholder="Contoh: 100000,-" 
-                           class="border p-2 w-full rounded-full" id="kg_harga">
+                           class="border p-2 w-full rounded-xl" id="kg_harga">
                 </div>
-    
             </form>
+            <!-- Tombol -->
+            <div class="flex justify-between mt-4">
+                <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500">Simpan</button>
+            </div>
         </div>
         
-        <!-- Tombol -->
-        <div class="flex justify-between mt-4">
-            <a href="{{ route('pegawai.disperindag.detail') }}">
-            <button type="button" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Kembali</button>
-            </a>
-            <button type="button" id="submitBtn" class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800">Tambah</button>
-        </div>
 
     </main>
 </x-pegawai-layout>

@@ -1,41 +1,54 @@
 <x-pegawai-layout>
 
     <main class="flex-1 p-6 max-md:p-4">
-        <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:text-xl max-md:text-center max-md:mb-10">{{ $title }}</h2>
-    
-        <!-- Dropdown -->
-        <div class="flex flex-wrap justify-end items-start gap-4 my-4">
+        {{-- <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:text-xl max-md:text-center max-md:mb-10">{{ $title }}</h2> --}}
+  
             <!-- Dropdown Filter -->
-            <div class="flex flex-wrap gap-4 max-md:gap-2">
+            <div class="flex justify-between items-center gap-4 my-4 max-md:flex-wrap">
+                <!-- Search Component -->
+                <x-search></x-search>
+            
+                <!-- Filter Component -->
+                <x-filter></x-filter>
+            </div>
+
                 {{-- Filter Pasar --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
+                {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" id="pilih_pasar">
                     <option value="" disabled selected class="text-xs">Pilih Pasar</option>
                     @foreach ($markets as $market)
                         <option value="{{ $market }}">{{ $market }}</option>
                     @endforeach
-                </select>
-    
+                </select> --}}
                 {{-- Filter Periode --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
+                {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_periode">
                     <option value="" disabled selected class="text-xs">Pilih Periode</option>
                     @foreach ($periods as $period)
                         <option value="{{ $period }}">{{ $period }}</option>
                     @endforeach
-                </select>
-    
+                </select> --}}
                 {{-- Filter Bahan Pokok --}}
-                <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
+                {{-- <select class="border w-36 max-md:w-24 p-2 rounded bg-white select2 text-xs max-md:text-[10px]" disabled id="pilih_bahan_pokok">
                     <option value="" disabled selected class="text-xs">Pilih Bahan Pokok</option>
                     @foreach ($data as $item)
                         <option value="{{ $item }}">{{ $item }}</option>
                     @endforeach
-                </select>
-            </div>
-        </div>
+                </select> --}}
+            
+            <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+                <div class="w-full flex items-center gap-2 mb-4">
+                    <a href="{{ route('pegawai.disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>                      
+                    </a>
+                    <h3 class="text-xl text-center max-md:text-base font-extrabold">Aktivitas Harga</h3>
+                </div>
     
+
+
         <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4" id="chart_container">
-            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px] max-md:mb-3">
+        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 border bg-gray-10 border-gray-20" id="chart_container">
+            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-black text-center max-md:text-[12px] max-md:mb-3">
                 <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
             
@@ -47,11 +60,11 @@
             <!-- Chart akan muncul di sini -->
             <div id="chart" class="w-full hidden"></div>
         </div>
-    
+
         <!-- Button -->
-        <div class="flex justify-center mt-6">
+        <div class="flex justify-start mt-6">
             <a href="{{ route('pegawai.disperindag.detail') }}">
-                <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
+                <button class="bg-yellow-550 text-md text-white px-3 py-2 rounded-lg hover:bg-yellow-500 max-md:text-xs max-md:px-4 max-md:py-1">
                     Lihat Detail Data
                 </button>
             </a>

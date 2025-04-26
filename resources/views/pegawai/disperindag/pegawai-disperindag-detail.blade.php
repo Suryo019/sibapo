@@ -1,49 +1,28 @@
 {{-- @dd($splitNumberPeriod) --}}
 <x-pegawai-layout>
     <main class="flex-1 p-4 md:p-6">
-        <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2>
-    
-        <div class="bg-white p-6 rounded shadow-md mt-4">
-            <h3 class="text-lg font-semibold text-center">Data Harga {{ $market }} Bulan {{ $period }}</h3>
-            
-            <!-- Search dan Dropdown -->
-            <div class="flex flex-col lg:flex-row lg:justify-between gap-4 my-4">
+        {{-- <h2 class="text-xl md:text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
+        
+        <div class="w-full flex justify-between">  
+        <!-- Search bar -->
+        <x-search></x-search>
+        
+        {{-- Filter --}}
+        <x-filter></x-filter>
 
-                <!-- Search bar -->
-                <div class="flex items-center border bg-white rounded-full w-full lg:w-64 h-9 px-3">
-                    <span class="bi bi-search pr-2"></span>
-                    <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full">
-                </div>
+        </div>
 
-                <!-- Dropdown Form -->
-                <form class="flex flex-col md:flex-row gap-4 w-full lg:w-auto" action="{{ route('pegawai.disperindag.detail') }}" method="get" id="filterForm">
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full md:w-28 select2" id="pilih_urutan">
-                            <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
-                            <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
-                        </select>
-                    </div>
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
-                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                            @foreach ($markets as $market)
-                                <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="w-full md:w-auto">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode" disabled>
-                            <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </form>
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('pegawai.disperindag.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h3 class="text-xl font-extrabold text-center max-md:text-base">Tabel Harga</h3>
             </div>
+
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
     
             <!-- Tabel -->
             @if (isset($data) && count($data) != 0) 
@@ -196,15 +175,6 @@
                 </div>
             </div>
             @endif
-        </div>
-
-        <!-- Button Kembali & Tambah Data -->
-        <div class="flex justify-between mt-4">
-            <a href="{{ route('pegawai.disperindag.index') }}" class="w-full md:w-auto">
-                <button class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 w-full md:w-auto text-sm md:text-base">
-                    Kembali
-                </button>
-            </a>
         </div>
         
         {{-- Modal Delete --}}

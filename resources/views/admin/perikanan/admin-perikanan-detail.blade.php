@@ -4,91 +4,13 @@
     
         <!-- Search dan Dropdown -->
         <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
-            <div class="flex items-center border bg-gray-100 rounded w-full lg:w-64 h-9 px-3">
-                <input type="text" placeholder="Cari..." class="flex-grow outline-none rounded-full bg-gray-100">
-                <span class="bi bi-search pr-2 bg-gray-100"></span>
-            </div>
-
-            <!-- Button -->
-            <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
-                <i class="bi bi-funnel-fill text-xl"></i>
-                Filter
-                <i class="bi bi-chevron-down text-xs"></i>
-            </button>
-
-            <!-- Modal Background -->
-            <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
-                <!-- Modal Content -->
-                <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
-                    <!-- Close Button -->
-                    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                        <i class="bi bi-x text-4xl"></i> 
-                    </button>
-                    
-                    <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
-                        <i class="bi bi-funnel-fill text-xl"></i>
-                        Filter
-                        <i class="bi bi-chevron-down text-xs"></i>
-                    </h2>
-
-                    <div class="space-y-4">
-                        <!-- urutan -->
-                        <div class="flex flex-col">
-                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                            <option value="" selected>Ascending</option>
-                            <option value="">Descending</option>
-                        </select>
-                        </div>
-
-                        <!-- pilih ikan -->
-                        <div class="flex flex-col">
-                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                        </div>
-
-                        <!-- pilih periode -->
-                        <div class="flex flex-col">
-                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                function toggleModal() {
-                    const modal = document.getElementById("filterModal");
-                    modal.classList.toggle("hidden");
-                    modal.classList.toggle("flex");
-                }
-            </script>
+            <!-- Search Component -->
+            <x-search></x-search>
+            
+            <!-- Filter Component -->
+            <x-filter></x-filter>
         </div>
 
-
-        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-            <div class="w-full flex items-center gap-2 mb-4">
-                <a href="{{ route('dtphp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>                      
-                </a>
-                <h2 class="text-lg font-semibold">Data Volume Produksi Ikan Tahun 2025</h2>
-            </div>        
-
-        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4">
-            
-        
                 <!-- Search -->
                 {{-- <div class="relative w-full lg:w-64">
                     <div class="flex items-center border border-gray-300 bg-white rounded-full w-full h-10 shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500 transition-colors">
@@ -126,6 +48,18 @@
                             @endforeach
                         </select>
                     </div> --}}
+
+            <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+            <div class="w-full flex items-center gap-2 mb-4">
+                <a href="{{ route('dtphp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h2 class="text-lg font-semibold">Data Volume Produksi Ikan Tahun 2025</h2>
+            </div>        
+
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
  
             <!-- Tabel Responsif -->
             @if (isset($data))
@@ -249,10 +183,10 @@
             <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
                 <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                 <div class="flex justify-center gap-4">
-                    <button id="closeDeleteModal" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-full transition-colors">
+                    <button id="closeDeleteModal" class="bg-pink-500 hover:bg-pink-400 text-white px-6 py-2 rounded-full transition-colors">
                         Batal
                     </button>
-                    <button id="confirmDeleteBtn" class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-full transition-colors">
+                    <button id="confirmDeleteBtn" class="bg-pink-500 hover:bg-pink-400 text-white px-6 py-2 rounded-full transition-colors">
                         Yakin
                     </button>
                 </div>

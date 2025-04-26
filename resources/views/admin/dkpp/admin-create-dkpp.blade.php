@@ -12,7 +12,7 @@
                 <h2 class="text-2xl font-semibold text-black">{{ $title }}</h2>
             </div>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form method="POST" action="{{ route('api.dkpp.store') }}">
                 @csrf
 
@@ -23,7 +23,7 @@
                         name="jenis_komoditas" 
                         id="jenis_komoditas"
                         placeholder="Contoh: Daging" 
-                        class="border p-2 w-full rounded-full">
+                        class="border p-2 w-full rounded-xl">
                 </div>
 
                 <div class="mb-4">
@@ -33,7 +33,7 @@
                         name="ton_ketersediaan" 
                         id="ton_ketersediaan"
                         placeholder="Contoh: 100" 
-                        class="border p-2 w-full rounded-full">
+                        class="border p-2 w-full rounded-xl">
                 </div>
 
                 <div class="mb-4">
@@ -43,7 +43,7 @@
                         name="ton_kebutuhan_perminggu" 
                         id="ton_kebutuhan_perminggu"
                         placeholder="Contoh: 100" 
-                        class="border p-2 w-full rounded-full">
+                        class="border p-2 w-full rounded-xl">
                 </div>
 
             </form>
@@ -51,7 +51,7 @@
         
         <!-- Tombol -->
         <div class="flex justify-between mt-4">
-            <button type="button" class="bg-yellow-550 text-white px-6 py-2 rounded hover:bg-yellow-500" id="submitBtn">Simpan</button>
+            <button type="button" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500" id="submitBtn">Simpan</button>
         </div>
         
     </main>

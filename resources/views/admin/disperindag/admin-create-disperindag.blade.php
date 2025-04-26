@@ -12,28 +12,28 @@
         </div>
 
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="{{ route('api.dpp.store') }}" method="post">
                 @csrf
                 <!-- Nama Pasar -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Pasar</label>
                     <input type="text" placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded-full" id="pasar">
+                           class="border p-2 w-full rounded-xl" id="pasar">
                 </div>
     
                 <!-- Jenis Bahan Pokok -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Jenis Bahan Pokok</label>
                     <input type="text" placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded-full" id="jenis_bahan_pokok">
+                           class="border p-2 w-full rounded-xl" id="jenis_bahan_pokok">
                 </div>
     
                 <!-- Harga Barang -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Harga Barang</label>
                     <input type="text" placeholder="Contoh: 100000,-" 
-                           class="border p-2 w-full rounded-full" id="kg_harga">
+                           class="border p-2 w-full rounded-xl" id="kg_harga">
                 </div>
     
             </form> 
@@ -41,7 +41,7 @@
         
         <!-- Tombol -->
         <div class="flex justify-between mt-4">
-            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded hover:bg-yellow-400">Simpan</button>
+            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-400">Simpan</button>
         </div>
         
     </main>

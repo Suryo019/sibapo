@@ -13,7 +13,7 @@
             <h2 class="text-2xl font-semibold text-black-">{{ $title }}</h2>
         </div>
     
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4">
+        <div class="bg-green-50 p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
@@ -25,7 +25,7 @@
                            name="pasar"
                            id="pasar"
                            placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('pasar', $data->pasar) }}">
                 </div>
             
@@ -36,7 +36,7 @@
                            name="jenis_bahan_pokok"
                            id="jenis_bahan_pokok"
                            placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok) }}">
                 </div>
             
@@ -47,7 +47,7 @@
                            name="kg_harga"
                            id="kg_harga"
                            placeholder="Contoh: 100000,-" 
-                           class="border p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('kg_harga', $data->kg_harga) }}">
                 </div>
             
@@ -64,7 +64,7 @@
         </div>
         <!-- Tombol -->
         <div class="flex justify-between mt-4">
-            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded hover:bg-yellow-500">Simpan</button>
+            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500">Simpan</button>
         </div>
 
     </main>
