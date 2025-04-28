@@ -168,6 +168,7 @@ class DisperindagController extends Controller
                 return $query->where('pasar', $pasar);
             })
             ->get()
+            // dd($pasar);
             ->groupBy('jenis_bahan_pokok')
             ->map(function ($items) {
                 $row = [
@@ -189,7 +190,7 @@ class DisperindagController extends Controller
     
         return view('admin.disperindag.admin-disperindag-detail', [
             'title' => 'Dinas Perindustrian dan Perdagangan',
-            'data' => $dppHargaHari,
+            'data' => DPP::all(),
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
             'market' => $pasar,
             'periods' => $periodeUnikNama,
@@ -197,5 +198,7 @@ class DisperindagController extends Controller
             'splitNumberPeriod' => $splitPeriode,
             'daysInMonth' => $jumlahHari,
         ]);
+
+        // DPP::all();
     }
 }

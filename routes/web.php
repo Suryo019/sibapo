@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Akun\AkunDinasController;
 use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
@@ -156,3 +157,15 @@ Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names(
 ]);
 
 Route::get('/pegawai/perikanan-detail', [PegawaiPerikananController::class, 'detail'])->name('pegawai.perikanan.detail');
+
+
+// Akun Dinas
+Route::resource('users', AkunDinasController::class)->names([
+    'index' => 'users.index',
+    'create' => 'users.create',
+    'store' => 'users.store',
+    'show' => 'users.show',
+    'edit' => 'users.edit',
+    'update' => 'users.update',
+    'destroy' => 'users.destroy',
+]);

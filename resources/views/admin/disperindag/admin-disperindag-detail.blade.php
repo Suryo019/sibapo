@@ -122,6 +122,7 @@
                                 </div>
                             </td>
                         </tr>
+                        <script src="{{ asset('js/admin-disperindag-detail-modal.js') }}"></script>
                         @endforeach
                     </tbody>
                 </table>
@@ -138,6 +139,20 @@
                 </div>
             </div>
             
+            {{-- Modal Delete --}}
+            <div id="deleteModal" class="hidden w-full h-full">
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                    <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                        <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
+                        <div class="flex justify-around">
+                            <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                            <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @else
             <div class="flex items-center justify-center h-64">
                 <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">

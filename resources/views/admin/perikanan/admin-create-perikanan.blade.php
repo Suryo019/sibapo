@@ -2,7 +2,7 @@
     
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <div class="w-full flex items-center gap-2 mb-4">
-                <a href="{{ route('perikanan.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                <a href="{{ route('perikanan.detail') }}" class="text-decoration-none text-dark flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>                      
@@ -10,28 +10,20 @@
                 <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
             </div>
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
-            <form id="fishForm">
+            <form action="{{ route('api.dp.store') }}" method="post">
                 @csrf
-
                 <div class="mb-4">
-                    <label for="jenis_ikan" class="block text-sm font-medium text-pink-500 mb-1">Jenis Ikan</label>
-                    <input 
-                        type="text" 
-                        name="jenis_ikan" 
-                        id="jenis_ikan"
-                        placeholder="Contoh: Lele" 
-                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+                    <label class="block text-gray-700">Jenis Ikan</label>
+                    <input type="text" placeholder="Contoh: Lele" 
+                           class="border p-2 w-full rounded-full" id="jenis_ikan">
                 </div>
     
                 <div class="mb-4">
-                    <label for="ton_produksi" class="block text-sm font-medium text-pink-500 mb-1">Volume Produksi (Ton)</label>
-                    <input 
-                        type="text" 
-                        name="ton_produksi" 
-                        id="ton_produksi"
-                        placeholder="Contoh: 100" 
-                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors">
+                    <label class="block text-gray-700">Volume Produksi (Ton)</label>
+                    <input type="text" placeholder="Contoh: 100" 
+                           class="border p-2 w-full rounded-full" id="ton_produksi">
                 </div>
+    
             </form>
         </div>
         
@@ -42,60 +34,42 @@
             </button>
         </div>
     </main>
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitBtn = document.getElementById('submitBtn');
-            const fishForm = document.getElementById('fishForm');
-            
-            submitBtn.addEventListener('click', async function() {
-                try {
-                    const response = await fetch("{{ route('api.dp.store') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            jenis_ikan: document.getElementById('jenis_ikan').value,
-                            ton_produksi: document.getElementById('ton_produksi').value
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw data;
-                    }
-
-                    // Reset form
-                    fishForm.reset();
-
-                    // Show success message
-                    await Swal.fire({
-                        title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan} telah disimpan.`,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-
-                } catch (error) {
-                    let message = 'Terjadi kesalahan saat menyimpan data';
-                    
-                    if (error.errors) {
-                        message = Object.values(error.errors).join('<br>');
-                    }
-
-                    await Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message
-                    });
-                }
-            });
-        });
-    </script>
-    @endpush
 </x-admin-layout>
+<script>
+    $('#submitBtn').on('click', function() {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('api.dp.store') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                jenis_ikan: $('#jenis_ikan').val(),
+                ton_produksi: $('#ton_produksi').val(),
+                },
+                success: function(data) {
+                $('#jenis_ikan').val('');
+                $('#ton_produksi').val('');
+
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: `Data ${data.data.jenis_ikan} telah disimpan.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            },
+            error: function(xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
+        });
+    });
+</script>

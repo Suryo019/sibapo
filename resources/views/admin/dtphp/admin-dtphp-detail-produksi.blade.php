@@ -123,6 +123,32 @@
                     @endforeach
                 </tbody>
                 </table>
+
+                {{-- Modal --}}
+                <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
+                    <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
+                        <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Di<span id="actionPlaceholder"></span></h2>
+                        <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4"></div>
+                        <div class="text-right" id="closeListModal">
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+                
+                {{-- Modal Delete --}}
+                <div id="deleteModal" class="hidden w-full h-full">
+                    <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                        <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                            <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
+                            <div class="flex justify-around">
+                                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             @else
             <div class="flex items-center justify-center h-64">
@@ -132,17 +158,6 @@
                 </div>
             </div>
             @endif
-            </div>
-        
-            <!-- Modal Delete -->
-            <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50">
-            <div class="bg-white p-6 rounded-lg w-[90%] max-w-md shadow-lg relative max-md:p-4">
-                <h2 class="text-xl font-semibold mb-8 text-center max-md:text-lg">Yakin menghapus data?</h2>
-                <div class="flex justify-evenly">
-                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full max-md:text-sm" id="closeBtn">Tutup</button>
-                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full max-md:text-sm" id="yesBtn">Yakin</button>
-                </div>
-            </div>
             </div>
         </main>
   
@@ -157,6 +172,10 @@
 
         $('#pilih_komoditas').on('change', function() {
             $('#pilih_periode').prop('disabled', false);
+        });
+
+        $('#closeListModal').on('click', function() {
+            $(this).closest('#modal').removeClass("flex").addClass("hidden");
         });
 
         $('#closeBtn').on('click', function() {
@@ -197,7 +216,7 @@
         });
     
         $('.deleteBtn').on('click', function() {
-            const modal = $("#deleteModal");
+            const modal = $("#modal");
             modal.removeClass("hidden").addClass("flex");
     
             const jenisKomoditas = $(this).data('komoditas');
@@ -231,8 +250,9 @@
 
         $(document).on('click', '.btnConfirm', function() { 
             let dataId = $(this).data('id');
-            
-            $('#yesBtn').off('click').on('click', function() {
+            $('#deleteModal').show();
+
+            $(document).off('click').on('click', '#yesBtn', function() {
                 $.ajax({
                     type: 'DELETE',
                     url: `/api/dtphp/${dataId}`,
@@ -257,24 +277,13 @@
                         });
                     }
                 });
+
                 $('#deleteModal').hide();
             });
         });
 
-        $(document).on('click', '#closeBtn', function() {
+        $(document).on('click', '#closeBtnDel', function() {
             $('#deleteModal').hide();  
         });
     });
-
-    // Trigger Filter Modal
-    function toggleModal() {
-        const modal = document.getElementById('filterModal');
-        modal.classList.toggle('hidden');
-        modal.classList.toggle('flex');
-    }
-
-    $("#filterBtn").on("click", function() {
-        $("#filterModal").toggleClass("hidden");
-    });
-    // End Trigger Filter Modal
 </script>
