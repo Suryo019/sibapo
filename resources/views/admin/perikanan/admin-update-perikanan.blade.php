@@ -66,124 +66,43 @@
             </button>
         </div>
     </main>
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitBtn = document.getElementById('submitBtn');
-            const editFishForm = document.getElementById('editFishForm');
-            const jenisIkanInput = document.getElementById('jenis_ikan');
-            const tonProduksiInput = document.getElementById('ton_produksi');
-            const tanggalInput = document.getElementById('tanggal_input');
-            
-            // Form validation
-            function validateForm() {
-                let isValid = true;
-                
-                // Validate Jenis Ikan
-                if (!jenisIkanInput.value.trim()) {
-                    document.getElementById('jenis_ikan_error').textContent = 'Jenis ikan harus diisi';
-                    document.getElementById('jenis_ikan_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('jenis_ikan_error').classList.add('hidden');
-                }
-                
-                // Validate Ton Produksi
-                if (!tonProduksiInput.value || isNaN(tonProduksiInput.value) || parseFloat(tonProduksiInput.value) <= 0) {
-                    document.getElementById('ton_produksi_error').textContent = 'Volume produksi harus berupa angka positif';
-                    document.getElementById('ton_produksi_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('ton_produksi_error').classList.add('hidden');
-                }
-                
-                // Validate Tanggal Input
-                if (!tanggalInput.value) {
-                    document.getElementById('tanggal_input_error').textContent = 'Tanggal input harus diisi';
-                    document.getElementById('tanggal_input_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('tanggal_input_error').classList.add('hidden');
-                }
-                
-                return isValid;
-            }
-            
-            submitBtn.addEventListener('click', async function() {
-                // Validate form first
-                if (!validateForm()) {
-                    return;
-                }
-                
-                // Disable button during submission
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `
-                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Menyimpan...
-                `;
-                
-                try {
-                    const response = await fetch("{{ route('api.dp.update', $data->id) }}", {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'X-HTTP-Method-Override': 'PUT'
-                        },
-                        body: JSON.stringify({
-                            jenis_ikan: jenisIkanInput.value.trim(),
-                            ton_produksi: parseFloat(tonProduksiInput.value),
-                            tanggal_input: tanggalInput.value
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw data;
-                    }
-
-                    // Show success message
-                    await Swal.fire({
-                        title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        confirmButtonColor: '#16a34a'
-                    });
-
-                    // Redirect to detail page
-                    window.location.href = "{{ route('perikanan.detail') }}";
-
-                } catch (error) {
-                    let message = 'Terjadi kesalahan saat menyimpan perubahan';
-                    
-                    if (error.errors) {
-                        message = Object.values(error.errors).join('<br>');
-                    }
-
-                    await Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message
-                    });
-                    
-                    // Re-enable button
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                        </svg>
-                        Simpan Perubahan
-                    `;
-                }
-            });
-        });
-    </script>
-    @endpush
 </x-admin-layout>
+
+<script>
+    $('#submitBtn').on('click', function() {
+        $.ajax({
+            type: "PUT",
+            url: "{{ route('api.dp.update', $data->id) }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                jenis_ikan: $('#jenis_ikan').val(),
+                ton_produksi: $('#ton_produksi').val(),
+                tanggal_input: $('#tanggal_input').val(),
+                },
+                success: function(data) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
+                    confirmButtonColor: '#16a34a'
+                }).then(() => {
+
+                window.location.href = "{{ route('perikanan.detail') }}";});
+            },
+            error: function(xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
+        });
+    });
+</script>

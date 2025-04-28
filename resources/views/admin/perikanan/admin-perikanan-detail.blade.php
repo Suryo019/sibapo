@@ -132,6 +132,32 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Modal --}}
+                <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
+                    <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
+                        <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Di<span id="actionPlaceholder"></span></h2>
+                        <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4"></div>
+                        <div class="text-right" id="closeListModal">
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+                
+                {{-- Modal Delete --}}
+                <div id="deleteModal" class="hidden w-full h-full">
+                    <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+                        <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                            <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
+                            <div class="flex justify-around">
+                                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                                <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+
             </div>
             @else
             <div class="flex items-center justify-center h-64">
@@ -144,180 +170,135 @@
 
         </div>
 
-        <!-- Button Kembali -->
-        {{-- <div class="flex justify-start mt-6">
-            <a href="{{ route('perikanan.index') }}" class="inline-flex items-center px-6 py-2 bg-green-700 hover:bg-green-800 text-white text-sm rounded-full shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                Kembali
-            </a>
-        </div> --}}
-
-        <!-- Modal Edit -->
-        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40 p-4">
-            <div class="bg-white p-6 rounded-lg w-full max-w-2xl shadow-lg relative max-h-[90vh] flex flex-col">
-                <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Diedit</h2>
-        
-                <!-- Data List -->
-                <div id="editDataList" class="space-y-4 overflow-y-auto flex-grow mb-4">
-                    <!-- Diisi via AJAX -->
-                </div>
-        
-                <!-- Tombol Tutup -->
-                <div class="text-right">
-                    <button id="closeEditModal" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors">
-                        Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Delete -->
-        <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40 p-4">
-            <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-                <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
-                <div class="flex justify-center gap-4">
-                    <button id="closeDeleteModal" class="bg-pink-500 hover:bg-pink-400 text-white px-6 py-2 rounded-full transition-colors">
-                        Batal
-                    </button>
-                    <button id="confirmDeleteBtn" class="bg-pink-500 hover:bg-pink-400 text-white px-6 py-2 rounded-full transition-colors">
-                        Yakin
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
+</x-admin-layout>
+<script>
+    // Trigger Filter Modal
+    function toggleModal() {
+        const modal = document.getElementById('filterModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+    
+    $("#filterBtn").on("click", function() {
+        $("#filterModal").toggleClass("hidden");
+    });
+    
+    // End Trigger Filter Modal
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elements
-            const pilihIkan = document.getElementById('pilih_ikan');
-            const pilihPeriode = document.getElementById('pilih_periode');
-            const editModal = document.getElementById('editModal');
-            const deleteModal = document.getElementById('deleteModal');
-            let deleteId = null;
+    $('#closeListModal').on('click', function() {
+        $(this).closest('#modal').removeClass("flex").addClass("hidden");
+    });
 
-            // Enable period select when fish is selected
-            pilihIkan.addEventListener('change', function() {
-                pilihPeriode.disabled = !this.value;
-            });
+    $('#closeBtn').on('click', function() {
+        $(this).closest('#modal').removeClass("flex").addClass("hidden");
+    });
 
-            // Edit button handler
-            document.querySelectorAll('.editBtn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const jenisIkan = this.dataset.ikan;
-                    fetchEditData(jenisIkan);
-                    editModal.classList.remove('hidden');
-                    editModal.classList.add('flex');
-                });
-            });
+    $('.editBtn').on('click', function() {
+        const modal = $("#modal");
+        modal.removeClass("hidden").addClass("flex");
 
-            // Delete button handler
-            document.querySelectorAll('.deleteBtn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    deleteId = this.dataset.ikan;
-                    deleteModal.classList.remove('hidden');
-                    deleteModal.classList.add('flex');
-                });
-            });
+        const jenisIkan = $(this).data('ikan');
 
-            // Close modals
-            document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
-            document.getElementById('closeDeleteModal').addEventListener('click', closeDeleteModal);
+        $.ajax({
+            type: "GET",
+            url: `/api/dp/${jenisIkan}`,
+            success: function(response) {
+                const data = response.data;
+                $('#editDataList').empty();
 
-            // Confirm delete
-            document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
-
-            // Functions
-            async function fetchEditData(jenisIkan) {
-                try {
-                    const response = await fetch(`/api/dp/${jenisIkan}`);
-                    const { data } = await response.json();
-                    
-                    const editDataList = document.getElementById('editDataList');
-                    editDataList.innerHTML = '';
-                    
-                    data.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = 'border rounded-md p-4 shadow-sm flex items-center justify-between';
-                        card.innerHTML = `
+                data.forEach(element => {
+                    let listCard = `
+                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${item.jenis_ikan}</span></p>
-                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${item.ton_produksi}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${item.tanggal_input}</span></p>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                             </div>
-                            <a href="perikanan/${item.id}/edit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-colors">Ubah</a>
-                        `;
-                        editDataList.appendChild(card);
-                    });
-                } catch (error) {
-                    console.error('Error:', error);
-                }
+                            <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                        </div>
+                    `;
+                    $('#editDataList').append(listCard);
+                });
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
             }
+        });
+    });
 
-            async function confirmDelete() {
-                if (!deleteId) return;
-                
-                try {
-                    const response = await fetch(`/api/dp/${deleteId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
+    $('.deleteBtn').on('click', function() {
+        const modal = $("#modal");
+        modal.removeClass("hidden").addClass("flex");
+
+        const jenisIkan = $(this).data('ikan');
+
+        $.ajax({
+            type: "GET",
+            url: `/api/dp/${jenisIkan}`,
+            success: function(response) {
+                const data = response.data;
+                $('#editDataList').empty();
+
+                data.forEach(element => {
+                    let listCard = `
+                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                
+                            </div>
+                            
+                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                        </div>
+                    `;
+                    $('#editDataList').append(listCard);
+                });
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on('click', '.btnConfirm', function() { 
+        let dataId = $(this).data('id');
+        $('#deleteModal').show();
+        // console.log(data);
+
+        $('#yesBtn').off('click').on('click', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dp/${dataId}`,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(data) {         
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_ikan} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
                     });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        Swal.fire({
-                            title: 'Berhasil!',
-                            text: `Data ${data.data.jenis_ikan} telah dihapus.`,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    } else {
-                        throw new Error(data.message || 'Gagal menghapus data');
-                    }
-                } catch (error) {
+                },
+                error: function(xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: error.message
+                        html: error
                     });
-                } finally {
-                    closeDeleteModal();
                 }
-            }
+            });
 
-            function closeEditModal() {
-                editModal.classList.add('hidden');
-                editModal.classList.remove('flex');
-            }
-
-            function closeDeleteModal() {
-                deleteModal.classList.add('hidden');
-                deleteModal.classList.remove('flex');
-                deleteId = null;
-            }
+            $('#deleteModal').hide();
         });
-    </script>
-    @endpush
+    });
 
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
+    });    
 
-    <script>
-        // Trigger Filter Modal
-function toggleModal() {
-    const modal = document.getElementById('filterModal');
-    modal.classList.toggle('hidden');
-    modal.classList.toggle('flex');
-}
-
-$("#filterBtn").on("click", function() {
-    $("#filterModal").toggleClass("hidden");
-});
-// End Trigger Filter Modal
 </script>
-</x-admin-layout>
