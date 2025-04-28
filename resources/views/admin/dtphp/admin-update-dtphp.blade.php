@@ -1,6 +1,4 @@
 <x-admin-layout>
-    <main class="flex-1 p-6 max-md:p-4">
-        {{-- <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-6 max-md:text-xl max-md:text-center">{{ $title }}</h2> --}}
     
 
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">

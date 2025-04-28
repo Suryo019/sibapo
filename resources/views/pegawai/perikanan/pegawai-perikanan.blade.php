@@ -1,68 +1,98 @@
 <x-pegawai-layout>
-    <main class="flex-1 p-6">
-        {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
 
-            <div class="flex justify-between items-center gap-4 my-4 max-md:flex-wrap">
-                <!-- Search Component -->
-                <x-search></x-search>
-            
-                <!-- Filter Component -->
-                <x-filter></x-filter>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 my-4">
+        <!-- Search Component -->
+        <div class="w-full md:w-auto">
+            <x-search />
+        </div>
+    
+        <!-- Filter -->
+        <div class="w-full md:w-auto flex justify-end">
+            <div class="relative flex justify-end w-full md:w-auto">
+                <x-filter />
+    
+                <!-- Modal Background -->
+                <div id="filterModal" class="mt-4 absolute hidden w-full md:w-auto items-center justify-center z-50">
+                    <!-- Modal Content -->
+                    <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
+                        <!-- Close Button -->
+                        <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                            <i class="bi bi-x text-4xl"></i>
+                        </button>
+    
+                        <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
+                            Filter
+                        </h2>
+    
+                        <form action="" method="get">
+                            <div class="space-y-4">
+                                <!-- Pilih Periode -->
+                                <div class="flex flex-col">
+                                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                                        Pilih Periode
+                                    </label>
+                                    <select id="pilih_periode"
+                                        class="w-full rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                        <option value="" disabled selected>Pilih Periode</option>
+                                        @foreach ($periods as $period)
+                                            <option value="{{ $period }}">{{ $period }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+    
+                                <!-- Pilih Minggu -->
+                                <div class="flex flex-col">
+                                    <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                                        Minggu ke
+                                    </label>
+                                    <select id="pilih_minggu"
+                                        class="w-full rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" disabled>
+                                        <option value="" disabled selected>Pilih Minggu</option>
+                                        <option value="1">Minggu 1</option>
+                                        <option value="2">Minggu 2</option>
+                                        <option value="3">Minggu 3</option>
+                                        <option value="4">Minggu 4</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <div class="w-full flex justify-end gap-3 mt-10">
+                                <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">
+                                    Reset
+                                </button>
+                                <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">
+                                    Cari
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div> 
             </div>
-
-
-            {{-- <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto"> --}}
-                {{-- Filter Ikan --}}
-                {{-- <div class="w-full md:w-auto">
-                    <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                    <select id="pilih_ikan" class="w-full border border-black p-2 rounded-full bg-white select2">
-                        <option value="" selected>Ikan Teri</option>
-                        @foreach ($fishes as $fish)
-                            <option value="{{ $fish }}">{{ $fish }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
-                {{-- Filter Periode --}}
-                {{-- <div class="w-full md:w-auto">
-                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select id="pilih_periode" class="w-full border border-black p-2 rounded-full bg-white select2" disabled>
-                        <option value="" disabled selected>April 2025</option>
-                        @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
-                {{-- Filter Jenis Ikan --}}
-                {{-- <div class="w-full md:w-auto">
-                    <label for="pilih_jenis_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Jenis Ikan</label>
-                    <select id="pilih_jenis_ikan" class="w-full md:w-24 border border-black p-2 rounded-full bg-white select2" disabled>
-                        <option value="" disabled selected>Teri</option>
-                        @foreach ($data as $item)
-                            <option value="{{ $item }}">{{ $item }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
-
-
-        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-            <div class="w-full flex items-center gap-2 mb-4">
-                <a href="{{ route('perikanan.index') }}" class="text-decoration-none text-dark flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>                      
-                </a>
-                <h3 class="text-xl font-extrabold text-center max-md:text-base"> Volume Produksi </h3>
-            </div>
-
-        
+        </div>
+    </div>
+    
+    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+        <div class="w-full flex items-center gap-2 mb-4">
+            <a href="{{ route('perikanan.index') }}" class="flex-shrink-0 text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+            <h3 class="text-xl font-extrabold text-center max-md:text-base">
+                Volume Produksi
+            </h3>
+        </div>
+    
         <!-- Chart Section -->
         <div class="w-full bg-white rounded-2xl shadow-md p-8 flex flex-col items-center justify-center border bg-gray-10 border-gray-20">
-            <h3 class="text-lg font-bold text-green-900 mb-4">Volume Produksi Ikan Tahun 2025</h3>
+            <h3 class="text-lg font-bold text-green-900 mb-4 text-center">
+                Volume Produksi Ikan Tahun 2025
+            </h3>
             <div id="chart" class="w-full">
                 {{-- Chart will render here --}}
             </div>
         </div>
-
+    
         <!-- Button -->
         <div class="flex justify-start mt-6">
             <a href="{{ route('pegawai.perikanan.detail') }}">
@@ -72,6 +102,7 @@
             </a>
         </div>
     </main>
+    
 </x-pegawai-layout>
 
 <script>
@@ -117,4 +148,16 @@
     $('#pilih_periode').on('change', function() {
         $('#pilih_ikan').removeAttr('disabled');
     });
+
+    // Trigger Filter Modal
+    function toggleModal() {
+        const modal = document.getElementById('filterModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    $("#filterBtn").on("click", function() {
+        $("#filterModal").toggleClass("hidden");
+    });
+    // End Trigger Filter Modal
 </script>

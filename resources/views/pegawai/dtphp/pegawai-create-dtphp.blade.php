@@ -1,6 +1,4 @@
 <x-pegawai-layout>
-    <main class="flex-1 p-4 sm:p-6">
-        {{-- <h2 class="text-2xl font-semibold text-green-900 text-center sm:text-left">{{ $title }}</h2> --}}
 
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <div class="w-full flex items-center gap-2 mb-4">
