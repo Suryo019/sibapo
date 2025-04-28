@@ -1,49 +1,74 @@
 <x-admin-layout>
-    <main class="flex-1 p-6 max-md:p-4">
-      {{-- <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">{{ $title }}</h2> --}}
   
       <!-- Dropdown -->
       <div class="flex justify-end my-4">
           <div class="flex items-center justify-between w-full gap-6 max-md:flex-wrap max-md:gap-4">
             <!-- Search Component -->
             <x-search></x-search>
-            
-            <!-- Filter Component -->
-            <x-filter></x-filter>
-          </div>
+
+            {{-- Filter --}}
+        <div class="flex justify-end">
+          <div class="relative flex justify-end">
+              <x-filter></x-filter>
+
+              <!-- Modal Background -->
+              <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50">
+                  <!-- Modal Content -->
+                  <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
+                      <!-- Close Button -->
+                      <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                          <i class="bi bi-x text-4xl"></i> 
+                      </button>
+                      
+                      <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
+                          Filter
+                      </h2>
+
+                      <form action="" method="get">
+                          <div class="space-y-4">
+                              <!-- Nama Pasar -->
+                              <div class="flex flex-col">
+                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                                  Pilih Periode
+                              </label>
+                              <select id="pilih_periode"
+                                  class="w-full max-md:w-28 rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                  <option value="" disabled selected>Pilih Periode</option>
+                                  @foreach ($periods as $period)
+                                      <option value="{{ $period }}">{{ $period }}</option>
+                                  @endforeach
+                              </select>
+                              </div>
+
+                              <!-- Periode -->
+                              <div class="flex flex-col">
+                                <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
+                                  Minggu ke
+                              </label>
+                              <select id="pilih_minggu"
+                                  class="w-full max-md:w-28 rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                                  disabled>
+                                  <option value="" disabled selected>Pilih Minggu</option>
+                                  <option value="1">Minggu 1</option>
+                                  <option value="2">Minggu 2</option>
+                                  <option value="3">Minggu 3</option>
+                                  <option value="4">Minggu 4</option>
+                              </select>
+                              </div>
+                          </div>
+
+                          <div class="w-full flex justify-end gap-3 mt-10">
+                              <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                        <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                          </div>
+                      </form>
+                  </div> 
+              </div> 
+          </div> 
         </div>
 
-            
-
-              <!-- Pilih Periode -->
-              {{-- <div class="flex flex-col">
-                  <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                      Pilih Periode
-                  </label>
-                  <select id="pilih_periode"
-                      class="w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                      <option value="" disabled selected>Pilih Periode</option>
-                      @foreach ($periods as $period)
-                          <option value="{{ $period }}">{{ $period }}</option>
-                      @endforeach
-                  </select>
-              </div> --}}
-  
-              <!-- Pilih Minggu -->
-              {{-- <div class="flex flex-col">
-                  <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                      Minggu ke
-                  </label>
-                  <select id="pilih_minggu"
-                      class="w-36 max-md:w-28 rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                      disabled>
-                      <option value="" disabled selected>Pilih Minggu</option>
-                      <option value="1">Minggu 1</option>
-                      <option value="2">Minggu 2</option>
-                      <option value="3">Minggu 3</option>
-                      <option value="4">Minggu 4</option>
-                  </select>
-              </div> --}}
+          </div>
+        </div>
           
   
       <!-- Chart Container -->
@@ -262,6 +287,21 @@
         periodeSelect.addEventListener('change', fetchChartData);
         mingguSelect.addEventListener('change', fetchChartData);
       });
+
     </script>
     @endpush
+
+    <script>
+            // Trigger Filter Modal
+    function toggleModal() {
+        const modal = document.getElementById('filterModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    $("#filterBtn").on("click", function() {
+        $("#filterModal").toggleClass("hidden");
+    });
+    // End Trigger Filter Modal
+    </script>
   </x-admin-layout>

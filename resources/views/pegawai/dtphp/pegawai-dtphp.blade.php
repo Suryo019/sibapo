@@ -1,6 +1,4 @@
-<x-pegawai-layout>
-    <main class="flex-1 p-6 max-md:p-4">
-        <h2 class="text-2xl font-semibold text-green-900 mb-4 max-md:mb-10 max-md:text-xl max-md:text-center">Data Produksi Tanaman</h2>
+<x-pegawai-layout>>
     
         <!-- Dropdown -->
         <div class="flex justify-end my-4">

@@ -1,53 +1,73 @@
 <x-admin-layout>
-    <main class="flex-1 p-4 sm:p-6">
-        {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
     
         <!-- Search dan Dropdown -->
         <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
             <!-- Search Component -->
             <x-search></x-search>
             
-            <!-- Filter Component -->
-            <x-filter></x-filter>
+            {{-- Filter --}}
+        <div class="flex justify-end">
+            <div class="relative flex justify-end">
+                <x-filter></x-filter>
+  
+                <!-- Modal Background -->
+                <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50">
+                    <!-- Modal Content -->
+                    <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
+                        <!-- Close Button -->
+                        <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                            <i class="bi bi-x text-4xl"></i> 
+                        </button>
+                        
+                        <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
+                            Filter
+                        </h2>
+  
+                        <form action="" method="get">
+                            <div class="space-y-4">
+                                <!-- pilih urutan -->
+                                <div class="flex flex-col">
+                                    <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
+                                    <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                        <option value="" selected>Ascending</option>
+                                        <option value="">Descending</option>
+                                    </select>
+                                </div>
+  
+                                <!-- pilih ikan -->
+                                <div class="flex flex-col">
+                                    <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
+                                    <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
+                                        <option value="" selected>Teri</option>
+                                        @foreach ($fishes as $fish)
+                                            <option value="{{ $fish }}">{{ $fish }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+  
+                                <!-- pilih periode -->
+                                <div class="flex flex-col">
+                                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                                    <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
+                                        <option value="" disabled selected>April 2025</option>
+                                        @foreach ($periods as $period)
+                                            <option value="{{ $period }}">{{ $period }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+  
+                            <div class="w-full flex justify-end gap-3 mt-10">
+                                <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                          <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                            </div>
+                        </form>
+                    </div> 
+                </div> 
+            </div> 
+          </div> 
         </div>
 
-                <!-- Search -->
-                {{-- <div class="relative w-full lg:w-64">
-                    <div class="flex items-center border border-gray-300 bg-white rounded-full w-full h-10 shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500 transition-colors">
-                        <span class="bi bi-search pl-4 pr-2 text-gray-400"></span>
-                        <input type="text" placeholder="Cari..." class="w-full outline-none rounded-full text-sm pr-4 bg-transparent">
-                    </div>
-                </div>
-     --}}
-                <!-- Dropdowns -->
-                {{-- <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                    <div class="w-full sm:w-36">
-                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                            <option value="" selected>Ascending</option>
-                            <option value="">Descending</option>
-                        </select>
-                    </div> --}}
-
-                    {{-- <div class="w-full sm:w-36">
-                        <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
-                            <option value="" selected>Teri</option>
-                            @foreach ($fishes as $fish)
-                                <option value="{{ $fish }}">{{ $fish }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-
-                    {{-- <div class="w-full sm:w-36">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
 
             <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <div class="w-full flex items-center gap-2 mb-4">
@@ -63,93 +83,65 @@
  
             <!-- Tabel Responsif -->
             @if (isset($data))
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th rowspan="2" class="border px-4 py-2 whitespace-nowrap">Jenis Ikan</th>
-                                <th colspan="12" class="border px-4 py-2 text-center">Produksi</th>
-                                <th rowspan="2" class="border px-4 py-2">Aksi</th>
-                            </tr>
-                            <tr>
-                                @php
-                                    $namaBulan = [
-                                        1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
-                                        5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu',
-                                        9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
-                                    ];
-                                @endphp
-                                
-                                @foreach ($namaBulan as $bulan)
-                                    <th class="border px-2 py-2 text-center whitespace-nowrap">{{ $bulan }}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $item)
-                                <tr class="border hover:bg-gray-50">
-                                    <td class="border px-4 py-2">{{ $item['jenis_ikan'] }}</td>
-                                    
-                                    @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td class="border px-2 py-2 text-center whitespace-nowrap">
+            <div class="overflow-x-auto">
+                <table class="min-w-full  border-gray-300">
+                    <thead class="">
+                        <tr>
+                            <th class=" px-4 py-2 whitespace-nowrap">Jenis Ikan</th>
+                            @php
+                                $namaBulan = [
+                                    1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
+                                    5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu',
+                                    9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+                                ];
+                            @endphp
+                            @foreach ($namaBulan as $bulan)
+                                <th class=" px-2 py-2 text-center whitespace-nowrap">{{ $bulan }}</th>
+                            @endforeach
+                            <th class=" px-4 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $item)
+                                <td class="border-b px-4 py-2 text-center">{{ $item['jenis_ikan'] }}</td>
+
+                                @for ($bulan = 1; $bulan <= 12; $bulan++)
+                                    <td class="border-b px-2 py-2 text-center whitespace-nowrap">
                                         @if (isset($item['produksi_per_bulan'][$bulan]))
                                             {{ number_format($item['produksi_per_bulan'][$bulan], 0, ',', '.') }}
                                         @else
                                             -
                                         @endif
                                     </td>
-                                    @endfor
-
-                                    <td class="border px-4 py-2">
-                                        <div class="flex justify-center gap-2">
-                                            <button class="editBtn bg-yellow-400 hover:bg-yellow-500 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors"
-                                                data-ikan="{{ $item['jenis_ikan'] }}">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                        
-                                            <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors" 
-                                                data-ikan="{{ $item['jenis_ikan'] }}">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                            @php
-                            $totalPerBulan = [];
-                            foreach ($data as $item) {
-                                for ($bulan = 1; $bulan <= 12; $bulan++) {
-                                    if (isset($item['produksi_per_bulan'][$bulan])) {
-                                        if (!isset($totalPerBulan[$bulan])) {
-                                            $totalPerBulan[$bulan] = 0;
-                                        }
-                                        $totalPerBulan[$bulan] += $item['produksi_per_bulan'][$bulan];
-                                    }
-                                }
-                            }
-                            @endphp
-                            
-                            <tr class="border font-bold bg-gray-50">
-                                <td class="border px-4 py-2">Jumlah</td>
-                                @for ($bulan = 1; $bulan <= 12; $bulan++)
-                                    <td class="border px-2 py-2 text-center whitespace-nowrap">
-                                        {{ isset($totalPerBulan[$bulan]) ? number_format($totalPerBulan[$bulan], 0, ',', '.') : '-' }}
-                                    </td>
                                 @endfor
-                                <td class="border px-4 py-2"></td>
+
+                                <td class="border-b px-4 py-2">
+                                    <div class="flex justify-center gap-2">
+                                        <button class="editBtn bg-yellow-400 hover:bg-yellow-500 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors"
+                                            data-ikan="{{ $item['jenis_ikan'] }}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    
+                                        <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors" 
+                                            data-ikan="{{ $item['jenis_ikan'] }}">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
             @else
-                <div class="flex items-center justify-center h-64">
-                    <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
-                        <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
-                        <p class="text-gray-400">Tidak ada data yang sesuai dengan kriteria pencarian.</p>
-                    </div>
+            <div class="flex items-center justify-center h-64">
+                <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                    <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                    <p class="text-gray-400">Tidak ada data yang sesuai dengan kriteria pencarian.</p>
                 </div>
+            </div>
             @endif
+
         </div>
 
         <!-- Button Kembali -->
@@ -313,4 +305,19 @@
         });
     </script>
     @endpush
+
+
+    <script>
+        // Trigger Filter Modal
+function toggleModal() {
+    const modal = document.getElementById('filterModal');
+    modal.classList.toggle('hidden');
+    modal.classList.toggle('flex');
+}
+
+$("#filterBtn").on("click", function() {
+    $("#filterModal").toggleClass("hidden");
+});
+// End Trigger Filter Modal
+</script>
 </x-admin-layout>
