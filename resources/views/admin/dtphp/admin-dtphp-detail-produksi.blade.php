@@ -150,7 +150,7 @@
                 <h2 class="text-xl font-semibold mb-8 text-center max-md:text-lg">Yakin menghapus data?</h2>
                 <div class="flex justify-evenly">
                     <div class="text-right">
-                        <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full max-md:text-sm" id="closeBtn">Tutup</button>
+                        <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full max-md:text-sm" id="closeBtnDel">Tutup</button>
                     </div>
                     <div class="text-right">
                         <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full max-md:text-sm" id="yesBtn">Yakin</button>
@@ -218,7 +218,7 @@
         });
     
         $('.deleteBtn').on('click', function() {
-            const modal = $("#deleteModal");
+            const modal = $("#modal");
             modal.removeClass("hidden").addClass("flex");
     
             const jenisKomoditas = $(this).data('komoditas');
@@ -252,8 +252,9 @@
 
         $(document).on('click', '.btnConfirm', function() { 
             let dataId = $(this).data('id');
-            
-            $('#yesBtn').off('click').on('click', function() {
+            $('#deleteModal').show();
+
+            $(document).off('click').on('click', '#yesBtn', function() {
                 $.ajax({
                     type: 'DELETE',
                     url: `/api/dtphp/${dataId}`,
@@ -278,12 +279,14 @@
                         });
                     }
                 });
+
                 $('#deleteModal').hide();
             });
         });
 
-        $(document).on('click', '#closeBtn', function() {
+        $(document).on('click', '#closeBtnDel', function() {
             $('#deleteModal').hide();  
         });
+
     });
 </script>

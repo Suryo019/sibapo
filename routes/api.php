@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Akun\AkunDinasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pegawai\DPController;
@@ -44,3 +45,7 @@ Route::get('/dtphp/{jenisKomoditas}', [DTPHPController::class, 'listItem'])->nam
 Route::post('/dtphp', [DTPHPController::class, 'store'])->name('api.dtphp.store');
 Route::put('/dtphp/{id}', [DTPHPController::class, 'update'])->name('api.dtphp.update');
 Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
+
+
+// CRUD Akun Dinas
+Route::apiResource('crud-users', AkunDinasController::class);
