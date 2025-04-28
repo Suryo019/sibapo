@@ -127,7 +127,16 @@
                 </table>
             </div>
     
-            {{-- Modal edit & delete tetap sama --}}
+            {{-- Modal --}}
+            <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
+                <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Di<span id="actionPlaceholder"></span></h2>
+                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4"></div>
+                    <div class="text-right" id="closeListModal">
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
+                    </div>
+                </div>
+            </div>
             
             @else
             <div class="flex items-center justify-center h-64">
