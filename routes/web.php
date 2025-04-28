@@ -17,7 +17,7 @@ use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
 // ADMIN
 Route::get('/', function () {
-    return view('admin.admin-dashboard');
+    return view('tamu.beranda');
 });
 
 Route::get('/dashboard', action: function () {
