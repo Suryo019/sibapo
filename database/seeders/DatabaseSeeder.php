@@ -17,24 +17,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        DB::table('users')->insert([
-            'name' => Str::random(10),
-            'role_id' => 1,
-            'username' =>Str::random(10),
-            'email' => Str::random(10).'@example.com',
-            'password' => Hash::make('password'),
-        ]);
-
         DB::table('roles')->insert([
-            'role' => 'admin'
+            ['id' => 1, 'role' => 'admin'],
+            ['id' => 2, 'role' => 'dpp'],
+            ['id' => 3, 'role' => 'dkpp'],
+            ['id' => 4, 'role' => 'dtphp'],
+            ['id' => 5, 'role' => 'dp'],
         ]);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        DB::table('users')->insert([
+            [
+                'id' => 1,
+                'name' => 'Admin User',
+                'role_id' => 1,
+                'username' => 'adminuser',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'id' => 2,
+                'name' => 'DPP User',
+                'role_id' => 2,
+                'username' => 'dppuser',
+                'email' => 'dpp@example.com',
+                'password' => Hash::make('password'),
+            ],
+        ]);
 
+        $this->call(disperindagSeeder::class);
 
     }
 }

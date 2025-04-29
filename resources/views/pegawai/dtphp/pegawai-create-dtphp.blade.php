@@ -66,115 +66,46 @@
         </div>
         
     </main>
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitBtn = document.getElementById('submitBtn');
-            const form = document.getElementById('agricultureForm');
-            
-            // Form validation
-            function validateForm() {
-                let isValid = true;
-                
-                // Validate Jenis Komoditas
-                if (!document.getElementById('jenis_komoditas').value.trim()) {
-                    document.getElementById('jenis_komoditas_error').textContent = 'Jenis komoditas harus diisi';
-                    document.getElementById('jenis_komoditas_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('jenis_komoditas_error').classList.add('hidden');
-                }
-                
-                // Validate Volume Produksi
-                const volumeProduksi = document.getElementById('ton_volume_produksi');
-                if (!volumeProduksi.value || isNaN(volumeProduksi.value) || parseFloat(volumeProduksi.value) <= 0) {
-                    document.getElementById('ton_volume_produksi_error').textContent = 'Harus berupa angka positif';
-                    document.getElementById('ton_volume_produksi_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('ton_volume_produksi_error').classList.add('hidden');
-                }
-                
-                // Validate Luas Panen
-                const luasPanen = document.getElementById('hektar_luas_panen');
-                if (!luasPanen.value || isNaN(luasPanen.value) || parseFloat(luasPanen.value) <= 0) {
-                    document.getElementById('hektar_luas_panen_error').textContent = 'Harus berupa angka positif';
-                    document.getElementById('hektar_luas_panen_error').classList.remove('hidden');
-                    isValid = false;
-                } else {
-                    document.getElementById('hektar_luas_panen_error').classList.add('hidden');
-                }
-                
-                return isValid;
-            }
-            
-            submitBtn.addEventListener('click', async function() {
-                if (!validateForm()) return;
-                
-                // Disable button during submission
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `
-                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Memproses...
-                `;
-                
-                try {
-                    const response = await fetch("{{ route('api.dtphp.store') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            jenis_komoditas: document.getElementById('jenis_komoditas').value.trim(),
-                            ton_volume_produksi: parseFloat(document.getElementById('ton_volume_produksi').value),
-                            hektar_luas_panen: parseFloat(document.getElementById('hektar_luas_panen').value)
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) throw data;
-
-                    // Reset form
-                    form.reset();
-
-                    await Swal.fire({
-                        title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_komoditas} telah disimpan.`,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-
-                } catch (error) {
-                    let message = 'Terjadi kesalahan saat menyimpan data';
-                    
-                    if (error.errors) {
-                        message = Object.values(error.errors).join('<br>');
-                    }
-
-                    await Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message
-                    });
-                    
-                    // Re-enable button
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                        </svg>
-                        Tambah Data
-                    `;
-                }
-            });
-        });
-    </script>
-    @endpush
 </x-pegawai-layout>
+
+
+<script>
+    $('#submitBtn').on('click', function() {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('api.dtphp.store') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                jenis_komoditas: $('#jenis_komoditas').val(),
+                ton_volume_produksi: $('#ton_volume_produksi').val(),
+                hektar_luas_panen: $('#hektar_luas_panen').val(),
+                },
+            success: function(data) {   
+                $('#jenis_komoditas').val('');
+                $('#ton_volume_produksi').val('');
+                $('#hektar_luas_panen').val('');
+
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: `Data ${data.data.jenis_komoditas} telah disimpan.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            },
+            error: function(xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
+        });
+    });
+</script>

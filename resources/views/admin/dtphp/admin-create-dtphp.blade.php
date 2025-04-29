@@ -62,49 +62,6 @@
             </button>
         </div>
     </main>
-
-    @push('scripts')
-    <script>
-        $('#submitBtn').on('click', function() {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('api.dtphp.store') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    jenis_komoditas: $('#jenis_komoditas').val(),
-                    ton_volume_produksi: $('#ton_volume_produksi').val(),
-                    hektar_luas_panen: $('#hektar_luas_panen').val(),
-                    },
-                success: function(data) {   
-                    $('#jenis_komoditas').val('');
-                    $('#ton_volume_produksi').val('');
-                    $('#hektar_luas_panen').val('');
-    
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: Data ${data.data.jenis_komoditas} telah disimpan.,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                },
-                error: function(xhr, status, error) {
-                    let errors = xhr.responseJSON.errors;
-                    let message = '';
-    
-                    $.each(errors, function(key, value) {
-                        message += value + '<br>';
-                    });
-    
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message
-                    });
-                }
-            });
-        });
-    </script>
-    @endpush
 </x-admin-layout>
 
 <script>

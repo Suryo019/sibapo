@@ -173,14 +173,6 @@
         $('#pilih_komoditas').on('change', function() {
             $('#pilih_periode').prop('disabled', false);
         });
-
-        $('#closeListModal').on('click', function() {
-            $(this).closest('#modal').removeClass("flex").addClass("hidden");
-        });
-
-        $('#closeBtn').on('click', function() {
-            $('#modal').removeClass("flex").addClass("hidden");
-        });
     
         $('.editBtn').on('click', function() {
             const modal = $("#modal");
@@ -247,43 +239,45 @@
                 }
             });
         });
+    });
 
-        $(document).on('click', '.btnConfirm', function() { 
-            let dataId = $(this).data('id');
-            $('#deleteModal').show();
+    $('#closeListModal').on('click', function() {
+        $(this).closest('#modal').removeClass("flex").addClass("hidden");
+    });
+                                        
+    $(document).on('click', '.btnConfirm', function() { 
+        let dataId = $(this).data('id');
+        $('#deleteModal').show();
 
-            $(document).off('click').on('click', '#yesBtn', function() {
-                $.ajax({
-                    type: 'DELETE',
-                    url: `/api/dtphp/${dataId}`,
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(data) {
-                        Swal.fire({
-                            title: 'Berhasil!',
-                            text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: error
-                        });
-                    }
-                });
-
-                $('#deleteModal').hide();
+        $('#yesBtn').off('click').on('click', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/dtphp/${dataId}`,
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
             });
-        });
 
-        $(document).on('click', '#closeBtnDel', function() {
-            $('#deleteModal').hide();  
+            $('#deleteModal').hide();
         });
     });
+
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
+    });    
+
 </script>
