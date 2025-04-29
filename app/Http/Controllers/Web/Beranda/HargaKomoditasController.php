@@ -37,7 +37,7 @@ class HargaKomoditasController extends Controller
 
             if (!is_null($avgToday) && !is_null($avgYesterday)) {
                 $selisih = $avgToday - $avgYesterday;
-                $status = $selisih > 0 ? 'naik' : ($selisih < 0 ? 'turun' : 'tetap');
+                $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
             }
 
             $data[] = [
