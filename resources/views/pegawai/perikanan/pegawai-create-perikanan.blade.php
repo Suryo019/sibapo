@@ -42,58 +42,43 @@
         </div>
         
     </main>
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitBtn = document.getElementById('submitBtn');
-            const fishForm = document.getElementById('fishForm');
-            
-            submitBtn.addEventListener('click', async function() {
-                try {
-                    const response = await fetch("{{ route('api.dp.store') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            jenis_ikan: document.getElementById('jenis_ikan').value,
-                            ton_produksi: document.getElementById('ton_produksi').value
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw data;
-                    }
-
-                    fishForm.reset();
-
-                    await Swal.fire({
-                        title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan} telah disimpan.`,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-
-                } catch (error) {
-                    let message = 'Terjadi kesalahan saat menyimpan data';
-                    
-                    if (error.errors) {
-                        message = Object.values(error.errors).join('<br>');
-                    }
-
-                    await Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message
-                    });
-                }
-            });
-        });
-    </script>
-    @endpush
 </x-pegawai-layout>
+
+<script>
+    $('#submitBtn').on('click', function() {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('api.dp.store') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                jenis_ikan: $('#jenis_ikan').val(),
+                ton_produksi: $('#ton_produksi').val(),
+                },
+                success: function(data) {
+                $('#jenis_ikan').val('');
+                $('#ton_produksi').val('');
+
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: `Data ${data.data.jenis_ikan} telah disimpan.`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            },
+            error: function(xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+                let message = '';
+
+                $.each(errors, function(key, value) {
+                    message += value + '<br>';
+                });
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: message
+                });
+            }
+        });
+    });
+</script>

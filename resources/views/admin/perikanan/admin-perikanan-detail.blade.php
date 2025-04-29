@@ -172,6 +172,7 @@
 
     </main>
 </x-admin-layout>
+
 <script>
     // Trigger Filter Modal
     function toggleModal() {

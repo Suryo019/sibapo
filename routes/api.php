@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Akun\AkunDinasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pegawai\DPController;
 use App\Http\Controllers\Pegawai\DPPController;
 use App\Http\Controllers\Pegawai\DKPPController;
 use App\Http\Controllers\Pegawai\DTPHPController;
+use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Pimpinan\ReadDataController;
+use App\Http\Controllers\Web\Beranda\HargaKomoditasController;
 
 // Read Data Pimpinan
 Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);
@@ -49,3 +50,6 @@ Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
 
 // CRUD Akun Dinas
 Route::apiResource('crud-users', AkunDinasController::class);
+
+//Read Data Harga Komoditas
+Route::get('/', [HargaKomoditasController::class, 'index']);

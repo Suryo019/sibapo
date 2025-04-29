@@ -35,6 +35,7 @@
         </div>
     </main>
 </x-admin-layout>
+
 <script>
     $('#submitBtn').on('click', function() {
         $.ajax({
