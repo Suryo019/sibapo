@@ -21,12 +21,13 @@
         </span>
     </div>
     {{-- Login --}}
-    <select name="login" id="loginBtn" class="bg-pink-650 border-white border-2 rounded-full text-center p-2">
+    <select name="login" id="loginBtn" onchange="location = this.value;" class="bg-pink-650 border-white border-2 rounded-full text-center p-2">
         <option value="" selected disabled>Login</option>
-        <option value="">Admin</option>
-        <option value="">Disperindag</option>
-        <option value="">DKPP</option>
-        <option value="">DTPHP</option>
-        <option value="">DP</option>
+        <option value="{{ route('dashboard') }}">Admin</option>
+        <option value="{{ route('pegawai.disperindag.index') }}">Disperindag</option>
+        <option value="{{ route('pegawai.dkpp.index') }}">DKPP</option>
+        <option value="{{ route('pegawai.dtphp.index') }}">DTPHP</option>
+        <option value="{{ route('pegawai.perikanan.index') }}">DP</option>
     </select>
+    
 </nav>
