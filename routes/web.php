@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Akun\AkunDinasController;
 use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
@@ -9,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
 use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
+use App\Http\Controllers\Web\Tamu\TamuController;
+use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Web\DisperindagController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
@@ -16,9 +17,7 @@ use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
 // ADMIN
-Route::get('/', function () {
-    return view('tamu.beranda');
-});
+Route::get('/', [TamuController::class, 'beranda']);
 
 Route::get('/dashboard', action: function () {
     return view('admin.admin-dashboard');

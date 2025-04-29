@@ -19,7 +19,7 @@ class DPPFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'pasar' => $this->faker->randomElement(['Pasar A', 'Pasar B', 'Pasar C']),
+            'pasar' => $this->faker->randomElement(['Pasar Tanjung', 'Pasar Kreongan', 'Pasar Mangli']),
             'jenis_bahan_pokok' => $this->faker->randomElement(['Beras', 'Gula', 'Minyak Goreng']),
             'kg_harga' => $this->faker->numberBetween(5000, 25000),
             'tanggal_dibuat' => $this->faker->date(),
