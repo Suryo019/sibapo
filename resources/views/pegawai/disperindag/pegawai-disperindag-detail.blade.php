@@ -10,56 +10,44 @@
             <x-filter></x-filter>
     
             <!-- Modal Background -->
-            <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50 max-md:w-full">
-                <!-- Modal Content -->
-                <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
-                    <!-- Close Button -->
-                    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                        <i class="bi bi-x text-4xl"></i> 
-                    </button>
-                    
-                    <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">
-                        Filter
-                    </h2>
-    
-                    <form action="" method="get">
-                        <div class="space-y-4">
-                            <!-- Nama Pasar -->
-                            <div class="flex flex-col">
-                                <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                                <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
-                                    <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
-                                    <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
-                                </select>
-                            </div>
-                            <!-- Pilih Pasar -->
-                            <div class="flex flex-col">
-                                <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                                <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
-                                    <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                                    @foreach ($markets as $market)
-                                        <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <!-- Pilih Periode -->
-                            <div class="flex flex-col">
-                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode">
-                                    <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+            <x-filter-modal>
+                <form action="" method="get">
+                    <div class="space-y-4">
+                        <!-- Nama Pasar -->
+                        <div class="flex flex-col">
+                            <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                            <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                                <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
+                                <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
+                            </select>
                         </div>
-                        <div class="w-full flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                            <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                        <!-- Pilih Pasar -->
+                        <div class="flex flex-col">
+                            <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
+                            <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                                <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
+                                @foreach ($markets as $market)
+                                    <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </form>
-                </div>
-            </div>
+                        <!-- Pilih Periode -->
+                        <div class="flex flex-col">
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode">
+                                <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-end gap-3 mt-10">
+                        <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                        <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                    </div>
+                </form>
+            </x-filter-modal>
         </div>
     </div>
     

@@ -39,8 +39,12 @@
     {{-- Navigasi --}}
     <x-tamu-navbar></x-tamu-navbar>
 
-    {{-- Body Content --}}
+    <x-tamu-header></x-tamu-header>
 
+    {{-- footer --}}
+    <x-tamu-footer></x-tamu-footer>
+
+    
     <script>
         // Select2
         $(document).ready(function() {

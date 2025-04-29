@@ -13,61 +13,49 @@
             <x-filter></x-filter>
     
             <!-- Modal Background -->
-            <div id="filterModal" class="absolute mt-10 hidden items-center justify-center z-50 w-auto max-md:w-full">
-                <!-- Modal Content -->
-                <div class="bg-white w-96 max-md:w-11/12 rounded-lg shadow-black-custom p-6 relative">
-                    <!-- Close Button -->
-                    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                        <i class="bi bi-x text-4xl"></i>
-                    </button>
-    
-                    <h2 class="text-center text-pink-500 font-semibold text-lg mb-4 max-md:text-base">
-                        Filter
-                    </h2>
-    
-                    <form action="" method="get">
-                        <div class="space-y-4">
-                            <!-- Nama Pasar -->
-                            <div class="flex flex-col">
-                                <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Pasar</label>
-                                <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-full bg-white w-full select2 text-sm max-md:text-xs">
-                                    <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                                    @foreach ($markets as $market)
-                                        <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-    
-                            <!-- Periode -->
-                            <div class="flex flex-col">
-                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
-                                <select id="pilih_periode" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
-                                    <option value="" disabled selected>Pilih Periode</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}">{{ $period }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-    
-                            <!-- Bahan Pokok -->
-                            <div class="flex flex-col">
-                                <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Bahan Pokok</label>
-                                <select id="pilih_bahan_pokok" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
-                                    <option value="" disabled selected>Pilih Bahan Pokok</option>
-                                    @foreach ($data as $item)
-                                        <option value="{{ $item }}">{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+            <x-filter-modal>
+                <form action="" method="get">
+                    <div class="space-y-4">
+                        <!-- Nama Pasar -->
+                        <div class="flex flex-col">
+                            <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Pasar</label>
+                            <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-full bg-white w-full select2 text-sm max-md:text-xs">
+                                <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
+                                @foreach ($markets as $market)
+                                    <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
+                                @endforeach
+                            </select>
                         </div>
-    
-                        <div class="w-full flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
-                            <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
+
+                        <!-- Periode -->
+                        <div class="flex flex-col">
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
+                            <select id="pilih_periode" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
+                                <option value="" disabled selected>Pilih Periode</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </form>
-                </div>
-            </div>
+
+                        <!-- Bahan Pokok -->
+                        <div class="flex flex-col">
+                            <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Bahan Pokok</label>
+                            <select id="pilih_bahan_pokok" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
+                                <option value="" disabled selected>Pilih Bahan Pokok</option>
+                                @foreach ($data as $item)
+                                    <option value="{{ $item }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex justify-end gap-3 mt-10">
+                        <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
+                        <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
+                    </div>
+                </form>
+            </x-filter-modal>
         </div>
     </div>
     

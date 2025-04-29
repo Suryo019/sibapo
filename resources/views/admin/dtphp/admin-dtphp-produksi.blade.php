@@ -11,46 +11,38 @@
             <x-filter />
 
             <!-- Modal Background -->
-            <div id="filterModal" class="mt-10 absolute hidden z-50  items-center justify-center w-full">
-                <div class="bg-white w-80 sm:w-96 rounded-lg shadow-black-custom p-6 relative">
-                    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                        <i class="bi bi-x text-4xl"></i> 
-                    </button>
-                    
-                    <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">Filter</h2>
-  
-                    <form action="" method="get">
-                        <div class="space-y-4">
-                            <!-- Komoditas -->
-                            <div class="flex flex-col">
-                                <label for="pilih_komoditas" class="block text-sm max-md:text-xs font-medium text-gray-700 mb-1">Pilih Komoditas</label>
-                                <select id="pilih_komoditas" class="select2 w-full rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs">
-                                    <option value="" selected>Suket Teki</option>
-                                    @foreach ($commodities as $commodity)
-                                        <option value="{{ $commodity }}">{{ $commodity }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Periode -->
-                            <div class="flex flex-col">
-                                <label for="pilih_periode" class="block text-sm max-md:text-xs font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select id="pilih_periode" class="select2 w-full rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs" disabled>
-                                    <option value="" disabled selected>April 2025</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}">{{ $period }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+            <x-filter-modal>
+                <form action="" method="get">
+                    <div class="space-y-4">
+                        <!-- Komoditas -->
+                        <div class="flex flex-col">
+                            <label for="pilih_komoditas" class="block text-sm max-md:text-xs font-medium text-gray-700 mb-1">Pilih Komoditas</label>
+                            <select id="pilih_komoditas" class="select2 w-full rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs">
+                                <option value="" selected>Suket Teki</option>
+                                @foreach ($commodities as $commodity)
+                                    <option value="{{ $commodity }}">{{ $commodity }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
-                        <div class="flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-2 text-sm max-md:p-1">Reset</button>
-                            <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-2 text-sm max-md:p-1">Cari</button>
+                        <!-- Periode -->
+                        <div class="flex flex-col">
+                            <label for="pilih_periode" class="block text-sm max-md:text-xs font-medium text-gray-700 mb-1">Pilih Periode</label>
+                            <select id="pilih_periode" class="select2 w-full rounded-full border border-gray-300 p-2 bg-white text-sm max-md:text-xs" disabled>
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </form>
-                </div> 
-            </div> 
+                    </div>
+
+                    <div class="flex justify-end gap-3 mt-10">
+                        <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-2 text-sm max-md:p-1">Reset</button>
+                        <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-2 text-sm max-md:p-1">Cari</button>
+                    </div>
+                </form>
+            </x-filter-modal> 
         </div>
     </div>
 </div>  
