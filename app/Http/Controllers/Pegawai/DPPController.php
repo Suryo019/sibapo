@@ -22,7 +22,7 @@ class DPPController extends Controller
             ->whereYear('tanggal_dibuat', $year)
             ->where('pasar', $request->pasar)
             ->where('jenis_bahan_pokok', $request->bahan_pokok)
-            ->selectRaw('jenis_bahan_pokok, kg_harga, tanggal_dibuat, DAY(tanggal_dibuat) as hari')
+            ->selectRaw('jenis_bahan_pokok, pasar, kg_harga, tanggal_dibuat, DAY(tanggal_dibuat) as hari')
             ->get();
 
             return response()->json([

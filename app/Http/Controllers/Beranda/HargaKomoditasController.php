@@ -108,6 +108,64 @@ class HargaKomoditasController extends Controller
         return response()->json(['data' => $result], 200);
     }
 
+    public function pasar_filter(Request $request)
+    {
+        $today = Carbon::today();
+        $yesterday = Carbon::yesterday();
+
+        $pasar = $request->pasar;
+        // $pasar = 'Pasar Tanjung';
+        // return response()->json($pasar);
+
+        $dataToday = DB::table('dinas_perindustrian_perdagangan')
+            ->whereDate('tanggal_dibuat', $today)
+            ->where('pasar', 'like', '%'.$pasar.'%')
+            ->get();
+
+        $dataYesterday = DB::table('dinas_perindustrian_perdagangan')
+            ->whereDate('tanggal_dibuat', $yesterday)
+            ->where('pasar', 'like', '%'.$pasar.'%')
+            ->get();
+
+        $comodities = DB::table('dinas_perindustrian_perdagangan')
+            ->select('pasar', 'jenis_bahan_pokok')
+            ->where('pasar', 'like', '%'.$pasar.'%')
+            ->distinct()
+            ->get();
+
+        // dd($comodities);
+
+        $result = [];
+
+        foreach ($comodities as $comodities) {
+            $hargaToday = $dataToday->where('jenis_bahan_pokok', $comodities->jenis_bahan_pokok)->where('pasar', $comodities->pasar)->pluck('kg_harga');
+            $hargaYesterday = $dataYesterday->where('jenis_bahan_pokok', $comodities->jenis_bahan_pokok)->where('pasar', $comodities->pasar)->pluck('kg_harga');
+
+            $avgToday = $hargaToday->avg();
+            $avgYesterday = $hargaYesterday->avg();
+
+            $selisih = null;
+            $status = 'Tidak ada data';
+
+            if (!is_null($avgToday) && !is_null($avgYesterday)) {
+                $selisih = $avgToday - $avgYesterday;
+                $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
+            }
+
+            $result[] = [
+                'komoditas' => $comodities->jenis_bahan_pokok,
+                'rata_rata_hari_ini' => round($avgToday, 2),
+                'rata_rata_kemarin' => round($avgYesterday, 2),
+                'selisih' => round($selisih, 2),
+                'status' => $status,
+                'pasar' => $comodities->pasar,
+                
+            ];
+        }
+
+        return response()->json(['data' => $result, 'inputPasar' => $pasar], 200);
+    }
+
     // KOMEN IKI OJOK DIHAPUS!
     // public function komoditas_filter(Request $request)
     // {

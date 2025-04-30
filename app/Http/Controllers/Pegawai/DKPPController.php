@@ -13,17 +13,21 @@ class DKPPController extends Controller
 {
     public function index(Request $request)
     {
+        // TAK UPDATE
         try {
             // return response()->json(['data' => $request]);
             $date = Carbon::createFromFormat('F Y', $request->periode);
+            // $date = Carbon::createFromFormat('F Y', 'April 2025');
             $month = $date->month;
             $year = $date->year;
 
             $data = DKPP::whereYear('tanggal_input', $year)
             ->whereMonth('tanggal_input', $month)
-            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', (int) $request->minggu)
+            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) = ?', (int) $request->minggu)
             ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
             ->get();
+
+            // dd($data);
             
             return response()->json([
                 'data' => $data,

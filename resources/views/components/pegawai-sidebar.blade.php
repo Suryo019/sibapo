@@ -15,7 +15,7 @@ $pegawai = match(true) {
       {{-- Header --}}
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
       <div class="mb-5 justify-center mt-1 hidden md:flex">
-        <img class="scale-50 ml-4" src="{{ asset('img/logo.png') }}" alt="logo">
+        <img class="scale-50 ml-4" src="{{ asset('storage/img/logo.png') }}" alt="logo">
       </div>
   
         {{-- Link --}}
@@ -53,7 +53,7 @@ $pegawai = match(true) {
     
       {{-- Decoration --}}
       <div class="w-[18rem] h-[15rem] p-2 fixed bottom-5 max-md:hidden">
-        <img src="{{ asset('img/kembang_sidebar.png') }}" class="h-full bg-contain" alt="Flower">
+        <img src="{{ asset('storage/img/kembang_sidebar.png') }}" class="h-full bg-contain" alt="Flower">
       </div>
     </nav>
 </aside>

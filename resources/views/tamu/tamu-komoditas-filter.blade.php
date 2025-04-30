@@ -86,40 +86,51 @@
                             <p class="text-sm">Saat ini tidak ada komoditas yang tersedia.</p>
                         </div>
                     `);
-                    return;
+                } else {
+                    $.each(datas, function (index, value) {
+                        let statusSpan = '';
+    
+                        if (value.status == 'Stabil') {
+                            statusSpan = `
+                                <span class="flex justify-center items-center bg-blue-200 w-full rounded-full p-2 text-blue-600 font-extrabold gap-3">
+                                    <i class="bi bi-circle font-extrabold"></i>
+                                    ${value.status} Rp. ${value.selisih}
+                                </span>`;
+                        } else if (value.status == 'Naik') {
+                            statusSpan = `
+                                <span class="flex justify-center items-center bg-green-200 w-full rounded-full p-2 text-green-600 font-extrabold gap-3">
+                                    <i class="bi bi-arrow-up font-extrabold"></i>
+                                    ${value.status} Rp. ${value.selisih}
+                                </span>`;
+                        } else if (value.status == 'Turun') {
+                            statusSpan = `
+                                <span class="flex justify-center items-center bg-red-200 w-full rounded-full p-2 text-red-600 font-extrabold gap-3">
+                                    <i class="bi bi-arrow-down font-extrabold"></i>
+                                    ${value.status} Rp. ${value.selisih}
+                                </span>`;
+                        } else {
+                            statusSpan = `
+                                <span class="flex justify-center items-center bg-slate-200 w-full rounded-full p-2 text-slate-600 font-extrabold gap-3">
+                                    ${value.status}
+                                </span>`;
+                        }
+    
+                        let card = `
+                            <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-auto w-72 py-3 px-1">
+                                <div class="h-28 flex justify-center">
+                                    <img src="/storage/img/ayam.png" alt="komoditas" class="object-cover">
+                                </div>
+                                <div class="p-4 flex flex-col items-center gap-1">
+                                    <p class="text-gray-600">${value.komoditas}</p>
+                                    <h3 class="text-2xl font-extrabold">Rp. ${value.rata_rata_hari_ini}/kg</h3>
+                                    <p class="text-lg mb-3">${value.pasar}</p>
+                                    ${statusSpan}
+                                </div>
+                            </div>`;
+    
+                        $('#comoditiesList').append(card); 
+                    });
                 }
-
-                $.each(datas, function (index, value) {
-                    let statusSpan = '';
-                    const statusClass = {
-                        'Stabil': 'bg-blue-200 text-blue-600 bi-circle',
-                        'Naik': 'bg-green-200 text-green-600 bi-arrow-up',
-                        'Turun': 'bg-red-200 text-red-600 bi-arrow-down',
-                    };
-
-                    let statusInfo = statusClass[value.status] || 'bg-slate-200 text-slate-600';
-                    let icon = statusInfo.split(' ')[2] ? `<i class="bi ${statusInfo.split(' ')[2]} font-extrabold"></i>` : '';
-
-                    statusSpan = `
-                        <span class="flex justify-center items-center ${statusInfo.split(' ').slice(0, 2).join(' ')} w-full rounded-full p-2 font-extrabold gap-3">
-                            ${icon}
-                            ${value.status} Rp. ${value.selisih}
-                        </span>`;
-
-                    let card = `
-                        <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-auto w-72 py-3 px-1">
-                            <div class="h-28 flex justify-center">
-                                <img src="/storage/img/ayam.png" alt="komoditas" class="object-cover">
-                            </div>
-                            <div class="p-4 flex flex-col items-center gap-1">
-                                <p class="text-gray-600">${value.komoditas}</p>
-                                <h3 class="text-2xl font-extrabold">Rp. ${value.rata_rata_hari_ini}/kg</h3>
-                                <p class="text-lg mb-3">${value.pasar}</p>
-                                ${statusSpan}
-                            </div>
-                        </div>`;
-                    $('#comoditiesList').append(card);
-                });
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors;
