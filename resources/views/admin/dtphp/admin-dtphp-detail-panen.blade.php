@@ -271,11 +271,10 @@
         });
     });
 
-        $(document).on('click', '#closeBtnDel', function() {
-            $('#deleteModal').hide();  
-        });
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
     });
-
+    
     // Trigger Filter Modal
     function toggleModal() {
         const modal = document.getElementById('filterModal');

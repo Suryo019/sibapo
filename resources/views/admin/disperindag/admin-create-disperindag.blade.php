@@ -29,6 +29,18 @@
                            class="border p-2 w-full rounded-xl" id="jenis_bahan_pokok">
                 </div>
     
+                <!-- Gambar Bahan Pokok -->
+                <div class="mb-4">
+                    <label class="block text-pink-500">Gambar Bahan Pokok</label>
+                    <input type="file" name="gambar_bahan_pokok" id="gambar_bahan_pokok_input"
+                        class="border p-2 w-full rounded-xl" accept="image/*">
+
+                    <div class="mt-2 flex justify-center items-center">
+                        <img id="gambar_preview" style="height: 200px; width: 128px; object-fit: cover" src="#" alt="Preview Gambar" class="w-32 hidden rounded">
+                    </div>
+                </div>
+
+    
                 <!-- Harga Barang -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Harga Barang</label>
@@ -48,20 +60,41 @@
 </x-admin-layout>
 
 <script>
+    // preview
+    const input = document.getElementById('gambar_bahan_pokok_input');
+    const preview = document.getElementById('gambar_preview');
+
+    input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove('hidden');
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+
     $('#submitBtn').on('click', function() {
+        const formData = new FormData();
+        formData.append('_token', '{{ csrf_token() }}');
+        formData.append('pasar', $('#pasar').val());
+        formData.append('jenis_bahan_pokok', $('#jenis_bahan_pokok').val());
+        formData.append('gambar_bahan_pokok', $('#gambar_bahan_pokok_input')[0].files[0]);
+        formData.append('kg_harga', $('#kg_harga').val());
+
         $.ajax({
             type: "POST",
             url: "{{ route('api.dpp.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                pasar: $('#pasar').val(),
-                jenis_bahan_pokok: $('#jenis_bahan_pokok').val(),
-                kg_harga: $('#kg_harga').val(),
-                },
-            success: function(data) {   
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
                 $('#pasar').val('');
                 $('#jenis_bahan_pokok').val('');
+                $('#gambar_bahan_pokok_input').val('');
                 $('#kg_harga').val('');
+
+                $('#gambar_preview').attr('src', '').addClass('hidden');
 
                 Swal.fire({
                     title: 'Berhasil!',
@@ -70,7 +103,7 @@
                     confirmButtonText: 'OK'
                 });
             },
-            error: function(xhr, status, error) {
+            error: function(xhr) {
                 let errors = xhr.responseJSON.errors;
                 let message = '';
 
@@ -86,4 +119,5 @@
             }
         });
     });
+
 </script>
