@@ -51,7 +51,7 @@
     </main>
 
     {{-- footer --}}
-    <footer class="w-full h-80 bg-black relative z-10"></footer>
+    <footer class="w-full h-80 bg-black relative z-10 bottom-0"></footer>
 
     <script>
         // Select2

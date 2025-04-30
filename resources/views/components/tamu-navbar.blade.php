@@ -5,19 +5,19 @@
     <div class="flex justify-between items-center text-lg">
         {{-- Navlink --}}
         <span class="px-10">
-            <a href="#">Komoditas</a>
+            <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Komoditas</a>
         </span>
         <span class="px-10">
-            <a href="#">Pasar</a>
+            <a href="#" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
         </span>
         <span class="px-10">
-            <a href="#">Statistik</a>
+            <a href="#" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>
         </span>
         <span class="px-10">
-            <a href="#">Metadata</a>
+            <a href="#" class="{{ request()->is('metadata') ? 'text-yellow-450 font-bold' : 'text-white' }}">Metadata</a>
         </span>
         <span class="px-10">
-            <a href="#">Tentang Kami</a>
+            <a href="#" class="{{ request()->is('about') ? 'text-yellow-450 font-bold' : 'text-white' }}">Tentang Kami</a>
         </span>
     </div>
     {{-- Login --}}

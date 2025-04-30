@@ -45,13 +45,22 @@ class TamuController extends Controller
                 'rata_rata_hari_ini' => round($avgToday, 2),
                 'rata_rata_kemarin' => round($avgYesterday, 2),
                 'selisih' => round($selisih, 2),
-                'status' => $status
+                'status' => $status,
             ];
         }
 
         return view('tamu.beranda', [
             'title' => 'Beranda',
             'data' => $data,
+            'kemarin' => Carbon::yesterday()->format('d F Y'),
+        ]);
+    }
+
+    public function komoditas_filter()
+    {
+        return view('tamu.tamu-komoditas-filter', [
+            'title' => 'Komoditas',
+            'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }
 }

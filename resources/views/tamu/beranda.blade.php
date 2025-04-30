@@ -6,7 +6,7 @@
     {{-- Body --}}
     <div class="mx-32 my-20">
         <h1 class="text-5xl font-extrabold">Harga rata-rata komoditas hari ini di Jember</h1>
-        <h5 class="text-slate-600 mt-5 mb-7">Harga dibandingkan dengan hari sebelumnya <b>28 April 2025</b></h5>
+        <h5 class="text-slate-600 mt-5 mb-7">Harga dibandingkan dengan hari sebelumnya <b>{{ $kemarin }}</b></h5>
 
         {{-- Daftar Komoditas --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-items-center">

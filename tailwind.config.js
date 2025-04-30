@@ -30,6 +30,7 @@ export default {
                     10: "rgba(0, 0, 0, 0.05)",
                 },
                 yellow: {
+                    450: "#FFE500",
                     550: "#FF9F04",
                     650: "#F57D1F",
                 },

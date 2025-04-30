@@ -16,9 +16,12 @@ use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
-// ADMIN
+// Tamu
 Route::get('/', [TamuController::class, 'beranda']);
+Route::get('/komoditas', [TamuController::class, 'komoditas_filter'])->name('tamu.komoditas');
 
+
+// ADMIN
 Route::get('/dashboard', action: function () {
     return view('admin.admin-dashboard');
 })->name('dashboard');
