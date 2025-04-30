@@ -14,7 +14,7 @@
 
   <!-- Bagian Bawah abu" -->
   <div class="bg-gray-900 py-16 px-6 h-[350px]">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-40">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-40 justify-items-center">
       <div>
         <div class="flex items-center gap-2 mb-3">
           <img src="{{ asset('storage/img/logo.png') }}" alt="Logo SIBAPO" class="h-30">
