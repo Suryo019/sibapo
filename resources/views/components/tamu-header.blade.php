@@ -1,4 +1,5 @@
-<header class="bg-gradient-to-r from-pink-100 via-white to-pink-100 py-16 px-6">
+{{-- bg-gradient-to-r from-pink-100 via-white to-pink-100 --}}
+<header class="py-16 px-6">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
       
       <!-- Teks Kiri -->

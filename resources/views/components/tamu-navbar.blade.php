@@ -5,10 +5,10 @@
     <div class="flex justify-between items-center text-lg">
         {{-- Navlink --}}
         <span class="px-10">
-            <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Komoditas</a>
+            <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Bahan Pokok</a>
         </span>
         <span class="px-10">
-            <a href="#" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
+            <a href="{{ route('tamu.pasar') }}" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
         </span>
         <span class="px-10">
             <a href="#" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>

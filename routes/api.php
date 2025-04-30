@@ -8,7 +8,7 @@ use App\Http\Controllers\Pegawai\DKPPController;
 use App\Http\Controllers\Pegawai\DTPHPController;
 use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Pimpinan\ReadDataController;
-use App\Http\Controllers\Web\Beranda\HargaKomoditasController;
+use App\Http\Controllers\Beranda\HargaKomoditasController;
 
 // Read Data Pimpinan
 Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);
@@ -53,4 +53,4 @@ Route::apiResource('crud-users', AkunDinasController::class);
 
 //Read Data Harga Komoditas
 Route::get('/', [HargaKomoditasController::class, 'index']);
-Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas_filter');
+Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas');

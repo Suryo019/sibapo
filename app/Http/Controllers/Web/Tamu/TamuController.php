@@ -56,10 +56,18 @@ class TamuController extends Controller
         ]);
     }
 
-    public function komoditas_filter()
+    public function komoditas_filter(Request $request)
     {
         return view('tamu.tamu-komoditas-filter', [
-            'title' => 'Komoditas',
+            'title' => 'Bahan Pokok',
+            'kemarin' => Carbon::yesterday()->format('d F Y'),
+        ]);
+    }
+
+    public function pasar_filter(Request $request)
+    {
+        return view('tamu.tamu-pasar-filter', [
+            'title' => 'Pasar',
             'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }
