@@ -71,6 +71,7 @@
                         <tr>
                             <th rowspan="2" class="px-2 py-2 text-center">No</th>
                             <th rowspan="2" class="px-2 py-2 text-center">Jenis Komoditas</th>
+                            <th rowspan="2" class="px-2 py-2 text-center">Gambar</th>
                             @for ($i = 1; $i <= $daysInMonth; $i++)
                                 <th class="px-2 py-1 text-center">{{ $i }}</th>
                             @endfor
@@ -82,6 +83,16 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="px-2 py-2">{{ $item['jenis_bahan_pokok'] }}</td>
+                            <td class="px-2 py-2">
+                                @if ($item['gambar_bahan_pokok'])
+                                    <img src="{{ asset($item['gambar_bahan_pokok']) }}" 
+                                         style="height: 100px; object-fit: cover"
+                                         alt="Gambar Bahan Pokok" 
+                                         class="w-20 h-auto rounded shadow">
+                                @else
+                                    <span class="text-gray-400 italic">Tidak ada gambar</span>
+                                @endif
+                            </td>                            
     
                             @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
                                 <td class="px-2 py-1 text-center">

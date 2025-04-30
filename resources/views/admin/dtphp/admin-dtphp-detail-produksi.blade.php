@@ -270,7 +270,7 @@
 
     $(document).on('click', '#closeBtn', function() {
         $('#deleteModal').hide();  
-    });    
+    });
 
 
     // Trigger Filter Modal

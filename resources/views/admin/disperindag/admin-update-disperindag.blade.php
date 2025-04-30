@@ -39,7 +39,26 @@
                            class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok) }}">
                 </div>
-            
+                
+                <!-- Gambar Bahan Pokok -->
+                <div class="mb-4">
+                    <label for="gambar_bahan_pokok" class="block text-pink-500 font-medium mb-1">Gambar Bahan Pokok</label>
+                    <input type="file" 
+                           name="gambar_bahan_pokok"
+                           id="gambar_bahan_pokok_input"
+                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
+                           accept="image/*"
+                           value="{{ old('gambar_bahan_pokok', $data->gambar_bahan_pokok) }}">
+
+                    <div class="mt-2 flex justify-center items-center">
+                        @if($data->gambar_bahan_pokok)
+                            <img id="gambar_preview" src="{{ asset($data->gambar_bahan_pokok) }}" alt="Preview Gambar" class="w-32 rounded" style="height: 200px; width: 128px; object-fit: cover">
+                        @else
+                            <span class="text-gray-400 italic">Tidak ada gambar</span>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- Harga Barang -->
                 <div class="mb-4">
                     <label for="kg_harga" class="block text-pink-500 font-medium mb-1">Harga Barang</label>
@@ -71,17 +90,37 @@
 </x-admin-layout>
 
 <script>
+    // preview
+    document.getElementById('gambar_bahan_pokok_input').addEventListener('change', function () {
+        const file = this.files[0];
+        const preview = document.getElementById('gambar_preview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
     $('#submitBtn').on('click', function() {
+        const formData = new FormData();
+        formData.append('_token', '{{ csrf_token() }}');
+        formData.append('_method', 'PUT');
+        formData.append('pasar', $('#pasar').val());
+        formData.append('jenis_bahan_pokok', $('#jenis_bahan_pokok').val());
+        formData.append('kg_harga', $('#kg_harga').val());
+        formData.append('tanggal_dibuat', $('#tanggal_dibuat').val());
+        formData.append('gambar_bahan_pokok', $('#gambar_bahan_pokok_input')[0].files[0]);
+
         $.ajax({
-            type: "PUT",
+            type: "POST",
             url: "{{ route('api.dpp.update', $data->id) }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                pasar: $('#pasar').val(),
-                jenis_bahan_pokok: $('#jenis_bahan_pokok').val(),
-                kg_harga: $('#kg_harga').val(),
-                tanggal_dibuat: $('#tanggal_dibuat').val(),
-                },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function(data) {
                 Swal.fire({
                     icon: 'success',
@@ -90,9 +129,9 @@
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
                     window.location.href = "{{ route('disperindag.detail') }}";
-                });                
+                });
             },
-            error: function(xhr, status, error) {
+            error: function(xhr) {
                 let errors = xhr.responseJSON.errors;
                 let message = '';
 
@@ -108,4 +147,5 @@
             }
         });
     });
+
 </script>

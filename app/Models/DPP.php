@@ -15,6 +15,7 @@ class DPP extends Model
         'user_id',
         'pasar', 
         'jenis_bahan_pokok', 
+        'gambar_bahan_pokok', 
         'kg_harga',
         'tanggal_dibuat'
     ];
