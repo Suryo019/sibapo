@@ -45,15 +45,13 @@
     {{-- Navigasi --}}
     <x-tamu-navbar></x-tamu-navbar>
 
-    <x-tamu-header></x-tamu-header>
-
     {{-- footer --}}
     <main class="w-full h-auto relative z-10">
         {{ $slot }}
     </main>
 
     {{-- footer --}}
-    <footer class="w-full h-80 bg-black relative z-10 bottom-0"></footer>
+    {{-- <footer class="w-full h-80 bg-black relative z-10 bottom-0"></footer> --}}
     <x-tamu-footer></x-tamu-footer>
 
     

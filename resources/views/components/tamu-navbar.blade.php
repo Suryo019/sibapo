@@ -1,6 +1,6 @@
 <nav class="w-full bg-pink-650 flex text-white justify-between py-5 px-10 relative z-10">
     {{-- logo --}}
-    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-10 w-30 ml-2 scale-90">
+    <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 ml-2 scale-90">
 
     <div class="flex justify-between items-center text-lg">
         {{-- Navlink --}}

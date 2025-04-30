@@ -13,7 +13,7 @@
     </div>
 
     {{-- Daftar Komoditas --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-items-center">
+    {{-- <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-items-center">
         @foreach ($data as $item)
         <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-72 w-72 py-3 px-1">
             <div class="h-[50%] flex justify-center">
@@ -45,7 +45,7 @@
             </div>
         </div>
         @endforeach
-    </div>
+    </div> --}}
 </x-tamu-layout>
 
 {{-- BELOM SELESAI --}}

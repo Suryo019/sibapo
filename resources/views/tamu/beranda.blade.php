@@ -1,7 +1,7 @@
 {{-- @dd($data) --}}
 
 <x-tamu-layout>
-    <div class="w-full h-96 bg-black text-white flex justify-center items-center opacity-5">INI HERO SECTION</div>
+    <x-tamu-header></x-tamu-header>
 
     {{-- Body --}}
     <div class="mx-32 my-20">
