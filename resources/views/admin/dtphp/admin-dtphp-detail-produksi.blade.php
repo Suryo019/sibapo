@@ -7,49 +7,41 @@
         
             <!-- Filter -->
             <div class="flex justify-end">
-            <div class="relative">
+                <div class="relative flex justify-end">
                 <x-filter></x-filter>
         
                 <!-- Modal Background -->
-                <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50 w-full">
-                <!-- Modal Content -->
-                <div class="bg-white w-96 max-md:w-80 rounded-lg shadow-black-custom p-6 relative">
-                    <!-- Close Button -->
-                    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                    <i class="bi bi-x text-4xl"></i>
-                    </button>
-                    <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">Filter</h2>
+                <x-filter-modal>
                     <form action="" method="get">
-                    <div class="space-y-4">
-                        <!-- pilih komoditas -->
-                        <div class="flex flex-col">
-                        <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Komoditas</label>
-                        <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" id="pilih_komoditas">
-                            <option value="" selected>Suket Teki</option>
-                            @foreach ($commodities as $commodity)
-                            <option value="{{ $commodity }}">{{ $commodity }}</option>
-                            @endforeach
-                        </select>
+                        <div class="space-y-4">
+                            <!-- pilih komoditas -->
+                            <div class="flex flex-col">
+                            <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Komoditas</label>
+                            <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" id="pilih_komoditas">
+                                <option value="" selected>Suket Teki</option>
+                                @foreach ($commodities as $commodity)
+                                <option value="{{ $commodity }}">{{ $commodity }}</option>
+                                @endforeach
+                            </select>
+                            </div>
+            
+                            <!-- Periode -->
+                            <div class="flex flex-col">
+                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
+                            <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" disabled id="pilih_periode">
+                                <option value="" disabled selected>April 2025</option>
+                                @foreach ($periods as $period)
+                                <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                            </div>
                         </div>
-        
-                        <!-- Periode -->
-                        <div class="flex flex-col">
-                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
-                        <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" disabled id="pilih_periode">
-                            <option value="" disabled selected>April 2025</option>
-                            @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                            @endforeach
-                        </select>
+                        <div class="w-full flex justify-end gap-3 mt-10">
+                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                            <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                         </div>
-                    </div>
-                    <div class="w-full flex justify-end gap-3 mt-10">
-                        <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                        <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
-                    </div>
-                    </form>
-                </div>
-                </div>
+                        </form>
+                </x-filter-modal>
             </div>
             </div>
         </div>
@@ -276,8 +268,20 @@
         });
     });
 
-    $(document).on('click', '#closeBtn', function() {
-        $('#deleteModal').hide();  
-    });    
+        $(document).on('click', '#closeBtnDel', function() {
+            $('#deleteModal').hide();  
+        });
+    });
 
+    // Trigger Filter Modal
+    function toggleModal() {
+        const modal = document.getElementById('filterModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    $("#filterBtn").on("click", function() {
+        $("#filterModal").toggleClass("hidden");
+    });
+    // End Trigger Filter Modal
 </script>

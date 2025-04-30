@@ -12,50 +12,40 @@
                         <x-filter></x-filter>
     
                         <!-- Modal Background -->
-                        <div id="filterModal" class="mt-10 absolute hidden items-center justify-center z-50">
-                            <div class="bg-white w-80 sm:w-96 rounded-lg shadow-black-custom p-6 relative">
-                                <!-- Close Button -->
-                                <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                                    <i class="bi bi-x text-2xl sm:text-4xl"></i>
-                                </button>
-    
-                                <h2 class="text-center text-pink-500 font-semibold text-lg mb-4">Filter</h2>
-    
-                                <form action="" method="get" class="space-y-4">
-                                    <div class="flex flex-col">
-                                        <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                                        <select class="border border-black p-2 rounded bg-white w-full" id="pilih_urutan">
-                                            <option>Ascending</option>
-                                            <option>Descending</option>
-                                        </select>
-                                    </div>
-    
-                                    <div class="flex flex-col">
-                                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                        <select class="border border-black p-2 rounded bg-white w-full" id="pilih_periode">
-                                            @foreach ($periods as $period)
-                                                <option value="{{ $period }}">{{ $period }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-    
-                                    <div class="flex flex-col">
-                                        <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                                        <select class="border border-black p-2 rounded bg-white w-full" id="pilih_minggu">
-                                            <option>1</option>
-                                            <option selected>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
-                                    </div>
-    
-                                    <div class="w-full flex justify-end gap-3 mt-6">
-                                        <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                                        <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
-                                    </div>
-                                </form>
-                            </div> 
-                        </div> 
+                        <x-filter-modal>
+                            <form action="" method="get" class="space-y-4">
+                                <div class="flex flex-col">
+                                    <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_urutan">
+                                        <option>Ascending</option>
+                                        <option>Descending</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_periode">
+                                        @foreach ($periods as $period)
+                                            <option value="{{ $period }}">{{ $period }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_minggu">
+                                        <option>1</option>
+                                        <option selected>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+
+                                <div class="w-full flex justify-end gap-3 mt-6">
+                                    <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                                    <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                                </div>
+                            </form></x-filter-modal> 
                     </div> 
                 </div> 
             </div>
