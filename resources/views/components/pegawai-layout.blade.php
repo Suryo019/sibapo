@@ -13,6 +13,9 @@ $judul = match(true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{-- Token CSRF --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>{{ $judul }}</title>
     {{-- <link rel="stylesheet" href="../src/output.css"> --}}
     @vite('resources/css/app.css')
@@ -76,6 +79,13 @@ $judul = match(true) {
         $(document).ready(function() {
             $('.select2').select2();
         });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
 
         function showLoading() {
             document.getElementById("loading").style.display = "flex";

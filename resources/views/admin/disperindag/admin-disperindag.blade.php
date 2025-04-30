@@ -102,10 +102,10 @@
 </x-admin-layout>
 
 <script>
+    // Ini ntar hapus cuy
     const pasar = 'Pasar Tanjung';
     const periode = 'April 2025';
     const bahanPokok = 'Minyak Goreng';
-    // Ini ntar hapus cuy
     $.ajax({
         type: "GET",
         url: "{{ route('api.dpp.index') }}",
@@ -258,6 +258,8 @@
             console.error("AJAX Error:", xhr.responseText);
         }
     });
+    // Sampe sini
+
     var chart;
     var debounceTimer;
 

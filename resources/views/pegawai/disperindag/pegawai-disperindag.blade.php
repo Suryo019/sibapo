@@ -93,6 +93,164 @@
 </x-pegawai-layout>
 
 <script>
+    // Ini ntar hapus cuy
+    const pasar = 'Pasar Tanjung';
+    const periode = 'April 2025';
+    const bahanPokok = 'Minyak Goreng';
+    $.ajax({
+        type: "GET",
+        url: "{{ route('api.dpp.index') }}",
+        data: {
+            _token: "{{ csrf_token() }}",
+            pasar: pasar,
+            periode: periode,
+            bahan_pokok: bahanPokok
+        },
+        success: function(response) {
+            $('#bahan_pokok').text(bahanPokok);
+            $('#pasar').text(pasar);
+            $('#periode').text(periode);
+
+            let dataset = response.data;
+            
+            if (!dataset || dataset.length === 0) {
+                if (chart) {
+                    chart.destroy();
+                    chart = null;
+                }
+                $('#chart').addClass('hidden');
+                $('#chart_placeholder').html(`
+                    <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                        <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                        <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+                    </div>
+                `).show();
+                return;
+            }
+
+            let labels = dataset.map(item => item.hari);
+            let data = dataset.map(item => item.kg_harga);
+
+            // Hanya render jika data berbeda
+            if (!chart || JSON.stringify(chart.w.config.series[0].data) !== JSON.stringify(data)) {
+                $('#chart_placeholder').empty().hide();
+                $('#chart').removeClass('hidden');
+
+                if (chart) {
+                    chart.destroy();
+                }
+
+                chart = new ApexCharts(document.querySelector("#chart"), {
+                    chart: {
+                        type: 'line',
+                        height: 350,
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800
+                        },
+                        events: {
+                            resized: function(chartContext, config) {
+                                const width = chartContext.el.offsetWidth;
+
+                                if (width < 480) {
+                                    chart.updateOptions({
+                                        stroke: {
+                                            width: 1
+                                        }
+                                    });
+                                } else if (width < 768) {
+                                    chart.updateOptions({
+                                        stroke: {
+                                            width: 2
+                                        }
+                                    });
+                                } else {
+                                    chart.updateOptions({
+                                        stroke: {
+                                            width: 3
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Harga (Rp)',
+                        data: data
+                    }],
+                    xaxis: {
+                        categories: labels,
+                        labels: {
+                            style: {
+                                fontSize: '12px'
+                            }
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Harga (Rp)'
+                        },
+                        labels: {
+                            formatter: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 768,
+                        options: {
+                            chart: {
+                                height: 300
+                            },
+                        }
+                    }, 
+                    {
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                height: 250
+                            },
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '10px'
+                                    }
+                                }
+                            },
+                            yaxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '10px'
+                                    }
+                                }
+                            },
+                        }
+                    }],
+                });
+                
+                chart.render();
+            }
+        },
+        error: function(xhr) {
+            $('#chart_placeholder').html(`
+                <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
+                    <h3 class="text-lg font-semibold text-red-500">Error</h3>
+                    <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+                </div>
+            `);
+            console.error("AJAX Error:", xhr.responseText);
+        }
+    });
+    // Sampe sini
+    
     var chart;
     var debounceTimer;
 

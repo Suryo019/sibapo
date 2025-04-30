@@ -207,6 +207,7 @@
       console.error("AJAX Error:", xhr.responseText);
     }
   });
+  // Sampe ini
 
 
   var chart;

@@ -11,13 +11,13 @@
             <a href="{{ route('tamu.pasar') }}" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
         </span>
         <span class="px-10">
-            <a href="#" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>
+            <a href="{{ route('tamu.statistik') }}" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>
         </span>
         <span class="px-10">
-            <a href="#" class="{{ request()->is('metadata') ? 'text-yellow-450 font-bold' : 'text-white' }}">Metadata</a>
+            <a href="{{ route('tamu.metadata') }}" class="{{ request()->is('metadata') ? 'text-yellow-450 font-bold' : 'text-white' }}">Metadata</a>
         </span>
         <span class="px-10">
-            <a href="#" class="{{ request()->is('about') ? 'text-yellow-450 font-bold' : 'text-white' }}">Tentang Kami</a>
+            <a href="{{ route('tamu.tentang-kami') }}" class="{{ request()->is('tentang-kami') ? 'text-yellow-450 font-bold' : 'text-white' }}">Tentang Kami</a>
         </span>
     </div>
     {{-- Login --}}

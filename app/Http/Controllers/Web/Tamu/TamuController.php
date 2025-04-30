@@ -56,7 +56,7 @@ class TamuController extends Controller
         ]);
     }
 
-    public function komoditas_filter(Request $request)
+    public function komoditas_filter()
     {
         return view('tamu.tamu-komoditas-filter', [
             'title' => 'Bahan Pokok',
@@ -64,11 +64,32 @@ class TamuController extends Controller
         ]);
     }
 
-    public function pasar_filter(Request $request)
+    public function pasar_filter()
     {
         return view('tamu.tamu-pasar-filter', [
             'title' => 'Pasar',
             'kemarin' => Carbon::yesterday()->format('d F Y'),
+        ]);
+    }
+
+    public function statistik()
+    {
+        return view('tamu.tamu-statistik', [
+            'title' => 'Statistik',
+        ]);
+    }
+
+    public function metadata()
+    {
+        return view('tamu.tamu-metadata', [
+            'title' => 'Metadata',
+        ]);
+    }
+
+    public function tentang_kami()
+    {
+        return view('tamu.tamu-tentang-kami', [
+            'title' => 'Tentang Kami',
         ]);
     }
 }
