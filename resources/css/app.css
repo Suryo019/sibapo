@@ -14,6 +14,10 @@
     animation: spin 1.2s linear infinite;
 }
 
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(243, 26, 131, 0.4);
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

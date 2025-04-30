@@ -53,3 +53,4 @@ Route::apiResource('crud-users', AkunDinasController::class);
 
 //Read Data Harga Komoditas
 Route::get('/', [HargaKomoditasController::class, 'index']);
+Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas_filter');

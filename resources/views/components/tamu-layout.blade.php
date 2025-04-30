@@ -34,14 +34,24 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
 </head>
-<body class="h-screen w-screen overflow-hidden">
+<body class="h-screen w-screen overflow-x-hidden">
+
+    {{-- BG wkwk --}}
+    <div class="w-full h-full fixed z-0">
+        <div class="w-[30%] h-[45%] bg-pink-650 absolute rounded-full blur-3xl opacity-25 top-0 right-0"></div>
+        <div class="w-[30%] h-[45%] bg-pink-650 absolute rounded-full blur-3xl opacity-25 bottom-0 left-0"></div>
+    </div>
 
     {{-- Navigasi --}}
     <x-tamu-navbar></x-tamu-navbar>
 
-    <x-tamu-header></x-tamu-header>
+    {{-- footer --}}
+    <main class="w-full h-auto relative z-10">
+        {{ $slot }}
+    </main>
 
     {{-- footer --}}
+    {{-- <footer class="w-full h-80 bg-black relative z-10 bottom-0"></footer> --}}
     <x-tamu-footer></x-tamu-footer>
 
     

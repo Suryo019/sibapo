@@ -272,6 +272,7 @@
         $('#deleteModal').hide();  
     });
 
+
     // Trigger Filter Modal
     function toggleModal() {
         const modal = document.getElementById('filterModal');

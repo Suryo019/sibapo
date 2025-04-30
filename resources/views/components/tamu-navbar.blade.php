@@ -1,32 +1,33 @@
-<nav class="w-full bg-pink-650 flex text-white justify-between py-5 px-10">
+<nav class="w-full bg-pink-650 flex text-white justify-between py-5 px-10 relative z-10">
     {{-- logo --}}
-    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-10 w-30 ml-2 scale-90">
+    <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 ml-2 scale-90">
 
     <div class="flex justify-between items-center text-lg">
         {{-- Navlink --}}
         <span class="px-10">
-            <a href="#">Komoditas</a>
+            <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Komoditas</a>
         </span>
         <span class="px-10">
-            <a href="#">Pasar</a>
+            <a href="#" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
         </span>
         <span class="px-10">
-            <a href="#">Statistik</a>
+            <a href="#" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>
         </span>
         <span class="px-10">
-            <a href="#">Metadata</a>
+            <a href="#" class="{{ request()->is('metadata') ? 'text-yellow-450 font-bold' : 'text-white' }}">Metadata</a>
         </span>
         <span class="px-10">
-            <a href="#">Tentang Kami</a>
+            <a href="#" class="{{ request()->is('about') ? 'text-yellow-450 font-bold' : 'text-white' }}">Tentang Kami</a>
         </span>
     </div>
     {{-- Login --}}
-    <select name="login" id="loginBtn" class="bg-pink-650 border-white border-2 rounded-full text-center p-2">
+    <select name="login" id="loginBtn" onchange="location = this.value;" class="bg-pink-650 border-white border-2 rounded-full text-center p-2">
         <option value="" selected disabled>Login</option>
-        <option value="">Admin</option>
-        <option value="">Disperindag</option>
-        <option value="">DKPP</option>
-        <option value="">DTPHP</option>
-        <option value="">DP</option>
+        <option value="{{ route('dashboard') }}">Admin</option>
+        <option value="{{ route('pegawai.disperindag.index') }}">Disperindag</option>
+        <option value="{{ route('pegawai.dkpp.index') }}">DKPP</option>
+        <option value="{{ route('pegawai.dtphp.index') }}">DTPHP</option>
+        <option value="{{ route('pegawai.perikanan.index') }}">DP</option>
     </select>
+    
 </nav>
