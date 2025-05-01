@@ -25,6 +25,7 @@ Route::get('/metadata', [TamuController::class, 'metadata'])->name('tamu.metadat
 Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu.tentang-kami');
 
 
+
 // ADMIN
 Route::get('/dashboard', action: function () {
     return view('admin.admin-dashboard');
