@@ -92,4 +92,11 @@ class TamuController extends Controller
             'title' => 'Tentang Kami',
         ]);
     }
+
+    public function hubungi_kami()
+    {
+        return view('tamu.tamu-hubungi-kami', [
+            'title' => 'Hubungi Kami',
+        ]);
+    }
 }
