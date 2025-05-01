@@ -26,6 +26,7 @@ Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu
 Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu.hubungi-kami');
 
 
+
 // ADMIN
 Route::get('/dashboard', action: function () {
     return view('admin.admin-dashboard');
