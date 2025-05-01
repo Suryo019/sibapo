@@ -1,6 +1,6 @@
 <footer class="text-white">
   <!-- Bagian Atas Pink -->
-  <div class="bg-pink-650 py-14 px-6 md:px-20 relative overflow-hidden">
+  <div class="bg-pink-650 h-[300px] py-14 px-6 md:px-20 relative overflow-hidden">
     <div class="max-w-6xl mx-20 flex flex-col gap-3 items-start text-left relative z-10 md:pr-40">
       <h2 class="text-2xl md:text-5xl font-semibold">Butuh Bantuan?</h2>
       <p class="text-sm md:text-md mt-1">Tanyakan apapun dan kami siap membantu Anda!</p>
@@ -13,10 +13,10 @@
 
   <!-- Bagian Bawah Abu-Abu -->
   <div class="bg-gray-900 py-12 px-6 md:px-20">
-    <div class="max-w-7xl mx-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-40 text-center md:text-left">
+    <div class="max-w-7xl mx-20 grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-40 text-center md:text-left">
       
       <div class="flex flex-col items-center md:items-start">
-        <img src="{{ asset('storage/img/logo.png') }}" alt="Logo SIBAPO" class="w-24 md:w-full h-24 md:h-32 mb-3">
+        <img src="{{ asset('storage/img/logo.png') }}" alt="Logo SIBAPO" class="w-24 md:w-full h-auto mb-6">
         <p class="text-sm">
           Sistem Informasi Bahan Pokok (SIBAPO) adalah pusat data harga bahan pangan di seluruh wilayah Kabupaten Jember yang diperbarui setiap hari.
         </p>
