@@ -92,16 +92,24 @@ class DPPController extends Controller
             // Up gambar
             if ($request->hasFile('gambar_bahan_pokok')) {
                 $file = $request->file('gambar_bahan_pokok');
+            
                 if ($file->isValid()) {
-                    $filename = time() . '_' . $file->getClientOriginalName();
-                    Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
-                    $validated['gambar_bahan_pokok'] = 'storage/gambarBpokokDisperindag/' . $filename;
+                    $hash = md5_file($file->getRealPath());
+            
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $hash . '.' . $extension;
+            
+                    $path = 'gambarBpokokDisperindag/' . $filename;
+                    if (!Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
+                    }
+            
+                    $validated['gambar_bahan_pokok'] = $path;
                 } else {
                     return response()->json(['message' => 'File tidak valid'], 400);
                 }
-            } else {
-                return response()->json(['message' => 'Gambar tidak ditemukan'], 400);
             }
+            
             $dpp = DPP::create($validated);
 
             return response()->json([
@@ -135,30 +143,32 @@ class DPPController extends Controller
             $validated = $request->validate([
                 'pasar' => 'required|string',
                 'jenis_bahan_pokok' => 'required|string',
-                'gambar_bahan_pokok' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'gambar_bahan_pokok' => 'nullable|image|file|max:2048',
                 'kg_harga' => 'required|integer',
                 'tanggal_dibuat' => 'required|date'
             ]);
 
-        // Cek apakah ada gambar baru yang diupload
-        if ($request->hasFile('gambar_bahan_pokok')) {
-            if ($dpp->gambar_bahan_pokok) {
-                $oldImagePath = public_path('storage/' . $dpp->gambar_bahan_pokok);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);  // Menghapus gambar lama dari server
+            // Cek apakah ada gambar baru yang diupload
+            if ($request->hasFile('gambar_bahan_pokok')) {
+                $file = $request->file('gambar_bahan_pokok');
+            
+                if ($file->isValid()) {
+                    $hash = md5_file($file->getRealPath());
+            
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $hash . '.' . $extension;
+            
+                    $path = 'gambarBpokokDisperindag/' . $filename;
+                    if (!Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
+                    }
+            
+                    $validated['gambar_bahan_pokok'] = $path;
+                } else {
+                    return response()->json(['message' => 'File tidak valid'], 400);
                 }
             }
-
-            // Proses upload gambar baru
-            $file = $request->file('gambar_bahan_pokok');
-            if ($file->isValid()) {
-                $filename = time() . '_' . $file->getClientOriginalName();
-                Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
-                $validated['gambar_bahan_pokok'] = 'storage/gambarBpokokDisperindag/' . $filename;
-            } else {
-                return response()->json(['message' => 'File tidak valid'], 400);
-            }
-        }
+            
 
             $dpp->update($validated);
 
@@ -186,6 +196,10 @@ class DPPController extends Controller
 
             if (!$dpp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+
+            if ($dpp->gambar_bahan_pokok) {
+                Storage::delete($dpp->gambar_bahan_pokok);
             }
 
             $dpp->delete();

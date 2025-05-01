@@ -17,7 +17,7 @@ use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
 // Tamu
-Route::get('/', [TamuController::class, 'beranda']);
+Route::get('/', [TamuController::class, 'beranda'])->name('beranda');
 Route::get('/komoditas', [TamuController::class, 'komoditas_filter'])->name('tamu.komoditas');
 Route::get('/pasar', [TamuController::class, 'pasar_filter'])->name('tamu.pasar');
 Route::get('/statistik', [TamuController::class, 'statistik'])->name('tamu.statistik');

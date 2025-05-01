@@ -15,7 +15,7 @@ class TamuController extends Controller
         $yesterday = Carbon::yesterday();
 
         $komoditasList = DB::table('dinas_perindustrian_perdagangan')
-            ->select('jenis_bahan_pokok')
+            ->select('jenis_bahan_pokok', 'gambar_bahan_pokok')
             ->distinct()
             ->pluck('jenis_bahan_pokok');
 

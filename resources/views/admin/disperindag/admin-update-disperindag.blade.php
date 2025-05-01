@@ -14,7 +14,7 @@
         </div>
     
         <div class="bg-green-50 p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
             
@@ -39,25 +39,6 @@
                            class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
                            value="{{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok) }}">
                 </div>
-                
-                <!-- Gambar Bahan Pokok -->
-                <div class="mb-4">
-                    <label for="gambar_bahan_pokok" class="block text-pink-500 font-medium mb-1">Gambar Bahan Pokok</label>
-                    <input type="file" 
-                           name="gambar_bahan_pokok"
-                           id="gambar_bahan_pokok_input"
-                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
-                           accept="image/*"
-                           value="{{ old('gambar_bahan_pokok', $data->gambar_bahan_pokok) }}">
-
-                    <div class="mt-2 flex justify-center items-center">
-                        @if($data->gambar_bahan_pokok)
-                            <img id="gambar_preview" src="{{ asset($data->gambar_bahan_pokok) }}" alt="Preview Gambar" class="w-32 rounded" style="height: 200px; width: 128px; object-fit: cover">
-                        @else
-                            <span class="text-gray-400 italic">Tidak ada gambar</span>
-                        @endif
-                    </div>
-                </div>
 
                 <!-- Harga Barang -->
                 <div class="mb-4">
@@ -79,6 +60,30 @@
                            class="border border-gray-300 p-2 w-full rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
                            value="{{ old('tanggal_dibuat', \Carbon\Carbon::parse($data->tanggal_dibuat)->format('Y-m-d')) }}">
                 </div>
+
+                <!-- Gambar Bahan Pokok -->
+                <div class="mb-4">
+                    <label class="block text-pink-500 mb-2" for="gambar_bahan_pokok_input">Gambar Bahan Pokok</label>
+
+                    <!-- Custom file upload button -->
+                    <label for="gambar_bahan_pokok_input" 
+                        class="inline-flex items-center px-4 py-2 bg-pink-500 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-pink-600 transition">
+                        <i class="bi bi-upload me-2"></i> Pilih Gambar
+                    </label>
+
+                    <input type="file" name="gambar_bahan_pokok" id="gambar_bahan_pokok_input" class="hidden" accept="image/*">
+
+                    <!-- Preview -->
+                    @if ($data->gambar_bahan_pokok)
+                        <div class="mt-4 flex flex-col ml-8">
+                            <span class="text-slate-500 block" id="text-preview-gambar">Preview Gambar</span>
+                            <img src="{{ asset('storage/' . $data->gambar_bahan_pokok) }}" id="gambar_preview" alt="Preview Gambar" 
+                                class="w-40 h-40 block rounded-xl object-contain border border-pink-200 p-1 shadow">
+                        </div>
+                    @else
+                        <span class="text-gray-400 italic">Tidak ada gambar</span>
+                    @endif
+                </div>
             </form>     
         </div>
         <!-- Tombol -->
@@ -91,20 +96,19 @@
 
 <script>
     // preview
-    document.getElementById('gambar_bahan_pokok_input').addEventListener('change', function () {
-        const file = this.files[0];
-        const preview = document.getElementById('gambar_preview');
+    $('#gambar_bahan_pokok_input').on('change', function() {
+        let gambar = this;
+        let text = $('#text-preview-gambar');
+        let gambar_preview = $('#gambar_preview');
+        
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(gambar.files[0]);
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            }
-            reader.readAsDataURL(file);
+        oFReader.onload = function(oFREvent) {
+            gambar_preview.attr('src', oFREvent.target.result);
         }
     });
-
+    
     $('#submitBtn').on('click', function() {
         const formData = new FormData();
         formData.append('_token', '{{ csrf_token() }}');
@@ -113,7 +117,11 @@
         formData.append('jenis_bahan_pokok', $('#jenis_bahan_pokok').val());
         formData.append('kg_harga', $('#kg_harga').val());
         formData.append('tanggal_dibuat', $('#tanggal_dibuat').val());
-        formData.append('gambar_bahan_pokok', $('#gambar_bahan_pokok_input')[0].files[0]);
+        
+        let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
+        if (fileInput !== undefined) {
+            formData.append('gambar_bahan_pokok', fileInput);
+        }
 
         $.ajax({
             type: "POST",

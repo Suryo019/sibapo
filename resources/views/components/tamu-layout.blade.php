@@ -53,7 +53,7 @@
     <x-tamu-navbar></x-tamu-navbar>
 
     {{-- footer --}}
-    <main class="w-full h-auto relative z-10 py-20">
+    <main class="w-full h-auto relative z-10">
         {{ $slot }}
     </main>
 

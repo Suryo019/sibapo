@@ -76,6 +76,13 @@
         >
         <x-slot:name>PERIKANAN</x-slot:name>
         </x-admin-sidebar-link>
+
+        <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
+          <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">
+            <iconify-icon icon="bi:box-arrow-left" class="text-xl"></iconify-icon>
+            Logout
+          </a>
+        </li>
       </ul>
     </div>
   

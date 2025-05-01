@@ -101,10 +101,9 @@
                             <td class="px-2 py-2">{{ $item['jenis_bahan_pokok'] }}</td>
                             <td class="px-2 py-2">
                                 @if ($item['gambar_bahan_pokok'])
-                                    <img src="{{ asset($item['gambar_bahan_pokok']) }}" 
-                                         style="height: 100px; object-fit: cover"
+                                    <img src="{{ asset('storage/' . $item['gambar_bahan_pokok']) }}" 
                                          alt="Gambar Bahan Pokok" 
-                                         class="w-20 h-auto rounded shadow">
+                                         class="w-32 h-auto rounded object-cover aspect-square">
                                 @else
                                     <span class="text-gray-400 italic">Tidak ada gambar</span>
                                 @endif
