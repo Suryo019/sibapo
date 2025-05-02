@@ -1,0 +1,134 @@
+<x-manajemen-akun-dinas.makundinas-layout>
+    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+
+        <div class="w-full flex items-center gap-2 mb-4">
+            <a href="" class="text-decoration-none text-dark flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>                       
+            </a>
+            <h3 class="text-xl font-extrabold text-center max-md:text-base">Detail Akun</h3>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20 overflow-x-auto">
+
+            <!-- Tabel -->
+            @if (isset($data) && count($data) != 0)
+            <div class="min-w-full inline-block align-middle">
+                <div class="overflow-auto">
+                    <table class="min-w-full divide-y">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th rowspan="2" class="px-2 py-2 text-center">No</th>
+                                {{-- <th rowspan="2" class="px-2 py-2 text-center">Id</th> --}}
+                                <th rowspan="2" class="px-2 py-2 text-center">Role</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Name</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Username</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            @foreach ($data as $item)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
+                                    {{-- <td class="px-2 py-2 text-center">{{ $item->id }}</td> --}}
+                                    <td class="px-2 py-2 text-center">{{ $item->role }}</td>
+                                    <td class="px-2 py-2 text-center">{{ $item->name }}</td>
+                                    <td class="px-2 py-2 text-center">{{ $item->username }}</td>
+                                    <td class="px-2 py-2 text-center">
+                                        <div class="flex justify-center gap-1">
+                                            <a href="{{ route('makundinas.edit', $item->id) }}">
+                                                <button class="bg-yellow-400 text-white rounded-md w-10 h-10 hover:bg-yellow-500">
+                                                  <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                              </a>
+                                              <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                                data-id="{{ $item->id }}"> <!-- Menggunakan data-id di sini -->
+                                              <i class="bi bi-trash-fill text-xs md:text-base"></i>
+                                          </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{-- Modal --}}
+            <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40 p-4">
+                <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
+                    <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Di<span id="actionPlaceholder"></span></h2>
+                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4"></div>
+                    <div class="text-right" id="closeListModal">
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
+                    </div>
+                </div>
+            </div>
+    
+            @else
+            <div class="flex items-center justify-center h-64">
+                <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                    <h3 class="text-lg font-semibold text-gray-500">Data Not Found</h3>
+                    <p class="text-gray-400">We couldn't find any data matching your request. Please try again later.</p>
+                </div>
+            </div>
+            @endif
+
+        </div>
+
+        {{-- Modal Delete --}}
+        <div id="deleteModal" class="hidden w-full h-full">
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40 p-4">
+                <div class="bg-white rounded-lg w-full max-w-md shadow-lg relative">
+                    <div class="p-4 md:p-6">
+                        <h2 class="text-lg md:text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full text-sm md:text-base" id="closeBtn">Batal</button>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm md:text-base" id="yesBtn">Ya, Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</x-manajemen-akun-dinas.makundinas-layout>
+
+<script>
+    $(document).on('click', '.deleteBtn', function() { 
+        let dataId = $(this).data('id');  // Mengambil data-id yang benar
+        $('#deleteModal').show();
+
+        $('#yesBtn').off('click').on('click', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/makundinas/${dataId}`,
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: `User ${data.data.name} dari Dinas ${data.data.role} telah dihapus.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: error
+                    });
+                }
+            });
+
+            $('#deleteModal').hide();
+        });
+    });
+
+    $(document).on('click', '#closeBtn', function() {
+        $('#deleteModal').hide();  
+    });
+
+</script>

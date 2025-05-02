@@ -49,7 +49,12 @@ Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
 
 
 // CRUD Akun Dinas
-Route::apiResource('crud-users', AkunDinasController::class);
+// Route::apiResource('makundinas', AkunDinasController::class);
+Route::get('/makundinas', [AkunDinasController::class, 'index'])->name('api.makundinas.index');
+Route::post('/makundinas', [AkunDinasController::class, 'store'])->name('api.makundinas.store');
+Route::put('/makundinas/{id}', [AkunDinasController::class, 'update'])->name('api.makundinas.update');
+Route::delete('/makundinas/{id}', [AkunDinasController::class, 'destroy']);
+
 
 //Read Data Harga Komoditas
 Route::get('/', [HargaKomoditasController::class, 'index']);

@@ -67,32 +67,23 @@
             <div class="min-w-full inline-block align-middle">
                 <div class="overflow-auto">
                     <table class="min-w-full divide-y">
-                        <thead>
+                        <thead class="bg-gray-100">
                             <tr>
-                                <th rowspan="2" class="px-3 py-2 text-xs md:text-sm font-medium text-center">No</th>
-                                <th rowspan="2" class="px-3 py-2 text-xs md:text-sm font-medium text-center whitespace-nowrap">Jenis Komoditas</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">No</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Aksi</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Jenis Komoditas</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Gambar</th>
                                 @for ($i = 1; $i <= $daysInMonth; $i++)
-                                    <th class="px-2 py-1 text-xs md:text-sm font-medium text-center">{{ $i }}</th>
+                                    <th class="px-2 py-1 text-center">{{ $i }}</th>
                                 @endfor
-                                <th rowspan="2" class="px-3 py-2 text-xs md:text-sm font-medium text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y">
                             @foreach ($data as $item)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-3 py-2 text-xs md:text-sm text-center">{{ $loop->iteration }}</td>
-                                <td class="px-3 py-2 text-xs md:text-sm">{{ $item['jenis_bahan_pokok'] }}</td>
-                                @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
-                                    <td class="px-2 py-1 text-xs md:text-sm text-center whitespace-nowrap">
-                                        @if (isset($item['harga_per_tanggal'][$kolom]))
-                                            Rp. {{ number_format($item['harga_per_tanggal'][$kolom], 0, ',', '.') }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                @endfor
-                                <td class="px-3 py-2 text-center">
-                                    <div class="flex justify-center gap-1 md:gap-2">
+                                <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
+                                <td class="px-2 py-2 text-center">
+                                    <div class="flex justify-center gap-1">
                                         <button class="editBtn bg-yellow-400 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
                                             data-bahan-pokok="{{ $item['jenis_bahan_pokok'] }}"
                                             data-periode-bulan="{{ $splitNumberPeriod[1] }}"
@@ -107,6 +98,26 @@
                                         </button>
                                     </div>
                                 </td>
+                                <td class="px-2 py-2 text-center">{{ $item['jenis_bahan_pokok'] }}</td>
+                                <td class="px-2 py-2">
+                                    @if ($item['gambar_bahan_pokok'])
+                                        <img src="{{ asset('storage/' . $item['gambar_bahan_pokok']) }}" 
+                                             alt="Gambar Bahan Pokok" 
+                                             class="w-32 h-auto rounded object-cover aspect-square">
+                                    @else
+                                        <span class="text-gray-400 italic">Tidak ada gambar</span>
+                                    @endif
+                                </td>                            
+        
+                                @for ($kolom = 1; $kolom <= $daysInMonth; $kolom++)
+                                    <td class="px-2 py-1 text-center whitespace-nowrap">
+                                        @if (isset($item['harga_per_tanggal'][$kolom]))
+                                            Rp. {{ number_format($item['harga_per_tanggal'][$kolom], 0, ',', '.') }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                @endfor
                             </tr>
                             @endforeach
                         </tbody>

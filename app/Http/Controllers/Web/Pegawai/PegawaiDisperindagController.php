@@ -170,6 +170,7 @@ class PegawaiDisperindagController extends Controller
                     'user_id' => $items[0]->user_id,
                     'pasar' => $items[0]->pasar,
                     'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                    'gambar_bahan_pokok' => $items[0]->gambar_bahan_pokok,
                     'harga_per_tanggal' => [],
                     'data_asli' => $items, // Optional untuk debugging
                 ];
