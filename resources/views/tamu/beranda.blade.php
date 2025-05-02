@@ -13,7 +13,11 @@
             @foreach ($data as $item)
             <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-72 w-72 py-3 px-1">
                 <div class="h-[50%] flex justify-center">
-                    <img src="{{ asset('storage/img/ayam.png') }}" alt="komoditas" class="object-cover">
+                    @if ($item['gambar_komoditas'])
+                        <img src="{{ asset('storage/' . $item['gambar_komoditas']) }}" alt="komoditas" class="object-cover">
+                    @else
+                        <img src="{{ asset('storage/img/landscape-placeholder.svg') }}" alt="komoditas" class="object-cover">
+                    @endif
                 </div>
                 <div class="p-4 h-[50%]">
                     <p class="text-gray-600">{{ $item['komoditas'] }}</p>
