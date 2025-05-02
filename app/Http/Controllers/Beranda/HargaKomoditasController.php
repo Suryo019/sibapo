@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Beranda;
 
 use Carbon\Carbon;
+use App\Models\DPP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -71,7 +72,7 @@ class HargaKomoditasController extends Controller
             ->get();
 
         $markets = DB::table('dinas_perindustrian_perdagangan')
-            ->select('pasar', 'jenis_bahan_pokok')
+            ->select('pasar', 'jenis_bahan_pokok', 'gambar_bahan_pokok')
             ->where('jenis_bahan_pokok', 'like', '%'.$komoditas.'%')
             ->distinct()
             ->get();
@@ -97,6 +98,7 @@ class HargaKomoditasController extends Controller
 
             $result[] = [
                 'komoditas' => $market->jenis_bahan_pokok,
+                'gambar_komoditas' => $market->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday, 2),
                 'rata_rata_kemarin' => round($avgYesterday, 2),
                 'selisih' => round($selisih, 2),
@@ -128,7 +130,7 @@ class HargaKomoditasController extends Controller
             ->get();
 
         $comodities = DB::table('dinas_perindustrian_perdagangan')
-            ->select('pasar', 'jenis_bahan_pokok')
+            ->select('pasar', 'jenis_bahan_pokok', 'gambar_bahan_pokok')
             ->where('pasar', 'like', '%'.$pasar.'%')
             ->distinct()
             ->get();
@@ -154,6 +156,7 @@ class HargaKomoditasController extends Controller
 
             $result[] = [
                 'komoditas' => $comodities->jenis_bahan_pokok,
+                'gambar_komoditas' => $comodities->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday, 2),
                 'rata_rata_kemarin' => round($avgYesterday, 2),
                 'selisih' => round($selisih, 2),
@@ -164,6 +167,14 @@ class HargaKomoditasController extends Controller
         }
 
         return response()->json(['data' => $result, 'inputPasar' => $pasar], 200);
+    }
+
+    public function statistic_filter_pasar($pasar)
+    {
+        $dpp = DPP::select('jenis_bahan_pokok', 'kg_harga')
+                    ->where('pasar', $pasar)
+                    ->get();
+        return response()->json(['data' => $dpp]);
     }
 
     // KOMEN IKI OJOK DIHAPUS!

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Tamu;
 
 use Carbon\Carbon;
+use App\Models\DPP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,19 +18,20 @@ class TamuController extends Controller
         $komoditasList = DB::table('dinas_perindustrian_perdagangan')
             ->select('jenis_bahan_pokok', 'gambar_bahan_pokok')
             ->distinct()
-            ->pluck('jenis_bahan_pokok');
+            ->get();
+        // dd($komoditasList);
 
         $data = [];
 
         foreach ($komoditasList as $komoditas) {
             $avgToday = DB::table('dinas_perindustrian_perdagangan')
                 ->whereDate('tanggal_dibuat', $today)
-                ->where('jenis_bahan_pokok', $komoditas)
+                ->where('jenis_bahan_pokok', $komoditas->jenis_bahan_pokok)
                 ->avg('kg_harga');
 
             $avgYesterday = DB::table('dinas_perindustrian_perdagangan')
                 ->whereDate('tanggal_dibuat', $yesterday)
-                ->where('jenis_bahan_pokok', $komoditas)
+                ->where('jenis_bahan_pokok', $komoditas->jenis_bahan_pokok)
                 ->avg('kg_harga');
 
             $selisih = null;
@@ -41,7 +43,8 @@ class TamuController extends Controller
             }
 
             $data[] = [
-                'komoditas' => $komoditas,
+                'komoditas' => $komoditas->jenis_bahan_pokok,
+                'gambar_komoditas' => $komoditas->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday, 2),
                 'rata_rata_kemarin' => round($avgYesterday, 2),
                 'selisih' => round($selisih, 2),
@@ -74,8 +77,10 @@ class TamuController extends Controller
 
     public function statistik()
     {
+        $dpp = DPP::all();
         return view('tamu.tamu-statistik', [
             'title' => 'Statistik',
+            'data' => $dpp,
         ]);
     }
 

@@ -114,11 +114,13 @@
                                     ${value.status}
                                 </span>`;
                         }
+
+
     
                         let card = `
                             <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-auto w-72 py-3 px-1">
                                 <div class="h-28 flex justify-center">
-                                    <img src="/storage/img/ayam.png" alt="komoditas" class="object-cover">
+                                    <img src="${value.gambar_komoditas ? 'storage/' + value.gambar_komoditas : 'storage/img/landscape-placeholder.svg'}" alt="komoditas" class="object-cover">
                                 </div>
                                 <div class="p-4 flex flex-col items-center gap-1">
                                     <p class="text-gray-600">${value.komoditas}</p>

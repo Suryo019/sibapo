@@ -16,6 +16,7 @@ export default {
             },
             boxShadow: {
                 "pink-custom": "0px 0px 35px rgba(243, 26, 131, 1)",
+                "pink-hard": "0px 2.5px 0px rgba(243, 26, 131, 0.5)",
                 "black-custom": "0px 0px 15px rgba(0, 0, 0, 0.5)",
             },
             colors: {

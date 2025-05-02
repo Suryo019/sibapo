@@ -192,7 +192,7 @@ class DisperindagController extends Controller
             'title' => 'Dinas Perindustrian dan Perdagangan',
             'data' => $dppHargaHari,
             'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
-            'market' => $pasar,
+            'marketFiltered' => $pasar,
             'periods' => $periodeUnikNama,
             'period' => $tanggalId,
             'splitNumberPeriod' => $splitPeriode,
