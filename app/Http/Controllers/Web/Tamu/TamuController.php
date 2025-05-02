@@ -77,10 +77,13 @@ class TamuController extends Controller
 
     public function statistik()
     {
-        $dpp = DPP::all();
+        // $dpp = DPP::all();
+        $pasar = DPP::select('pasar')->distinct()->get();
+
         return view('tamu.tamu-statistik', [
             'title' => 'Statistik',
-            'data' => $dpp,
+            // 'data' => $dpp,
+            'markets' => $pasar,
         ]);
     }
 

@@ -169,12 +169,31 @@ class HargaKomoditasController extends Controller
         return response()->json(['data' => $result, 'inputPasar' => $pasar], 200);
     }
 
-    public function statistic_filter_pasar($pasar)
+    public function statistik_pasar_filter(Request $request)
     {
-        $dpp = DPP::select('jenis_bahan_pokok', 'kg_harga')
-                    ->where('pasar', $pasar)
-                    ->get();
-        return response()->json(['data' => $dpp]);
+        $carbonDate = Carbon::createFromFormat('Y-m', $request->periode);
+        $jumlahHari = $carbonDate->daysInMonth;
+
+        $dpp = DPP::select('jenis_bahan_pokok', 'kg_harga', 'tanggal_dibuat', 'pasar')
+                    ->where('pasar', $request->pasar)
+                    ->whereRaw("DATE_FORMAT(tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                    ->get()
+                    ->groupBy('jenis_bahan_pokok')
+                    ->map(function($items) {
+                        $row = [
+                            'pasar' => $items[0]->pasar,
+                            'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                            'harga_per_tanggal' => [],
+                        ];
+
+                        foreach ($items as $item) {
+                            $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                            $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+                        }
+
+                        return $row;
+                    });
+        return response()->json(['data' => $dpp, 'jumlahHari' => $jumlahHari]);
     }
 
     // KOMEN IKI OJOK DIHAPUS!

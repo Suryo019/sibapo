@@ -55,3 +55,4 @@ Route::apiResource('crud-users', AkunDinasController::class);
 Route::get('/', [HargaKomoditasController::class, 'index']);
 Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas');
 Route::get('/pasar', [HargaKomoditasController::class, 'pasar_filter'])->name('api.pasar');
+Route::get('/statistik_pasar', [HargaKomoditasController::class, 'statistik_pasar_filter'])->name('api.statistik_pasar');
