@@ -98,7 +98,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td class="px-2 py-2">{{ $item['jenis_bahan_pokok'] }}</td>
+                            <td class="px-2 py-2 text-center">{{ $item['jenis_bahan_pokok'] }}</td>
                             <td class="px-2 py-2">
                                 @if ($item['gambar_bahan_pokok'])
                                     <img src="{{ asset('storage/' . $item['gambar_bahan_pokok']) }}" 
