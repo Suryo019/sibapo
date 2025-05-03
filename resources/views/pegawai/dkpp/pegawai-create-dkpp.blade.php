@@ -12,7 +12,7 @@
             <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
         </div>
 
-        <div class="bg-bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4">
             <form method="POST" action="{{ route('api.dkpp.store') }}">
                 @csrf
 

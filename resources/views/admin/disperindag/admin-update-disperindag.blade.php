@@ -13,7 +13,7 @@
             <h2 class="text-2xl font-semibold text-black-">{{ $title }}</h2>
         </div>
     
-        <div class="bg-green-50 p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
