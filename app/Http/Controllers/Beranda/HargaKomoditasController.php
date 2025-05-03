@@ -169,16 +169,52 @@ class HargaKomoditasController extends Controller
         return response()->json(['data' => $result, 'inputPasar' => $pasar], 200);
     }
 
+
+    // Controller halaman statistik
+    public function render_sorting_child_items(Request $request)
+    {
+        $items = DPP::select($request->data)->distinct()->get();
+
+        return response()->json(['data' => $items]);
+    }
+
     public function statistik_pasar_filter(Request $request)
     {
         $carbonDate = Carbon::createFromFormat('Y-m', $request->periode);
         $jumlahHari = $carbonDate->daysInMonth;
 
         $dpp = DPP::select('jenis_bahan_pokok', 'kg_harga', 'tanggal_dibuat', 'pasar')
-                    ->where('pasar', $request->pasar)
+                    ->where('pasar', $request->data)
                     ->whereRaw("DATE_FORMAT(tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
                     ->get()
                     ->groupBy('jenis_bahan_pokok')
+                    ->map(function($items) {
+                        $row = [
+                            'pasar' => $items[0]->pasar,
+                            'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                            'harga_per_tanggal' => [],
+                        ];
+
+                        foreach ($items as $item) {
+                            $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                            $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+                        }
+
+                        return $row;
+                    });
+        return response()->json(['data' => $dpp, 'jumlahHari' => $jumlahHari]);
+    }
+
+    public function statistik_jenis_bahan_pokok_filter(Request $request)
+    {
+        $carbonDate = Carbon::createFromFormat('Y-m', $request->periode);
+        $jumlahHari = $carbonDate->daysInMonth;
+
+        $dpp = DPP::select('jenis_bahan_pokok', 'kg_harga', 'tanggal_dibuat', 'pasar')
+                    ->where('jenis_bahan_pokok', $request->data)
+                    ->whereRaw("DATE_FORMAT(tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                    ->get()
+                    ->groupBy('pasar')
                     ->map(function($items) {
                         $row = [
                             'pasar' => $items[0]->pasar,

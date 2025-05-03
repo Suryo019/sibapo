@@ -60,4 +60,6 @@ Route::delete('/makundinas/{id}', [AkunDinasController::class, 'destroy']);
 Route::get('/', [HargaKomoditasController::class, 'index']);
 Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas');
 Route::get('/pasar', [HargaKomoditasController::class, 'pasar_filter'])->name('api.pasar');
+Route::get('/sorting_items', [HargaKomoditasController::class, 'render_sorting_child_items'])->name('api.sorting_items');
 Route::get('/statistik_pasar', [HargaKomoditasController::class, 'statistik_pasar_filter'])->name('api.statistik_pasar');
+Route::get('/statistik_jenis_bahan_pokok', [HargaKomoditasController::class, 'statistik_jenis_bahan_pokok_filter'])->name('api.statistik_jenis_bahan_pokok');
