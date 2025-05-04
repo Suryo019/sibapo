@@ -9,10 +9,10 @@ use App\Http\Controllers\Web\DkppController;
 use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
-use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Web\DisperindagController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
+use App\Http\Controllers\Web\Makundinas\MakundinasController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
@@ -167,13 +167,19 @@ Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names(
 Route::get('/pegawai/perikanan-detail', [PegawaiPerikananController::class, 'detail'])->name('pegawai.perikanan.detail');
 
 
-// Akun Dinas
-Route::resource('users', AkunDinasController::class)->names([
-    'index' => 'users.index',
-    'create' => 'users.create',
-    'store' => 'users.store',
-    'show' => 'users.show',
-    'edit' => 'users.edit',
-    'update' => 'users.update',
-    'destroy' => 'users.destroy',
+// Manajemen Akun Dinas
+Route::get('/makundinas/dashboard', function () {
+    return view('admin.makundinas.makundinas-dashboard');
+})->name('admin.makundinas.dashboard');
+
+Route::resource('makundinas', MakundinasController::class)->names([
+    'index' => 'makundinas.index',
+    'create' => 'makundinas.create',
+    'store' => 'makundinas.store',
+    'show' => 'makundinas.show',
+    'edit' => 'makundinas.edit',
+    'update' => 'makundinas.update',
+    'destroy' => 'makundinas.destroy',
 ]);
+
+Route::get('/makundinas-detail', [MakundinasController::class, 'detail'])->name('makundinas.detail');

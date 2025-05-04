@@ -10,7 +10,7 @@
             <h3 class="text-lg font-semibold text-center max-md:text-base">Ubah Data</h3>
         </div>
     
-        <div class="bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-bg-white p-6 rounded shadow-md mt-4">
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
@@ -57,27 +57,74 @@
                            class="border border-gray-300 p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                            value="{{ old('tanggal_dibuat', \Carbon\Carbon::parse($data->tanggal_dibuat)->format('Y-m-d')) }}">
                 </div>
+
+                <!-- Gambar Bahan Pokok -->
+                <div class="mb-4">
+                    <label class="block text-pink-500 mb-2" for="gambar_bahan_pokok_input">Gambar Bahan Pokok</label>
+
+                    <!-- Custom file upload button -->
+                    <label for="gambar_bahan_pokok_input" 
+                        class="inline-flex items-center px-4 py-2 bg-pink-500 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-pink-600 transition">
+                        <i class="bi bi-upload me-2"></i> Pilih Gambar
+                    </label>
+
+                    <input type="file" name="gambar_bahan_pokok" id="gambar_bahan_pokok_input" class="hidden" accept="image/*">
+
+                    <!-- Preview -->
+                    @if ($data->gambar_bahan_pokok)
+                        <div class="mt-4 flex flex-col ml-8">
+                            <span class="text-slate-500 block" id="text-preview-gambar">Preview Gambar</span>
+                            <img src="{{ asset('storage/' . $data->gambar_bahan_pokok) }}" id="gambar_preview" alt="Preview Gambar" 
+                                class="w-40 h-40 block rounded-xl object-contain border border-pink-200 p-1 shadow">
+                        </div>
+                    @else
+                        <span class="text-gray-400 italic">Tidak ada gambar</span>
+                    @endif
+
             </form>   
-            <!-- Tombol -->
-            <div class="flex justify-between mt-4">
-                <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500">Simpan</button>
-            </div>
+        </div>
+        <!-- Tombol -->
+        <div class="flex justify-between mt-4">
+            <button type="button" id="submitBtn" class="bg-yellow-550 text-white px-6 py-2 rounded-xl hover:bg-yellow-500">Simpan</button>
         </div>
     </main>
 </x-pegawai-layout>
 
 <script>
+    // preview
+    $('#gambar_bahan_pokok_input').on('change', function() {
+        let gambar = this;
+        let text = $('#text-preview-gambar');
+        let gambar_preview = $('#gambar_preview');
+        
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(gambar.files[0]);
+
+        oFReader.onload = function(oFREvent) {
+            gambar_preview.attr('src', oFREvent.target.result);
+        }
+    });
+
     $('#submitBtn').on('click', function() {
+        const formData = new FormData();
+        formData.append('_token', '{{ csrf_token() }}');
+        formData.append('_method', 'PUT');
+        formData.append('pasar', $('#pasar').val());
+        formData.append('jenis_bahan_pokok', $('#jenis_bahan_pokok').val());
+        formData.append('kg_harga', $('#kg_harga').val());
+        formData.append('tanggal_dibuat', $('#tanggal_dibuat').val());
+        
+        let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
+        if (fileInput !== undefined) {
+            formData.append('gambar_bahan_pokok', fileInput);
+        }
+
         $.ajax({
-            type: "PUT",
+            type: "POST",
             url: "{{ route('api.dpp.update', $data->id) }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                pasar: $('#pasar').val(),
-                jenis_bahan_pokok: $('#jenis_bahan_pokok').val(),
-                kg_harga: $('#kg_harga').val(),
-                tanggal_dibuat: $('#tanggal_dibuat').val(),
-                },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function(data) {
                 Swal.fire({
                     icon: 'success',
@@ -86,9 +133,9 @@
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
                     window.location.href = "{{ route('pegawai.disperindag.detail') }}";
-                });    ;
+                });
             },
-            error: function(xhr, status, error) {
+            error: function(xhr) {
                 let errors = xhr.responseJSON.errors;
                 let message = '';
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 // use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AkunDinasController extends Controller
 {
@@ -19,26 +20,36 @@ class AkunDinasController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'role_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+        try {
+            $validated = $request->validate([
+                'role_id' => 'required|exists:roles,id',
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users,username',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+    
+            $validated['password'] = bcrypt($validated['password']);
+    
+            $data = User::create($validated);
+            $user = User::find($data->id)->with('role');;
 
-        $user = User::create([
-            'role_id' => $request->role_id,
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'email_verified_at' => now(),
-            'password' => Hash::make($request->password),
-            'remember_token' => Str::random(10),
-        ]);
-
-        return response()->json($user, 201);
-    }
+            return response()->json([
+                'message' => 'Akun berhasil disimpan',
+                'data' => $user
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data akun',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
 
     public function show($id)
     {
@@ -48,32 +59,55 @@ class AkunDinasController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-
-        $request->validate([
-            'role_id' => 'sometimes|required|integer',
-            'name' => 'sometimes|required|string|max:255',
-            'username' => 'sometimes|required|string|max:255|unique:users,username,' . $id,
-            'email' => 'sometimes|required|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|nullable|string|min:6',
-        ]);
-
-        $user->update([
-            'role_id' => $request->role_id ?? $user->role_id,
-            'name' => $request->name ?? $user->name,
-            'username' => $request->username ?? $user->username,
-            'email' => $request->email ?? $user->email,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
-
-        return response()->json($user);
-    }
+        try {
+            $user = User::findOrFail($id);
+    
+            $validated = $request->validate([
+                'role_id' => 'required|exists:roles,id',
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            ]);
+    
+            $user->update($validated);
+    
+            $user->roles()->sync([$validated['role_id']]);
+    
+            return response()->json([
+                'message' => 'Akun berhasil diperbarui',
+                'data' => $user
+            ], 200);
+    
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui data akun',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }    
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return response()->json(['message' => 'User deleted successfully']);
+        try {
+            $user = User::find($id);
+    
+            if (!$user) {
+                return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            }
+    
+            $user->delete();
+    
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $user]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus data',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 }
