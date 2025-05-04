@@ -4,7 +4,7 @@
     <div class="max-w-6xl mx-20 flex flex-col gap-3 items-start text-left relative z-10 md:pr-40">
       <h2 class="text-2xl md:text-5xl font-semibold">Butuh Bantuan?</h2>
       <p class="text-sm md:text-md mt-1">Tanyakan apapun dan kami siap membantu Anda!</p>
-      <a href="#" class="bg-pink-650 text-white font-medium px-6 md:px-10 py-2 rounded-full border border-white">
+      <a href="https://s.id/Wadul-Guse" class="bg-pink-650 text-white font-medium px-6 md:px-10 py-2 rounded-full border border-white">
         Hubungi Kami Sekarang
       </a>
     </div>
@@ -29,11 +29,11 @@
       <div>
         <h3 class="text-lg font-semibold mb-4">SITUS</h3>
         <ul class="space-y-2 text-sm">
-          <li><a href="#" class="text-white hover:underline">Komoditas</a></li>
-          <li><a href="#" class="text-white hover:underline">Pasar</a></li>
-          <li><a href="#" class="text-white hover:underline">Statistik</a></li>
-          <li><a href="#" class="text-white hover:underline">Metadata</a></li>
-          <li><a href="#" class="text-white hover:underline">Tentang Kami</a></li>
+          <li><a href="{{ route('tamu.komoditas') }}" class="  text-white hover:underline">Komoditas</a></li>
+          <li><a href="{{ route('tamu.pasar') }}" class="text-white hover:underline">Pasar</a></li>
+          <li><a href="{{ route('tamu.statistik') }}" class="text-white hover:underline">Statistik</a></li>
+          <li><a href="{{ route('tamu.metadata') }}" class="text-white hover:underline">Metadata</a></li>
+          <li><a href="{{ route('tamu.tentang-kami') }}" class="text-white hover:underline">Tentang Kami</a></li>
         </ul>
       </div>
 
