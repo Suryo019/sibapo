@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use DateTime;
 use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\Pasar;
+use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -45,8 +47,12 @@ class DisperindagController extends Controller
      */
     public function create()
     {
+        $pasar = Pasar::all();
+        $bahan_pokok = BahanPokok::all();
         return view('admin.disperindag.admin-create-disperindag', [
             'title' => 'Tambah Data',
+            'markets' => $pasar,
+            'items' => $bahan_pokok,
         ]);
     }
 

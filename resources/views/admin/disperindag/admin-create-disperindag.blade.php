@@ -1,5 +1,4 @@
 <x-admin-layout>
-
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <div class="w-full flex items-center gap-2 mb-4">
             <a href="{{ route('disperindag.detail') }}" class="text-decoration-none text-dark flex-shrink-0">
@@ -17,16 +16,28 @@
                 <!-- Nama Pasar -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Pasar</label>
-                    <input type="text" placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded-xl" id="pasar">
+                    <select id="pasar" name="pasar" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Pasar</option>
+                        @foreach ($markets as $pasar)
+                            <option value="{{ $pasar->id }}">
+                                {{ $pasar->nama_pasar }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-    
-                <!-- Jenis Bahan Pokok -->
+
+                {{-- Bahan Pokok --}}
                 <div class="mb-4">
                     <label class="block text-pink-500">Jenis Bahan Pokok</label>
-                    <input type="text" placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded-xl" id="jenis_bahan_pokok">
-                </div>
+                    <select id="jenis_bahan_pokok" name="jenis_bahan_pokok" name="jenis_bahan_pokok" class="border p-2 w-full rounded-xl bg-white text-black">
+                        <option value="" selected disabled>Pilih Bahan Pokok</option>
+                        @foreach ($items as $bahan_pokok)
+                            <option value="{{ $bahan_pokok->id }}">
+                                {{ $bahan_pokok->nama_bpokok }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>                
 
                 <!-- Harga Barang -->
                 <div class="mb-4">
@@ -88,16 +99,6 @@
             gambar_preview.attr('src', oFREvent.target.result);
         }
     });
-
-    // input.addEventListener('change', function () {
-    //     const file = this.files[0];
-    //     if (file) {
-    //         preview.src = `storage/${URL.createObjectURL(file)}`;
-    //         preview.classList.remove('hidden');
-    //     } else {
-    //         preview.classList.add('hidden');
-    //     }
-    // });
 
     $('#submitBtn').on('click', function() {
         const formData = new FormData();

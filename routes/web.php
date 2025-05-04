@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
@@ -183,3 +184,17 @@ Route::resource('makundinas', MakundinasController::class)->names([
 ]);
 
 Route::get('/makundinas-detail', [MakundinasController::class, 'detail'])->name('makundinas.detail');
+
+
+// Pasar
+Route::resource('addpasar', PasarController::class)->names([
+    'index' => 'addpasar.index',
+    'create' => 'addpasar.create',
+    'store' => 'addpasar.store',
+    'show' => 'addpasar.show',
+    'edit' => 'addpasar.edit',
+    'update' => 'addpasar.update',
+    'destroy' => 'addpasar.destroy',
+]);
+
+Route::get('/addpasar-detail', [PasarController::class, 'detail'])->name('addpasar.detail');

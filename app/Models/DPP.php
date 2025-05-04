@@ -21,4 +21,14 @@ class DPP extends Model
     ];
 
     public $timestamps = false;
+
+    public function pasars()
+    {
+        return $this->hasMany(Pasar::class, 'pasar');
+    }
+
+    public function bahanPokoks()
+    {
+        return $this->hasMany(BahanPokok::class, 'jenis_bahan_pokok');
+    }
 }

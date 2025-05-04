@@ -9,6 +9,8 @@ use App\Http\Controllers\Pegawai\DTPHPController;
 use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Pimpinan\ReadDataController;
 use App\Http\Controllers\Beranda\HargaKomoditasController;
+use App\Http\Controllers\Disperindag\ApiBpokokController;
+use App\Http\Controllers\Disperindag\ApiPasarController;
 
 // Read Data Pimpinan
 Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);
@@ -17,12 +19,16 @@ Route::get('/pimpinan/dtphp', [ReadDataController::class, 'getDTPHP']);
 Route::get('/pimpinan/dkpp', [ReadDataController::class, 'getDKPP']);
 Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
+
+
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index'])->name('api.dkpp.index');
 Route::get('/dkpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dkpp.listItem');
 Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
 Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');
 Route::delete('/dkpp/{id}', [DKPPController::class, 'destroy']);
+
+
 
 // DP
 Route::get('/dp', [DPController::class, 'index'])->name('api.dp.index');
@@ -31,12 +37,16 @@ Route::post('/dp', [DPController::class, 'store'])->name('api.dp.store');
 Route::put('/dp/{id}', [DPController::class, 'update'])->name('api.dp.update');
 Route::delete('/dp/{id}', [DPController::class, 'destroy']);
 
+
+
 // DPP
 Route::get('/dpp', [DPPController::class, 'index'])->name('api.dpp.index');
 Route::get('/dpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dpp.listItem');
 Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
 Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update');
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
+
+
 
 // DTPHP
 Route::get('/dtphp', [DTPHPController::class, 'index'])->name('api.dtphp.index');
@@ -48,12 +58,13 @@ Route::put('/dtphp/{id}', [DTPHPController::class, 'update'])->name('api.dtphp.u
 Route::delete('/dtphp/{id}', [DTPHPController::class, 'destroy']);
 
 
+
 // CRUD Akun Dinas
-// Route::apiResource('makundinas', AkunDinasController::class);
 Route::get('/makundinas', [AkunDinasController::class, 'index'])->name('api.makundinas.index');
 Route::post('/makundinas', [AkunDinasController::class, 'store'])->name('api.makundinas.store');
 Route::put('/makundinas/{id}', [AkunDinasController::class, 'update'])->name('api.makundinas.update');
 Route::delete('/makundinas/{id}', [AkunDinasController::class, 'destroy']);
+
 
 
 //Read Data Harga Komoditas
@@ -63,3 +74,19 @@ Route::get('/pasar', [HargaKomoditasController::class, 'pasar_filter'])->name('a
 Route::get('/sorting_items', [HargaKomoditasController::class, 'render_sorting_child_items'])->name('api.sorting_items');
 Route::get('/statistik_pasar', [HargaKomoditasController::class, 'statistik_pasar_filter'])->name('api.statistik_pasar');
 Route::get('/statistik_jenis_bahan_pokok', [HargaKomoditasController::class, 'statistik_jenis_bahan_pokok_filter'])->name('api.statistik_jenis_bahan_pokok');
+
+
+
+// Pasar
+Route::get('/addpasar', [ApiPasarController::class, 'index'])->name('api.addpasar.index');
+Route::post('/addpasar', [ApiPasarController::class, 'store'])->name('api.addpasar.store');
+Route::put('/addpasar/{id}', [ApiPasarController::class, 'update'])->name('api.addpasar.update');
+Route::delete('/addpasar/{id}', [ApiPasarController::class, 'destroy']);
+
+
+
+// Bahan Pokok
+Route::get('/addbpokok', [ApiBpokokController::class, 'index'])->name('api.addbpokok.index');
+Route::post('/addbpokok', [ApiBpokokController::class, 'store'])->name('api.addbpokok.store');
+Route::put('/addbpokok/{id}', [ApiBpokokController::class, 'update'])->name('api.addbpokok.update');
+Route::delete('/addbpokok/{id}', [ApiBpokokController::class, 'destroy']);

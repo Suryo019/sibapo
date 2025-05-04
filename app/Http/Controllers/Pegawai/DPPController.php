@@ -80,11 +80,13 @@ class DPPController extends Controller
     {
         try {
             $validated = $request->validate([
-                'pasar' => 'required|string',
-                'jenis_bahan_pokok' => 'required|string',
+                'pasar' => 'required',
+                'jenis_bahan_pokok' => 'required',
                 'gambar_bahan_pokok' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 'kg_harga' => 'required|integer',
             ]);
+
+            // dd($request);
 
             $validated['tanggal_dibuat'] = now();
             $validated['user_id'] = 1;
