@@ -10,7 +10,7 @@
             <h3 class="text-lg font-semibold text-center max-md:text-base">Ubah Data</h3>
         </div>
     
-        <div class="bg-bg-white p-6 rounded shadow-md mt-4">
+        <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20 ">
             <form action="" method="POST">
                 @csrf
                 @method('PUT')
