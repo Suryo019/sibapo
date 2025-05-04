@@ -74,6 +74,12 @@ $(document).ready(function() {
   const sorting_item_list_container_injector = $('#sorting_item_list_container_injector');
   const sorting_item_list_input = $('#sorting_item_list_input');
   const periode = $('#periode');
+
+  function capitalize(str) {
+        return str.split(" ").map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        ).join(" ");
+    }
   
   // Ubah sorting child items
   sorting_category.on('change', function() {
@@ -120,14 +126,30 @@ $(document).ready(function() {
       console.log(message);
       }
     });
-  
-  
   });
   
+  // Toggle Sorting Child Container
   $('#sorting_child').on('click', function() {
     sorting_item_list_container.toggleClass('hidden');
   });
-  
+
+  // String matching
+  sorting_item_list_input.on('input', function() {
+    const input_value = $(this).val().toLowerCase();
+    const list_items = sorting_item_list_container_injector.find('li');
+
+    list_items.each(function() {
+      const item_text = $(this).text().toLowerCase();
+
+      if (item_text.includes(input_value)) {
+        $(this).removeClass('hidden');
+      } else {
+        $(this).addClass('hidden');
+      }
+    });
+  });
+
+  // Filter Bahan Pokok
   filter('/api/statistik_pasar', sorting_item_list_input.val());
   
   function filter(url, selectedValue) {
