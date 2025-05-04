@@ -17,11 +17,11 @@
             <div>
                 <div class="relative flex flex-col">
                   <div class="border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 focus:outline-none flex items-center" id="sorting_child">
-                    <input type="text" value="{{ $markets[0]->pasar }}" class="focus:outline-none flex-shrink" id="sorting_item_list_input">
+                    <input type="text" value="{{ $markets[0]->pasar }}" class="focus:outline-none flex-shrink" id="sorting_item_list_input" autocomplete="off">
                     <i class="bi bi-caret-down-fill text-pink-650 text-xs"></i>
                   </div>
                   <ul class="bg-white border border-pink-650 rounded-2xl max-h-60 w-full absolute z-20 top-10 overflow-y-auto hidden" id="sorting_item_list_container">
-                    <div class="overflow-hidden w-full h-full border-pink-650 rounded-2xl" id="sorting_item_list_container_injector">
+                    <div class="overflow-hidden w-full h-full border-pink-650 rounded-2xl p-1" id="sorting_item_list_container_injector">
                       @foreach ($markets as $data)
                           <li data-pasar="{{ $data->pasar }}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">{{ $data->pasar }}</li>
                       @endforeach
@@ -40,7 +40,7 @@
             {{-- Cari Bahan Pokok --}}
             <div class="relative">
                 <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-650"></i>
-                <input type="text" name="search" placeholder="Cari Bahan Pokok"
+                <input type="text" name="search" id="search" placeholder="Cari Bahan Pokok"
                     class="pl-10 pr-4 py-2 border border-pink-650 rounded-full bg-white text-sm text-gray-500 focus:outline-none placeholder-gray-500">
             </div>
         </form>
@@ -74,13 +74,8 @@ $(document).ready(function() {
   const sorting_item_list_container_injector = $('#sorting_item_list_container_injector');
   const sorting_item_list_input = $('#sorting_item_list_input');
   const periode = $('#periode');
+  const search = $('#search');
 
-  function capitalize(str) {
-        return str.split(" ").map(word =>
-            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        ).join(" ");
-    }
-  
   // Ubah sorting child items
   sorting_category.on('change', function() {
     const value = $(this).val();
@@ -114,7 +109,7 @@ $(document).ready(function() {
   
         sorting_item_list_container_injector.html(list_items);
 
-        // filter(url, sorting_item_list_input.val())
+        filter(url, sorting_item_list_input.val())
       },
       error: function(xhr, status, error) {
       let errors = xhr.responseJSON.errors;
@@ -135,6 +130,8 @@ $(document).ready(function() {
 
   // String matching
   sorting_item_list_input.on('input', function() {
+    sorting_item_list_container.removeClass('hidden');
+
     const input_value = $(this).val().toLowerCase();
     const list_items = sorting_item_list_container_injector.find('li');
 
@@ -166,10 +163,7 @@ $(document).ready(function() {
         const data = response.data;
         const jumlahHari = response.jumlahHari;
 
-        console.log(data);
-        
-  
-        // 1. Render THEAD
+        // Render THEAD
         let theadHtml = `
           <tr class="shadow-pink-hard rounded-3xl bg-white">
             <th class="px-4 py-5 text-center font-semibold rounded-l-3xl">No</th>
@@ -177,37 +171,45 @@ $(document).ready(function() {
             <th class="px-4 py-5 text-center font-semibold whitespace-nowrap">Bahan Pokok</th>
         `;
 
-  
         for (let i = 1; i <= jumlahHari; i++) {
           const roundedClass = (i === jumlahHari) ? 'rounded-r-full' : '';
           theadHtml += `<th class="px-4 py-5 text-center font-semibold ${roundedClass}">${i}</th>`;
         }
-  
+
         theadHtml += `</tr>`;
         $('#comoditiesThead').html(theadHtml);
-  
-        // 2. Render TBODY
-        let tbodyHtml = '';
-        let index = 1;
-  
-        Object.values(data).forEach(row => {
-          tbodyHtml += `
-            <tr class="bg-white hover:bg-pink-50 rounded-full shadow-pink-hard transition duration-150">
-              <td class="px-4 py-3 text-center rounded-l-full">${index++}</td>
-              <td class="px-4 py-3 text-center whitespace-nowrap">${row.pasar}</td>
-              <td class="px-4 py-3 text-center whitespace-nowrap">${row.jenis_bahan_pokok}</td>
-          `;
 
-  
-          for (let i = 1; i <= jumlahHari; i++) {
-            const harga = row.harga_per_tanggal[i] ?? '-';
-            const roundedClass = (i === jumlahHari) ? 'rounded-r-full' : '';
-            tbodyHtml += `<td class="px-4 py-3 text-center ${roundedClass} whitespace-nowrap">Rp. ${harga}</td>`;
-          }
-  
-          tbodyHtml += '</tr>';
-        });
-  
+        // Render TBODY
+        let tbodyHtml = '';
+        
+        if (Object.keys(data).length === 0) {
+          tbodyHtml = `
+            <tr class="bg-white">
+              <td colspan="${3 + jumlahHari}" class="py-5 px-8 bg-pink-50 text-gray-500 italic">
+                Data tidak ditemukan.
+              </td>
+            </tr>
+          `;
+        } else {
+          let index = 1;
+          Object.values(data).forEach(row => {
+            tbodyHtml += `
+              <tr class="bg-white hover:bg-pink-50 rounded-full shadow-pink-hard transition duration-150">
+                <td class="px-4 py-3 text-center rounded-l-full">${index++}</td>
+                <td class="px-4 py-3 text-center whitespace-nowrap">${row.pasar}</td>
+                <td class="px-4 py-3 text-center whitespace-nowrap jenis_bahan_pokok_col">${row.jenis_bahan_pokok}</td>
+            `;
+
+            for (let i = 1; i <= jumlahHari; i++) {
+              const harga = row.harga_per_tanggal[i] ?? '-';
+              const roundedClass = (i === jumlahHari) ? 'rounded-r-full' : '';
+              tbodyHtml += `<td class="px-4 py-3 text-center ${roundedClass} whitespace-nowrap">Rp. ${harga}</td>`;
+            }
+
+            tbodyHtml += '</tr>';
+          });
+        }
+
         $('#comoditiesTbody').html(tbodyHtml);
       },
       error: function(xhr, status, error) {
@@ -242,6 +244,23 @@ $(document).ready(function() {
       filter(`/api/statistik_jenis_bahan_pokok`, jenis_bahan_pokok);
     }
   });
+
+  // Search berdasarkan data yang udah tampell
+  search.on('input', function() {
+    const input_value = $(this).val().toLowerCase();
+    let jenis_bahan_pokok_col = $('.jenis_bahan_pokok_col');
+    
+    jenis_bahan_pokok_col.each(function() {
+      let item_text = $(this).text().toLowerCase();
+
+      if (item_text.includes(input_value)) {
+        $(this).parent().removeClass('hidden');
+      } else {
+        $(this).parent().addClass('hidden');
+      }
+    });
+  });
+
 });
 
 
