@@ -2,7 +2,6 @@
     {{-- Logo --}}
     <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 ml-2 scale-90">
 
-    {{-- Desktop Menu --}}
     <div class="hidden md:flex justify-between items-center text-lg">
         <span class="px-10">
             <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Bahan Pokok</a>
@@ -21,7 +20,7 @@
         </span>
     </div>
 
-    {{-- Login - Desktop Only --}}
+    {{-- Login --}}
     <select name="login" id="loginBtn" onchange="location = this.value;" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center p-2">
         <option value="" selected disabled>Login</option>
         <option value="{{ route('dashboard') }}">Admin</option>
@@ -31,7 +30,7 @@
         <option value="{{ route('pegawai.perikanan.index') }}">DP</option>
     </select>
 
-    {{-- Hamburger - Mobile --}}
+    {{-- Hamburger --}}
     <button onclick="toggleMobileMenu()" class="md:hidden text-white focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
@@ -39,7 +38,7 @@
     </button>
 </nav>
 
-{{-- Mobile Drawer Menu --}}
+{{-- Mobile --}}
 <div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-white text-black z-50 transform translate-x-full transition-transform duration-300 md:hidden shadow-lg">
     <div class="flex justify-between items-center p-4 border-b border-gray-200">
         <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-8">
