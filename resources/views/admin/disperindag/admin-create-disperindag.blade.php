@@ -33,7 +33,7 @@
                         <option value="" selected disabled>Pilih Bahan Pokok</option>
                         @foreach ($items as $bahan_pokok)
                             <option value="{{ $bahan_pokok->id }}">
-                                {{ $bahan_pokok->nama_bpokok }}
+                                {{ $bahan_pokok->nama_bahan_pokok }}
                             </option>
                         @endforeach
                     </select>
@@ -47,7 +47,7 @@
                 </div>
                 
                 <!-- Gambar Bahan Pokok -->
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="block text-pink-500 mb-2" for="gambar_bahan_pokok_input">Gambar Bahan Pokok</label>
 
                     <!-- Custom file upload button -->
@@ -64,7 +64,7 @@
                         <img id="gambar_preview" alt="Preview Gambar" 
                             class="w-40 h-40 hidden rounded-xl object-contain border border-pink-200 p-1 shadow">
                     </div>
-                </div>
+                </div> --}}
     
             </form> 
         </div>

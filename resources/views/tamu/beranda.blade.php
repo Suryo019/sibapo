@@ -5,7 +5,7 @@
 
     {{-- Body --}}
     <div class="mx-32 my-20">
-        <h1 class="text-5xl font-extrabold">Harga rata-rata komoditas hari ini di Jember</h1>
+        <h1 class="text-5xl font-extrabold">Harga rata-rata bahan pokok hari ini di Jember</h1>
         <h5 class="text-slate-600 mt-5 mb-7">Harga dibandingkan dengan hari sebelumnya <b>{{ $kemarin }}</b></h5>
 
         {{-- Daftar Komoditas --}}
