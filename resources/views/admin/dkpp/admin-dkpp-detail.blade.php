@@ -7,8 +7,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-4">
                 <x-search class="w-full sm:w-auto"></x-search>
     
-                <div class="flex justify-end">
-                    <div class="relative">
+                <div class="flex justify-end max-md:w-full">
                         <x-filter></x-filter>
     
                         <!-- Modal Background -->
@@ -49,7 +48,6 @@
                     </div> 
                 </div> 
             </div>
-        </div>
     
         <!-- Back Button + Title -->
         <div class="flex items-center gap-2 mb-4">
