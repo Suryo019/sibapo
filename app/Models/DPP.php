@@ -12,13 +12,7 @@ class DPP extends Model
 
     protected $table = 'dinas_perindustrian_perdagangan';
 
-    protected $fillable = [
-        'user_id',
-        'pasar', 
-        'jenis_bahan_pokok', 
-        'kg_harga',
-        'tanggal_dibuat'
-    ];
+    protected $guarded = ['id'];
 
     public $timestamps = false;
 

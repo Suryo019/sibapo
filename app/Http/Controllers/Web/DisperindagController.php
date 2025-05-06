@@ -29,15 +29,13 @@ class DisperindagController extends Controller
 
         // $dpp = DPP::all();
 
-        $dpp = DPP::whereMonth('tanggal_dibuat', 4)
-            ->whereYear('tanggal_dibuat', 2025)
-            ->distinct()
-            ->pluck('jenis_bahan_pokok');
+        $dpp = JenisBahanPokok::select('nama_bahan_pokok')->get();
+        $markets = Pasar::select('nama_pasar')->get();
 
         return view('admin.disperindag.admin-disperindag', [
             'title' => 'Data Aktivitas Harga Pasar',
             'data' => $dpp,
-            'markets' => DPP::select('pasar')->distinct()->pluck('pasar'),
+            'markets' => $markets,
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -80,9 +78,13 @@ class DisperindagController extends Controller
      */
     public function edit(Dpp $disperindag)
     {
+        $pasar = Pasar::all();
+        $bahan_pokok = JenisBahanPokok::all();
         return view('admin.disperindag.admin-update-disperindag', [
             'title' => 'Ubah Data',
             'data' => $disperindag,
+            'markets' => $pasar,
+            'items' => $bahan_pokok,
         ]);
     }
 
@@ -203,6 +205,15 @@ class DisperindagController extends Controller
             'period' => $tanggalId,
             'splitNumberPeriod' => $splitPeriode,
             'daysInMonth' => $jumlahHari,
+        ]);
+    }
+
+    public function dppDetail()
+    {
+        $pasar = Pasar::select('nama_pasar')->distinct()->get();
+        return view('admin.disperindag.admin-disperindag-detail', [
+            'title' => 'Dinas Perindustrian dan Perdagangan',
+            'markets' => $pasar,
         ]);
     }
 }

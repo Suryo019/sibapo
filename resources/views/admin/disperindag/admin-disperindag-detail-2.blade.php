@@ -24,16 +24,22 @@
                     <div class="flex flex-col">
                         <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
                         <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
                             @foreach ($markets as $market)
-                                <option value="{{ $market->nama_pasar }}" {{ old('pasar') == $market->nama_pasar ? 'selected' : '' }}>{{ $market->nama_pasar }}</option>
+                                <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <!-- Pilih Periode -->
                     <div class="flex flex-col">
-                        <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border w-full max-md:w-full p-2 rounded bg-white text-xs">
+                        <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode">
+                            <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
+                            @foreach ($periods as $period)
+                                <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="w-full flex justify-end gap-3 mt-10">
@@ -54,25 +60,26 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>                      
             </a>
-            <h3 class="text-lg md:text-xl font-semibold text-black hidden" id="header_data"><span id="header_pasar"></span> - Bulan <span id="header_periode"></span></h3>
+            <h3 class="text-lg md:text-xl font-semibold text-black">{{ $marketFiltered }} - Bulan {{ $period }}</h3>
         </div>
     
         <div class="bg-white p-4 md:p-6 rounded shadow-md mt-4">
+            @if (isset($data) && count($data) != 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full text-xs md:text-sm divide-y">
-                    <thead class="bg-gray-100" id="comoditiesThead">
+                    <thead class="bg-gray-100">
                         <tr>
                             <th rowspan="2" class="px-2 py-2 text-center">No</th>
                             <th rowspan="2" class="px-2 py-2 text-center">Aksi</th>
                             <th rowspan="2" class="px-2 py-2 text-center">Jenis Komoditas</th>
                             <th rowspan="2" class="px-2 py-2 text-center">Gambar</th>
-                            @for ($i = 1; $i <= 30; $i++)
+                            @for ($i = 1; $i <= $daysInMonth; $i++)
                                 <th class="px-2 py-1 text-center">{{ $i }}</th>
                             @endfor
                         </tr>
                     </thead>
-                    <tbody class="divide-y" id="comoditiesTbody">
-                        {{-- @foreach ($data as $item)
+                    <tbody class="divide-y">
+                        @foreach ($data as $item)
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="px-2 py-2 text-center">
@@ -112,7 +119,8 @@
                                 </td>
                             @endfor
                         </tr>
-                        @endforeach --}}
+                        <script src="{{ asset('js/admin-disperindag-detail-modal.js') }}"></script>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -121,9 +129,7 @@
             <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-40">
                 <div class="bg-white p-6 rounded-lg w-[90%] max-w-2xl shadow-lg relative">
                     <h2 class="text-xl font-semibold mb-4">Pilih Data untuk Di<span id="actionPlaceholder"></span></h2>
-                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4">
-                        {{-- Diisi pake ajax --}}
-                    </div>
+                    <div id="editDataList" class="space-y-4 max-h-96 overflow-y-auto mb-4"></div>
                     <div class="text-right" id="closeListModal">
                         <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Tutup</button>
                     </div>
@@ -144,29 +150,21 @@
                 </div>
             </div>
 
-            {{-- @else
+            @else
             <div class="flex items-center justify-center h-64">
                 <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
                     <h3 class="text-lg font-semibold text-gray-500">Data Not Found</h3>
                     <p class="text-gray-400">We couldn't find any data matching your request. Please try again later.</p>
                 </div>
             </div>
-            @endif --}}
+            @endif
         </div>
     
     </main>
      
 </x-admin-layout>
 
-{{-- <script src="{{ asset('js/admin-disperindag-detail-modal.js') }}"></script> --}}
-
 <script>
-    const pilih_pasar = $('#pilih_pasar');
-    const periode = $('#periode');
-    const header_pasar = $('#header_pasar');
-    const header_periode = $('#header_periode');
-    const header_data = $('#header_data');
-    const modal = $("#modal");
 
     // Trigger Filter Modal
     function toggleModal() {
@@ -180,89 +178,11 @@
     });
     // End Trigger Filter Modal
 
-    // Trigger Close btn modal edit & hapus
+
     $('#closeListModal').on('click', function() {
         $(this).closest('#modal').removeClass("flex").addClass("hidden");
     });
-
-    $(document).on('click', '.editBtn', function() {
-        modal.removeClass("hidden").addClass("flex");
-        $("#actionPlaceholder").html("edit");
-
-        const bahanPokok = $(this).data("bahan-pokok");
-
-    $.ajax({
-        type: "GET",
-        url: `/api/dpp/${bahanPokok}`,
-        data: {
-            periode: periode.val(),
-            pasar: pilih_pasar.val(),
-        },
-        success: function (response) {
-            const data = response.data;
-            
-            $("#editDataList").empty();
-                data.forEach((element) => {
-                    let listCard = `
-                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
-                                <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                            </div>
-                            <a href="/disperindag/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
-                        </div>
-                    `;
-                    $("#editDataList").append(listCard);
-                });
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            },
-        });
-    });
-
-    $(document).on('click', '.deleteBtn', function() {
-        const modal = $("#modal");
-        modal.removeClass("hidden").addClass("flex");
-        $("#actionPlaceholder").html("hapus");
-
-        const bahanPokok = $(this).data("bahan-pokok");
-
-        $.ajax({
-            type: "GET",
-            url: `/api/dpp/${bahanPokok}`,
-            data: {
-                periode: periode.val(),
-                pasar: pilih_pasar.val(),
-            },
-            success: function (response) {
-                const data = response.data;
-                
-                $("#editDataList").empty();
-                data.forEach((element) => {
-                    let listCard = `
-                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
-                                <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                            </div>
-                            <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
-                        </div>
-                    `;
-                    $("#editDataList").append(listCard);
-                });
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            },
-        });
-    });
-    
-    // Delete
+                                        
     $(document).on('click', '.btnConfirm', function() { 
         let dataId = $(this).data('id');
         $('#deleteModal').show();
@@ -298,96 +218,12 @@
         $('#deleteModal').hide();  
     });
 
-    // Filter Bahan Pokok
-    filter("/api/dpp-filter", pilih_pasar.val());
+    $(document).ready(function() {
 
-    function filter(url, selectedValue) {
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: {
-                data: selectedValue,
-                periode: periode.val(),
-            },
-            success: function (response) {
-                const data = response.data;
-                const jumlahHari = response.jumlahHari;
-
-                header_pasar.html(pilih_pasar.val())
-                header_periode.html(response.bulan);
-                header_data.removeClass('hidden');
-
-                // Render THEAD
-                let theadHtml = `
-                    <tr>
-                    <th rowspan="2" class="px-2 py-2 text-center">No</th>
-                    <th rowspan="2" class="px-2 py-2 text-center">Aksi</th>
-                    <th rowspan="2" class="px-2 py-2 text-center whitespace-nowrap">Jenis Bahan Pokok</th>
-                `;
-
-                for (let i = 1; i <= jumlahHari; i++) {
-                    theadHtml += `<th class="px-2 py-1 text-center">${i}</th>`;
-                }
-
-                theadHtml += `</tr>`;
-                $("#comoditiesThead").html(theadHtml);
-
-                // Render TBODY
-                let tbodyHtml = "";
-
-                if (Object.keys(data).length === 0) {
-                    tbodyHtml = `
-                    <tr class="bg-white">
-                        <td colspan="${
-                            3 + jumlahHari
-                        }" class="py-5 px-8 bg-pink-50 text-gray-500 italic">
-                        Data tidak ditemukan.
-                        </td>
-                    </tr>
-                    `;
-                } else {
-                    let index = 1;
-                    Object.values(data).forEach((row) => {
-                        tbodyHtml += `
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-2 py-2 text-center">${index++}</td>
-                                <td class="px-2 py-2 text-center">
-                                    <div class="flex justify-center gap-1">
-                                        <button class="editBtn bg-yellow-400 text-white rounded-md w-4 h-4 md:w-10 md:h-10 flex items-center justify-center"
-                                            data-bahan-pokok="${row.jenis_bahan_pokok}">
-                                            <i class="bi bi-pencil-square text-xs md:text-base"></i>
-                                        </button>
-                                        <button class="deleteBtn bg-red-500 text-white rounded-md w-4 h-4 md:w-10 md:h-10 flex items-center justify-center"
-                                            data-bahan-pokok="${row.jenis_bahan_pokok}">
-                                            <i class="bi bi-trash-fill text-xs md:text-base"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="px-2 py-2 text-center whitespace-nowrap">${row.jenis_bahan_pokok}</td>
-                        `;
-
-                        for (let i = 1; i <= jumlahHari; i++) {
-                            const harga = row.harga_per_tanggal[i] ?? "-";
-                            tbodyHtml += `<td class="px-2 py-2 text-center whitespace-nowrap">Rp. ${harga}</td>`;
-                        }
-
-                        tbodyHtml += "</tr>";
-                    });
-                }
-
-                $("#comoditiesTbody").html(tbodyHtml);
-            },
-            error: function (xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = "";
-
-                $.each(errors, function (key, value) {
-                    message += value + "<br>";
-                });
-                console.log(message);
-            },
+        // Filter Value
+        $('#submitBtn').on('click', function() {
+            document.querySelector("#filterForm").submit();
         });
-    }
-    
 
+    });
 </script>

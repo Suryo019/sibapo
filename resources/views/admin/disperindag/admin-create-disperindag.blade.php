@@ -79,38 +79,38 @@
 
 <script>
     // preview
-    const input = document.getElementById('gambar_bahan_pokok_input');
-    const preview = document.getElementById('gambar_preview');
+    // const input = document.getElementById('gambar_bahan_pokok_input');
+    // const preview = document.getElementById('gambar_preview');
 
-    $('#gambar_bahan_pokok_input').on('change', function() {
-        let gambar = this;
-        let text = $('#text-preview-gambar');
-        let gambar_preview = $('#gambar_preview');
+    // $('#gambar_bahan_pokok_input').on('change', function() {
+    //     let gambar = this;
+    //     let text = $('#text-preview-gambar');
+    //     let gambar_preview = $('#gambar_preview');
 
-        gambar_preview.toggleClass('hidden');
-        gambar_preview.toggleClass('block');
-        text.toggleClass('hidden');
-        text.toggleClass('block');
+    //     gambar_preview.toggleClass('hidden');
+    //     gambar_preview.toggleClass('block');
+    //     text.toggleClass('hidden');
+    //     text.toggleClass('block');
         
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(gambar.files[0]);
+    //     const oFReader = new FileReader();
+    //     oFReader.readAsDataURL(gambar.files[0]);
 
-        oFReader.onload = function(oFREvent) {
-            gambar_preview.attr('src', oFREvent.target.result);
-        }
-    });
+    //     oFReader.onload = function(oFREvent) {
+    //         gambar_preview.attr('src', oFREvent.target.result);
+    //     }
+    // });
 
     $('#submitBtn').on('click', function() {
         const formData = new FormData();
         formData.append('_token', '{{ csrf_token() }}');
-        formData.append('pasar', $('#pasar').val());
-        formData.append('jenis_bahan_pokok', $('#jenis_bahan_pokok').val());
+        formData.append('pasar_id', $('#pasar').val());
+        formData.append('jenis_bahan_pokok_id', $('#jenis_bahan_pokok').val());
         formData.append('kg_harga', $('#kg_harga').val());
 
-        let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
-        if (fileInput !== undefined) {
-            formData.append('gambar_bahan_pokok', fileInput);
-        }
+        // let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
+        // if (fileInput !== undefined) {
+        //     formData.append('gambar_bahan_pokok', fileInput);
+        // }
 
         $.ajax({
             type: "POST",

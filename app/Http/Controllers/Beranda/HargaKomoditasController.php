@@ -88,6 +88,8 @@ class HargaKomoditasController extends Controller
             return $item->nama_pasar . '|' . $item->nama_bahan_pokok;
         });
 
+        // dd($groupedMarkets);
+
         $result = [];
 
         foreach ($groupedMarkets as $market) {
@@ -230,6 +232,7 @@ class HargaKomoditasController extends Controller
                 ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
                 ->get()
                 ->groupBy('jenis_bahan_pokok')
+                // dd($dpp);
                 ->map(function($items) {
                     $row = [
                         'pasar' => $items[0]->pasar,
