@@ -118,17 +118,17 @@
             data: formData,
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function(response) {
                 $('#pasar').val('');
                 $('#jenis_bahan_pokok').val('');
                 $('#gambar_bahan_pokok_input').val('');
                 $('#kg_harga').val('');
 
-                $('#gambar_preview').attr('src', '').addClass('hidden');
+                // $('#gambar_preview').attr('src', '').addClass('hidden');
 
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: `Data ${data.data.jenis_bahan_pokok} telah disimpan.`,
+                    text: `Data ${response.data.nama_bahan_pokok} telah disimpan.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });

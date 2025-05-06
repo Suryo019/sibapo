@@ -176,7 +176,9 @@ class DPPController extends Controller
             
             $dpp = DPP::create($validated);
 
-            $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->id);
+            $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            
+            // dd($data_stored);
 
             return response()->json([
                 'message' => 'Data berhasil disimpan',
@@ -215,13 +217,11 @@ class DPPController extends Controller
 
             $dpp->update($validated);
 
-            $dpp->load('jenis_bahan_pokok');
+            $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
-                'data' => [
-                    'nama_bahan_pokok' => $dpp->jenisBahanPokok->nama_bahan_pokok ?? null,
-                ]
+                'data' => $data_stored,
             ]);
         } catch (ValidationException $e) {
             return response()->json([

@@ -11,7 +11,7 @@
                 komoditas hari ini di Jember
             </span>
             <span class="hidden sm:inline">
-                Harga rata-rata komoditas hari ini di Jember
+                Harga rata-rata bahan pokok hari ini di Jember
             </span>
         </h1>
         <h5 class="text-sm sm:text-base text-slate-600 mt-3 sm:mt-5 mb-5 sm:mb-7">
