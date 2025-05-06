@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Web\Pegawai;
 
+use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\Pasar;
+use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 class PegawaiDisperindagController extends Controller
 {
@@ -43,8 +45,12 @@ class PegawaiDisperindagController extends Controller
      */
     public function create()
     {
+        $pasar = Pasar::all();
+        $bahan_pokok = BahanPokok::all();
         return view('pegawai.disperindag.pegawai-create-disperindag', [
             'title' => 'Tambah Data',
+            'markets' => $pasar,
+            'items' => $bahan_pokok,
         ]);
     }
 
