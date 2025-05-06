@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DPP extends Model
 {
@@ -15,20 +16,19 @@ class DPP extends Model
         'user_id',
         'pasar', 
         'jenis_bahan_pokok', 
-        'gambar_bahan_pokok', 
         'kg_harga',
         'tanggal_dibuat'
     ];
 
     public $timestamps = false;
 
-    public function pasars()
+    public function pasar(): HasMany
     {
-        return $this->hasMany(Pasar::class, 'pasar');
+        return $this->hasMany(Pasar::class, 'id', 'pasar_id');
     }
 
-    public function bahanPokoks()
+    public function jenis_bahan_pokok(): HasMany
     {
-        return $this->hasMany(BahanPokok::class, 'jenis_bahan_pokok');
+        return $this->hasMany(JenisBahanPokok::class, 'id', 'jenis_bahan_pokok_id');
     }
 }

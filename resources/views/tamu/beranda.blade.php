@@ -4,9 +4,19 @@
     <x-tamu-header></x-tamu-header>
 
     {{-- Body --}}
-    <div class="mx-32 my-20">
-        <h1 class="text-5xl font-extrabold">Harga rata-rata komoditas hari ini di Jember</h1>
-        <h5 class="text-slate-600 mt-5 mb-7">Harga dibandingkan dengan hari sebelumnya <b>{{ $kemarin }}</b></h5>
+    <div class="relative my-20 px-4 sm:px-8 md:px-16 lg:mx-32 lg:px-0 text-center lg:text-left bg-gradient-to-r from-pink-100 to-white lg:bg-none">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
+            <span class="block sm:hidden">
+                Harga rata-rata<br>
+                komoditas hari ini di Jember
+            </span>
+            <span class="hidden sm:inline">
+                Harga rata-rata komoditas hari ini di Jember
+            </span>
+        </h1>
+        <h5 class="text-sm sm:text-base text-slate-600 mt-3 sm:mt-5 mb-5 sm:mb-7">
+            Harga dibandingkan dengan hari sebelumnya <b>{{ $kemarin }}</b>
+        </h5>
 
         {{-- Daftar Komoditas --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-items-center">

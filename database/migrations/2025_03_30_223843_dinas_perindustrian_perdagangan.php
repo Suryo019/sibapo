@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('dinas_perindustrian_perdagangan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreignId('pasar');
-            $table->foreignId('jenis_bahan_pokok');
+            $table->foreignId('pasar_id');
+            $table->foreignId('jenis_bahan_pokok_id');
             $table->integer('kg_harga');
             $table->dateTime('tanggal_dibuat');
 

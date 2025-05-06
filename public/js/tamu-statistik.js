@@ -17,25 +17,26 @@ $(document).ready(function () {
             data: { data: value },
             success: function (response) {
                 const results = response.data;
+
                 let list_items = ``;
                 let url = "";
 
                 if (value == "pasar") {
                     $.each(results, function (index, value) {
                         list_items += `
-                <li data-pasar="${value.pasar}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${value.pasar}</li>
+                <li data-pasar="${value.nama_pasar}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${value.nama_pasar}</li>
               `;
                     });
 
-                    sorting_item_list_input.val(results[0].pasar);
+                    sorting_item_list_input.val(results[0].nama_pasar);
                     url = "/api/statistik_pasar";
                 } else if (value == "jenis_bahan_pokok") {
                     $.each(results, function (index, value) {
                         list_items += `
-                <li data-jenis_bahan_pokok="${value.jenis_bahan_pokok}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${value.jenis_bahan_pokok}</li>
+                <li data-jenis_bahan_pokok="${value.nama_bahan_pokok}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${value.nama_bahan_pokok}</li>
               `;
                     });
-                    sorting_item_list_input.val(results[0].jenis_bahan_pokok);
+                    sorting_item_list_input.val(results[0].nama_bahan_pokok);
                     url = "/api/statistik_jenis_bahan_pokok";
                 }
 

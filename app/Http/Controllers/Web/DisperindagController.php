@@ -6,10 +6,10 @@ use DateTime;
 use Carbon\Carbon;
 use App\Models\DPP;
 use App\Models\Pasar;
-use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\JenisBahanPokok;
 use Illuminate\Database\Eloquent\Collection;
 
 class DisperindagController extends Controller
@@ -48,7 +48,7 @@ class DisperindagController extends Controller
     public function create()
     {
         $pasar = Pasar::all();
-        $bahan_pokok = BahanPokok::all();
+        $bahan_pokok = JenisBahanPokok::all();
         return view('admin.disperindag.admin-create-disperindag', [
             'title' => 'Tambah Data',
             'markets' => $pasar,

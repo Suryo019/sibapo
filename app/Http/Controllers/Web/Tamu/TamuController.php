@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Web\Tamu;
 use Carbon\Carbon;
 use App\Models\DPP;
 use Illuminate\Http\Request;
+use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Pasar;
 
 class TamuController extends Controller
 {
@@ -15,10 +17,14 @@ class TamuController extends Controller
         $today = Carbon::today();
         $yesterday = Carbon::yesterday();
 
-        $komoditasList = DB::table('dinas_perindustrian_perdagangan')
-            ->select('jenis_bahan_pokok', 'gambar_bahan_pokok')
-            ->distinct()
-            ->get();
+        $komoditasList = JenisBahanPokok::whereIn('id', function ($query) {
+            $query->select('jenis_bahan_pokok_id')
+                  ->from('dinas_perindustrian_perdagangan');
+        })
+        ->select('id', 'nama_bahan_pokok', 'gambar_bahan_pokok')
+        ->distinct()
+        ->get();
+
         // dd($komoditasList);
 
         $data = [];
@@ -26,24 +32,24 @@ class TamuController extends Controller
         foreach ($komoditasList as $komoditas) {
             $avgToday = DB::table('dinas_perindustrian_perdagangan')
                 ->whereDate('tanggal_dibuat', $today)
-                ->where('jenis_bahan_pokok', $komoditas->jenis_bahan_pokok)
+                ->where('jenis_bahan_pokok_id', $komoditas->id)
                 ->avg('kg_harga');
-
+        
             $avgYesterday = DB::table('dinas_perindustrian_perdagangan')
                 ->whereDate('tanggal_dibuat', $yesterday)
-                ->where('jenis_bahan_pokok', $komoditas->jenis_bahan_pokok)
+                ->where('jenis_bahan_pokok_id', $komoditas->id)
                 ->avg('kg_harga');
-
+        
             $selisih = null;
             $status = 'Tidak ada data';
-
+        
             if (!is_null($avgToday) && !is_null($avgYesterday)) {
                 $selisih = $avgToday - $avgYesterday;
                 $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
             }
-
+        
             $data[] = [
-                'komoditas' => $komoditas->jenis_bahan_pokok,
+                'komoditas' => $komoditas->nama_bahan_pokok,
                 'gambar_komoditas' => $komoditas->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday, 2),
                 'rata_rata_kemarin' => round($avgYesterday, 2),
@@ -78,7 +84,7 @@ class TamuController extends Controller
     public function statistik()
     {
         // $dpp = DPP::all();
-        $pasar = DPP::select('pasar')->distinct()->get();
+        $pasar = Pasar::select('nama_pasar')->distinct()->get();
 
         return view('tamu.tamu-statistik', [
             'title' => 'Statistik',
