@@ -14,6 +14,8 @@
             <form action="" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+
+                <input type="text" class="hidden" value="{{ $data->id }}" id="pasar_id">
                 
                 <!-- Nama Pasar -->
                 <div class="mb-4">
@@ -35,10 +37,12 @@
 </x-admin-layout>
 
 <script>
+    const id = $("#pasar_id").val()
+
     $('#submitBtn').on('click', function() {
         $.ajax({
             type: "PUT",
-            url: "{{ route('api.addpasar.update') }}",
+            url: `/api/addpasar/${id}`,
             data: {
                 _token: "{{ csrf_token() }}",
                 nama_pasar: $('#nama_pasar').val(),
@@ -52,8 +56,9 @@
                     text: `Data ${data.data.nama_pasar} telah diperbarui.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = "{{ route('addpasar.index') }}";
                 });
-                
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;

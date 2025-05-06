@@ -42,9 +42,9 @@
                         @foreach ($data as $item)
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
-                            <td class="px-2 py-2 text-center">{{ $item['nama_bpokok'] }}</td>
+                            <td class="px-2 py-2 text-center">{{ $item['nama_bahan_pokok'] }}</td>
                             <td class="px-2 py-2">
-                                @if ($item['gambar_bpokok'])
+                                @if ($item['gambar_bahan_pokok'])
                                     <div class="flex justify-center">
                                         <img src="{{ asset('storage/' . $item['gambar_bahan_pokok']) }}" 
                                             alt="Gambar Bahan Pokok" 
@@ -63,7 +63,7 @@
                                     </a>
                                     <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
                                         data-id="{{ $item['id'] }}"
-                                        data-nama-bpokok="{{ $item['nama_bpokok'] }}"
+                                        data-nama-bpokok="{{ $item['nama_bahan_pokok'] }}"
                                         >
                                     <i class="bi bi-trash-fill text-xs md:text-base"></i>
                                 </button>
@@ -132,7 +132,7 @@
                 success: function(data) {                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.nama_pasar} telah dihapus.`,
+                        text: data.message,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {

@@ -120,7 +120,7 @@
                 success: function(data) {                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.nama_pasar} telah dihapus.`,
+                        text: `${data.message}`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {

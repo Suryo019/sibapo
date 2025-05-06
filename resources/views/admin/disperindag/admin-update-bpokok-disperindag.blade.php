@@ -15,12 +15,14 @@
                 @csrf
                 @method('PUT')
                 
+                <input type="text" class="hidden" value="{{ $data->id }}" id="bahan_pokok_id">
+
                 <!-- Nama Pasar -->
                 <div class="mb-4">
-                    <label for="nama_bpokok" class="block text-pink-500">Nama Pasar</label>
-                    <input type="text" name="nama_bpokok" placeholder="Contoh: Mangli" 
-                           class="border p-2 w-full rounded-xl" id="nama_bpokok"
-                           value="{{ old('nama_bpokok', $data->nama_bpokok) }}">
+                    <label for="nama_bahan_pokok" class="block text-pink-500">Nama Pasar</label>
+                    <input type="text" name="nama_bahan_pokok" placeholder="Contoh: Mangli" 
+                           class="border p-2 w-full rounded-xl" id="nama_bahan_pokok"
+                           value="{{ old('nama_bahan_pokok', $data->nama_bahan_pokok) }}">
                 </div>
     
                 <!-- Gambar Bahan Pokok -->
@@ -33,13 +35,13 @@
                         <i class="bi bi-upload me-2"></i> Pilih Gambar
                     </label>
 
-                    <input type="file" name="gambar_bpokok" id="gambar_bahan_pokok_input" class="hidden" accept="image/*">
+                    <input type="file" name="gambar_bahan_pokok" id="gambar_bahan_pokok_input" class="hidden" accept="image/*">
 
                     <!-- Preview -->
-                    @if ($data->gambar_bpokok)
+                    @if ($data->gambar_bahan_pokok)
                         <div class="mt-4 flex flex-col ml-8">
                             <span class="text-slate-500 block" id="text-preview-gambar">Preview Gambar</span>
-                            <img src="{{ asset('storage/' . $data->gambar_bpokok) }}" id="gambar_preview" alt="Preview Gambar" 
+                            <img src="{{ asset('storage/' . $data->gambar_bahan_pokok) }}" id="gambar_preview" alt="Preview Gambar" 
                                 class="w-40 h-40 block rounded-xl object-contain border border-pink-200 p-1 shadow">
                         </div>
                     @else
@@ -58,21 +60,38 @@
 </x-admin-layout>
 
 <script>
+    const id = $("#bahan_pokok_id").val();
+
+    // preview
+    $('#gambar_bahan_pokok_input').on('change', function() {
+        let gambar = this;
+        let text = $('#text-preview-gambar');
+        let gambar_preview = $('#gambar_preview');
+        
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(gambar.files[0]);
+
+        oFReader.onload = function(oFREvent) {
+            gambar_preview.attr('src', oFREvent.target.result);
+        }
+    });
+
     $('#submitBtn').on('click', function() {
         $.ajax({
             type: "PUT",
-            url: "{{ route('api.addbpokok.update') }}",
+            url: `/api/addbpokok/${id}`,
             data: {
                 _token: "{{ csrf_token() }}",
-                nama_bpokok: $('#nama_bpokok').val(),
+                nama_bahan_pokok: $('#nama_bahan_pokok').val(),
+                gambar_bahan_pokok: $('#gambar_bahan_pokok_input')[0].files[0],
                 },
             success: function(data) {     
                 
-                $('#nama_bpokok').val('');
+                $('#nama_bahan_pokok').val('');
                            
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: `Data ${data.data.nama_bpokok} telah diperbarui.`,
+                    text: `Data ${data.data.nama_bahan_pokok} telah diperbarui.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
