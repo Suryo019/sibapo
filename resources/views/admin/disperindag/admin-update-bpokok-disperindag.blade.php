@@ -19,8 +19,8 @@
 
                 <!-- Nama Pasar -->
                 <div class="mb-4">
-                    <label for="nama_bahan_pokok" class="block text-pink-500">Nama Pasar</label>
-                    <input type="text" name="nama_bahan_pokok" placeholder="Contoh: Mangli" 
+                    <label for="nama_bahan_pokok" class="block text-pink-500">Nama Bahan Pokok</label>
+                    <input type="text" name="nama_bahan_pokok" placeholder="Contoh: Daging" 
                            class="border p-2 w-full rounded-xl" id="nama_bahan_pokok"
                            value="{{ old('nama_bahan_pokok', $data->nama_bahan_pokok) }}">
                 </div>
@@ -77,25 +77,28 @@
     });
 
     $('#submitBtn').on('click', function() {
+        const formData = new FormData();
+        formData.append('_token', '{{ csrf_token() }}');
+        formData.append('nama_bahan_pokok', $('#nama_bahan_pokok').val());
+
+        const file = $('#gambar_bahan_pokok_input')[0].files[0];
+        if (file) {
+            formData.append('gambar_bahan_pokok', file);
+        }
+
         $.ajax({
-            type: "PUT",
-            url: `/api/addbpokok/${id}`,
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_bahan_pokok: $('#nama_bahan_pokok').val(),
-                gambar_bahan_pokok: $('#gambar_bahan_pokok_input')[0].files[0],
-                },
-            success: function(data) {     
-                
-                $('#nama_bahan_pokok').val('');
-                           
+            type: 'POST',
+            url: `/api/addbpokok/${id}?_method=PUT`,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
                 Swal.fire({
                     title: 'Berhasil!',
                     text: `Data ${data.data.nama_bahan_pokok} telah diperbarui.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
-                
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
@@ -113,4 +116,5 @@
             }
         });
     });
+
 </script>
