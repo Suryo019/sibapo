@@ -46,7 +46,7 @@ Route::resource('disperindag', DisperindagController::class)->names([
     'destroy' => 'disperindag.destroy',
 ]);
 
-Route::get('disperindag-detail', [DisperindagController::class, 'detail'])->name('disperindag.detail');
+Route::get('disperindag-detail', [DisperindagController::class, 'dppDetail'])->name('disperindag.detail');
 
 
 // DKPP
@@ -109,7 +109,7 @@ Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->na
     'update' => 'pegawai.disperindag.update',
     'destroy' => 'pegawai.disperindag.destroy',
 ]);
-Route::get('/pegawai/disperindag-detail', [PegawaiDisperindagController::class, 'detail'])->name('pegawai.disperindag.detail');
+Route::get('/pegawai/disperindag-detail', [PegawaiDisperindagController::class, 'dppDetail'])->name('pegawai.disperindag.detail');
 
 
 // DKPP

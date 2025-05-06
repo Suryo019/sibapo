@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\Pasar;
 use Illuminate\Http\Request;
+use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -13,59 +15,119 @@ class DPPController extends Controller
 {
     public function index(Request $request)
     {
-        try {
-            $date = Carbon::createFromFormat('F Y', $request->periode);
-            $month = $date->month;
-            $year = $date->year;
-            // return response()->json(['month' => $month, 'year' => $year]);
-            $dpp = DPP::whereMonth('tanggal_dibuat', $month)
-            ->whereYear('tanggal_dibuat', $year)
-            ->where('pasar', $request->pasar)
-            ->where('jenis_bahan_pokok', $request->bahan_pokok)
-            ->selectRaw('jenis_bahan_pokok, pasar, kg_harga, tanggal_dibuat, DAY(tanggal_dibuat) as hari')
-            ->get();
+        $date = Carbon::createFromFormat('F Y', $request->periode);
+        $month = $date->month;
+        $year = $date->year;
 
-            return response()->json([
-                'data' => $dpp
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        $dpp = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+            ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+            ->whereMonth('tanggal_dibuat', $month)
+            ->whereYear('tanggal_dibuat', $year)
+            ->where('pasar.nama_pasar', $request->pasar)
+            ->where('jenis_bahan_pokok.nama_bahan_pokok', $request->bahan_pokok)
+            ->selectRaw("
+                jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok,
+                dinas_perindustrian_perdagangan.kg_harga,
+                dinas_perindustrian_perdagangan.tanggal_dibuat,
+                pasar.nama_pasar as pasar,
+                DAY(tanggal_dibuat) as hari
+            ")
+            ->get();
+            
+        // dd($dpp);
+
+        return response()->json([
+            'data' => $dpp
+        ]);
     }
 
-    public function detailDataFilter(Request $request)
+    public function konversi_nama_bulan_id($date)
     {
-        try {
-            $date = Carbon::createFromFormat('F Y', $request->periode);
-            $month = $date->month;
-            $year = $date->year;
-            // return response()->json(['month' => $month, 'year' => $year]);
-            $dpp = DPP::whereMonth('tanggal_dibuat', $month)
-            ->whereYear('tanggal_dibuat', $year)
-            ->where('pasar', $request->pasar)
-            ->get();
+        $mapBulan = [
+            'January'   => 'Januari',
+            'February'  => 'Februari',
+            'March'     => 'Maret',
+            'April'     => 'April',
+            'May'       => 'Mei',
+            'June'      => 'Juni',
+            'July'      => 'Juli',
+            'August'   => 'Agustus',
+            'September' => 'September',
+            'October'   => 'Oktober',
+            'November'  => 'November',
+            'December'  => 'Desember'
+        ];
 
-            return response()->json([
-                'data' => $dpp
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        $bulanEn = Carbon::createFromFormat('Y-m', $date)->format('F');
+        $bulanId = $mapBulan[$bulanEn];
+
+        return $bulanId;
+    }
+
+
+    public function filter(Request $request)
+    {
+        $carbonDate = Carbon::createFromFormat('Y-m', $request->periode);
+        $bulanId = $this->konversi_nama_bulan_id($request->periode);
+        $jumlahHari = $carbonDate->daysInMonth;
+
+        $dpp = DPP::select(
+                    'jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok',
+                    'dinas_perindustrian_perdagangan.kg_harga',
+                    'dinas_perindustrian_perdagangan.tanggal_dibuat',
+                    'pasar.nama_pasar as pasar'
+                )
+                ->join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+                ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+                ->where('pasar.nama_pasar', $request->data)
+                ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                ->get()
+                ->groupBy('jenis_bahan_pokok')
+                // dd($dpp);
+                ->map(function($items) {
+                    $row = [
+                        'pasar' => $items[0]->pasar,
+                        'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                        'harga_per_tanggal' => [],
+                    ];
+
+                    foreach ($items as $item) {
+                        $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                        $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+                    }
+
+                    return $row;
+                });
+
+        return response()->json([
+            'data' => $dpp,
+            'bulan' => $bulanId,
+            'jumlahHari' => $jumlahHari
+        ]);
     }
 
     public function listItem(Request $request, $namaBahanPokok)
     {
         try {
-            $data = DPP::where('jenis_bahan_pokok', $namaBahanPokok)
-                ->whereMonth('tanggal_dibuat', $request->periode_bulan)
-                ->whereYear('tanggal_dibuat', $request->periode_tahun)
-                ->get();
+            $data = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+                ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+                ->where('jenis_bahan_pokok.nama_bahan_pokok', $namaBahanPokok)
+                ->where('pasar.nama_pasar', $request->pasar)
+                ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                ->select(
+                    'dinas_perindustrian_perdagangan.id as dpp_id',
+                    'dinas_perindustrian_perdagangan.*',
+                    'pasar.nama_pasar',
+                    'jenis_bahan_pokok.nama_bahan_pokok'
+                )
+                ->get()
+                ->map(function($item) {
+                    $carbon = Carbon::parse($item->tanggal_dibuat);
+                    $bulanEn = $carbon->format('Y-m');
+                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
+                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                    return $item;
+                });
             return response()->json(['data' => $data]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -78,11 +140,11 @@ class DPPController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
+        // dd($request);
         try {
             $validated = $request->validate([
-                'pasar' => 'required',
-                'jenis_bahan_pokok' => 'required',
-                'gambar_bahan_pokok' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'pasar_id' => 'required|exists:pasar,id',
+                'jenis_bahan_pokok_id' => 'required|exists:jenis_bahan_pokok,id',
                 'kg_harga' => 'required|integer',
             ]);
 
@@ -92,31 +154,33 @@ class DPPController extends Controller
             $validated['user_id'] = 1;
 
             // Up gambar
-            if ($request->hasFile('gambar_bahan_pokok')) {
-                $file = $request->file('gambar_bahan_pokok');
+            // if ($request->hasFile('gambar_bahan_pokok')) {
+            //     $file = $request->file('gambar_bahan_pokok');
             
-                if ($file->isValid()) {
-                    $hash = md5_file($file->getRealPath());
+            //     if ($file->isValid()) {
+            //         $hash = md5_file($file->getRealPath());
             
-                    $extension = $file->getClientOriginalExtension();
-                    $filename = $hash . '.' . $extension;
+            //         $extension = $file->getClientOriginalExtension();
+            //         $filename = $hash . '.' . $extension;
             
-                    $path = 'gambarBpokokDisperindag/' . $filename;
-                    if (!Storage::disk('public')->exists($path)) {
-                        Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
-                    }
+            //         $path = 'gambarBpokokDisperindag/' . $filename;
+            //         if (!Storage::disk('public')->exists($path)) {
+            //             Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
+            //         }
             
-                    $validated['gambar_bahan_pokok'] = $path;
-                } else {
-                    return response()->json(['message' => 'File tidak valid'], 400);
-                }
-            }
+            //         $validated['gambar_bahan_pokok'] = $path;
+            //     } else {
+            //         return response()->json(['message' => 'File tidak valid'], 400);
+            //     }
+            // }
             
             $dpp = DPP::create($validated);
 
+            $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->id);
+
             return response()->json([
                 'message' => 'Data berhasil disimpan',
-                'data' => $dpp
+                'data' => $data_stored
             ], 201);
 
         } catch (ValidationException $e) {
@@ -143,40 +207,21 @@ class DPPController extends Controller
             }
 
             $validated = $request->validate([
-                'pasar' => 'required|string',
-                'jenis_bahan_pokok' => 'required|string',
-                'gambar_bahan_pokok' => 'nullable|image|file|max:2048',
+                'pasar' => 'required',
+                'jenis_bahan_pokok' => 'required',
                 'kg_harga' => 'required|integer',
                 'tanggal_dibuat' => 'required|date'
             ]);
 
-            // Cek apakah ada gambar baru yang diupload
-            if ($request->hasFile('gambar_bahan_pokok')) {
-                $file = $request->file('gambar_bahan_pokok');
-            
-                if ($file->isValid()) {
-                    $hash = md5_file($file->getRealPath());
-            
-                    $extension = $file->getClientOriginalExtension();
-                    $filename = $hash . '.' . $extension;
-            
-                    $path = 'gambarBpokokDisperindag/' . $filename;
-                    if (!Storage::disk('public')->exists($path)) {
-                        Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
-                    }
-            
-                    $validated['gambar_bahan_pokok'] = $path;
-                } else {
-                    return response()->json(['message' => 'File tidak valid'], 400);
-                }
-            }
-            
-
             $dpp->update($validated);
+
+            $dpp->load('jenis_bahan_pokok');
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
-                'data' => $dpp
+                'data' => [
+                    'nama_bahan_pokok' => $dpp->jenisBahanPokok->nama_bahan_pokok ?? null,
+                ]
             ]);
         } catch (ValidationException $e) {
             return response()->json([

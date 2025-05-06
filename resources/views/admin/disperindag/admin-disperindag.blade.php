@@ -22,7 +22,7 @@
                             <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-full bg-white w-full select2 text-sm max-md:text-xs">
                                 <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
                                 @foreach ($markets as $market)
-                                    <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
+                                    <option value="{{ $market->nama_pasar }}" {{ old('pasar') == $market->nama_pasar ? 'selected' : '' }}>{{ $market->nama_pasar }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -36,6 +36,7 @@
                                     <option value="{{ $period }}">{{ $period }}</option>
                                 @endforeach
                             </select>
+                            {{-- <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border w-full max-md:w-full p-2 rounded bg-white text-xs"> --}}
                         </div>
 
                         <!-- Bahan Pokok -->
@@ -44,7 +45,7 @@
                             <select id="pilih_bahan_pokok" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
                                 <option value="" disabled selected>Pilih Bahan Pokok</option>
                                 @foreach ($data as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
+                                    <option value="{{ $item->nama_bahan_pokok }}">{{ $item->nama_bahan_pokok }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,7 +105,7 @@
 <script>
     // Ini ntar hapus cuy
     const pasar = 'Pasar Tanjung';
-    const periode = 'April 2025';
+    const periode = 'May 2025';
     const bahanPokok = 'Minyak Goreng';
     $.ajax({
         type: "GET",

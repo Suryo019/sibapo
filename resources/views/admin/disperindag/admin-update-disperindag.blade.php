@@ -1,3 +1,5 @@
+{{-- @dd($data) --}}
+
 <x-admin-layout>
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
@@ -17,25 +19,29 @@
             
                 <!-- Nama Pasar -->
                 <div class="mb-4">
-                    <label for="pasar" class="block text-pink-500 font-medium mb-1">Nama Pasar</label>
-                    <input type="text" 
-                           name="pasar"
-                           id="pasar"
-                           placeholder="Contoh: Pasar Tanjung" 
-                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
-                           value="{{ old('pasar', $data->pasar) }}">
+                    <label class="block text-pink-500">Nama Pasar</label>
+                    <select id="pasar" name="pasar" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Pasar</option>
+                        @foreach ($markets as $pasar)
+                            <option value="{{ $pasar->id }}" {{ old('pasar', $data->pasar_id) == $pasar->id ? 'selected' : '' }}>
+                                {{ $pasar->nama_pasar }}
+                            </option>                        
+                        @endforeach
+                    </select>
                 </div>
-            
-                <!-- Jenis Bahan Pokok -->
+
+                {{-- Bahan Pokok --}}
                 <div class="mb-4">
-                    <label for="jenis_bahan_pokok" class="block text-pink-500 font-medium mb-1">Jenis Bahan Pokok</label>
-                    <input type="text" 
-                           name="jenis_bahan_pokok"
-                           id="jenis_bahan_pokok"
-                           placeholder="Contoh: Daging" 
-                           class="border p-2 w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" 
-                           value="{{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok) }}">
-                </div>
+                    <label class="block text-pink-500">Jenis Bahan Pokok</label>
+                    <select id="jenis_bahan_pokok" name="jenis_bahan_pokok" name="jenis_bahan_pokok" class="border p-2 w-full rounded-xl bg-white text-black">
+                        <option value="" selected disabled>Pilih Bahan Pokok</option>
+                        @foreach ($items as $bahan_pokok)
+                            <option value="{{ $bahan_pokok->id }}" {{ old('jenis_bahan_pokok', $data->jenis_bahan_pokok_id) == $bahan_pokok->id ? 'selected' : '' }}>
+                                {{ $bahan_pokok->nama_bahan_pokok }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>   
 
                 <!-- Harga Barang -->
                 <div class="mb-4">
@@ -59,7 +65,7 @@
                 </div>
 
                 <!-- Gambar Bahan Pokok -->
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label class="block text-pink-500 mb-2" for="gambar_bahan_pokok_input">Gambar Bahan Pokok</label>
 
                     <!-- Custom file upload button -->
@@ -80,7 +86,7 @@
                     @else
                         <span class="text-gray-400 italic">Tidak ada gambar</span>
                     @endif
-                </div>
+                </div> --}}
             </form>     
         </div>
         <!-- Tombol -->
@@ -93,18 +99,18 @@
 
 <script>
     // preview
-    $('#gambar_bahan_pokok_input').on('change', function() {
-        let gambar = this;
-        let text = $('#text-preview-gambar');
-        let gambar_preview = $('#gambar_preview');
+    // $('#gambar_bahan_pokok_input').on('change', function() {
+    //     let gambar = this;
+    //     let text = $('#text-preview-gambar');
+    //     let gambar_preview = $('#gambar_preview');
         
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(gambar.files[0]);
+    //     const oFReader = new FileReader();
+    //     oFReader.readAsDataURL(gambar.files[0]);
 
-        oFReader.onload = function(oFREvent) {
-            gambar_preview.attr('src', oFREvent.target.result);
-        }
-    });
+    //     oFReader.onload = function(oFREvent) {
+    //         gambar_preview.attr('src', oFREvent.target.result);
+    //     }
+    // });
     
     $('#submitBtn').on('click', function() {
         const formData = new FormData();
@@ -115,10 +121,10 @@
         formData.append('kg_harga', $('#kg_harga').val());
         formData.append('tanggal_dibuat', $('#tanggal_dibuat').val());
         
-        let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
-        if (fileInput !== undefined) {
-            formData.append('gambar_bahan_pokok', fileInput);
-        }
+        // let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
+        // if (fileInput !== undefined) {
+        //     formData.append('gambar_bahan_pokok', fileInput);
+        // }
 
         $.ajax({
             type: "POST",
@@ -126,11 +132,13 @@
             data: formData,
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function(response) {
+                console.log(response);
+                
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: `Data ${data.data.jenis_bahan_pokok} berhasil diperbarui!`,
+                    text: `Data ${response.data.nama_bahan_pokok} berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
                     window.location.href = "{{ route('disperindag.detail') }}";
