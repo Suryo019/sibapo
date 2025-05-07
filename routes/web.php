@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\Disperindag\BpokokController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Models\DP;
 use App\Models\DPP;
@@ -198,3 +199,17 @@ Route::resource('addpasar', PasarController::class)->names([
 ]);
 
 Route::get('/addpasar-detail', [PasarController::class, 'detail'])->name('addpasar.detail');
+
+
+// Bahan Pokok
+Route::resource('addbpokok', BpokokController::class)->names([
+    'index' => 'addbpokok.index',
+    'create' => 'addbpokok.create',
+    'store' => 'addbpokok.store',
+    'show' => 'addbpokok.show',
+    'edit' => 'addbpokok.edit',
+    'update' => 'addbpokok.update',
+    'destroy' => 'addbpokok.destroy',
+]);
+
+Route::get('/addbpokok-detail', [BpokokController::class, 'detail'])->name('addbpokok.detail');

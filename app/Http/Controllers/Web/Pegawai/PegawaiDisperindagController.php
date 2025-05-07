@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Pegawai;
 use Carbon\Carbon;
 use App\Models\DPP;
 use App\Models\Pasar;
+use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;

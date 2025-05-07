@@ -138,6 +138,8 @@
                 return;
             }
 
+            dataset.sort((a, b) => new Date(a.hari) - new Date(b.hari));
+
             let labels = dataset.map(item => item.hari);
             let data = dataset.map(item => item.kg_harga);
 
@@ -190,6 +192,9 @@
                         data: data
                     }],
                     xaxis: {
+                        title: {
+                            text: 'Tanggal (Hari)'
+                        },
                         categories: labels,
                         labels: {
                             style: {
