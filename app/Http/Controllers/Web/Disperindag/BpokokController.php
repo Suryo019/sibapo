@@ -27,11 +27,11 @@ class BpokokController extends Controller
         ]);
     }
 
-    public function edit(JenisBahanPokok $addbpokok)
+    public function edit(JenisBahanPokok $bahan_pokok)
     {
         return view('admin.disperindag.admin-update-bpokok-disperindag', [
             'title' => 'Ubah Data',
-            'data' => $addbpokok,
+            'data' => $bahan_pokok,
         ]);
     }
 }

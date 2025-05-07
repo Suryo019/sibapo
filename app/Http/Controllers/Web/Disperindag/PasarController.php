@@ -27,11 +27,11 @@ class PasarController extends Controller
         ]);
     }
 
-    public function edit(Pasar $addpasar)
+    public function edit(Pasar $pasar)
     {
         return view('admin.disperindag.admin-update-pasar-disperindag', [
             'title' => 'Ubah Data',
-            'data' => $addpasar,
+            'data' => $pasar,
         ]);
     }
 }

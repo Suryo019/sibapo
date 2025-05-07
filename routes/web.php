@@ -188,28 +188,28 @@ Route::get('/makundinas-detail', [MakundinasController::class, 'detail'])->name(
 
 
 // Pasar
-Route::resource('addpasar', PasarController::class)->names([
-    'index' => 'addpasar.index',
-    'create' => 'addpasar.create',
-    'store' => 'addpasar.store',
-    'show' => 'addpasar.show',
-    'edit' => 'addpasar.edit',
-    'update' => 'addpasar.update',
-    'destroy' => 'addpasar.destroy',
+Route::resource('pasar', PasarController::class)->names([
+    'index' => 'pasar.index',
+    'create' => 'pasar.create',
+    'store' => 'pasar.store',
+    'show' => 'pasar.show',
+    'edit' => 'pasar.edit',
+    'update' => 'pasar.update',
+    'destroy' => 'pasar.destroy',
 ]);
 
-Route::get('/addpasar-detail', [PasarController::class, 'detail'])->name('addpasar.detail');
+Route::get('/pasar-detail', [PasarController::class, 'detail'])->name('pasar.detail');
 
 
 // Bahan Pokok
-Route::resource('addbpokok', BpokokController::class)->names([
-    'index' => 'addbpokok.index',
-    'create' => 'addbpokok.create',
-    'store' => 'addbpokok.store',
-    'show' => 'addbpokok.show',
-    'edit' => 'addbpokok.edit',
-    'update' => 'addbpokok.update',
-    'destroy' => 'addbpokok.destroy',
+Route::resource('bahan_pokok', BpokokController::class)->names([
+    'index' => 'bahan_pokok.index',
+    'create' => 'bahan_pokok.create',
+    'store' => 'bahan_pokok.store',
+    'show' => 'bahan_pokok.show',
+    'edit' => 'bahan_pokok.edit',
+    'update' => 'bahan_pokok.update',
+    'destroy' => 'bahan_pokok.destroy',
 ]);
 
-Route::get('/addbpokok-detail', [BpokokController::class, 'detail'])->name('addbpokok.detail');
+Route::get('/bahan_pokok-detail', [BpokokController::class, 'detail'])->name('bahan_pokok.detail');

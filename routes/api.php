@@ -79,15 +79,15 @@ Route::get('/statistik_jenis_bahan_pokok', [HargaKomoditasController::class, 'st
 
 
 // Pasar
-Route::get('/addpasar', [ApiPasarController::class, 'index'])->name('api.addpasar.index');
-Route::post('/addpasar', [ApiPasarController::class, 'store'])->name('api.addpasar.store');
-Route::put('/addpasar/{id}', [ApiPasarController::class, 'update'])->name('api.addpasar.update');
-Route::delete('/addpasar/{id}', [ApiPasarController::class, 'destroy']);
+Route::get('/pasar', [ApiPasarController::class, 'index'])->name('api.pasar.index');
+Route::post('/pasar', [ApiPasarController::class, 'store'])->name('api.pasar.store');
+Route::put('/pasar/{id}', [ApiPasarController::class, 'update'])->name('api.pasar.update');
+Route::delete('/pasar/{id}', [ApiPasarController::class, 'destroy']);
 
 
 
 // Bahan Pokok
-Route::get('/addbpokok', [ApiBpokokController::class, 'index'])->name('api.addbpokok.index');
-Route::post('/addbpokok', [ApiBpokokController::class, 'store'])->name('api.addbpokok.store');
-Route::put('/addbpokok/{id}', [ApiBpokokController::class, 'update'])->name('api.addbpokok.update');
-Route::delete('/addbpokok/{id}', [ApiBpokokController::class, 'destroy']);
+Route::get('/bahan_pokok', [ApiBpokokController::class, 'index'])->name('api.bahan_pokok.index');
+Route::post('/bahan_pokok', [ApiBpokokController::class, 'store'])->name('api.bahan_pokok.store');
+Route::put('/bahan_pokok/{id}', [ApiBpokokController::class, 'update'])->name('api.bahan_pokok.update');
+Route::delete('/bahan_pokok/{id}', [ApiBpokokController::class, 'destroy']);
