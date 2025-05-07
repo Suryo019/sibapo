@@ -37,7 +37,7 @@
         <h3 class="text-lg font-semibold mb-4 text-start">SITUS</h3>
         <ul class="space-y-2 text-sm text-start">
           <li><a href="{{ route('tamu.komoditas') }}" class="text-white hover:underline">Komoditas</a></li>
-          <li><a href="{{ route('tamu.pasar') }}" class="text-white hover:underline">Pasar</a></li>
+          <li><a href="{{ route('tamu.pasar.search') }}" class="text-white hover:underline">Pasar</a></li>
           <li><a href="{{ route('tamu.statistik') }}" class="text-white hover:underline">Statistik</a></li>
           <li><a href="{{ route('tamu.metadata') }}" class="text-white hover:underline">Metadata</a></li>
           <li><a href="{{ route('tamu.tentang-kami') }}" class="text-white hover:underline">Tentang Kami</a></li>

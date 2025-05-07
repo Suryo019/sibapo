@@ -2,7 +2,7 @@
     <div class="w-full py-16 px-6 md:px-0 flex flex-col justify-center items-center text-pink-650">
         <h1 class="text-3xl md:text-5xl font-extrabold mb-6 text-center">Harga Pangan <span id="namaPasar"></span></h1>
         <h5 class="text-md md:text-xl text-shadow mb-5 text-center">Harga rata-rata dibandingkan dengan hari sebelumnya <b>{{ $kemarin }}</b></h5>
-        <form action="{{ route('tamu.pasar') }}" class="w-full flex justify-center">
+        <form action="{{ route('tamu.pasar.search') }}" class="w-full flex justify-center">
             @csrf
             <div class="w-full max-w-md bg-yellow-450 flex justify-between items-center pl-6 pr-3 py-1 rounded-full">
                 <span class="bi bi-search mr-5"></span>
@@ -33,7 +33,7 @@
     function loadKomoditas() {
         $.ajax({
             type: "GET",
-            url: "{{ route('api.pasar') }}",
+            url: "{{ route('api.pasar.search') }}",
             data: {
                 pasar: $('#pasar').val(),
             },

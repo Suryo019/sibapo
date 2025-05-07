@@ -7,7 +7,7 @@
             <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-bold' : 'text-white' }}">Bahan Pokok</a>
         </span>
         <span class="px-10">
-            <a href="{{ route('tamu.pasar') }}" class="{{ request()->is('pasar') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
+            <a href="{{ route('tamu.pasar.search') }}" class="{{ request()->is('pasar/search') ? 'text-yellow-450 font-bold' : 'text-white' }}">Pasar</a>
         </span>
         <span class="px-10">
             <a href="{{ route('tamu.statistik') }}" class="{{ request()->is('statistik') ? 'text-yellow-450 font-bold' : 'text-white' }}">Statistik</a>
@@ -46,7 +46,7 @@
     </div>
     <div class="flex flex-col px-6 py-4 space-y-4 text-base font-medium">
         <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-yellow-450 font-semibold' : '' }}">Bahan Pokok</a>
-        <a href="{{ route('tamu.pasar') }}" class="{{ request()->is('pasar') ? 'text-yellow-450 font-semibold' : '' }}">Pasar</a>
+        <a href="{{ route('tamu.pasar.search') }}" class="{{ request()->is('pasar/search') ? 'text-yellow-450 font-semibold' : '' }}">Pasar</a>
         <a href="{{ route('tamu.statistik') }}" class="{{ request()->is('statistik') ? 'text-yellow-450 font-semibold' : '' }}">Statistik</a>
         <a href="{{ route('tamu.metadata') }}" class="{{ request()->is('metadata') ? 'text-yellow-450 font-semibold' : '' }}">Metadata</a>
         <a href="{{ route('tamu.tentang-kami') }}" class="{{ request()->is('tentang-kami') ? 'text-yellow-450 font-semibold' : '' }}">Tentang Kami</a>
