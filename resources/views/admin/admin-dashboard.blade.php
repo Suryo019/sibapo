@@ -1,5 +1,6 @@
-<x-admin-layout>
+@dd($aktivitas)
 
+<x-admin-layout>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-4">
         <!-- Bahan Pokok -->
         <div class="flex w-full h-full bg-white border-[3px] border-gray-200 rounded-lg ">

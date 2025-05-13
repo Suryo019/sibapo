@@ -271,10 +271,12 @@
             $.ajax({
                 type: 'DELETE',
                 url: `/api/dpp/${dataId}`,
-                success: function(data) {
+                success: function(response) {
+                    console.log(response);
+                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_bahan_pokok} telah dihapus.`,
+                        text: `Data ${response.data.nama_bahan_pokok} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
