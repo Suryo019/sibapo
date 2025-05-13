@@ -62,16 +62,22 @@ class AkunDinasController extends Controller
         try {
             $user = User::findOrFail($id);
     
-            $validated = $request->validate([
+            $rules = [
                 'role_id' => 'required|exists:roles,id',
                 'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            ]);
+            ];
+            
+            if ($request->email != $user->email) {
+                $rules['email'] = 'required|string|email|max:255|unique:users,email,' . $user->id;
+            }
+
+            if ($request->username != $user->username) {
+                $rules['username'] = 'required|string|max:255|unique:users,username,' . $user->id;
+            }
+
+            $validated = $request->validate($rules);
     
             $user->update($validated);
-    
-            $user->roles()->sync([$validated['role_id']]);
     
             return response()->json([
                 'message' => 'Akun berhasil diperbarui',
