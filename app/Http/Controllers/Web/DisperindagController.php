@@ -9,7 +9,10 @@ use App\Models\Pasar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\DKPP;
+use App\Models\DTPHP;
 use App\Models\JenisBahanPokok;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class DisperindagController extends Controller
@@ -39,6 +42,49 @@ class DisperindagController extends Controller
             'periods' => $periodeUnikNama,
         ]);
     }
+
+    public function dashboard()
+    {
+        $jml_bahan_pokok = JenisBahanPokok::count();
+        $jml_komoditas = DTPHP::select('jenis_komoditas')->distinct()->count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', '!=', 'admin')
+            ->count();
+
+        $tahunSekarang = date('Y');
+
+        $total_dkpp_tahun_ini = DKPP::whereYear('tanggal_input', $tahunSekarang)->count();
+
+        $persen_kategori_dkpp = DKPP::select('keterangan')
+            ->whereYear('tanggal_input', $tahunSekarang)
+            ->distinct()
+            ->get()
+            ->map(function($item) use ($tahunSekarang, $total_dkpp_tahun_ini) {
+                $persentase_dkpp = [];
+
+                $jml_komoditas_dkpp = DKPP::where('keterangan', $item->keterangan)
+                    ->whereYear('tanggal_input', $tahunSekarang)
+                    ->count();
+
+                $persentase_per_komoditas = $total_dkpp_tahun_ini > 0 
+                    ? ($jml_komoditas_dkpp / $total_dkpp_tahun_ini) * 100 
+                    : 0;
+
+                $persentase_dkpp[$item->keterangan] = $persentase_per_komoditas;
+
+                return $persentase_dkpp;
+            });
+
+        return view('admin.admin-dashboard', [
+            'title' => 'Dashboard Admin',
+            'jmlBahanPokok' => $jml_bahan_pokok,
+            'jmlKomoditas' => $jml_komoditas,
+            'jmlPegawai' => $jml_pegawai,
+            'persenKategoriDkpp' => $persen_kategori_dkpp,
+        ]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

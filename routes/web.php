@@ -32,10 +32,7 @@ Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu
 
 
 // ADMIN
-Route::get('/dashboard', action: function () {
-    return view('admin.admin-dashboard');
-})->name('dashboard');
-
+Route::get('/dashboard', [DisperindagController::class, 'dashboard'])->name('dashboard');
 
 
 // Disperindag
