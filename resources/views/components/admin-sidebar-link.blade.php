@@ -2,14 +2,14 @@
 
 @props(['viewHref', 'createHref', 'viewData', 'createData', 'updateData' => null, 'dataHref', 'dinas' => null,'viewDetailHref' => null])
 
-<li class="mb-2 rounded-lg max-md:bg-pink-650" id="{{ $name }}">
+<li class="mb-2 rounded-lg max-md:bg-pink-650" id="{{ $dinas }}">
   <div class="cursor-pointer toggle-dropdown {{ request()->is($dataHref) ? 'text-yellow-300' : '' }} md:bg-transparent">
     <div class="flex justify-between items-center py-2 rounded-lg hover:bg-pink-600">
       <span class="pl-7 flex items-center gap-5 text-sm">
         <iconify-icon icon="{{ $attributes['icon'] }}" class="text-xl"></iconify-icon>
         {{ $name }}
       </span>
-      <i class="caret-icon bi bi-caret-down-fill scale-50 pr-5"></i>
+      <i class="caret-icon bi {{ request()->is($dataHref)  ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }}   scale-50 pr-5"></i>
     </div>
   </div>
 
@@ -36,9 +36,11 @@
 </li>
 
 
+
+
 <script>
   $(document).ready(function () {
-    $('#{{ $name }} .toggle-dropdown').on('click', function () {
+    $('#{{ $dinas }} .toggle-dropdown').on('click', function () {
       const $parent = $(this).closest('li');
       const $dropdown = $parent.find('.dropdown-content');
       const $icon = $parent.find('.caret-icon');

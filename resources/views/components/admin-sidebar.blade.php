@@ -20,7 +20,10 @@
         </li>
   
         <!-- DISPERINDAG -->
-        <x-admin-sidebar-link 
+        <x-disperindag-sidebar-link>
+          
+        </x-disperindag-sidebar-link>
+        {{-- <x-admin-sidebar-link 
             dataHref="disperindag*"
             dinas="disperindag"
             viewHref="{{ route('disperindag.index') }}"
@@ -32,7 +35,7 @@
             icon="mage:basket-fill"
             >
             <x-slot:name>DISPERINDAG</x-slot:name>
-        </x-admin-sidebar-link>
+        </x-admin-sidebar-link> --}}
 
 
         <!-- DKPP -->
@@ -76,6 +79,22 @@
         >
         <x-slot:name>PERIKANAN</x-slot:name>
         </x-admin-sidebar-link>
+
+        <!--kelola akun-->
+        <span class="block"> KELOLA DATA AKUN </span>
+        <x-admin-sidebar-link 
+        dataHref="makundinas*"
+        dinas="makundinas"
+        viewHref="{{ route('makundinas.index') }}"
+        createHref="{{ route('makundinas.create') }}"
+        :viewData="'Lihat Data'"
+        :createData="'Tambah Data'"
+        updateData="Ubah Data"
+        icon="material-symbols:group"
+        >
+        <x-slot:name>Kelola data akun</x-slot:name>
+        </x-admin-sidebar-link>
+
 
         <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
           <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">

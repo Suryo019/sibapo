@@ -12,7 +12,7 @@
     </div>
 
     {{-- Nama Dinas --}}
-    <h2 class="text-2xl font-extrabold text-center hidden md:block">Manajemen Akun Dinas</h2>
+    <h2 class="text-2xl font-extrabold text-center hidden md:block">{{ $slot }}</h2>
     
     <div class="flex items-center gap-4 mr-4"> <!-- Tambah margin kanan -->
         <img src="https://via.placeholder.com/40" alt="Profile" 

@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Web\Disperindag\BpokokController;
-use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
@@ -12,11 +10,15 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
 use App\Http\Controllers\Web\DisperindagController;
+use App\Http\Controllers\Web\Disperindag\PasarController;
+use App\Http\Controllers\Web\Pimpinan\PimpinanController;
+use App\Http\Controllers\Web\Disperindag\BpokokController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
+
 
 // Tamu
 Route::get('/', [TamuController::class, 'beranda'])->name('beranda');
@@ -213,3 +215,11 @@ Route::resource('bahan_pokok', BpokokController::class)->names([
 ]);
 
 Route::get('/bahan_pokok-detail', [BpokokController::class, 'detail'])->name('bahan_pokok.detail');
+
+//Pimpinan 
+Route::get('/pimpinan-dashboard', [PimpinanController::class,'index'] )->name('pimpinan.dashboard');
+Route::get('/pimpinan-disperindag', [PimpinanController::class,'disperindag'] )->name('pimpinan.disperindag');
+Route::get('/pimpinan-dkpp', [PimpinanController::class,'dkpp'] )->name('pimpinan.dkpp');
+Route::get('/pimpinan-dtphp-panen', [PimpinanController::class,'panen'] )->name('pimpinan.dtphp-panen');
+Route::get('/pimpinan-dtphp-volume', [PimpinanController::class,'volume'] )->name('pimpinan.dtphp-volume');
+Route::get('/pimpinan-perikanan', [PimpinanController::class,'perikanan'] )->name('pimpinan.perikanan');

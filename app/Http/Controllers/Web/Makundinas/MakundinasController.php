@@ -14,6 +14,17 @@ class MakundinasController extends Controller
     public function index()
     {
 
+        Carbon::setLocale('id');
+          
+        $users = DB::table('users')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->select('users.id', 'roles.role', 'users.name', 'users.username')
+            ->get();
+
+        return view('admin.makundinas.makundinas', [
+            'title' => 'Manajemen Akun Dinas',
+            'data' => $users
+        ]);
     }
 
     public function create()
@@ -61,16 +72,6 @@ class MakundinasController extends Controller
 
     public function detail(Request $request)
     {
-        Carbon::setLocale('id');
-          
-        $users = DB::table('users')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.id', 'roles.role', 'users.name', 'users.username')
-            ->get();
-
-        return view('admin.makundinas.makundinas-detail', [
-            'title' => 'Manajemen Akun Dinas',
-            'data' => $users
-        ]);
+        //
     }
 }

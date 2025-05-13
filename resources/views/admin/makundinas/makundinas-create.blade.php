@@ -1,4 +1,4 @@
-<x-manajemen-akun-dinas.makundinas-layout>
+<x-admin-layout>
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <div class="w-full flex items-center gap-2 mb-4">
             <a href="{{ route('makundinas.detail') }}" class="text-decoration-none text-dark flex-shrink-0">
@@ -67,7 +67,7 @@
         </div>
 
     </main>
-</x-manajemen-akun-dinas.makundinas-layout>
+</x-admin-layout>
 
 <script>
 $('#submitBtn').on('click', function() {
