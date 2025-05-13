@@ -18,25 +18,12 @@
             Dashboard
           </a>
         </li>
+
+        {{-- Kelola dinas --}}
+        <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA DINAS </span>
   
         <!-- DISPERINDAG -->
-        <x-disperindag-sidebar-link>
-          
-        </x-disperindag-sidebar-link>
-        {{-- <x-admin-sidebar-link 
-            dataHref="disperindag*"
-            dinas="disperindag"
-            viewHref="{{ route('disperindag.index') }}"
-            viewDetailHref="{{ route('disperindag.detail') }}"
-            createHref="{{ route('disperindag.create') }}"
-            viewData="Lihat Data"
-            createData="Tambah Data"
-            updateData="Ubah Data"
-            icon="mage:basket-fill"
-            >
-            <x-slot:name>DISPERINDAG</x-slot:name>
-        </x-admin-sidebar-link> --}}
-
+        <x-disperindag-sidebar-link></x-disperindag-sidebar-link>
 
         <!-- DKPP -->
         <x-admin-sidebar-link 
@@ -81,7 +68,8 @@
         </x-admin-sidebar-link>
 
         <!--kelola akun-->
-        <span class="block"> KELOLA DATA AKUN </span>
+        <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA AKUN </span>
+
         <x-admin-sidebar-link 
         dataHref="makundinas*"
         dinas="makundinas"
