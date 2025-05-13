@@ -90,7 +90,7 @@ class PimpinanController extends Controller
         ]);
     }
 
-    public function produksi()
+    public function volume()
     {
         $periodeUnikNama = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
         ->get()
