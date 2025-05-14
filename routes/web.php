@@ -14,6 +14,7 @@ use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
+use App\Http\Controllers\Web\PerikananDashboardController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
@@ -131,9 +132,11 @@ Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->na
 
 
 // DTPHP
-Route::get('/pegawai/dtphp/dashboard', function () {
-    return view('pegawai.dtphp.pegawai-dtphp-dashboard');
-})->name('pegawai.dtphp.dashboard');
+Route::get('/pegawai/dtphp/dashboard', [DtphpController::class, 'dashboard'])
+    ->name('pegawai.dtphp.dashboard');
+    
+Route::get('/pegawai/dtphp/dashboard-panen', [DtphpController::class, 'dashboardPanen'])
+    ->name('pegawai.dtphp.dashboard.panen');
 
 Route::resource('/pegawai/dtphp', PegawaiDtphpController::class)->names([
     'index' => 'pegawai.dtphp.index',
@@ -152,9 +155,8 @@ Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'
 
 
 // PERIKANAN
-Route::get('/pegawai/perikanan/dashboard', function () {
-    return view('pegawai.perikanan.pegawai-perikanan-dashboard');
-})->name('pegawai.perikanan.dashboard');
+Route::get('/pegawai/perikanan/dashboard', [PerikananController::class, 'dashboard'])
+    ->name('pegawai.perikanan.dashboard');
 
 Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names([
     'index' => 'pegawai.perikanan.index',
