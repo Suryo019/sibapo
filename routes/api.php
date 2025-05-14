@@ -11,6 +11,11 @@ use App\Http\Controllers\Pimpinan\ReadDataController;
 use App\Http\Controllers\Beranda\HargaKomoditasController;
 use App\Http\Controllers\Disperindag\ApiBpokokController;
 use App\Http\Controllers\Disperindag\ApiPasarController;
+use App\Http\Controllers\Web\AdminDashboardController;
+
+// Dashboard
+Route::get('/persendkpp', [AdminDashboardController::class, 'persen_dkpp']);
+Route::get('/grafikdkpp', [AdminDashboardController::class, 'grafik_dkpp']);
 
 // Read Data Pimpinan
 Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);

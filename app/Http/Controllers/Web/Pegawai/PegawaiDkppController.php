@@ -15,7 +15,7 @@ class PegawaiDkppController extends Controller
      */
     public function index()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
         ->get()
         ->map(function ($item) {
             $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
@@ -86,7 +86,7 @@ class PegawaiDkppController extends Controller
 
     public function detail()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
             ->get()
             ->map(function ($item) {
                 $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
@@ -94,9 +94,9 @@ class PegawaiDkppController extends Controller
                 return $item->periode_indonesia;
             });
 
-        $data = DKPP::whereYear('tanggal_input', 2025)
-        ->whereMonth('tanggal_input', 4)
-        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [3])
+        $data = DKPP::whereYear('created_at', 2025)
+        ->whereMonth('created_at', 4)
+        ->where('minggu', 3)
         ->get();
 
         return view('pegawai.dkpp.pegawai-dkpp-detail', [

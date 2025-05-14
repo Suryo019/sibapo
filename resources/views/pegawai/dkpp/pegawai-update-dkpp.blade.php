@@ -39,6 +39,14 @@
                            class="border p-2 w-full rounded-xl" placeholder="Contoh: 100">
                 </div>
 
+                <!-- Minggu -->
+                <div class="mb-4">
+                    <label for="minggu" class="block text-pink-500">Minggu</label>
+                    <input type="number" name="minggu" id="minggu"
+                           value="{{ old('minggu', $data->minggu) }}" 
+                           class="border p-2 w-full rounded-xl" placeholder="Contoh: 1">
+                </div>
+
             </form>
             <!-- Tombol -->
             <div class="flex justify-between mt-4">
@@ -60,6 +68,7 @@
                 jenis_komoditas: $('#jenis_komoditas').val(),
                 ton_ketersediaan: $('#ton_ketersediaan').val(),
                 ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
+                minggu: $('#minggu').val(),
                 },
             success: function(data) {
                 Swal.fire({

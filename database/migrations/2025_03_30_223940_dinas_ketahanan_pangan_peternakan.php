@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('jenis_komoditas');
-            $table->dateTime('tanggal_input');
+            $table->integer('minggu');
             $table->float('ton_ketersediaan');
             $table->float('ton_kebutuhan_perminggu');
             $table->float('ton_neraca_mingguan');

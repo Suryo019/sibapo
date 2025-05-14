@@ -10,7 +10,7 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
 use App\Http\Controllers\Web\DisperindagController;
-use App\Http\Controllers\Web\AdminDashbaordController;
+use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
@@ -33,7 +33,7 @@ Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu
 
 
 // ADMIN
-Route::get('/dashboard', [AdminDashbaordController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
 
 
 // Disperindag

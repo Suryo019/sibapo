@@ -21,8 +21,6 @@ class DTPHP extends Model
         'hektar_luas_panen'
     ];
 
-    public $timestamps = false;
-
     public function user() {
         return $this->belongsTo(User::class);
     }

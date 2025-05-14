@@ -21,9 +21,9 @@ class DKPPController extends Controller
             $month = $date->month;
             $year = $date->year;
 
-            $data = DKPP::whereYear('tanggal_input', $year)
-            ->whereMonth('tanggal_input', $month)
-            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) = ?', (int) $request->minggu)
+            $data = DKPP::whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->where('minggu', $request->minggu)
             ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
             ->get();
 
@@ -50,7 +50,10 @@ class DKPPController extends Controller
                 'ton_kebutuhan_perminggu' => 'required|numeric',
             ]);
 
-            $validated['tanggal_input'] = now();
+            $currentWeek = now()->weekOfMonth;
+
+
+            $validated['minggu'] = $currentWeek;
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 
@@ -88,9 +91,9 @@ class DKPPController extends Controller
                 'jenis_komoditas' => 'required|string',
                 'ton_ketersediaan' => 'required|numeric',
                 'ton_kebutuhan_perminggu' => 'required|numeric',
+                'minggu' => 'required|numeric',
             ]);
 
-            $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 

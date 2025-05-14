@@ -15,7 +15,7 @@ class DkppController extends Controller
      */
     public function index()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
         ->get()
         ->map(function ($item) {
             $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
@@ -86,7 +86,7 @@ class DkppController extends Controller
 
     public function detail()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
             ->get()
             ->map(function ($item) {
                 $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
@@ -96,9 +96,9 @@ class DkppController extends Controller
 
         $currentWeek = floor((now()->day - 1) / 7) + 1;
 
-        $data = DKPP::whereYear('tanggal_input', now()->year)
-        ->whereMonth('tanggal_input', now()->month)
-        ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) + 1 = ?', [$currentWeek])
+        $data = DKPP::whereYear('created_at', now()->year)
+        ->whereMonth('created_at', now()->month)
+        ->where('minggu', $currentWeek)
         ->get();
 
 

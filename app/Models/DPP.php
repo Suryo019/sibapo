@@ -16,8 +16,6 @@ class DPP extends Model
 
     protected $guarded = ['id'];
 
-    public $timestamps = false;
-
     public function pasar(): HasMany
     {
         return $this->hasMany(Pasar::class, 'id', 'pasar_id');
