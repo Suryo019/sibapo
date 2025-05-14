@@ -50,6 +50,7 @@ class DTPHPController extends Controller
     
             $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
+            $validated['aksi'] = 'buat';
 
             $dtphp = DTPHP::create($validated);
     
@@ -83,6 +84,8 @@ class DTPHPController extends Controller
                 'ton_volume_produksi' => 'sometimes|numeric',
                 'hektar_luas_panen' => 'sometimes|numeric'
             ]);
+
+            $validated['aksi'] = 'ubah';
     
             $dtphp->update($request->all());
     
@@ -108,6 +111,9 @@ class DTPHPController extends Controller
             if (!$dtphp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
+
+            $dtphp->aksi = 'hapus';
+            $dtphp->save();
 
             $dtphp->delete();
 

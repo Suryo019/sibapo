@@ -56,6 +56,7 @@ class DKPPController extends Controller
             $validated['minggu'] = $currentWeek;
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
+            $validated['aksi'] = 'buat';
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
@@ -96,6 +97,7 @@ class DKPPController extends Controller
 
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
+            $validated['aksi'] = 'ubah';
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
@@ -126,6 +128,9 @@ class DKPPController extends Controller
             if (!$dkpp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
+
+            $dkpp->aksi = 'hapus';
+            $dkpp->save();
 
             $dkpp->delete();
 

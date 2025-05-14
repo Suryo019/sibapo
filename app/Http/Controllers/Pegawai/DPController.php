@@ -57,6 +57,7 @@ class DPController extends Controller
             
             $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
+            $validated['aksi'] = 'buat';
             
             $dp = DP::create($validated);
 
@@ -96,6 +97,8 @@ class DPController extends Controller
                 'ton_produksi' => 'required|numeric'
             ]);
 
+            $validated['aksi'] = 'ubah';
+
             $dp->update($request->all());
             
             return response()->json([
@@ -120,6 +123,10 @@ class DPController extends Controller
             if (!$dp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
+
+            $dp->aksi = 'hapus';
+            $dp->save();
+
 
             $dp->delete();
 
