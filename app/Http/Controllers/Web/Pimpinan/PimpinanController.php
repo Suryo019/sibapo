@@ -6,21 +6,49 @@ use App\Models\DP;
 use Carbon\Carbon;
 use App\Models\DPP;
 use App\Models\DKPP;
+use App\Models\User;
 use App\Models\DTPHP;
 use App\Models\Pasar;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Web\AdminDashboardController;
 
 class PimpinanController extends Controller
 {
     public function index()
     {
+        $jml_bahan_pokok = JenisBahanPokok::count();
+        $jml_komoditas = DTPHP::select('jenis_komoditas')->distinct()->count();
+        $jml_ikan = DP::select('jenis_ikan')->distinct()->count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', '!=', 'admin')
+            ->count();
+
+        $adminDashboard = new AdminDashboardController();
+        $aktivitas = $adminDashboard->aktivitas();
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         return view('pimpinan.pimpinan-dashboard', [
             'title' => 'Pimpinan Dashboard',
-            // 'data' => $users
+            'jmlBahanPokok' => $jml_bahan_pokok,
+            'jmlKomoditas' => $jml_komoditas,
+            'jmlIkan' => $jml_ikan,
+            'jmlPegawai' => $jml_pegawai,
+            'aktivitas' => $paginator,
         ]);
     }
 
@@ -49,7 +77,7 @@ class PimpinanController extends Controller
 
     public function dkpp()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
         ->get()
         ->map(function ($item) {
             $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
