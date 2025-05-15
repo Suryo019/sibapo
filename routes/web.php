@@ -10,9 +10,11 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
 use App\Http\Controllers\Web\DisperindagController;
+use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
+use App\Http\Controllers\Web\PerikananDashboardController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
@@ -34,10 +36,7 @@ Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu
 
 
 // ADMIN
-Route::get('/dashboard', action: function () {
-    return view('admin.admin-dashboard');
-})->name('dashboard');
-
+Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
 
 
 // Disperindag
@@ -101,9 +100,7 @@ Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('pe
 // PEGAWAI
 
 // DISPERINDAG
-Route::get('/pegawai/disperindag/dashboard', function () {
-    return view('pegawai.disperindag.pegawai-disperindag-dashboard');
-})->name('pegawai.disperindag.dashboard');
+Route::get('/pegawai/disperindag/dashboard', [PegawaiDisperindagController::class, 'dashboard'])->name('pegawai.disperindag.dashboard');
 
 Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->names([
     'index' => 'pegawai.disperindag.index',
@@ -127,9 +124,7 @@ Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahan
 
 
 // DKPP
-Route::get('/pegawai/dkpp/dashboard', function () {
-    return view('pegawai.dkpp.pegawai-dkpp-dashboard');
-})->name('pegawai.dkpp.dashboard');
+Route::get('/pegawai/dkpp/dashboard', [PegawaiDkppController::class, 'dashboard'])->name('pegawai.dkpp.dashboard');
 
 Route::resource('/pegawai/dkpp', PegawaiDkppController::class)->names([
     'index' => 'pegawai.dkpp.index',
@@ -144,9 +139,11 @@ Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->na
 
 
 // DTPHP
-Route::get('/pegawai/dtphp/dashboard', function () {
-    return view('pegawai.dtphp.pegawai-dtphp-dashboard');
-})->name('pegawai.dtphp.dashboard');
+Route::get('/pegawai/dtphp/dashboard', [DtphpController::class, 'dashboard'])
+    ->name('pegawai.dtphp.dashboard');
+    
+Route::get('/pegawai/dtphp/dashboard-panen', [DtphpController::class, 'dashboardPanen'])
+    ->name('pegawai.dtphp.dashboard.panen');
 
 Route::resource('/pegawai/dtphp', PegawaiDtphpController::class)->names([
     'index' => 'pegawai.dtphp.index',
@@ -165,9 +162,8 @@ Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'
 
 
 // PERIKANAN
-Route::get('/pegawai/perikanan/dashboard', function () {
-    return view('pegawai.perikanan.pegawai-perikanan-dashboard');
-})->name('pegawai.perikanan.dashboard');
+Route::get('/pegawai/perikanan/dashboard', [PerikananController::class, 'dashboard'])
+    ->name('pegawai.perikanan.dashboard');
 
 Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names([
     'index' => 'pegawai.perikanan.index',
@@ -229,9 +225,9 @@ Route::get('/bahan_pokok-detail', [BpokokController::class, 'detail'])->name('ba
 
 
 //Pimpinan 
-Route::get('/pimpinan-dashboard', [PimpinanController::class,'index'] )->name('pimpinan.dashboard');
-Route::get('/pimpinan-disperindag', [PimpinanController::class,'disperindag'] )->name('pimpinan.disperindag');
-Route::get('/pimpinan-dkpp', [PimpinanController::class,'dkpp'] )->name('pimpinan.dkpp');
-Route::get('/pimpinan-dtphp-panen', [PimpinanController::class,'panen'] )->name('pimpinan.dtphp-panen');
-Route::get('/pimpinan-dtphp-volume', [PimpinanController::class,'volume'] )->name('pimpinan.dtphp-volume');
-Route::get('/pimpinan-perikanan', [PimpinanController::class,'perikanan'] )->name('pimpinan.perikanan');
+Route::get('/pimpinan/dashboard', [PimpinanController::class,'index'] )->name('pimpinan.dashboard');
+Route::get('/pimpinan/disperindag', [PimpinanController::class,'disperindag'] )->name('pimpinan.disperindag');
+Route::get('/pimpinan/dkpp', [PimpinanController::class,'dkpp'] )->name('pimpinan.dkpp');
+Route::get('/pimpinan/dtphp-panen', [PimpinanController::class,'panen'] )->name('pimpinan.dtphp-panen');
+Route::get('/pimpinan/dtphp-volume', [PimpinanController::class,'volume'] )->name('pimpinan.dtphp-volume');
+Route::get('/pimpinan/perikanan', [PimpinanController::class,'perikanan'] )->name('pimpinan.perikanan');

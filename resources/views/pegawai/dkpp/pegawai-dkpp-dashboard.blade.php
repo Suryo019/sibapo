@@ -1,33 +1,23 @@
+{{-- @dd($dataSelisih) --}}
+
 <x-pegawai-layout>
 
     <div class="grid grid-cols-3 gap-4 mb-6">
-        <!-- Chart Placeholder -->
-        <div class="col-span-2 bg-white border rounded-lg p-4">
-          <div class="w-full h-64 bg-gray-100 flex items-center justify-center text-gray-400">
-            [Grafik Line Chart]
-          </div>
-          <div class="flex mt-4 justify-center gap-4 text-sm">
-            <div class="flex items-center gap-2"><div class="w-4 h-2 bg-green-500"></div>Surplus</div>
-            <div class="flex items-center gap-2"><div class="w-4 h-2 bg-red-500"></div>Defisit</div>
-            <div class="flex items-center gap-2"><div class="w-4 h-2 bg-blue-500"></div>Seimbang</div>
-          </div>
-        </div>
-    
-        <!-- Donatt Chart Placeholder -->
-        <div class="bg-white border rounded-lg p-4">
-          <div class="text-center font-semibold mb-4">Total komoditas ketahanan pangan</div>
-          <div class="w-full flex justify-center mb-2">
-            <div class="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center text-2xl font-bold text-gray-600">
-              100
-            </div>
-          </div>
-          <div class="flex justify-center gap-6 text-sm mt-2">
-            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-green-500 rounded-full"></div>30% Surplus</div>
-            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-red-500 rounded-full"></div>45% Defisit</div>
-            <div class="flex items-center gap-2"><div class="w-3 h-3 bg-blue-500 rounded-full"></div>25% Seimbang</div>
-          </div>
+      <!-- Chart Placeholder -->
+      <div class="col-span-2 bg-white border rounded-lg p-4">
+        <div class="w-full h-64 bg-gray-100 flex items-center justify-center text-gray-400" id="chart">
+          {{-- PAKE AJAX YGY --}}
         </div>
       </div>
+  
+      <!-- Donat Chart Placeholder -->
+      <div class="bg-white border rounded-lg py-4">
+        <div class="text-center font-semibold mb-4">Total komoditas ketahanan pangan<br>minggu ke {{ now()->weekOfMonth }}</div>
+        <div class="w-full flex justify-center"  id="donutChart">
+          {{-- pake ajax --}}
+        </div>
+      </div>
+    </div>
       
     
       <!-- table -->
@@ -43,20 +33,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="border-t">
-              <td class="p-2">1</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="twemoji:up-arrow" class=" text-xl"></iconify-icon></td>
-              <td class="p-2 text-green-500">Surplus</td>
-              <td class="p-2 text-red-500">Defisit</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-2">2</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="twemoji:up-arrow" class=" text-xl"></iconify-icon></td>
-              <td class="p-2 text-red-500">Defisit</td>
-              <td class="p-2 text-green-500">Surplus</td>
-            </tr>
+            @foreach ($dataSelisih as $item)
+              <tr class="border-t">
+                <td class="p-2">{{ $loop->iteration }}</td>
+                <td class="p-2">{{ $item['komoditas'] }}</td>
+                <td class="p-2">
+                  @if ($item['status'] == 'Naik')
+                      <div class='bg-green-600 rounded flex justify-center items-center w-10 h-10 p-2'>
+                        <i class="bi bi-arrow-up-circle-fill text-white"></i>
+                      </div>
+                  @elseif($item['status'] == 'Turun')
+                      <div class='bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2'>
+                        <i class="bi bi-arrow-down-circle-fill text-white"></i>
+                      </div>
+                  @else
+                      <div class='bg-blue-500 rounded flex justify-center items-center w-10 h-10 p-2'>
+                        <i class="bi bi-dash-circle-fill text-white"></i>
+                      </div>
+                  @endif
+                </td>
+                <td class="p-2 {{ $item['keterangan_minggu_sekarang'] == 'Surplus' ?  'text-green-500' : ($item['keterangan_minggu_sekarang'] == 'Defisit' ? 'text-red-500' : ($item['keterangan_minggu_sekarang'] == 'Seimbang' ? 'text-blue-600' : 'text-gray-400')) }}">{{ $item['keterangan_minggu_sekarang'] }}</td>
+                <td class="p-2 {{ $item['keterangan_minggu_lalu'] == 'Surplus' ?  'text-green-500' : ($item['keterangan_minggu_lalu'] == 'Defisit' ? 'text-red-500' : ($item['keterangan_minggu_lalu'] == 'Seimbang' ? 'text-blue-600' : 'text-gray-400')) }}">{{ $item['keterangan_minggu_lalu'] }}</td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -74,36 +73,142 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
+          @foreach ($aktivitas as $item)
+            @php
+                $ikonAksi = [
+                    'buat' => 'bi-plus-circle-fill',
+                    'ubah' => 'bi-pencil-square',
+                    'hapus' => 'bi-trash-fill',
+                ];
+                $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill'
+            @endphp
+              
+              <tr class="border-t">
+                <td class="p-2">{{ $item->waktu }}</td>
+                <td class="p-2 flex justify-center">
+                    <div class="bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2">
+                        <i class="bi {{ $ikon }} text-white"></i>
+                    </div>
+                </td>
+                <td class="p-2">{{ $item->aktivitas }}</td>
+                <td class="p-2">{{ $item->nama_user }}</td>
+                <td class="p-2">{{ $item->dinas }}</td>
+            </tr>
+          @endforeach
         </tbody>
       </table>
+
+      <!-- Link Paginasi -->
+      <div class="d-flex justify-content-center">
+          {{ $aktivitas->links() }}
+      </div>
     </div>
   
-  </x-pegawai-layout>>
+  </x-pegawai-layout>
+
+  <script>
+
+  $.ajax({
+    type: 'GET',
+    url: '/api/grafikdkpp',
+    success: function(response) {
+      const data = response.data;
+      const categories = data.map(item => 'Minggu ' + item.minggu);
+    
+      const seimbang = data.map(item => item.Seimbang);
+      const surplus = data.map(item => item.Surplus);
+      const defisit = data.map(item => item.Defisit);
+    
+      const options = {
+          chart: {
+              type: 'bar',
+              height: 400
+          },
+          series: [
+              {
+                  name: 'Seimbang',
+                  data: seimbang
+              },
+              {
+                  name: 'Surplus',
+                  data: surplus
+              },
+              {
+                  name: 'Defisit',
+                  data: defisit
+              }
+          ],
+          xaxis: {
+              categories: categories,
+              title: { text: 'Minggu ke-' }
+          },
+          yaxis: {
+              title: { text: 'Jumlah Komoditas' }
+          },
+          title: {
+              text: 'Neraca Komoditas Mingguan bulan {{ now()->month }}',
+              align: 'center'
+          },
+          colors: ['#00E396', '#008FFB', '#FF4560'],
+          dataLabels: {
+              enabled: true
+          }
+      };
+    
+      const chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+    }
+  });
+
+  $.ajax({
+    type: 'GET',
+    url: '/api/persendkpp',
+    success: function(response) {
+      const labels = [];
+      const values = [];
+
+      response.persenKategoriDkpp.forEach(item => {
+        const key = Object.keys(item)[0];
+        const value = item[key];
+        labels.push(key);
+        values.push(value);
+      });
+      
+
+      var options = {
+        chart: {
+          type: 'donut'
+        },
+        series: values,
+        labels: labels,
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                }
+              },
+              size: '50%',
+            }
+          }
+        },
+        legend: {
+          position: 'bottom',
+          horizontalAlign: 'center'
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: { width: 300 },
+            legend: { position: 'bottom' }
+          }
+        }]
+      };
+
+      var chart = new ApexCharts(document.querySelector("#donutChart"), options);
+      chart.render();
+    }
+  });
+</script>

@@ -6,7 +6,7 @@
         </div>
         {{-- Logo --}}
         <div class="justify-center flex md:hidden">
-            <img src="{{ asset('/img/logo.png') }}" 
+            <img src="{{ asset('storage/img/logo.png') }}" 
             alt="logo" class="h-10 w-30 ml-2 scale-90">
         </div>
     </div>

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('roles')->insert([
             ['id' => 1, 'role' => 'admin'],
-            ['id' => 2, 'role' => 'dpp'],
+            ['id' => 2, 'role' => 'disperindag'],
             ['id' => 3, 'role' => 'dkpp'],
             ['id' => 4, 'role' => 'dtphp'],
             ['id' => 5, 'role' => 'dp'],
@@ -40,6 +40,30 @@ class DatabaseSeeder extends Seeder
                 'role_id' => 2,
                 'username' => 'dppuser',
                 'email' => 'dpp@example.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'id' => 3,
+                'name' => 'DKPP User',
+                'role_id' => 3,
+                'username' => 'dkppuser',
+                'email' => 'dkpp@example.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'id' => 4,
+                'name' => 'DTPHP User',
+                'role_id' => 4,
+                'username' => 'dtphpuser',
+                'email' => 'dtphp@example.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'id' => 5,
+                'name' => 'DP User',
+                'role_id' => 5,
+                'username' => 'dpuser',
+                'email' => 'dp@example.com',
                 'password' => Hash::make('password'),
             ],
         ]);

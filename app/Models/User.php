@@ -50,6 +50,30 @@ class User extends Authenticatable
     }
 
     public function role() {
-        return $this->hasOne(Role::class);
+        return $this->belongsTo(Role::class);
+    }
+
+    public function dpp()
+    {
+        return $this->hasMany(DPP::class);
+    }
+
+    public function dkpp()
+    {
+        return $this->hasMany(DKPP::class);
+    }
+
+    public function dtphp()
+    {
+        return $this->hasMany(DTPHP::class);
+    }
+
+    public function dp()
+    {
+        return $this->hasMany(DP::class);
+    }
+
+    public function riwayat() {
+        return $this->hasMany(Riwayat::class);
     }
 }

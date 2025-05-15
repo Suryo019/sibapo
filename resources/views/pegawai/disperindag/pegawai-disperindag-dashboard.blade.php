@@ -1,5 +1,6 @@
-<x-pegawai-layout>
+{{-- @dd($jmlPegawai) --}}
 
+<x-pegawai-layout>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-2">
         <!-- Bahan Pokok -->
         <div class="flex w-full h-full bg-white border-[3px] border-gray-200 rounded-lg">
@@ -8,7 +9,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Bahan Pokok</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlBahanPokok }}</p>
           </div>
         </div>
       
@@ -19,7 +20,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Pasar</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlPasar }}</p>
           </div>
         </div>
       
@@ -30,7 +31,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Pegawai Dinas Disperindag</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlPegawai }}</p>
           </div>
         </div>
       </div>
@@ -41,7 +42,7 @@
       <!-- table -->
       <div class="bg-white border rounded-lg p-4 mb-8 mt-4">
         <table class="w-full text-center text-sm">
-          <thead >
+          <thead>
             <tr>
               <th class="p-2">No</th>
               <th class="p-2">Bahan Pokok</th>
@@ -50,24 +51,12 @@
               <th class="p-2">Perubahan harga</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-t">
-              <td class="p-2">1</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="twemoji:up-arrow" class=" text-xl"></iconify-icon></td>
-              <td class="p-2">Rp. 10.000</td>
-              <td class="p-2">+ Rp. 10.000</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-2">4</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-              <td class="p-2">Rp. 10.000</td>
-              <td class="p-2">-Rp. 1.500</td>
-            </tr>
+          <tbody id="tabel-komoditas">
+            {{-- PAKE AJAAAXX --}}
           </tbody>
         </table>
       </div>
+
   
     <!-- table -->
     <div class="bg-white border rounded-lg p-4">
@@ -82,36 +71,77 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
+          @foreach ($aktivitas as $item)
+            @php
+                $ikonAksi = [
+                    'buat' => 'bi-plus-circle-fill',
+                    'ubah' => 'bi-pencil-square',
+                    'hapus' => 'bi-trash-fill',
+                ];
+                $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill'
+            @endphp
+              
+              <tr class="border-t">
+                <td class="p-2">{{ $item->waktu }}</td>
+                <td class="p-2 flex justify-center">
+                    <div class="bg-yellow-500 rounded flex justify-center items-center w-10 h-10 p-2">
+                        <i class="bi {{ $ikon }} text-white"></i>
+                    </div>
+                </td>
+                <td class="p-2">{{ $item->aktivitas }}</td>
+                <td class="p-2">{{ $item->nama_user }}</td>
+                <td class="p-2">{{ $item->dinas }}</td>
+            </tr>
+          @endforeach
         </tbody>
       </table>
+
+      <!-- Link Paginasi -->
+      <div class="d-flex justify-content-center">
+          {{ $aktivitas->links() }}
+      </div>
     </div>
   
   </x-pegawai-layout>>
+
+<script>
+
+$.ajax({
+  type: 'GET',
+  url: "{{ route('api.beranda.index') }}",
+  success: function(response) {
+    const data = response.data;
+    const tbody = document.getElementById("tabel-komoditas");
+
+    data.forEach((item, index) => {
+      let ikon = '';
+      if (item.selisih > 0) {
+        ikon = `<div class='bg-green-600 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-up-circle-fill text-white"></i></div>`;
+      } else if (item.selisih < 0) {
+        ikon = `<div class='bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-down-circle-fill text-white"></i></div>`;
+      } else {
+        ikon = `<div class='bg-gray-400 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-dash-circle-fill text-white"></i></div>`
+      }
+
+      const hargaHariIni = item.rata_rata_hari_ini ? `Rp. ${item.rata_rata_hari_ini.toLocaleString()}` : '-';
+      const selisih = item.selisih > 0 
+        ? `+ Rp. ${item.selisih.toLocaleString()}`
+        : item.selisih < 0
+          ? `- Rp. ${Math.abs(item.selisih).toLocaleString()}`
+          : 'Rp. 0';
+
+      const tr = `
+        <tr class="border-t">
+          <td class="p-2">${index + 1}</td>
+          <td class="p-2">${item.komoditas}</td>
+          <td class="p-2">${ikon}</td>
+          <td class="p-2">${hargaHariIni}</td>
+          <td class="p-2">${selisih}</td>
+        </tr>
+      `;
+      tbody.innerHTML += tr;
+    });
+  }
+});
+
+</script>

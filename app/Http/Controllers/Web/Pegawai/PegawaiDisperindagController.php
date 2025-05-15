@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\User;
 use App\Models\Pasar;
+use App\Models\Riwayat;
 use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiDisperindagController extends Controller
 {
@@ -36,6 +39,65 @@ class PegawaiDisperindagController extends Controller
             'data' => $dpp,
             'markets' => $markets,
             'periods' => $periodeUnikNama,
+        ]);
+    }
+
+    public function dashboard()
+    {
+        Carbon::setLocale('id');
+        
+        $jml_bahan_pokok = JenisBahanPokok::count();
+        $jml_pasar = Pasar::count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', '=', 'disperindag')
+            ->count();
+
+        $disperindag = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->whereHas('user.role', function ($query) {
+                    $query->where('role', 'disperindag');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
+                    $item->nama_user = $item->user->name ?? '-';
+
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah komoditas ' . $item->komoditas,
+                        'ubah' => 'Mengubah komoditas ' . $item->komoditas,
+                        default => 'Menghapus komoditas ' . $item->komoditas,
+                    };
+
+                    return $item;
+                });
+
+        $aktivitas = collect()
+            ->concat($disperindag)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+
+        return view('pegawai.disperindag.pegawai-disperindag-dashboard', [
+            'title' => 'Dashboard',
+            'jmlBahanPokok' => $jml_bahan_pokok,
+            'jmlPasar' => $jml_pasar,
+            'jmlPegawai' => $jml_pegawai,
+            'aktivitas' => $paginator,
         ]);
     }
 

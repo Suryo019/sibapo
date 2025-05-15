@@ -17,6 +17,8 @@ return new class extends Migration
             $table->dateTime('tanggal_input');
             $table->string('jenis_ikan');
             $table->integer('ton_produksi');
+            $table->softDeletes();
+            $table->timestamps();
 
             // Foreign key constraint
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

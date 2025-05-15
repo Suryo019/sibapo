@@ -8,6 +8,7 @@ use App\Models\Pasar;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
+use App\Models\Riwayat;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -153,30 +154,16 @@ class DPPController extends Controller
             $validated['tanggal_dibuat'] = now();
             $validated['user_id'] = 1;
 
-            // Up gambar
-            // if ($request->hasFile('gambar_bahan_pokok')) {
-            //     $file = $request->file('gambar_bahan_pokok');
-            
-            //     if ($file->isValid()) {
-            //         $hash = md5_file($file->getRealPath());
-            
-            //         $extension = $file->getClientOriginalExtension();
-            //         $filename = $hash . '.' . $extension;
-            
-            //         $path = 'gambarBpokokDisperindag/' . $filename;
-            //         if (!Storage::disk('public')->exists($path)) {
-            //             Storage::disk('public')->putFileAs('gambarBpokokDisperindag', $file, $filename);
-            //         }
-            
-            //         $validated['gambar_bahan_pokok'] = $path;
-            //     } else {
-            //         return response()->json(['message' => 'File tidak valid'], 400);
-            //     }
-            // }
-            
             $dpp = DPP::create($validated);
-
+            
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' => $data_stored->nama_bahan_pokok,
+                'aksi' => 'buat',
+            ];
+            
+            Riwayat::create($riwayatStore);
             
             // dd($data_stored);
 
@@ -215,9 +202,16 @@ class DPPController extends Controller
                 'tanggal_dibuat' => 'required|date'
             ]);
 
+            
             $dpp->update($validated);
-
+            
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' =>  $data_stored->nama_bahan_pokok,
+                'aksi' => 'ubah'
+            ];
+            Riwayat::create($riwayatStore);
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
@@ -249,9 +243,18 @@ class DPPController extends Controller
                 Storage::delete($dpp->gambar_bahan_pokok);
             }
 
+            
             $dpp->delete();
+            
+            $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' => $data_stored->nama_bahan_pokok,
+                'aksi' => 'hapus'
+            ];
+            Riwayat::create($riwayatStore);
 
-            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dpp]);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $data_stored,]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

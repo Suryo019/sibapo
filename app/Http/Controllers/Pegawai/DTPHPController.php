@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Models\DTPHP;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,6 +52,14 @@ class DTPHPController extends Controller
             $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
 
+            $riwayatStore = [
+                'user_id' => 4,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'buat'
+            ];
+            
+            Riwayat::create($riwayatStore);
+            
             $dtphp = DTPHP::create($validated);
     
             return response()->json([
@@ -77,14 +86,21 @@ class DTPHPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
     
-            $request->validate([
+            $validated = $request->validate([
                 'jenis_komoditas' => 'sometimes|string',
                 'tanggal_input' => 'sometimes|date',
                 'ton_volume_produksi' => 'sometimes|numeric',
                 'hektar_luas_panen' => 'sometimes|numeric'
             ]);
-    
-            $dtphp->update($request->all());
+
+            $riwayatStore = [
+                'user_id' => 4,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'ubah'
+            ];
+            
+            Riwayat::create($riwayatStore);
+            $dtphp->update($validated);
     
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
@@ -109,6 +125,13 @@ class DTPHPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
+            $riwayatStore = [
+                'user_id' => 4,
+                'komoditas' => $dtphp->jenis_komoditas,
+                'aksi' => 'hapus'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dtphp->delete();
 
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dtphp]);

@@ -86,8 +86,8 @@ $('#submitBtn').on('click', function() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data) {
-            console.log(data);
+        success: function(response) {
+            console.log(response);
             $('#dinas').val('');
             $('#nama').val('');
             $('#username').val('');
@@ -97,7 +97,7 @@ $('#submitBtn').on('click', function() {
             
             Swal.fire({
                 title: 'Berhasil!',
-                text: `Data user ${data.data.name} dari Dinas ${data.data.role} telah disimpan.`,
+                text: `Data user ${response.data.name} dari Dinas ${response.data.role.role} telah disimpan.`,
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then(() => {

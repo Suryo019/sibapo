@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('jenis_bahan_pokok_id');
             $table->integer('kg_harga');
             $table->dateTime('tanggal_dibuat');
+            $table->softDeletes();
+            $table->timestamps();
 
             // Foreign key constraint
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

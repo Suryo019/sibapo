@@ -58,7 +58,7 @@ class HargaKomoditasController extends Controller
             ];
         }
 
-        return response()->json($data);
+        return response()->json(['message' => 'Data berhasil dimuat', 'data' => $data]);
     }
 
     public function komoditas_filter(Request $request)

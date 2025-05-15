@@ -11,6 +11,11 @@ use App\Http\Controllers\Pimpinan\ReadDataController;
 use App\Http\Controllers\Beranda\HargaKomoditasController;
 use App\Http\Controllers\Disperindag\ApiBpokokController;
 use App\Http\Controllers\Disperindag\ApiPasarController;
+use App\Http\Controllers\Web\AdminDashboardController;
+
+// Dashboard
+Route::get('/persendkpp', [AdminDashboardController::class, 'persen_dkpp']);
+Route::get('/grafikdkpp', [AdminDashboardController::class, 'grafik_dkpp']);
 
 // Read Data Pimpinan
 Route::get('/pimpinan', [ReadDataController::class, 'getDPP']);
@@ -69,7 +74,7 @@ Route::delete('/makundinas/{id}', [AkunDinasController::class, 'destroy']);
 
 
 //Read Data Harga Komoditas
-Route::get('/', [HargaKomoditasController::class, 'index']);
+Route::get('/', [HargaKomoditasController::class, 'index'])->name('api.beranda.index');
 Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas');
 Route::get('/pasar/search', [HargaKomoditasController::class, 'pasar_filter'])->name('api.pasar.search');
 Route::get('/sorting_items', [HargaKomoditasController::class, 'render_sorting_child_items'])->name('api.sorting_items');

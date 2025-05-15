@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DKPP;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -21,9 +22,9 @@ class DKPPController extends Controller
             $month = $date->month;
             $year = $date->year;
 
-            $data = DKPP::whereYear('tanggal_input', $year)
-            ->whereMonth('tanggal_input', $month)
-            ->whereRaw('FLOOR((DAY(tanggal_input) - 1) / 7) = ?', (int) $request->minggu)
+            $data = DKPP::whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->where('minggu', $request->minggu)
             ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
             ->get();
 
@@ -50,12 +51,22 @@ class DKPPController extends Controller
                 'ton_kebutuhan_perminggu' => 'required|numeric',
             ]);
 
-            $validated['tanggal_input'] = now();
+            $currentWeek = now()->weekOfMonth;
+
+
+            $validated['minggu'] = $currentWeek;
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'buat'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp = DKPP::create($validated);
 
             return response()->json([
@@ -88,14 +99,21 @@ class DKPPController extends Controller
                 'jenis_komoditas' => 'required|string',
                 'ton_ketersediaan' => 'required|numeric',
                 'ton_kebutuhan_perminggu' => 'required|numeric',
+                'minggu' => 'required|numeric',
             ]);
 
-            $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'ubah'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp->update($validated);
 
             return response()->json([
@@ -124,6 +142,13 @@ class DKPPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $dkpp->jenis_komoditas,
+                'aksi' => 'hapus'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp->delete();
 
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dkpp]);
