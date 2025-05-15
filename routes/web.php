@@ -114,11 +114,12 @@ Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->na
 Route::get('/pegawai/disperindag-detail', [PegawaiDisperindagController::class, 'dppDetail'])->name('pegawai.disperindag.detail');
 
 //pasar
-Route::get('/pegawai/disperindag/lihatpasar', [PegawaiPasarController::class, 'index'])->name('pegawai.disperindag.pasar.index');
+Route::get('/pegawai/disperindag/pasar/detail', [PegawaiPasarController::class, 'index'])->name('pegawai.disperindag.pasar.index');
 Route::get('/pegawai/disperindag/pasar/create', [PegawaiPasarController::class, 'create'])->name('pegawai.disperindag.pasar.create');
 Route::get('/pegawai/disperindag/pasar/edit/{pasar:id}', [PegawaiPasarController::class, 'edit'])->name('pegawai.disperindag.pasar.edit');
+
 //bahan pokok
-Route::get('/pegawai/disperindag/lihatbahanpokok', [PegawaiBahanPokokController::class, 'index'])->name('pegawai.disperindag.bahanpokok.index');
+Route::get('/pegawai/disperindag/bahanpokok/detail', [PegawaiBahanPokokController::class, 'index'])->name('pegawai.disperindag.bahanpokok.index');
 Route::get('/pegawai/disperindag/bahanpokok/create', [PegawaiBahanPokokController::class, 'create'])->name('pegawai.disperindag.bahanpokok.create');
 Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahanPokokController::class, 'edit'])->name('pegawai.disperindag.bahanpokok.edit');
 
