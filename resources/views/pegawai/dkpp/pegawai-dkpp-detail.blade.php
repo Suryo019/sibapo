@@ -107,7 +107,7 @@
                     class="p-2 font-bold {{ $keterangan == 'Surplus' ? 'text-green-500' : ($keterangan == 'Defisit' ? 'text-red-500' : 'text-slate-600') }}">
                     {{ $keterangan }}
                   </td>
-                  <td class="border p-2">
+                  <td class="p-2">
                     <div class="flex justify-center gap-2">
                       <a href="{{ route('pegawai.dkpp.edit', $item->id) }}">
                         <button class="bg-yellow-400 text-white rounded-md w-10 h-10 hover:bg-yellow-500">
@@ -133,8 +133,8 @@
             <div class="bg-white p-6 rounded-lg w-[90%] max-w-md shadow-lg">
               <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
               <div class="flex justify-around">
-                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
-                <button class="bg-green-800 hover:bg-green-900 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
+                <button class="bg-pink-500 hover:bg-pink-650 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
+                <button class="bg-pink-500 hover:bg-pink-650 text-white px-4 py-2 rounded-full" id="yesBtn">Yakin</button>
               </div>
             </div>
           </div>

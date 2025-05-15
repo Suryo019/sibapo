@@ -102,7 +102,7 @@ Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('pe
 // DISPERINDAG
 Route::get('/pegawai/disperindag/dashboard', [PegawaiDisperindagController::class, 'dashboard'])->name('pegawai.disperindag.dashboard');
 
-Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->names([
+Route::resource('/pegawai/disperindag/data', PegawaiDisperindagController::class)->names([
     'index' => 'pegawai.disperindag.index',
     'create' => 'pegawai.disperindag.create',
     'store' => 'pegawai.disperindag.store',

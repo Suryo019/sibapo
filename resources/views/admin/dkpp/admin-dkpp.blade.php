@@ -107,16 +107,22 @@
 
 <script>
   // Ntar dihapus
-  let periode = 'April 2025';
-  let minggu = '4';
+  const today = new Date();
+  let periode = today.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  let date = today.getDate();
+  let startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let dayOfWeek = startOfMonth.getDay();
+  let adjustedDate = date + dayOfWeek;
+  let minggu = Math.ceil(adjustedDate / 7);
 
   $.ajax({
     type: 'GET',
     url: `{{ route('api.dkpp.index') }}`,
     data: {
       _token: "{{ csrf_token() }}",
-      periode: periode,
-      minggu: minggu,
+      periode: null,
+      minggu: null,
     },
     success: function(response) {
       let dataset = response.data;

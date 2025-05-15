@@ -183,9 +183,11 @@ class PegawaiDkppController extends Controller
                 return $item->periode_indonesia;
             });
 
-        $data = DKPP::whereYear('created_at', 2025)
-        ->whereMonth('created_at', 4)
-        ->where('minggu', 3)
+        $currentWeek = floor((now()->day - 1) / 7) + 1;
+
+        $data = DKPP::whereYear('created_at', now()->year)
+        ->whereMonth('created_at', now()->month)
+        ->where('minggu', $currentWeek)
         ->get();
 
         return view('pegawai.dkpp.pegawai-dkpp-detail', [
