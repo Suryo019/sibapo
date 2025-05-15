@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\Riwayat;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,7 +16,8 @@ class disperindagSeeder extends Seeder
      */
     public function run(): void
     {
-        DPP::factory()->count(20)->create();
+        DPP::factory()->count(10)->create();
+        Riwayat::factory()->count(10)->create();
 
         DB::table('pasar')->insert([
             ['id' => 1, 'nama_pasar' => 'Pasar Tanjung'],

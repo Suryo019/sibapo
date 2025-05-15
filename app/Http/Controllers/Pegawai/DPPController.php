@@ -8,6 +8,7 @@ use App\Models\Pasar;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
+use App\Models\Riwayat;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -152,11 +153,17 @@ class DPPController extends Controller
 
             $validated['tanggal_dibuat'] = now();
             $validated['user_id'] = 1;
-            $validated['aksi'] = 'buat';
-            
-            $dpp = DPP::create($validated);
 
+            $dpp = DPP::create($validated);
+            
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' => $data_stored->nama_bahan_pokok,
+                'aksi' => 'buat',
+            ];
+            
+            Riwayat::create($riwayatStore);
             
             // dd($data_stored);
 
@@ -195,11 +202,16 @@ class DPPController extends Controller
                 'tanggal_dibuat' => 'required|date'
             ]);
 
-            $validated['aksi'] = 'ubah';
-
+            
             $dpp->update($validated);
-
+            
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' =>  $data_stored->nama_bahan_pokok,
+                'aksi' => 'ubah'
+            ];
+            Riwayat::create($riwayatStore);
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
@@ -231,12 +243,16 @@ class DPPController extends Controller
                 Storage::delete($dpp->gambar_bahan_pokok);
             }
 
-            $dpp->aksi = 'hapus';
-            $dpp->save();
-
+            
             $dpp->delete();
-
+            
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
+            $riwayatStore = [
+                'user_id' => 2,
+                'komoditas' => $data_stored->nama_bahan_pokok,
+                'aksi' => 'hapus'
+            ];
+            Riwayat::create($riwayatStore);
 
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $data_stored,]);
         } catch (\Throwable $th) {

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->float('ton_kebutuhan_perminggu');
             $table->float('ton_neraca_mingguan');
             $table->enum('keterangan', ['Surplus', 'Defisit', 'Seimbang']);
-            $table->enum('aksi', ['buat', 'ubah', 'hapus']);
             $table->softDeletes();
             $table->timestamps();
 

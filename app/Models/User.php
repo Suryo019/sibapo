@@ -72,4 +72,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(DP::class);
     }
+
+    public function riwayat() {
+        return $this->hasMany(Riwayat::class);
+    }
 }

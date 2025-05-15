@@ -11,6 +11,7 @@ use App\Models\DTPHP;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
+use App\Models\Riwayat;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminDashboardController extends Controller
@@ -112,91 +113,25 @@ class AdminDashboardController extends Controller
     {
         Carbon::setLocale('id');
 
-        $dtphp = DTPHP::withTrashed()
-            ->select('user_id', 'jenis_komoditas', 'aksi', 'created_at', 'updated_at', 'deleted_at')
-            ->with('user:id,name')
-            ->get()
-            ->map(function ($item) {
-                $item->dinas = 'DTPHP';
-                $item->nama_user = $item->user->name ?? '-';
+        $riwayat = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = optional($item->user->role)->role ?? '-';
+                    $item->nama_user = $item->user->name ?? '-';
 
-                $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
-                $item->waktu = now()->diffForHumans($item->waktu_utama);
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
 
-                $item->aktivitas = $item->aksi == 'buat' 
-                    ? 'Menambah komoditas ' . $item->jenis_komoditas 
-                    : ($item->aksi == 'ubah' 
-                        ? 'Mengubah komoditas ' . $item->jenis_komoditas 
-                        : 'Menghapus komoditas ' . $item->jenis_komoditas);
-                return $item;
-            });
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah komoditas ' . $item->komoditas,
+                        'ubah' => 'Mengubah komoditas ' . $item->komoditas,
+                        default => 'Menghapus komoditas ' . $item->komoditas,
+                    };
 
-        $dkpp = DKPP::withTrashed()
-            ->select('user_id', 'jenis_komoditas', 'aksi', 'created_at', 'updated_at', 'deleted_at')
-            ->with('user:id,name')
-            ->get()
-            ->map(function ($item) {
-                $item->dinas = 'DKPP';
-                $item->nama_user = $item->user->name ?? '-';
+                    return $item;
+                });
 
-                $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
-                $item->waktu = now()->diffForHumans($item->waktu_utama);
-                
-                $item->aktivitas = $item->aksi == 'buat' 
-                    ? 'Menambah komoditas ' . $item->jenis_komoditas 
-                    : ($item->aksi == 'ubah' 
-                        ? 'Mengubah komoditas ' . $item->jenis_komoditas 
-                        : 'Menghapus komoditas ' . $item->jenis_komoditas);
-                return $item;
-            });
-
-        $perikanan = DP::withTrashed()
-            ->select('user_id', 'jenis_ikan', 'aksi', 'created_at', 'updated_at', 'deleted_at')
-            ->with('user:id,name')
-            ->get()
-            ->map(function ($item) {
-                $item->dinas = 'Perikanan';
-                $item->nama_user = $item->user->name ?? '-';
-
-                $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
-                $item->waktu = now()->diffForHumans($item->waktu_utama);
-
-                $item->aktivitas = $item->aksi == 'buat' 
-                    ? 'Menambah ikan ' . $item->jenis_ikan 
-                    : ($item->aksi == 'ubah' 
-                        ? 'Mengubah ikan ' . $item->jenis_ikan 
-                        : 'Menghapus ikan ' . $item->jenis_ikan);
-                return $item;
-            });
-
-        $disperindag = DPP::withTrashed()
-            ->select('user_id', 'jenis_bahan_pokok_id', 'aksi', 'created_at', 'updated_at', 'deleted_at')
-            ->with(['user:id,name', 'jenis_bahan_pokok:id,nama_bahan_pokok'])
-            ->get()
-            ->map(function ($item) {
-                $item->dinas = 'Disperindag';
-                $item->nama_user = $item->user->name ?? '-';
-
-                $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
-                $item->waktu = now()->diffForHumans($item->waktu_utama);
-
-                $nama_bahan = $item->jenis_bahan_pokok->pluck('nama_bahan_pokok')->join(', ');
-                $item->aktivitas = match($item->aksi) {
-                    'buat' => 'Menambah bahan pokok ' . $nama_bahan,
-                    'ubah' => 'Mengubah bahan pokok ' . $nama_bahan,
-                    default => 'Menghapus bahan pokok ' . $nama_bahan,
-                };
-                return $item;
-            });
-
-        $aktivitas = collect()
-            ->concat($dtphp)
-            ->concat($dkpp)
-            ->concat($perikanan)
-            ->concat($disperindag)
-            ->sortByDesc('waktu_utama')
-            ->values();
-
-        return $aktivitas;
+        return $riwayat;
     }
 }

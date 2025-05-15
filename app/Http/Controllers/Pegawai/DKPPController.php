@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DKPP;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -56,10 +57,16 @@ class DKPPController extends Controller
             $validated['minggu'] = $currentWeek;
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
-            $validated['aksi'] = 'buat';
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'buat'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp = DKPP::create($validated);
 
             return response()->json([
@@ -97,10 +104,16 @@ class DKPPController extends Controller
 
             $validated['user_id'] = 1;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
-            $validated['aksi'] = 'ubah';
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $validated['jenis_komoditas'],
+                'aksi' => 'ubah'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp->update($validated);
 
             return response()->json([
@@ -129,9 +142,13 @@ class DKPPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $dkpp->aksi = 'hapus';
-            $dkpp->save();
-
+            $riwayatStore = [
+                'user_id' => 3,
+                'komoditas' => $dkpp->jenis_komoditas,
+                'aksi' => 'hapus'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dkpp->delete();
 
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dkpp]);

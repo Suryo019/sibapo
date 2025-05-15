@@ -18,7 +18,6 @@ return new class extends Migration
             $table->dateTime('tanggal_input');
             $table->float('ton_volume_produksi');
             $table->float('hektar_luas_panen');
-            $table->enum('aksi', ['buat', 'ubah', 'hapus']);
             $table->softDeletes();
             $table->timestamps();
 

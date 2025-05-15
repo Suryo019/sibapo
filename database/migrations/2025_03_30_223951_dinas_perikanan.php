@@ -17,7 +17,6 @@ return new class extends Migration
             $table->dateTime('tanggal_input');
             $table->string('jenis_ikan');
             $table->integer('ton_produksi');
-            $table->enum('aksi', ['buat', 'ubah', 'hapus']);
             $table->softDeletes();
             $table->timestamps();
 

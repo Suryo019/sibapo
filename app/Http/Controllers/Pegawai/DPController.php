@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Models\DP;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
@@ -57,8 +58,14 @@ class DPController extends Controller
             
             $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
-            $validated['aksi'] = 'buat';
             
+            $riwayatStore = [
+                'user_id' => 5,
+                'komoditas' => $validated['jenis_ikan'],
+                'aksi' => 'buat'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dp = DP::create($validated);
 
             return response()->json([
@@ -97,8 +104,13 @@ class DPController extends Controller
                 'ton_produksi' => 'required|numeric'
             ]);
 
-            $validated['aksi'] = 'ubah';
-
+            $riwayatStore = [
+                'user_id' => 5,
+                'komoditas' => $validated['jenis_ikan'],
+                'aksi' => 'ubah'
+            ];
+            
+            Riwayat::create($riwayatStore);
             $dp->update($validated);
             
             return response()->json([
@@ -124,9 +136,13 @@ class DPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $dp->aksi = 'hapus';
-            $dp->save();
-
+            $riwayatStore = [
+                'user_id' => 5,
+                'komoditas' => $dp->jenis_ikan,
+                'aksi' => 'hapus'
+            ];
+            
+            Riwayat::create($riwayatStore);
 
             $dp->delete();
 
