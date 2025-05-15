@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Web\Disperindag;
+namespace App\Http\Controllers\Web\Pegawai;
 
-use App\Models\JenisBahanPokok;
 use Illuminate\Http\Request;
+use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
 
-class BpokokController extends Controller
+class PegawaiBahanPokokController extends Controller
 {
     public function index()
     {
         $data = JenisBahanPokok::all();
 
-        return view('admin.disperindag.admin-bpokok-disperindag', [
+        return view('pegawai.disperindag.pegawai-bpokok-disperindag', [
             'title' => 'Data Bahan Pokok',
             'data' => $data
         ]);
@@ -21,7 +21,7 @@ class BpokokController extends Controller
     public function create()
     {
         $bahan_pokok = JenisBahanPokok::all();
-        return view('admin.disperindag.admin-create-bpokok-disperindag', [
+        return view('pegawai.disperindag.pegawai-create-bpokok-disperindag', [
             'title' => 'Tambah Data',
             'items' => $bahan_pokok,
         ]);
@@ -29,11 +29,9 @@ class BpokokController extends Controller
 
     public function edit(JenisBahanPokok $bahan_pokok)
     {
-        return view('admin.disperindag.admin-update-bpokok-disperindag', [
+        return view('pegawai.disperindag.pegawai-update-bpokok-disperindag', [
             'title' => 'Ubah Data',
             'data' => $bahan_pokok,
         ]);
     }
-
-    
 }

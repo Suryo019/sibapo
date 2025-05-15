@@ -17,8 +17,10 @@ use App\Http\Controllers\Web\Disperindag\BpokokController;
 use App\Http\Controllers\Web\PerikananDashboardController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
+use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
+use App\Http\Controllers\Web\Pegawai\PegawaiBahanPokokController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
 
@@ -110,6 +112,15 @@ Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->na
     'destroy' => 'pegawai.disperindag.destroy',
 ]);
 Route::get('/pegawai/disperindag-detail', [PegawaiDisperindagController::class, 'dppDetail'])->name('pegawai.disperindag.detail');
+
+//pasar
+Route::get('/pegawai/disperindag/lihatpasar', [PegawaiPasarController::class, 'index'])->name('pegawai.disperindag.pasar.index');
+Route::get('/pegawai/disperindag/pasar/create', [PegawaiPasarController::class, 'create'])->name('pegawai.disperindag.pasar.create');
+Route::get('/pegawai/disperindag/pasar/edit/{pasar:id}', [PegawaiPasarController::class, 'edit'])->name('pegawai.disperindag.pasar.edit');
+//bahan pokok
+Route::get('/pegawai/disperindag/lihatbahanpokok', [PegawaiBahanPokokController::class, 'index'])->name('pegawai.disperindag.bahanpokok.index');
+Route::get('/pegawai/disperindag/bahanpokok/create', [PegawaiBahanPokokController::class, 'create'])->name('pegawai.disperindag.bahanpokok.create');
+Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahanPokokController::class, 'edit'])->name('pegawai.disperindag.bahanpokok.edit');
 
 
 // DKPP
@@ -211,6 +222,7 @@ Route::resource('bahan_pokok', BpokokController::class)->names([
 ]);
 
 Route::get('/bahan_pokok-detail', [BpokokController::class, 'detail'])->name('bahan_pokok.detail');
+
 
 //Pimpinan 
 Route::get('/pimpinan/dashboard', [PimpinanController::class,'index'] )->name('pimpinan.dashboard');

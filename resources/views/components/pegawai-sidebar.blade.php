@@ -20,7 +20,19 @@ $pegawai = match(true) {
   
         {{-- Link --}}
         <ul>
-            <x-pegawai-sidebar-link 
+          <x-pegawai-sidebar-link 
+                href="{{ route('pegawai.' . $pegawai . '.dashboard') }}" 
+                icon="bi-house-door-fill"
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                Dashboard
+          </x-pegawai-sidebar-link>
+
+          <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA DINAS </span>
+
+          <x-pegawai-disperindag-sidebar-link>
+
+          </x-pegawai-disperindag-sidebar-link>
+            {{-- <x-pegawai-sidebar-link 
                 href="{{ route('pegawai.' . $pegawai . '.dashboard') }}" 
                 icon="bi-house-door-fill"
                 class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
@@ -46,7 +58,7 @@ $pegawai = match(true) {
                 icon="bi-pencil-fill" 
                 class="hover:bg-pink-600 py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/*/edit') ? 'bg-pink-450 text-yellow-300 block' : 'hidden' }}">
                 Ubah Data
-            </x-pegawai-sidebar-link>  
+            </x-pegawai-sidebar-link>   --}}
             
             <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
               <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">
