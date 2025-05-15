@@ -95,8 +95,10 @@ class TamuController extends Controller
 
     public function metadata()
     {
+        $bahan_pokok = JenisBahanPokok::pluck('nama_bahan_pokok');
         return view('tamu.tamu-metadata', [
             'title' => 'Metadata',
+            'bahanPokok' => $bahan_pokok,
         ]);
     }
 

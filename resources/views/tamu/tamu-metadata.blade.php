@@ -8,21 +8,9 @@
       <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6">Komoditas</h2>
       
       <ol class="list-decimal list-inside space-y-2 text-gray-800 text-sm sm:text-base font-bold">
-        <li>Beras Bengawan (Premium)</li>
-        <li>Beras IR - 64 (Medium)</li>
-        <li>Cabai Merah Besar</li>
-        <li>Cabai Rawit</li>
-        <li>Bawang Merah</li>
-        <li>Bawang Putih</li>
-        <li>Minyak Goreng Kemasan</li>
-        <li>Daging Sapi Murni</li>
-        <li>Daging Ayam Broiler</li>
-        <li>Gula Pasir</li>
-        <li>Telur Ayam Ras / Petelur</li>
-        <li>Tepung Terigu</li>
-        <li>Tomat</li>
-        <li>Kentang</li>
-        <li>Wortel</li>
+        @foreach ($bahanPokok as $item)
+          <li>{{ $item }}</li>
+        @endforeach
       </ol>
     </div>
   </div>
