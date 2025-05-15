@@ -140,10 +140,10 @@ Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->na
 
 
 // DTPHP
-Route::get('/pegawai/dtphp/dashboard', [DtphpController::class, 'dashboard'])
+Route::get('/pegawai/dtphp/dashboard', [PegawaiDtphpController::class, 'dashboard'])
     ->name('pegawai.dtphp.dashboard');
     
-Route::get('/pegawai/dtphp/dashboard-panen', [DtphpController::class, 'dashboardPanen'])
+Route::get('/pegawai/dtphp/dashboard-panen', [PegawaiDtphpController::class, 'dashboardPanen'])
     ->name('pegawai.dtphp.dashboard.panen');
 
 Route::resource('/pegawai/dtphp', PegawaiDtphpController::class)->names([
@@ -163,7 +163,7 @@ Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'
 
 
 // PERIKANAN
-Route::get('/pegawai/perikanan/dashboard', [PerikananController::class, 'dashboard'])
+Route::get('/pegawai/perikanan/dashboard', [PegawaiPerikananController::class, 'dashboard'])
     ->name('pegawai.perikanan.dashboard');
 
 Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names([

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Web\Pegawai;
 
 use App\Models\DP;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiPerikananController extends Controller
 {
@@ -33,6 +36,117 @@ class PegawaiPerikananController extends Controller
             'data' => $dp,
             'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
             'periods' => $periodeUnikNama,
+        ]);
+    }
+
+    // Dashboard
+    public function dashboard()
+    {
+        // Indikator Jumlah
+        $jml_ikan = DP::select(DB::raw('LOWER(TRIM(jenis_ikan)) AS jenis_normal'))
+            ->distinct()
+            ->get()
+            ->count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', 'dp')
+            ->count();
+        $jml_produksi = DP::sum('ton_produksi');
+
+
+        // Tabel Perubahan
+        $now = Carbon::now();
+
+        $bulanIni = DP::whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_ikan, SUM(ton_produksi) as total_volume')
+            ->groupBy('jenis_ikan')
+            ->get();
+
+        $bulanLalu = DP::whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_ikan, SUM(ton_produksi) as total_volume')
+            ->groupBy('jenis_ikan')
+            ->get()
+            ->keyBy('jenis_ikan'); 
+    
+        $dataTabel = [];
+    
+        foreach ($bulanIni as $index => $item) {
+            $jenisIkan = $item->jenis_ikan;
+            $volumeIni = $item->total_volume;
+            $volumeLalu = $bulanLalu[$jenisIkan]->total_volume ?? 0;
+            $selisih = $volumeIni - $volumeLalu;
+            $ikon = $selisih >= 0 ? 'twemoji:up-arrow' : 'twemoji:down-arrow';
+    
+            $dataTabel[] = [
+                'no' => $index + 1,
+                'jenisIkan' => $jenisIkan,
+                'icon' => $ikon,
+                'volume' => $volumeIni,
+                'perubahan' => $selisih,
+            ];
+        }        
+
+        $collectionDataTabel = collect($dataTabel);
+
+        $perPage = 5;
+        $currentPageData = LengthAwarePaginator::resolveCurrentPage('page_data');
+        $currentItemsData = $collectionDataTabel->slice(($currentPageData - 1) * $perPage, $perPage);
+        
+        $paginatorDataTabel = new LengthAwarePaginator(
+            $currentItemsData,
+            $collectionDataTabel->count(),
+            $perPage,
+            $currentPageData,
+            ['path' => request()->url(), 'pageName' => 'page_data']
+        );
+
+        $perikanan = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->whereHas('user.role', function ($query) {
+                    $query->where('role', 'dp');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
+                    $item->nama_user = $item->user->name ?? '-';
+
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah jenis ikan' . $item->komoditas,
+                        'ubah' => 'Mengubah jenis ikan' . $item->komoditas,
+                        default => 'Menghapus jenis ikan' . $item->komoditas,
+                    };
+
+                    return $item;
+                });
+
+        $aktivitas = collect()
+            ->concat($perikanan)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('pegawai.perikanan.pegawai-perikanan-dashboard', [
+            'title' => 'Dashboard Dinas Perikanan',
+            'jmlIkan' => $jml_ikan,
+            'jmlPegawai' => $jml_pegawai,
+            'jmlProduksi' => $jml_produksi,
+            'dataTabel' => $paginatorDataTabel,
+            'aktivitas' => $paginator,
         ]);
     }
 
