@@ -1,5 +1,6 @@
-<x-pegawai-layout>
+{{-- @dd($jmlPegawai) --}}
 
+<x-pegawai-layout>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-2">
         <!-- Bahan Pokok -->
         <div class="flex w-full h-full bg-white border-[3px] border-gray-200 rounded-lg">
@@ -8,7 +9,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Bahan Pokok</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlBahanPokok }}</p>
           </div>
         </div>
       
@@ -19,7 +20,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Pasar</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlPasar }}</p>
           </div>
         </div>
       
@@ -30,7 +31,7 @@
           </div>
           <div class="flex flex-col justify-center px-4">
             <p class="text-xl text-black font-bold mb-1">Jumlah Pegawai Dinas Disperindag</p>
-            <p class="text-3xl text-gray-900 font-bold text-center">30</p>
+            <p class="text-3xl text-gray-900 font-bold text-center">{{ $jmlPegawai }}</p>
           </div>
         </div>
       </div>
@@ -82,36 +83,35 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
-          <tr class="border-t">
-            <td class="p-2">3 Minggu yang lalu</td>
-            <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-            <td class="p-2">Menambah komoditas tanaman</td>
-            <td class="p-2">Ismail bin Mail</td>
-            <td class="p-2">Disperindag</td>
-          </tr>
+          @foreach ($aktivitas as $item)
+            @php
+                $ikonAksi = [
+                    'buat' => 'bi-plus-circle-fill',
+                    'ubah' => 'bi-pencil-square',
+                    'hapus' => 'bi-trash-fill',
+                ];
+                $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill'
+            @endphp
+              
+              <tr class="border-t">
+                <td class="p-2">{{ $item->waktu }}</td>
+                <td class="p-2 flex justify-center">
+                    <div class="bg-yellow-500 rounded flex justify-center items-center w-10 h-10 p-2">
+                        <i class="bi {{ $ikon }} text-white"></i>
+                    </div>
+                </td>
+                <td class="p-2">{{ $item->aktivitas }}</td>
+                <td class="p-2">{{ $item->nama_user }}</td>
+                <td class="p-2">{{ $item->dinas }}</td>
+            </tr>
+          @endforeach
         </tbody>
       </table>
+
+      <!-- Link Paginasi -->
+      <div class="d-flex justify-content-center">
+          {{ $aktivitas->links() }}
+      </div>
     </div>
   
   </x-pegawai-layout>>

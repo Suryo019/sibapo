@@ -13,14 +13,8 @@ class DTPHP extends Model
 
     protected $table = 'dinas_tanaman_pangan_holtikultural_perkebunan';
 
-    protected $fillable = [
-        'user_id',
-        'jenis_komoditas', 
-        'tanggal_input', 
-        'ton_volume_produksi', 
-        'hektar_luas_panen'
-    ];
-
+    protected $guarded = ['id'];
+    
     public function user() {
         return $this->belongsTo(User::class);
     }

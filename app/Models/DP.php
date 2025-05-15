@@ -13,12 +13,7 @@ class DP extends Model
 
     protected $table = 'dinas_perikanan';
 
-    protected $fillable = [
-        'user_id',
-        'tanggal_input', 
-        'jenis_ikan', 
-        'ton_produksi'
-    ];
+    protected $guarded = ['id'];
 
     public function user() {
         return $this->belongsTo(User::class);

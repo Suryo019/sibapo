@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DPP;
+use App\Models\User;
 use App\Models\Pasar;
 use App\Models\BahanPokok;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiDisperindagController extends Controller
 {
@@ -36,6 +38,63 @@ class PegawaiDisperindagController extends Controller
             'data' => $dpp,
             'markets' => $markets,
             'periods' => $periodeUnikNama,
+        ]);
+    }
+
+    public function dashboard()
+    {
+        Carbon::setLocale('id');
+        
+        $jml_bahan_pokok = JenisBahanPokok::count();
+        $jml_pasar = Pasar::count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', '=', 'disperindag')
+            ->count();
+
+        $disperindag = DPP::withTrashed()
+            ->select('user_id', 'jenis_bahan_pokok_id', 'aksi', 'created_at', 'updated_at', 'deleted_at')
+            ->with(['user:id,name', 'jenis_bahan_pokok:id,nama_bahan_pokok'])
+            ->get()
+            ->map(function ($item) {
+                $item->dinas = 'Disperindag';
+                $item->nama_user = $item->user->name ?? '-';
+
+                $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                $nama_bahan = $item->jenis_bahan_pokok->pluck('nama_bahan_pokok')->join(', ');
+                $item->aktivitas = match($item->aksi) {
+                    'buat' => 'Menambah bahan pokok ' . $nama_bahan,
+                    'ubah' => 'Mengubah bahan pokok ' . $nama_bahan,
+                    default => 'Menghapus bahan pokok ' . $nama_bahan,
+                };
+                return $item;
+            });
+
+        $aktivitas = collect()
+            ->concat($disperindag)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+
+        return view('pegawai.disperindag.pegawai-disperindag-dashboard', [
+            'title' => 'Dashboard',
+            'jmlBahanPokok' => $jml_bahan_pokok,
+            'jmlPasar' => $jml_pasar,
+            'jmlPegawai' => $jml_pegawai,
+            'aktivitas' => $paginator,
         ]);
     }
 

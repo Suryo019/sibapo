@@ -32,7 +32,7 @@ class AkunDinasController extends Controller
             $validated['password'] = bcrypt($validated['password']);
     
             $data = User::create($validated);
-            $user = User::find($data->id)->with('role');;
+            $user = User::with('role')->find($data->id);
 
             return response()->json([
                 'message' => 'Akun berhasil disimpan',

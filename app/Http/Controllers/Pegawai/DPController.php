@@ -91,7 +91,7 @@ class DPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
             
-            $request->validate([
+            $validated = $request->validate([
                 'tanggal_input' => 'required|date',
                 'jenis_ikan' => 'required|string',
                 'ton_produksi' => 'required|numeric'
@@ -99,7 +99,7 @@ class DPController extends Controller
 
             $validated['aksi'] = 'ubah';
 
-            $dp->update($request->all());
+            $dp->update($validated);
             
             return response()->json([
                 'message' => 'Data berhasil diperbarui',

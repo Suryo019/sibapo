@@ -98,9 +98,7 @@ Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('pe
 // PEGAWAI
 
 // DISPERINDAG
-Route::get('/pegawai/disperindag/dashboard', function () {
-    return view('pegawai.disperindag.pegawai-disperindag-dashboard');
-})->name('pegawai.disperindag.dashboard');
+Route::get('/pegawai/disperindag/dashboard', [PegawaiDisperindagController::class, 'dashboard'])->name('pegawai.disperindag.dashboard');
 
 Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->names([
     'index' => 'pegawai.disperindag.index',

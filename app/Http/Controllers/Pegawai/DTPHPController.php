@@ -78,7 +78,7 @@ class DTPHPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
     
-            $request->validate([
+            $validated = $request->validate([
                 'jenis_komoditas' => 'sometimes|string',
                 'tanggal_input' => 'sometimes|date',
                 'ton_volume_produksi' => 'sometimes|numeric',
@@ -87,7 +87,7 @@ class DTPHPController extends Controller
 
             $validated['aksi'] = 'ubah';
     
-            $dtphp->update($request->all());
+            $dtphp->update($validated);
     
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
