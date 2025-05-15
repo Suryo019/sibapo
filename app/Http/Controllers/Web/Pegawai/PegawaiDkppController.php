@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
 use App\Models\DKPP;
+use App\Models\User;
+use App\Models\Pasar;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiDkppController extends Controller
 {
@@ -28,6 +33,90 @@ class PegawaiDkppController extends Controller
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             // 'data' => $data,
             'periods' => $periodeUnikNama,
+        ]);
+    }
+
+    public function dashboard()
+    {
+        Carbon::setLocale('id');
+
+        $mingguSekarang = Carbon::now()->weekOfMonth;
+        $mingguLalu = Carbon::now()->subWeek()->weekOfMonth;
+
+        $komoditasList = DKPP::select('jenis_komoditas')->pluck('jenis_komoditas');
+
+        // dd($komoditasList);
+
+        $dataSelisih = [];
+
+        foreach ($komoditasList as $komoditas) {
+            $dataMingguSekarang = DB::table('dinas_ketahanan_pangan_peternakan')
+                ->where('minggu', $mingguSekarang)
+                ->where('jenis_komoditas', $komoditas)
+                ->get();
+            $avgMingguSekarang = $dataMingguSekarang->avg('ton_neraca_mingguan');
+
+            $dataMingguLalu = DB::table('dinas_ketahanan_pangan_peternakan')
+                ->where('minggu', $mingguLalu)
+                ->where('jenis_komoditas', $komoditas)
+                ->get();
+            $avgMingguLalu = $dataMingguLalu->avg('ton_neraca_mingguan');
+        
+            $selisih = $avgMingguSekarang - $avgMingguLalu;
+            $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
+            
+            $dataSelisih[] = [
+                'komoditas' => $komoditas,
+                'keterangan_minggu_sekarang' => $dataMingguSekarang[0]->keterangan ?? 'Tidak ada data',
+                'keterangan_minggu_lalu' => $dataMingguLalu[0]->keterangan ?? 'Tidak ada data',
+                'status' => $status,
+            ];
+        }
+
+        $dkpp = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->whereHas('user.role', function ($query) {
+                    $query->where('role', 'dkpp');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
+                    $item->nama_user = $item->user->name ?? '-';
+
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah komoditas ' . $item->komoditas,
+                        'ubah' => 'Mengubah komoditas ' . $item->komoditas,
+                        default => 'Menghapus komoditas ' . $item->komoditas,
+                    };
+
+                    return $item;
+                });
+
+        $aktivitas = collect()
+            ->concat($dkpp)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+
+        return view('pegawai.dkpp.pegawai-dkpp-dashboard', [
+            'title' => 'Dashboard',
+            'dataSelisih' => $dataSelisih,
+            'aktivitas' => $paginator,
         ]);
     }
 

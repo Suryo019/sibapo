@@ -42,7 +42,7 @@
       <!-- table -->
       <div class="bg-white border rounded-lg p-4 mb-8 mt-4">
         <table class="w-full text-center text-sm">
-          <thead >
+          <thead>
             <tr>
               <th class="p-2">No</th>
               <th class="p-2">Bahan Pokok</th>
@@ -51,24 +51,12 @@
               <th class="p-2">Perubahan harga</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-t">
-              <td class="p-2">1</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="twemoji:up-arrow" class=" text-xl"></iconify-icon></td>
-              <td class="p-2">Rp. 10.000</td>
-              <td class="p-2">+ Rp. 10.000</td>
-            </tr>
-            <tr class="border-t">
-              <td class="p-2">4</td>
-              <td class="p-2">beras</td>
-              <td class="p-2"><iconify-icon icon="flat-color-icons:plus" class=" text-xl"></iconify-icon></td>
-              <td class="p-2">Rp. 10.000</td>
-              <td class="p-2">-Rp. 1.500</td>
-            </tr>
+          <tbody id="tabel-komoditas">
+            {{-- PAKE AJAAAXX --}}
           </tbody>
         </table>
       </div>
+
   
     <!-- table -->
     <div class="bg-white border rounded-lg p-4">
@@ -115,3 +103,45 @@
     </div>
   
   </x-pegawai-layout>>
+
+<script>
+
+$.ajax({
+  type: 'GET',
+  url: "{{ route('api.beranda.index') }}",
+  success: function(response) {
+    const data = response.data;
+    const tbody = document.getElementById("tabel-komoditas");
+
+    data.forEach((item, index) => {
+      let ikon = '';
+      if (item.selisih > 0) {
+        ikon = `<div class='bg-green-600 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-up-circle-fill text-white"></i></div>`;
+      } else if (item.selisih < 0) {
+        ikon = `<div class='bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-down-circle-fill text-white"></i></div>`;
+      } else {
+        ikon = `<div class='bg-gray-400 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-dash-circle-fill text-white"></i></div>`
+      }
+
+      const hargaHariIni = item.rata_rata_hari_ini ? `Rp. ${item.rata_rata_hari_ini.toLocaleString()}` : '-';
+      const selisih = item.selisih > 0 
+        ? `+ Rp. ${item.selisih.toLocaleString()}`
+        : item.selisih < 0
+          ? `- Rp. ${Math.abs(item.selisih).toLocaleString()}`
+          : 'Rp. 0';
+
+      const tr = `
+        <tr class="border-t">
+          <td class="p-2">${index + 1}</td>
+          <td class="p-2">${item.komoditas}</td>
+          <td class="p-2">${ikon}</td>
+          <td class="p-2">${hargaHariIni}</td>
+          <td class="p-2">${selisih}</td>
+        </tr>
+      `;
+      tbody.innerHTML += tr;
+    });
+  }
+});
+
+</script>

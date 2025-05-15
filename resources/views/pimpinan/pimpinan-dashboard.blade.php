@@ -80,10 +80,10 @@
           @foreach ($aktivitas as $item)
             @php
                 $warnaDinas = [
-                    'Disperindag' => 'bg-yellow-500',
+                    'DISPERINDAG' => 'bg-yellow-500',
                     'DKPP'        => 'bg-red-500',
                     'DTPHP'       => 'bg-green-600',
-                    'Perikanan'   => 'bg-teal-500',
+                    'PERIKANAN'   => 'bg-teal-500',
                 ];
 
                 $ikonAksi = [
@@ -116,7 +116,6 @@
           {{ $aktivitas->links() }}
       </div>
     </div>
-  
   </x-pimpinan-layout>>
 
 <script>

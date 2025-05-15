@@ -1,4 +1,4 @@
-{{-- @dd($grafik_dkpp) --}}
+{{-- @dd($aktivitas) --}}
 
 <x-admin-layout>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-4">
@@ -54,6 +54,7 @@
       <!-- Chart Placeholder -->
       <div class="col-span-2 bg-white border rounded-lg p-4">
         <div class="w-full h-64 bg-gray-100 flex items-center justify-center text-gray-400" id="chart">
+          {{-- PAKE AJAX YGY --}}
         </div>
       </div>
   
@@ -93,10 +94,10 @@
           @foreach ($aktivitas as $item)
             @php
                 $warnaDinas = [
-                    'Disperindag' => 'bg-yellow-500',
+                    'DISPERINDAG' => 'bg-yellow-500',
                     'DKPP'        => 'bg-red-500',
                     'DTPHP'       => 'bg-green-600',
-                    'Perikanan'   => 'bg-teal-500',
+                    'PERIKANAN'   => 'bg-teal-500',
                 ];
 
                 $ikonAksi = [

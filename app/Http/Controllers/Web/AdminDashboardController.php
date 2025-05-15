@@ -113,11 +113,13 @@ class AdminDashboardController extends Controller
     {
         Carbon::setLocale('id');
 
+        // dd(Riwayat::with('user')->first());
+
         $riwayat = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
                 ->with(['user:id,name,role_id', 'user.role:id,role'])
                 ->get()
                 ->map(function ($item) {
-                    $item->dinas = optional($item->user->role)->role ?? '-';
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
                     $item->nama_user = $item->user->name ?? '-';
 
                     $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
@@ -131,7 +133,11 @@ class AdminDashboardController extends Controller
 
                     return $item;
                 });
+        $aktivitas = collect()
+            ->concat($riwayat)
+            ->sortByDesc('waktu_utama')
+            ->values();
 
-        return $riwayat;
+        return $aktivitas;
     }
 }

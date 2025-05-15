@@ -74,7 +74,7 @@ Route::delete('/makundinas/{id}', [AkunDinasController::class, 'destroy']);
 
 
 //Read Data Harga Komoditas
-Route::get('/', [HargaKomoditasController::class, 'index']);
+Route::get('/', [HargaKomoditasController::class, 'index'])->name('api.beranda.index');
 Route::get('/komoditas', [HargaKomoditasController::class, 'komoditas_filter'])->name('api.komoditas');
 Route::get('/pasar/search', [HargaKomoditasController::class, 'pasar_filter'])->name('api.pasar.search');
 Route::get('/sorting_items', [HargaKomoditasController::class, 'render_sorting_child_items'])->name('api.sorting_items');

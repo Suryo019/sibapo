@@ -10,7 +10,7 @@
         {{-- Link --}}
         <ul class="">
           <!-- Dashboard -->
-          <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan-dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
+          <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
             <a href="{{ route('pimpinan.dashboard') }}" class="pl-4 gap-5 w-full flex items-center">
               <iconify-icon icon="bi:house-door-fill" class="text-xl"></iconify-icon>
               Dashboard
@@ -19,28 +19,28 @@
           
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.disperindag')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan-disperindag') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/disperindag') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="mage:basket-fill" class="text-xl"></iconify-icon>
                 DISPERINDAG
           </x-pimpinan-sidebar-link>
 
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.dkpp')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan-dkpp') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dkpp') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="healthicons:plantation-worker-alt" class="text-xl"></iconify-icon>
                 DKPP
           </x-pimpinan-sidebar-link>
 
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.dtphp-volume')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan-dtphp-volume') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dtphp-volume') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="carbon:agriculture-analytics" class="text-xl"></iconify-icon>
                 DTPHP 
           </x-pimpinan-sidebar-link>
 
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.perikanan')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan-perikanan') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/perikanan') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="majesticons:fish" class="text-xl"></iconify-icon>
                 Perikanan
           </x-pimpinan-sidebar-link>
