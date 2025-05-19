@@ -137,13 +137,13 @@ class PegawaiDisperindagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dpp $disperindag)
+    public function edit(Dpp $data)
     {
         $pasar = Pasar::all();
         $bahan_pokok = JenisBahanPokok::all();
         return view('pegawai.disperindag.pegawai-update-disperindag', [
             'title' => 'Ubah Data',
-            'data' => $disperindag,
+            'data' => $data,
             'markets' => $pasar,
             'items' => $bahan_pokok,
         ]);
