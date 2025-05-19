@@ -2,7 +2,7 @@
 <x-pegawai-layout>
     <div class="w-full flex flex-wrap justify-between gap-4">
         <!-- Search bar -->
-        <x-search></x-search>
+        <x-search>Cari bahan pokok...</x-search>
     
         {{-- Filter --}}
         <div class="flex justify-end max-md:w-full">
@@ -15,8 +15,8 @@
                     <div class="flex flex-col">
                         <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
                         <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
-                            <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
-                            <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
+                            <option value="asc" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
+                            <option value="desc" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
                         </select>
                     </div>
 
@@ -38,7 +38,7 @@
 
                     <div class="w-full flex justify-end gap-3 mt-10">
                         <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                        <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                        <button type="button" id="submitBtn" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                     </div>
                 </form>
             </x-filter-modal>
@@ -49,7 +49,7 @@
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
     
         <div class="w-full flex items-center gap-2 mb-4 flex-wrap">
-            <a href="{{ route('disperindag.index') }}" class="text-dark flex-shrink-0">
+            <a href="{{ route('pegawai.disperindag.index') }}" class="text-dark flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>                      
@@ -72,7 +72,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y" id="comoditiesTbody">
-                        {{-- Pake ajax ngisinya --}}
+                        {{-- Pake ajax --}}
                     </tbody>
                 </table>
             </div>
@@ -117,7 +117,10 @@
     const header_pasar = $('#header_pasar');
     const header_periode = $('#header_periode');
     const header_data = $('#header_data');
+    const pilih_urutan = $('#pilih_urutan');
     const modal = $("#modal");
+    const search = $('#search');
+    
 
     // Trigger Filter Modal
     function toggleModal() {
@@ -128,6 +131,9 @@
 
     $("#filterBtn").on("click", function() {
         $("#filterModal").toggleClass("hidden");
+    });
+    $("#submitBtn").on("click", function() {
+        filter("/api/dpp-filter");
     });
     // End Trigger Filter Modal
 
@@ -142,32 +148,32 @@
 
         const bahanPokok = $(this).data("bahan-pokok");
 
-    $.ajax({
-        type: "GET",
-        url: `/api/dpp/${bahanPokok}`,
-        data: {
-            periode: periode.val(),
-            pasar: pilih_pasar.val(),
-        },
-        success: function (response) {
-            const data = response.data;
-            
-            $("#editDataList").empty();
-                data.forEach((element) => {
-                    let listCard = `
-                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
-                                <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                            </div>
-                            <a href="/disperindag/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
-                        </div>
-                    `;
-                    $("#editDataList").append(listCard);
-                });
+        $.ajax({
+            type: "GET",
+            url: `/api/dpp/${bahanPokok}`,
+            data: {
+                periode: periode.val(),
+                pasar: pilih_pasar.val(),
             },
+            success: function (response) {
+                const data = response.data;
+                
+                $("#editDataList").empty();
+                    data.forEach((element) => {
+                        let listCard = `
+                            <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
+                                    <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
+                                    <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
+                                    <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
+                                </div>
+                                <a href="/pegawai/disperindag/data/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                            </div>
+                        `;
+                        $("#editDataList").append(listCard);
+                    });
+                },
             error: function (xhr) {
                 console.log(xhr.responseText);
             },
@@ -222,10 +228,12 @@
             $.ajax({
                 type: 'DELETE',
                 url: `/api/dpp/${dataId}`,
-                success: function(data) {
+                success: function(response) {
+                    console.log(response);
+                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_bahan_pokok} telah dihapus.`,
+                        text: `Data ${response.data.nama_bahan_pokok} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
@@ -250,17 +258,20 @@
     });
 
     // Filter Bahan Pokok
-    filter("/api/dpp-filter", pilih_pasar.val());
+    filter("/api/dpp-filter");
 
-    function filter(url, selectedValue) {
+    function filter(url) {
         $.ajax({
             type: "GET",
             url: url,
             data: {
-                data: selectedValue,
+                data: pilih_pasar.val(),
                 periode: periode.val(),
+                sort: pilih_urutan.val(),
             },
             success: function (response) {
+                // console.log(response);
+                
                 const data = response.data;
                 const jumlahHari = response.jumlahHari;
 
@@ -314,7 +325,7 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td class="px-2 py-2 text-center whitespace-nowrap">${row.jenis_bahan_pokok}</td>
+                                <td class="px-2 py-2 text-center whitespace-nowrap jenis_bahan_pokok_col">${row.jenis_bahan_pokok}</td>
                         `;
 
                         for (let i = 1; i <= jumlahHari; i++) {
@@ -339,6 +350,19 @@
             },
         });
     }
-    
 
+    search.on("input", function () {
+        const input_value = $(this).val().toLowerCase();
+        let jenis_bahan_pokok_col = $(".jenis_bahan_pokok_col");
+
+        jenis_bahan_pokok_col.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
+    });
 </script>

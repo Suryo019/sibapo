@@ -36,7 +36,7 @@ class DisperindagController extends Controller
         $markets = Pasar::select('nama_pasar')->get();
 
         return view('admin.disperindag.admin-disperindag', [
-            'title' => 'Data Aktivitas Harga Pasar',
+            'title' => 'DATA AKTIVITAS HARGA PASAR',
             'data' => $dpp,
             'markets' => $markets,
             'periods' => $periodeUnikNama,

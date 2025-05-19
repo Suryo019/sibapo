@@ -81,16 +81,16 @@
 
         {{-- Kelola Data Disperindag --}}
         <li class="pl-7 py-2"  id="kelola_data">
-            <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/data*') ? 'text-yellow-300' : '' }} md:bg-transparent " >
+            <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? 'text-yellow-300' : '' }} md:bg-transparent " >
                 <span class="flex items-center gap-5 text-sm">
                     <iconify-icon icon="ooui:chart" class="text-xl"></iconify-icon>
                     Kelola Data
                 </span>
-                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/data*') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }} scale-50 pr-5"></i>
+                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }} scale-50 pr-5"></i>
             </div>
         </li>
 
-        <ul class=" mt-1 {{ request()->is('pegawai/disperindag/data*') ? 'block' : 'hidden' }}" id="dropdown-content-kelola-data">
+        <ul class=" mt-1 {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? 'block' : 'hidden' }}" id="dropdown-content-kelola-data">
             @php
                 $isView = request()->url() === route('pegawai.disperindag.index') || request()->url() === route('pegawai.disperindag.detail');
                 $isCreate = request()->url() === route('pegawai.disperindag.create');

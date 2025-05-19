@@ -98,7 +98,7 @@
                     text: `Data ${response.data.nama_bahan_pokok} berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
-                    window.location.href = "{{ route('disperindag.detail') }}";
+                    window.location.href = "{{ route('pegawai.disperindag.detail') }}";
                 });
             },
             error: function(xhr) {
