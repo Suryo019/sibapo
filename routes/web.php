@@ -14,8 +14,9 @@ use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
-use App\Http\Controllers\Web\PerikananDashboardController;
+use App\Http\Controllers\Web\Dtphp\JenisTanamanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
+use App\Http\Controllers\Web\Perikanan\JenisIkanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
@@ -232,3 +233,31 @@ Route::get('/pimpinan/dkpp', [PimpinanController::class,'dkpp'] )->name('pimpina
 Route::get('/pimpinan/dtphp-panen', [PimpinanController::class,'panen'] )->name('pimpinan.dtphp-panen');
 Route::get('/pimpinan/dtphp-volume', [PimpinanController::class,'volume'] )->name('pimpinan.dtphp-volume');
 Route::get('/pimpinan/perikanan', [PimpinanController::class,'perikanan'] )->name('pimpinan.perikanan');
+
+
+// JenisIkan
+Route::resource('jenis-ikan', JenisIkanController::class)->names([
+    'index' => 'jenis-ikan.index',
+    'create' => 'jenis-ikan.create',
+    'store' => 'jenis-ikan.store',
+    'show' => 'jenis-ikan.show',
+    'edit' => 'jenis-ikan.edit',
+    'update' => 'jenis-ikan.update',
+    'destroy' => 'jenis-ikan.destroy',
+]);
+
+Route::get('/jenis-ikan-detail', [JenisIkanController::class, 'detail'])->name('jenis-ikan.detail');
+
+
+// JenisTanaman
+Route::resource('jenis-tanaman', JenisTanamanController::class)->names([
+    'index' => 'jenis-tanaman.index',
+    'create' => 'jenis-tanaman.create',
+    'store' => 'jenis-tanaman.store',
+    'show' => 'jenis-tanaman.show',
+    'edit' => 'jenis-tanaman.edit',
+    'update' => 'jenis-tanaman.update',
+    'destroy' => 'jenis-tanaman.destroy',
+]);
+
+Route::get('/jenis-tanaman-detail', [JenisTanamanController::class, 'detail'])->name('jenis-tanaman.detail');

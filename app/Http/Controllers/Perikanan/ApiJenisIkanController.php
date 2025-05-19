@@ -1,54 +1,52 @@
 <?php
 
-namespace App\Http\Controllers\Disperindag;
+namespace App\Http\Controllers\Perikanan;
 
-use App\Models\Pasar;
+use App\Models\JenisIkan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 
-class ApiPasarController extends Controller
+class ApiJenisIkanController extends Controller
 {
     public function index()
     {
-        $data = Pasar::with('dpp')->get();
+        $data = JenisIkan::with('dp')->get();
         return response()->json($data);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_pasar' => 'required|string|max:255',
+            'nama_ikan' => 'required|string|max:255',
         ]);
-
-        $validated['nama_pasar'] = 'Pasar ' . trim($validated['nama_pasar']);
         
-        $pasar = Pasar::create($validated);
+        $nama_ikan = JenisIkan::create($validated);
 
         return response()->json([
-            'message' => 'Pasar berhasil ditambahkan',
-            'data' => $pasar
+            'message' => 'Jenis Ikan berhasil ditambahkan',
+            'data' => $nama_ikan
         ], 201);
     }
 
     public function update(Request $request, $id)
     {
         try {
-            $pasar = Pasar::find($id);
+            $nama_ikan = JenisIkan::find($id);
 
-            if (!$pasar) {
+            if (!$nama_ikan) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
             $validated = $request->validate([
-                'nama_pasar' => 'sometimes|required|string|max:255'
+                'nama_ikan' => 'sometimes|required|string|max:255'
             ]);
 
-            $pasar->update($validated);
+            $nama_ikan->update($validated);
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
-                'data' => $pasar
+                'data' => $nama_ikan
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -65,14 +63,14 @@ class ApiPasarController extends Controller
 
     public function destroy($id)
     {
-        $pasar = Pasar::find($id);
+        $nama_ikan = JenisIkan::find($id);
 
-        if (!$pasar) {
-            return response()->json(['message' => 'Pasar tidak ditemukan'], 404);
+        if (!$nama_ikan) {
+            return response()->json(['message' => 'Jenis Ikan tidak ditemukan'], 404);
         }
 
-        $pasar->delete();
+        $nama_ikan->delete();
 
-        return response()->json(['message' => 'Pasar berhasil dihapus']);
+        return response()->json(['message' => 'Jenis Ikan berhasil dihapus']);
     }
 }

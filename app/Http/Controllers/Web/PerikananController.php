@@ -28,12 +28,12 @@ class PerikananController extends Controller
         $dp = DP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->distinct()
-            ->pluck('jenis_ikan');
+            ->pluck('jenis_ikan_id');
 
         return view('admin.perikanan.admin-perikanan', [
             'title' => 'Data Aktivitas Produksi Ikan',
             'data' => $dp,
-            'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
+            'fishes' => DP::select('jenis_ikan_id')->distinct()->pluck('jenis_ikan_id'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -106,12 +106,12 @@ class PerikananController extends Controller
 
         $dpProduksiHari = DP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif])
             ->get()
-            ->groupBy('jenis_ikan')
+            ->groupBy('jenis_ikan_id')
             ->map(function ($items) {
                 $row = [
                     'id' => $items[0]->id,
                     'user_id' => $items[0]->user_id,
-                    'jenis_ikan' => $items[0]->jenis_ikan,
+                    'jenis_ikan_id' => $items[0]->jenis_ikan_id,
                     'ton_produksi' => $items[0]->ton_produksi,
                     'data_asli' => $items, // Untuk debugging/detail
                 ];
@@ -125,10 +125,10 @@ class PerikananController extends Controller
             })->values();
 
         $dpProduksiBulanan = DP::get()
-            ->groupBy('jenis_ikan')
+            ->groupBy('jenis_ikan_id')
             ->map(function ($items) {
                 $row = [
-                    'jenis_ikan' => $items[0]->jenis_ikan,
+                    'jenis_ikan_id' => $items[0]->jenis_ikan_id,
                     'produksi_per_bulan' => [],
                 ];
         
@@ -147,7 +147,7 @@ class PerikananController extends Controller
             'title' => 'Dinas Perikanan',
             // 'data' => $dpProduksiHari,
             'data' => $dpProduksiBulanan,
-            'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
+            'fishes' => DP::select('jenis_ikan_id')->distinct()->pluck('jenis_ikan_id'),
             'periods' => $periodeUnikNama,
             'numberPeriods' => $periodeUnikAngka,
             'daysInMonth' => $jumlahHari,

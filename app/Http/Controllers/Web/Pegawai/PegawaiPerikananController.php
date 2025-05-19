@@ -6,6 +6,7 @@ use App\Models\DP;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Riwayat;
+use App\Models\JenisIkan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -29,12 +30,12 @@ class PegawaiPerikananController extends Controller
         $dp = DP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->distinct()
-            ->pluck('jenis_ikan');
+            ->pluck('jenis_ikan_id');
 
         return view('pegawai.perikanan.pegawai-perikanan', [
             'title' => 'Data Aktivitas Produksi Ikan',
             'data' => $dp,
-            'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
+            'fishes' => DP::select('jenis_ikan_id')->distinct()->pluck('jenis_ikan_id'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -43,10 +44,7 @@ class PegawaiPerikananController extends Controller
     public function dashboard()
     {
         // Indikator Jumlah
-        $jml_ikan = DP::select(DB::raw('LOWER(TRIM(jenis_ikan)) AS jenis_normal'))
-            ->distinct()
-            ->get()
-            ->count();
+        $jml_ikan = JenisIkan::count();
         $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
             ->where('roles.role', 'dp')
             ->count();
@@ -58,16 +56,16 @@ class PegawaiPerikananController extends Controller
 
         $bulanIni = DP::whereMonth('created_at', $now->month)
             ->whereYear('created_at', $now->year)
-            ->selectRaw('jenis_ikan, SUM(ton_produksi) as total_volume')
-            ->groupBy('jenis_ikan')
+            ->selectRaw('jenis_ikan_id, SUM(ton_produksi) as total_volume')
+            ->groupBy('jenis_ikan_id')
             ->get();
 
         $bulanLalu = DP::whereMonth('created_at', $now->subMonth()->month)
             ->whereYear('created_at', $now->year)
-            ->selectRaw('jenis_ikan, SUM(ton_produksi) as total_volume')
-            ->groupBy('jenis_ikan')
+            ->selectRaw('jenis_ikan_id, SUM(ton_produksi) as total_volume')
+            ->groupBy('jenis_ikan_id')
             ->get()
-            ->keyBy('jenis_ikan'); 
+            ->keyBy('jenis_ikan_id'); 
     
         $dataTabel = [];
     
@@ -218,12 +216,12 @@ class PegawaiPerikananController extends Controller
 
         $dpProduksiHari = DP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif])
             ->get()
-            ->groupBy('jenis_ikan')
+            ->groupBy('jenis_ikan_id')
             ->map(function ($items) {
                 $row = [
                     'id' => $items[0]->id,
                     'user_id' => $items[0]->user_id,
-                    'jenis_ikan' => $items[0]->jenis_ikan,
+                    'jenis_ikan_id' => $items[0]->jenis_ikan,
                     'ton_produksi' => $items[0]->ton_produksi,
                     'data_asli' => $items, // Untuk debugging/detail
                 ];
@@ -237,10 +235,10 @@ class PegawaiPerikananController extends Controller
             })->values();
 
         $dpProduksiBulanan = DP::get()
-            ->groupBy('jenis_ikan')
+            ->groupBy('jenis_ikan_id')
             ->map(function ($items) {
                 $row = [
-                    'jenis_ikan' => $items[0]->jenis_ikan,
+                    'jenis_ikan_id' => $items[0]->jenis_ikan,
                     'produksi_per_bulan' => [],
                 ];
         
@@ -259,7 +257,7 @@ class PegawaiPerikananController extends Controller
             'title' => 'Dinas Perikanan',
             // 'data' => $dpProduksiHari,
             'data' => $dpProduksiBulanan,
-            'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
+            'fishes' => DP::select('jenis_ikan_id')->distinct()->pluck('jenis_ikan_id'),
             'periods' => $periodeUnikNama,
             'numberPeriods' => $periodeUnikAngka,
             'daysInMonth' => $jumlahHari,

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dinas_tanaman_pangan_holtikultural_perkebunan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('jenis_komoditas');
+            $table->string('jenis_tanaman_id');
             $table->dateTime('tanggal_input');
             $table->float('ton_volume_produksi');
             $table->float('hektar_luas_panen');
