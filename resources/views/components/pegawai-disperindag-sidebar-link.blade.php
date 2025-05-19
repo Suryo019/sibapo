@@ -1,4 +1,4 @@
-<li class="mb-2 rounded-lg max-md:bg-pink-650" >
+<li class="rounded-lg max-md:bg-pink-650" >
     {{-- Kelola bahan pokok --}}
         <li class="pl-7 py-2  " id="kelola_bahan_pokok">
             <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/bahanpokok*') ? 'text-yellow-300' : '' }} md:bg-transparent ">

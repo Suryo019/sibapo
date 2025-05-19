@@ -74,7 +74,7 @@
     
         <!-- Chart Placeholder -->
         <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 border bg-gray-10 border-gray-20" id="chart_container">
-            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px] max-md:mb-3">
+            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-black text-center max-md:text-[12px] max-md:mb-3">
                 <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
             </div>
     

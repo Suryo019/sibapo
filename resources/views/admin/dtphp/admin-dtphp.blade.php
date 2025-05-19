@@ -92,7 +92,7 @@
   
       <!-- Chart Placeholder -->
       <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 border bg-gray-10 border-gray-20">
-          <div class="flex items-center flex-col mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+          <div class="flex items-center flex-col mb-3 font-bold text-black text-center max-md:text-[12px]">
               <h3>Data Produksi Tanaman</h3>
               <h3><b id="pasar"></b> <b id="periode"></b></h3>
           </div>
@@ -110,7 +110,7 @@
       <!-- Button -->
       <div class="flex justify-center mt-6">
           <a href="{{ route('dtphp.detail.produksi') }}">
-              <button class="bg-green-700 text-white px-6 py-2 rounded-full hover:bg-green-800 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
+              <button class="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-650 text-sm max-md:text-xs max-md:px-4 max-md:py-1">
                   Lihat Detail Data
               </button>
           </a>

@@ -56,7 +56,7 @@
 
     
     <!-- Content Area (Scrollable) -->
-    <div class="h-full w-full pl-[22rem] overflow-y-auto py-5 pr-10 relative z-10 max-md:px-0 max-md:order-1 max-md:pt-0">
+    <div class="h-full w-full pl-[22rem] overflow-y-auto scrollbar-thin py-5 pr-10 relative z-10 max-md:px-0 max-md:order-1 max-md:pt-0">
         <x-admin-header class="text-black flex justify-between items-center h-16 mb-7 max-md:px-4 max-md:bg-pink-650 max-md:mb-4">
             {{ $judul }}
         </x-admin-header>

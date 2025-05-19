@@ -81,7 +81,7 @@
 
     <!-- Chart Container -->
     <div class="w-full bg-white rounded shadow-md flex flex-col items-center justify-center p-8 max-md:p-4 relative z-10  border bg-gray-10 border-gray-20">
-        <div class="flex flex-col items-center mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+        <div class="flex flex-col items-center mb-3 font-bold text-black text-center max-md:text-[12px]">
             <h3>Hektar Luas Panen April 2025</h3>
         </div>
 

@@ -25,7 +25,7 @@ $pegawai = match(true) {
             <x-pegawai-sidebar-link 
                   href="{{ route('pegawai.' . $pegawai . '.dashboard') }}" 
                   icon="bi-house-door-fill"
-                  class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                  class="hover:bg-pink-600 block py-2 px-4 rounded-lg text-sm max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
                   Dashboard
             </x-pegawai-sidebar-link>
 

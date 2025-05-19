@@ -18,6 +18,22 @@
     text-shadow: 2px 2px 4px rgba(243, 26, 131, 0.4);
 }
 
+@layer utilities {
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #ec4899; /* pink-500 */
+        border-radius: 10px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: #fce7f3; /* pink-200 */
+    }
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

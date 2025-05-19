@@ -75,7 +75,7 @@
       <!-- Chart Card -->
       <div class="w-full bg-white rounded shadow-md flex flex-col items-center justify-center p-8 max-md:p-4 border bg-gray-10 border-gray-20">
         
-        <div class="flex flex-col items-center mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+        <div class="flex flex-col items-center mb-3 font-bold text-black text-center max-md:text-[12px]">
           <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
           <h3><b id="minggu"></b> <b id="periode"></b></h3>
         </div>
