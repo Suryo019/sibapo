@@ -27,11 +27,11 @@ class JenisIkanController extends Controller
         ]);
     }
 
-    public function edit(JenisIkan $nama_ikan)
+    public function edit(JenisIkan $jenis_ikan)
     {
         return view('admin.perikanan.admin-update-ikan-perikanan', [
             'title' => 'Ubah Data',
-            'data' => $nama_ikan,
+            'data' => $jenis_ikan,
         ]);
     }
 }

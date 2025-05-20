@@ -12,7 +12,7 @@
     </div>
 
     {{-- Scrollable Menu Content --}}
-    <div class="overflow-y-auto scrollbar-thin flex-1 pr-2">
+    <div class="overflow-y-auto scrollbar-thin flex-1">
       <ul class="">
         <!-- Dashboard -->
         <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
@@ -32,6 +32,10 @@
         <x-admin-sidebar-link 
         dataHref="dkpp*"
         dinas="dkpp"
+        kelolaData="Kelola Komoditas"
+        routeKelolaKomoditas="jenis_komoditas"
+        routeKelolaKomoditasView="{{ route('jenis-komoditas.index') }}"
+        routeKelolaKomoditasCreate="{{ route('jenis-komoditas.create') }}"
         viewHref="{{ route('dkpp.index') }}"
         createHref="{{ route('dkpp.create') }}"
         :viewData="'Lihat Data'"
@@ -46,6 +50,10 @@
         <x-admin-sidebar-link 
         dataHref="dtphp*"
         dinas="dtphp"
+        kelolaData="Kelola Tanaman"
+        routeKelolaKomoditas="jenis_tanaman"
+        routeKelolaKomoditasView="{{ route('jenis-tanaman.index') }}"
+        routeKelolaKomoditasCreate="{{ route('jenis-tanaman.create') }}"
         viewHref="{{ route('dtphp.produksi') }}"
         createHref="{{ route('dtphp.create') }}"
         :viewData="'Lihat Data'"
@@ -60,6 +68,10 @@
         <x-admin-sidebar-link 
         dataHref="perikanan*"
         dinas="perikanan"
+        kelolaData="Kelola Ikan"
+        routeKelolaKomoditas="jenis_ikan"
+        routeKelolaKomoditasView="{{ route('jenis-ikan.index') }}"
+        routeKelolaKomoditasCreate="{{ route('jenis-ikan.create') }}"
         viewHref="{{ route('perikanan.index') }}"
         createHref="{{ route('perikanan.create') }}"
         :viewData="'Lihat Data'"
@@ -73,7 +85,7 @@
         <!--kelola akun-->
         <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA AKUN </span>
 
-        <x-admin-sidebar-link 
+        <x-admin-makundinas-sidebar-link 
         dataHref="makundinas*"
         dinas="makundinas"
         viewHref="{{ route('makundinas.index') }}"
@@ -84,7 +96,7 @@
         icon="material-symbols:group"
         >
         <x-slot:name>Kelola data akun</x-slot:name>
-        </x-admin-sidebar-link>
+        </x-admin-makundinas-sidebar-link>
 
         <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
           <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">

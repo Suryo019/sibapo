@@ -27,11 +27,11 @@ class JenisTanamanController extends Controller
         ]);
     }
 
-    public function edit(JenisTanaman $nama_tanaman)
+    public function edit(JenisTanaman $jenis_tanaman)
     {
         return view('admin.dtphp.admin-update-tanaman-dtphp', [
             'title' => 'Ubah Data',
-            'data' => $nama_tanaman,
+            'data' => $jenis_tanaman,
         ]);
     }
 }

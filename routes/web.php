@@ -14,6 +14,7 @@ use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
+use App\Http\Controllers\Web\Dkpp\JenisKomoditasDkppController;
 use App\Http\Controllers\Web\Dtphp\JenisTanamanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Perikanan\JenisIkanController;
@@ -236,7 +237,7 @@ Route::get('/pimpinan/perikanan', [PimpinanController::class,'perikanan'] )->nam
 
 
 // JenisIkan
-Route::resource('jenis-ikan', JenisIkanController::class)->names([
+Route::resource('jenis_ikan', JenisIkanController::class)->names([
     'index' => 'jenis-ikan.index',
     'create' => 'jenis-ikan.create',
     'store' => 'jenis-ikan.store',
@@ -246,11 +247,8 @@ Route::resource('jenis-ikan', JenisIkanController::class)->names([
     'destroy' => 'jenis-ikan.destroy',
 ]);
 
-Route::get('/jenis-ikan-detail', [JenisIkanController::class, 'detail'])->name('jenis-ikan.detail');
-
-
 // JenisTanaman
-Route::resource('jenis-tanaman', JenisTanamanController::class)->names([
+Route::resource('jenis_tanaman', JenisTanamanController::class)->names([
     'index' => 'jenis-tanaman.index',
     'create' => 'jenis-tanaman.create',
     'store' => 'jenis-tanaman.store',
@@ -260,4 +258,13 @@ Route::resource('jenis-tanaman', JenisTanamanController::class)->names([
     'destroy' => 'jenis-tanaman.destroy',
 ]);
 
-Route::get('/jenis-tanaman-detail', [JenisTanamanController::class, 'detail'])->name('jenis-tanaman.detail');
+// Jenis Komoditas
+Route::resource('jenis_komoditas', JenisKomoditasDkppController::class)->names([
+    'index' => 'jenis-komoditas.index',
+    'create' => 'jenis-komoditas.create',
+    'store' => 'jenis-komoditas.store',
+    'show' => 'jenis-komoditas.show',
+    'edit' => 'jenis-komoditas.edit',
+    'update' => 'jenis-komoditas.update',
+    'destroy' => 'jenis-komoditas.destroy',
+]);
