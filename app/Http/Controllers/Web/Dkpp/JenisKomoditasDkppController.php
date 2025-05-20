@@ -43,7 +43,7 @@ class JenisKomoditasDkppController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DKPP $dKPP)
+    public function edit(DKPP $jenis_komoditas)
     {
         //
     }
