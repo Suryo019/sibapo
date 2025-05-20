@@ -104,12 +104,11 @@
     });
 
     $('#kelola_komoditas_{{ $dinas }}').on('click', function () {
-    const $dropdown = $(this).next("ul.dropdown-content-komoditas");
-    const $icon = $(this).find('.caret-icon');
+      const $dropdown = $(this).next("ul.dropdown-content-komoditas");
+      const $icon = $(this).find('.caret-icon');
 
-    $dropdown.slideToggle(200);
-    $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
-});
-
+      $dropdown.slideToggle(200);
+      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
+    });
   });
 </script>
