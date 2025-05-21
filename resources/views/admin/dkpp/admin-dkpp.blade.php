@@ -75,7 +75,7 @@
       <!-- Chart Card -->
       <div class="w-full bg-white rounded shadow-md flex flex-col items-center justify-center p-8 max-md:p-4 border bg-gray-10 border-gray-20">
         
-        <div class="flex flex-col items-center mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+        <div class="flex flex-col items-center mb-3 font-bold text-black text-center max-md:text-[12px]">
           <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
           <h3><b id="minggu"></b> <b id="periode"></b></h3>
         </div>
@@ -107,16 +107,22 @@
 
 <script>
   // Ntar dihapus
-  let periode = 'April 2025';
-  let minggu = '4';
+  const today = new Date();
+  let periode = today.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  let date = today.getDate();
+  let startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let dayOfWeek = startOfMonth.getDay();
+  let adjustedDate = date + dayOfWeek;
+  let minggu = Math.ceil(adjustedDate / 7);
 
   $.ajax({
     type: 'GET',
     url: `{{ route('api.dkpp.index') }}`,
     data: {
       _token: "{{ csrf_token() }}",
-      periode: periode,
-      minggu: minggu,
+      periode: null,
+      minggu: null,
     },
     success: function(response) {
       let dataset = response.data;

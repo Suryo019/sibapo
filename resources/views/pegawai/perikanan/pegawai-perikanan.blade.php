@@ -73,7 +73,7 @@
     
         <!-- Chart Section -->
         <div class="w-full bg-white rounded-2xl shadow-md p-8 flex flex-col items-center justify-center border bg-gray-10 border-gray-20">
-            <h3 class="text-lg font-bold text-green-900 mb-4 text-center">
+            <h3 class="text-lg font-bold text-black mb-4 text-center">
                 Volume Produksi Ikan Tahun 2025
             </h3>
             <div id="chart" class="w-full">

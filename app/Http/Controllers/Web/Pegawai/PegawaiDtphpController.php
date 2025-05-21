@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Web\Pegawai;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\DTPHP;
+use App\Models\Riwayat;
+use App\Models\JenisTanaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiDtphpController extends Controller
 {
@@ -21,18 +25,240 @@ class PegawaiDtphpController extends Controller
             return $item->periode_indonesia;
         });
 
-        // $dp = DP::all();
+        // $dtphp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
+        $dtphp = DTPHP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->distinct()
-            ->pluck('jenis_komoditas');
+            ->pluck('jenis_tanaman_id');
 
         return view('pegawai.dtphp.pegawai-dtphp-produksi', [
             'title' => 'Volume Produksi Panen',
-            'data' => $dp,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'data' => $dtphp,
+            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
+        ]);
+    }
+
+    // Dashboard
+    public function dashboard()
+    {
+        // Indikator Jumlah
+        $jml_komoditas = JenisTanaman::count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', 'dtphp')
+            ->count();
+        $jml_produksi = DTPHP::sum('ton_volume_produksi');
+        $jml_panen = DTPHP::sum('hektar_luas_panen');
+
+
+        // Tabel Perubahan
+        $now = Carbon::now();
+
+        $bulanIni = DTPHP::whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_tanaman_id, SUM(ton_volume_produksi) as total_volume')
+            ->groupBy('jenis_tanaman_id')
+            ->get();
+
+        $bulanLalu = DTPHP::whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_tanaman_id, SUM(ton_volume_produksi) as total_volume')
+            ->groupBy('jenis_tanaman_id')
+            ->get()
+            ->keyBy('jenis_tanaman_id'); 
+    
+        $dataTabel = [];
+    
+        foreach ($bulanIni as $index => $item) {
+            $jenisKomoditas = $item->jenis_tanaman;
+            $volumeIni = $item->total_volume;
+            $volumeLalu = $bulanLalu[$jenisKomoditas]->total_volume ?? 0;
+            $selisih = $volumeIni - $volumeLalu;
+            $ikon = $selisih >= 0 ? 'twemoji:up-arrow' : 'twemoji:down-arrow';
+    
+            $dataTabel[] = [
+                'no' => $index + 1,
+                'jenisKomoditas' => $jenisKomoditas,
+                'icon' => $ikon,
+                'volume' => $volumeIni,
+                'perubahan' => $selisih,
+            ];
+        }        
+
+        $collectionDataTabel = collect($dataTabel);
+
+        $perPage = 5;
+        $currentPageData = LengthAwarePaginator::resolveCurrentPage('page_data');
+        $currentItemsData = $collectionDataTabel->slice(($currentPageData - 1) * $perPage, $perPage);
+        
+        $paginatorDataTabel = new LengthAwarePaginator(
+            $currentItemsData,
+            $collectionDataTabel->count(),
+            $perPage,
+            $currentPageData,
+            ['path' => request()->url(), 'pageName' => 'page_data']
+        );
+
+        $dtphp = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->whereHas('user.role', function ($query) {
+                    $query->where('role', 'dtphp');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
+                    $item->nama_user = $item->user->name ?? '-';
+
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah jenis tanaman ' . $item->komoditas,
+                        'ubah' => 'Mengubah jenis tanaman ' . $item->komoditas,
+                        default => 'Menghapus jenis tanaman ' . $item->komoditas,
+                    };
+
+                    return $item;
+                });
+
+        $aktivitas = collect()
+            ->concat($dtphp)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('pegawai.dtphp.pegawai-dtphp-dashboard', [
+            'title' => 'Dashboard Dinas Tanaman Pangan Holtikultura',
+            'jmlKomoditas' => $jml_komoditas,
+            'jmlPegawai' => $jml_pegawai,
+            'jmlProduksi' => $jml_produksi,
+            'jmlPanen' => $jml_panen,
+            'dataTabel' => $paginatorDataTabel,
+            'aktivitas' => $paginator,
+        ]);
+    }
+
+    public function dashboardPanen()
+    {
+        // Indikator Jumlah
+        $jml_komoditas = DTPHP::select(DB::raw('LOWER(TRIM(jenis_tanaman_id)) AS jenis_normal'))
+            ->distinct()
+            ->get()
+            ->count();
+        $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
+            ->where('roles.role', 'dtphp')
+            ->count();
+        $jml_produksi = DTPHP::sum('ton_volume_produksi');
+        $jml_panen = DTPHP::sum('hektar_luas_panen');
+
+
+        // Tabel Perubahan
+        $now = Carbon::now();
+
+        $bulanIni = DTPHP::whereMonth('created_at', $now->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_tanaman_id, SUM(hektar_luas_panen) as total_panen')
+            ->groupBy('jenis_tanaman_id')
+            ->get();
+
+        $bulanLalu = DTPHP::whereMonth('created_at', $now->subMonth()->month)
+            ->whereYear('created_at', $now->year)
+            ->selectRaw('jenis_tanaman_id, SUM(hektar_luas_panen) as total_panen')
+            ->groupBy('jenis_tanaman_id')
+            ->get()
+            ->keyBy('jenis_tanaman_id'); 
+    
+        $dataTabel = [];
+    
+        foreach ($bulanIni as $index => $item) {
+            $jenisKomoditas = $item->jenis_tanaman;
+            $panenIni = $item->total_panen;
+            $panenLalu = $bulanLalu[$jenisKomoditas]->total_panen ?? 0;
+            $selisih = $panenIni - $panenLalu;
+            $ikon = $selisih >= 0 ? 'twemoji:up-arrow' : 'twemoji:down-arrow';
+    
+            $dataTabel[] = [
+                'no' => $index + 1,
+                'jenisKomoditas' => $jenisKomoditas,
+                'icon' => $ikon,
+                'panen' => $panenIni,
+                'perubahan' => $selisih,
+            ];
+        }        
+
+        $collectionDataTabel = collect($dataTabel);
+
+        $perPage = 5;
+        $currentPageData = LengthAwarePaginator::resolveCurrentPage('page_data');
+        $currentItemsData = $collectionDataTabel->slice(($currentPageData - 1) * $perPage, $perPage);
+        
+        $paginatorDataTabel = new LengthAwarePaginator(
+            $currentItemsData,
+            $collectionDataTabel->count(),
+            $perPage,
+            $currentPageData,
+            ['path' => request()->url(), 'pageName' => 'page_data']
+        );
+
+        $dtphp = Riwayat::select('id', 'user_id', 'aksi', 'komoditas', 'created_at', 'updated_at')
+                ->with(['user:id,name,role_id', 'user.role:id,role'])
+                ->whereHas('user.role', function ($query) {
+                    $query->where('role', 'dtphp');
+                })
+                ->get()
+                ->map(function ($item) {
+                    $item->dinas = strtoupper($item->user->role->role ?? '-');
+                    $item->nama_user = $item->user->name ?? '-';
+
+                    $item->waktu_utama = $item->deleted_at ?? $item->updated_at ?? $item->created_at;
+                    $item->waktu = now()->diffForHumans($item->waktu_utama);
+
+                    $item->aktivitas = match($item->aksi) {
+                        'buat' => 'Menambah jenis tanaman ' . $item->komoditas,
+                        'ubah' => 'Mengubah jenis tanaman ' . $item->komoditas,
+                        default => 'Menghapus jenis tanaman ' . $item->komoditas,
+                    };
+
+                    return $item;
+                });
+
+        $aktivitas = collect()
+            ->concat($dtphp)
+            ->sortByDesc('waktu_utama')
+            ->values();
+        
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $aktivitas->slice(($currentPage - 1) * $perPage, $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $aktivitas->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('pegawai.dtphp.pegawai-dtphp-dashboard-panen', [
+            'title' => 'Dashboard Dinas Tanaman Pangan Holtikultura',
+            'jmlKomoditas' => $jml_komoditas,
+            'jmlPegawai' => $jml_pegawai,
+            'jmlProduksi' => $jml_produksi,
+            'jmlPanen' => $jml_panen,
+            'dataTabel' => $paginatorDataTabel,
+            'aktivitas' => $paginator,
         ]);
     }
 
@@ -98,14 +324,14 @@ class PegawaiDtphpController extends Controller
         // dd($periode);
         $dtphpProduksiHari = DTPHP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periode])
         ->get()
-        ->groupBy('jenis_komoditas')
+        ->groupBy('jenis_tanaman_id')
         ->map(function ($items) {
             // dd($items);
             $row = [
                 'id' => $items[0]->id,
                 'user_id' => $items[0]->user_id,
                 'ton_volume_produksi' => $items[0]->ton_volume_produksi,
-                'jenis_komoditas' => $items[0]->jenis_komoditas,
+                'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                 'data_asli' => $items, // Optional, untuk keperluan detail/debug
             ];
     
@@ -118,10 +344,10 @@ class PegawaiDtphpController extends Controller
         })->values();
     
         $dtphpProduksiBulan = DTPHP::get()
-            ->groupBy('jenis_komoditas')
+            ->groupBy('jenis_tanaman_id')
             ->map(function ($items) {
                 $row = [
-                    'jenis_komoditas' => $items[0]->jenis_komoditas,
+                    'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                     'produksi_per_bulan' => [],
                 ];
         
@@ -140,7 +366,7 @@ class PegawaiDtphpController extends Controller
             'title' => 'Dinas Tanaman Pangan dan Holtikultura',
             // 'data_produksi' => $dtphpProduksiHari,
             'data_produksi' => $dtphpProduksiBulan,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
             'numberPeriods' => $periodeUnikAngka,
             'daysInMonth' => $jumlahHari,
@@ -173,14 +399,14 @@ class PegawaiDtphpController extends Controller
         // dd($periode);
         $dtphpProduksiHari = DTPHP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periode])
         ->get()
-        ->groupBy('jenis_komoditas')
+        ->groupBy('jenis_tanaman_id')
         ->map(function ($items) {
             // dd($items);
             $row = [
                 'id' => $items[0]->id,
                 'user_id' => $items[0]->user_id,
                 'ton_volume_produksi' => $items[0]->ton_volume_produksi,
-                'jenis_komoditas' => $items[0]->jenis_komoditas,
+                'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                 'data_asli' => $items, // Optional, untuk keperluan detail/debug
             ];
     
@@ -194,14 +420,14 @@ class PegawaiDtphpController extends Controller
 
         $dtphpPanenHari = DTPHP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periode])
         ->get()
-        ->groupBy('jenis_komoditas')
+        ->groupBy('jenis_tanaman_id')
         ->map(function ($items) {
             // dd($items);
             $row = [
                 'id' => $items[0]->id,
                 'user_id' => $items[0]->user_id,
                 'hektar_luas_panen' => $items[0]->hektar_luas_panen,
-                'jenis_komoditas' => $items[0]->jenis_komoditas,
+                'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                 'data_asli' => $items, // Optional, untuk keperluan detail/debug
             ];
     
@@ -214,10 +440,10 @@ class PegawaiDtphpController extends Controller
         })->values();
     
         $dtphpProduksiBulan = DTPHP::get()
-            ->groupBy('jenis_komoditas')
+            ->groupBy('jenis_tanaman_id')
             ->map(function ($items) {
                 $row = [
-                    'jenis_komoditas' => $items[0]->jenis_komoditas,
+                    'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                     'produksi_per_bulan' => [],
                 ];
         
@@ -233,10 +459,10 @@ class PegawaiDtphpController extends Controller
             })->values();  
     
         $dtphpPanenBulan = DTPHP::get()
-            ->groupBy('jenis_komoditas')
+            ->groupBy('jenis_tanaman_id')
             ->map(function ($items) {
                 $row = [
-                    'jenis_komoditas' => $items[0]->jenis_komoditas,
+                    'jenis_tanaman_id' => $items[0]->jenis_tanaman,
                     'panen_per_bulan' => [],
                 ];
         
@@ -255,7 +481,7 @@ class PegawaiDtphpController extends Controller
             'title' => 'Dinas Tanaman Pangan dan Holtikultura',
             // 'data_panen' => $dtphpPanenHari,
             'data_panen' => $dtphpPanenBulan,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
             'numberPeriods' => $periodeUnikAngka,
             'daysInMonth' => $jumlahHari,
@@ -272,17 +498,17 @@ class PegawaiDtphpController extends Controller
             return $item->periode_indonesia;
         });
 
-        // $dp = DP::all();
+        // $dtphp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
+        $dtphp = DTPHP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->distinct()
-            ->pluck('jenis_komoditas');
+            ->pluck('jenis_tanaman_id');
 
         return view('pegawai.dtphp.pegawai-dtphp-panen', [
             'title' => 'Data Luas Panen',
-            'data' => $dp,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'data' => $dtphp,
+            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -297,17 +523,17 @@ class PegawaiDtphpController extends Controller
             return $item->periode_indonesia;
         });
 
-        // $dp = DP::all();
+        // $dtphp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
+        $dtphp = DTPHP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
             ->distinct()
-            ->pluck('jenis_komoditas');
+            ->pluck('jenis_tanaman_id');
 
         return view('pegawai.dtphp.pegawai-dtphp-produksi', [
             'title' => 'Volume Produksi Panen',
-            'data' => $dp,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
+            'data' => $dtphp,
+            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
         ]);
     }

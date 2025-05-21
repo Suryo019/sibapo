@@ -76,7 +76,7 @@
     
         <!-- Chart Container -->
         <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 relative z-10 border bg-gray-10 border-gray-20">
-            <div class="flex items-center flex-col mb-3 font-bold text-green-910 text-center max-md:text-[12px]">
+            <div class="flex items-center flex-col mb-3 font-bold text-black text-center max-md:text-[12px]">
                 <h3>Volume Produksi April 2025</h3>
             </div>
     

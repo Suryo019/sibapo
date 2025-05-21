@@ -71,7 +71,7 @@
       </div>
 
       <div class="w-full bg-white rounded-lg shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 border bg-gray-10 border-gray-20">
-          <div class="flex items-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px]">
+          <div class="flex items-center flex-col mb-3 font-bold text-black text-center max-md:text-[12px]">
               <h3>Neraca Ketersediaan dan Kebutuhan Bahan Pangan Pokok</h3>
               <h3><span id="minggu" class="font-bold"></span> <span id="periode" class="font-bold"></span></h3>
           </div>

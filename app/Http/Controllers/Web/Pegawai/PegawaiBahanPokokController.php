@@ -27,11 +27,11 @@ class PegawaiBahanPokokController extends Controller
         ]);
     }
 
-    public function edit(JenisBahanPokok $bahan_pokok)
+    public function edit(JenisBahanPokok $bahanpokok)
     {
         return view('pegawai.disperindag.pegawai-update-bpokok-disperindag', [
             'title' => 'Ubah Data',
-            'data' => $bahan_pokok,
+            'data' => $bahanpokok,
         ]);
     }
 }

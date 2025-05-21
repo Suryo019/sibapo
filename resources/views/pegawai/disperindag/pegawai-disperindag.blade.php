@@ -6,7 +6,7 @@
     {{-- Abaikan DULU! --}}
     <div class="flex justify-between items-center gap-4 my-4 max-md:flex-wrap">
         <!-- Search Component -->
-        <x-search></x-search>
+        <x-search>Cari bahan pokok...</x-search>
     
         {{-- Filter --}}
         <div class="flex justify-end max-md:w-full">
@@ -21,8 +21,11 @@
                             <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Pasar</label>
                             <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-full bg-white w-full select2 text-sm max-md:text-xs">
                                 <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                                @foreach ($markets as $market)
-                                    <option value="{{ $market->nama_pasar }}" {{ old('pasar') == $market->nama_pasar ? 'selected' : '' }}>{{ $market->nama_pasar }}</option>
+                                @foreach ($markets as $index => $market)
+                                    <option value="{{ $market->nama_pasar }}"
+                                        {{ old('pasar') == $market->nama_pasar ? 'selected' : ($index == 0 && !old('pasar') ? 'selected' : '') }}>
+                                        {{ $market->nama_pasar }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -30,30 +33,18 @@
                         <!-- Periode -->
                         <div class="flex flex-col">
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
-                            <select id="pilih_periode" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
-                                <option value="" disabled selected>Pilih Periode</option>
-                                @foreach ($periods as $period)
-                                    <option value="{{ $period }}">{{ $period }}</option>
-                                @endforeach
-                            </select>
-                            {{-- <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border w-full max-md:w-full p-2 rounded bg-white text-xs"> --}}
-                        </div>
-
-                        <!-- Bahan Pokok -->
-                        <div class="flex flex-col">
-                            <label for="pilih_bahan_pokok" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Bahan Pokok</label>
-                            <select id="pilih_bahan_pokok" class="border w-full max-md:w-full p-2 rounded bg-white select2 text-xs" disabled>
-                                <option value="" disabled selected>Pilih Bahan Pokok</option>
-                                @foreach ($data as $item)
-                                    <option value="{{ $item->nama_bahan_pokok }}">{{ $item->nama_bahan_pokok }}</option>
-                                @endforeach
-                            </select>
+                            <input 
+                            type="month" 
+                            name="periode" 
+                            id="pilih_periode" 
+                            value="{{ old('periode', date('Y-m')) }}" 
+                            class="border w-full max-md:w-full p-2 rounded bg-white text-xs">
                         </div>
                     </div>
 
                     <div class="w-full flex justify-end gap-3 mt-10">
                         <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
-                        <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
+                        <button type="button" id="filter_btn" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
                     </div>
                 </form>
             </x-filter-modal>
@@ -61,39 +52,26 @@
     </div>
     
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-        <div class="w-full flex items-center gap-2 mb-4 max-md:flex-col max-md:items-start max-md:gap-1">
-            <a href="javascript:history.back()" class="text-decoration-none text-dark flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6 max-md:w-5 max-md:h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>                      
-            </a>
-            <h2 class="text-2xl font-semibold text-black max-md:text-xl max-md:text-center w-full">
-                {{ $title }}
-            </h2>
+        <div class="w-full flex items-center justify-between gap-2 mb-5 max-md:flex-col max-md:items-start max-md:gap-1">
+            <div class="flex items-center justify-start max-md:gap-3">
+                <a href="javascript:history.back()" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6 max-md:w-5 max-md:h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h2 class="text-2xl font-semibold text-black max-md:text-lg w-full">
+                    DATA AKTIVITAS HARGA <span id="pasar_placeholder"></span> <span id="periode_placeholder"></span>
+                </h2>
+            </div>
+            <div class="max-md:my-3">
+                <a href="{{ route('pegawai.disperindag.detail') }}" class="flex items-center text-lg font-semibold max-md:text-base w-full text-pink-650 gap-3">LIHAT DETAIL <i class="bi bi-arrow-right font-bold"></i></a>
+            </div>
         </div>
     
         <!-- Chart Placeholder -->
-        <div class="w-full bg-white rounded shadow-md flex items-center justify-center flex-col p-8 max-md:p-4 border bg-gray-10 border-gray-20" id="chart_container">
-            <div class="w-full flex items-center justify-center flex-col mb-3 font-bold text-green-900 text-center max-md:text-[12px] max-md:mb-3">
-                <h3>Data Harga Bahan Pokok <b id="bahan_pokok"></b> <span id="pasar"></span> <span id="periode"></span></h3>
-            </div>
-    
-            <!-- Placeholder saat chart belum tersedia -->
-            <div id="chart_placeholder" class="text-gray-500 text-center text-sm max-md:text-[10px]">
-                Silakan pilih pasar, periode, dan bahan pokok untuk menampilkan data grafik.
-            </div>
-    
-            <!-- Chart akan muncul di sini -->
-            <div id="chart" class="w-full hidden"></div>
-        </div>
-    
-        <!-- Button -->
-        <div class="flex justify-start mt-6">
-            <a href="{{ route('pegawai.disperindag.detail') }}">
-                <button class="bg-yellow-550 text-md text-white px-3 py-2 rounded-lg hover:bg-yellow-500 max-md:text-xs max-md:px-4 max-md:py-1">
-                    Lihat Detail Data
-                </button>
-            </a>
+        <div class="w-full flex items-center justify-center flex-col" id="chart_container">
+        {{-- <div id="chart_container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4"> --}}
+            {{-- Diisi pake ajax --}}
         </div>
     </main>
     
@@ -103,359 +81,151 @@
 </x-pegawai-layout>
 
 <script>
-    // Ini ntar hapus cuy
-    const pasar = 'Pasar Tanjung';
-    const periode = 'May 2025';
-    const bahanPokok = 'Minyak Goreng';
-    $.ajax({
-        type: "GET",
-        url: "{{ route('api.dpp.index') }}",
-        data: {
-            _token: "{{ csrf_token() }}",
-            pasar: pasar,
-            periode: periode,
-            bahan_pokok: bahanPokok
-        },
-        success: function(response) {
-            $('#bahan_pokok').text(bahanPokok);
-            $('#pasar').text(pasar);
-            $('#periode').text(periode);
+    let chart;
+    let debounceTimer;
+    
+    let pasar = $('#pilih_pasar').val();
+    let periode = $('#pilih_periode').val();
+    const search = $('#search');
 
-            let dataset = response.data;
-            
-            if (!dataset || dataset.length === 0) {
-                if (chart) {
-                    chart.destroy();
-                    chart = null;
-                }
-                $('#chart').addClass('hidden');
-                $('#chart_placeholder').html(`
-                    <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
-                        <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
-                        <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
-                    </div>
-                `).show();
-                return;
-            }
-            
-            dataset.sort((a, b) => new Date(a.hari) - new Date(b.hari));
+    // Fungsi untuk render grafik berdasarkan dataset
+    function renderCharts(dataset) {
+        const container = $('#chart_container');
+        container.empty();
 
-            let labels = dataset.map(item => item.hari);
-            let data = dataset.map(item => item.kg_harga);
-
-            // Hanya render jika data berbeda
-            if (!chart || JSON.stringify(chart.w.config.series[0].data) !== JSON.stringify(data)) {
-                $('#chart_placeholder').empty().hide();
-                $('#chart').removeClass('hidden');
-
-                if (chart) {
-                    chart.destroy();
-                }
-
-                chart = new ApexCharts(document.querySelector("#chart"), {
-                    chart: {
-                        type: 'line',
-                        height: 350,
-                        animations: {
-                            enabled: true,
-                            easing: 'easeinout',
-                            speed: 800
-                        },
-                        events: {
-                            resized: function(chartContext, config) {
-                                const width = chartContext.el.offsetWidth;
-
-                                if (width < 480) {
-                                    chart.updateOptions({
-                                        stroke: {
-                                            width: 1
-                                        }
-                                    });
-                                } else if (width < 768) {
-                                    chart.updateOptions({
-                                        stroke: {
-                                            width: 2
-                                        }
-                                    });
-                                } else {
-                                    chart.updateOptions({
-                                        stroke: {
-                                            width: 3
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        name: 'Harga (Rp)',
-                        data: data
-                    }],
-                    xaxis: {
-                        categories: labels,
-                        labels: {
-                            style: {
-                                fontSize: '12px'
-                            }
-                        }
-                    },
-                    yaxis: {
-                        title: {
-                            text: 'Harga (Rp)'
-                        },
-                        labels: {
-                            formatter: function(value) {
-                                return 'Rp ' + value.toLocaleString('id-ID');
-                            }
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function(value) {
-                                return 'Rp ' + value.toLocaleString('id-ID');
-                            }
-                        }
-                    },
-                    responsive: [{
-                        breakpoint: 768,
-                        options: {
-                            chart: {
-                                height: 300
-                            },
-                        }
-                    }, 
-                    {
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                height: 250
-                            },
-                            xaxis: {
-                                labels: {
-                                    style: {
-                                        fontSize: '10px'
-                                    }
-                                }
-                            },
-                            yaxis: {
-                                labels: {
-                                    style: {
-                                        fontSize: '10px'
-                                    }
-                                }
-                            },
-                        }
-                    }],
-                });
-                
-                chart.render();
-            }
-        },
-        error: function(xhr) {
-            $('#chart_placeholder').html(`
-                <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
-                    <h3 class="text-lg font-semibold text-red-500">Error</h3>
-                    <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+        if (!dataset || Object.keys(dataset).length === 0) {
+            container.html(`
+                <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                    <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                    <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
                 </div>
             `);
-            console.error("AJAX Error:", xhr.responseText);
+            return;
         }
-    });
-    // Sampe sini
 
-    var chart;
-    var debounceTimer;
+        Object.keys(dataset).forEach((bahan, index) => {
+            const entries = dataset[bahan];
+            entries.sort((a, b) => a.hari - b.hari);
 
-    $('#pilih_pasar').on('change', function() {
-        $('#pilih_periode').prop('disabled', false).val('');
-        $('#pilih_bahan_pokok').prop('disabled', true).val('');
-    });
+            const labels = entries.map(item => item.hari);
+            const data = entries.map(item => item.kg_harga);
+            const chartId = `chart_${index}`;
 
-    $('#pilih_periode').on('change', function() {
-        $('#pilih_bahan_pokok').prop('disabled', false);
-    });
+            container.append(`
+                <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
+                    <h4 class="text-center text-md font-bold mb-2 jenis_bahan_pokok_col">${bahan}</h4>
+                    <div id="${chartId}" class="w-full"></div>
+                </div>
+            `);
 
-    $('#pilih_pasar, #pilih_periode, #pilih_bahan_pokok').on('change', function() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const pasar = $('#pilih_pasar').val();
-            const periode = $('#pilih_periode').val();
-            const bahanPokok = $('#pilih_bahan_pokok').val();
-
-            if (!pasar || !periode || !bahanPokok) {
-                return;
-            }
-
-            $.ajax({
-                type: "GET",
-                url: "{{ route('api.dpp.index') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    pasar: pasar,
-                    periode: periode,
-                    bahan_pokok: bahanPokok
-                },
-                success: function(response) {
-                    $('#bahan_pokok').text(bahanPokok);
-                    $('#pasar').text(pasar);
-                    $('#periode').text(periode);
-
-                    let dataset = response.data;
-                    
-                    if (!dataset || dataset.length === 0) {
-                        if (chart) {
-                            chart.destroy();
-                            chart = null;
-                        }
-                        $('#chart').addClass('hidden');
-                        $('#chart_placeholder').html(`
-                            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
-                                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
-                                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
-                            </div>
-                        `).show();
-                        return;
-                    }
-
-                    let labels = dataset.map(item => item.hari);
-                    let data = dataset.map(item => item.kg_harga);
-
-                    // Hanya render jika data berbeda
-                    if (!chart || JSON.stringify(chart.w.config.series[0].data) !== JSON.stringify(data)) {
-                        $('#chart_placeholder').empty().hide();
-                        $('#chart').removeClass('hidden');
-
-                        if (chart) {
-                            chart.destroy();
-                        }
-
-                        chart = new ApexCharts(document.querySelector("#chart"), {
-                            chart: {
-                                type: 'line',
-                                height: 350,
-                                animations: {
-                                    enabled: true,
-                                    easing: 'easeinout',
-                                    speed: 800
-                                },
-                                events: {
-                                    resized: function(chartContext, config) {
-                                        const width = chartContext.el.offsetWidth;
-
-                                        if (width < 480) {
-                                            chart.updateOptions({
-                                                stroke: {
-                                                    width: 1
-                                                }
-                                            });
-                                        } else if (width < 768) {
-                                            chart.updateOptions({
-                                                stroke: {
-                                                    width: 2
-                                                }
-                                            });
-                                        } else {
-                                            chart.updateOptions({
-                                                stroke: {
-                                                    width: 3
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                            },
-                            series: [{
-                                name: 'Harga (Rp)',
-                                data: data
-                            }],
-                            xaxis: {
-                                categories: labels,
-                                labels: {
-                                    style: {
-                                        fontSize: '12px'
-                                    }
-                                }
-                            },
-                            yaxis: {
-                                title: {
-                                    text: 'Harga (Rp)'
-                                },
-                                labels: {
-                                    formatter: function(value) {
-                                        return 'Rp ' + value.toLocaleString('id-ID');
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                y: {
-                                    formatter: function(value) {
-                                        return 'Rp ' + value.toLocaleString('id-ID');
-                                    }
-                                }
-                            },
-                            responsive: [{
-                                breakpoint: 768,
-                                options: {
-                                    chart: {
-                                        height: 300
-                                    },
-                                }
-                            }, 
-                            {
-                                breakpoint: 480,
-                                options: {
-                                    chart: {
-                                        height: 250
-                                    },
-                                    xaxis: {
-                                        labels: {
-                                            style: {
-                                                fontSize: '10px'
-                                            }
-                                        }
-                                    },
-                                    yaxis: {
-                                        labels: {
-                                            style: {
-                                                fontSize: '10px'
-                                            }
-                                        }
-                                    },
-                                }
-                            }],
-                        });
-                        
-                        chart.render();
+            const chart = new ApexCharts(document.querySelector(`#${chartId}`), {
+                chart: {
+                    type: 'line',
+                    height: 300,
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800
                     }
                 },
-                error: function(xhr) {
-                    $('#chart_placeholder').html(`
-                        <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
-                            <h3 class="text-lg font-semibold text-red-500">Error</h3>
-                            <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
-                        </div>
-                    `);
-                    console.error("AJAX Error:", xhr.responseText);
+                series: [{
+                    name: 'Harga (Rp)',
+                    data: data
+                }],
+                xaxis: {
+                    title: { text: 'Hari' },
+                    categories: labels,
+                    labels: {
+                        style: { fontSize: '12px' }
+                    }
+                },
+                yaxis: {
+                    title: { text: 'Harga (Rp)' },
+                    labels: {
+                        formatter: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
                 }
             });
-        }, 300); // Debounce 300ms
-    });
 
-    // Trigger Filter Modal
-    function toggleModal() {
-        const modal = document.getElementById('filterModal');
-        modal.classList.toggle('hidden');
-        modal.classList.toggle('flex');
+            chart.render();
+        });
     }
 
-    $("#filterBtn").on("click", function() {
-        $("#filterModal").toggleClass("hidden");
-    });
-    // End Trigger Filter Modal
+    // Fungsi ambil data dan panggil renderCharts()
+    function fetchChartData(pasar, periode) {
+        $.ajax({
+            type: "GET",
+            url: "{{ route('api.dpp.index') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                pasar: pasar,
+                periode: periode
+            },
+            success: function(response) {
+                // console.log(response);
+                $('#periode_placeholder').html(`- ${response.periode.toUpperCase()}`)
+                $('#pasar_placeholder').html(pasar.toUpperCase());
+                renderCharts(response.data);
+            },
+            error: function() {
+                $('#chart_container').html(`
+                    <div class="text-center p-4 border-2 border-dashed border-red-300 rounded-lg shadow-md bg-red-50">
+                        <h3 class="text-lg font-semibold text-red-500">Gagal Memuat Data</h3>
+                        <p class="text-red-400">Terjadi kesalahan saat mengambil data.</p>
+                    </div>
+                `);
+            }
+        });
+    }
 
-    // Reset semua saat halaman dimuat
-    $(document).ready(function() {
-        $('#pilih_periode').prop('disabled', true);
-        $('#pilih_bahan_pokok').prop('disabled', true);
+    // Inisialisasi data default
+    fetchChartData(pasar, periode);
+
+    // Event klik filter
+    $('#filter_btn').on('click', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const selectedPasar = $('#pilih_pasar').val();
+            const selectedPeriode = $('#pilih_periode').val();
+            if (!selectedPasar || !selectedPeriode) return;
+
+            pasar = selectedPasar;
+            periode = selectedPeriode;
+            fetchChartData(pasar, periode);
+        }, 300);
+    });
+
+    // Toggle modal filter
+    function toggleModal() {
+        $('#filterModal').toggleClass('hidden flex');
+    }
+
+    $('#filterBtn').on('click', toggleModal);
+
+    // Search
+    search.on("input", function () {
+        console.log('pepek');
+        
+        const input_value = $(this).val().toLowerCase();
+        let jenis_bahan_pokok_col = $(".jenis_bahan_pokok_col");
+
+        jenis_bahan_pokok_col.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
     });
 </script>

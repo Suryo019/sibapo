@@ -8,10 +8,12 @@ use App\Http\Controllers\Pegawai\DKPPController;
 use App\Http\Controllers\Pegawai\DTPHPController;
 use App\Http\Controllers\Akun\AkunDinasController;
 use App\Http\Controllers\Pimpinan\ReadDataController;
-use App\Http\Controllers\Beranda\HargaKomoditasController;
-use App\Http\Controllers\Disperindag\ApiBpokokController;
-use App\Http\Controllers\Disperindag\ApiPasarController;
 use App\Http\Controllers\Web\AdminDashboardController;
+use App\Http\Controllers\Disperindag\ApiPasarController;
+use App\Http\Controllers\Disperindag\ApiBpokokController;
+use App\Http\Controllers\Dtphp\ApiJenisTanamanController;
+use App\Http\Controllers\Beranda\HargaKomoditasController;
+use App\Http\Controllers\Perikanan\ApiJenisIkanController;
 
 // Dashboard
 Route::get('/persendkpp', [AdminDashboardController::class, 'persen_dkpp']);
@@ -96,3 +98,19 @@ Route::get('/bahan_pokok', [ApiBpokokController::class, 'index'])->name('api.bah
 Route::post('/bahan_pokok', [ApiBpokokController::class, 'store'])->name('api.bahan_pokok.store');
 Route::put('/bahan_pokok/{id}', [ApiBpokokController::class, 'update'])->name('api.bahan_pokok.update');
 Route::delete('/bahan_pokok/{id}', [ApiBpokokController::class, 'destroy']);
+
+
+
+// Jenis Ikan
+Route::get('/jenis-ikan', [ApiJenisIkanController::class, 'index'])->name('api.jenis-ikan.index');
+Route::post('/jenis-ikan', [ApiJenisIkanController::class, 'store'])->name('api.jenis-ikan.store');
+Route::put('/jenis-ikan/{id}', [ApiJenisIkanController::class, 'update'])->name('api.jenis-ikan.update');
+Route::delete('/jenis-ikan/{id}', [ApiJenisIkanController::class, 'destroy']);
+
+
+
+// Jenis Tanaman
+Route::get('/jenis-tanaman', [ApiJenisTanamanController::class, 'index'])->name('api.jenis-tanaman.index');
+Route::post('/jenis-tanaman', [ApiJenisTanamanController::class, 'store'])->name('api.jenis-tanaman.store');
+Route::put('/jenis-tanaman/{id}', [ApiJenisTanamanController::class, 'update'])->name('api.jenis-tanaman.update');
+Route::delete('/jenis-tanaman/{id}', [ApiJenisTanamanController::class, 'destroy']);

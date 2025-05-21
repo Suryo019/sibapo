@@ -31,26 +31,6 @@ class ApiPasarController extends Controller
         ], 201);
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $pasar = Pasar::find($id);
-
-    //     if (!$pasar) {
-    //         return response()->json(['message' => 'Pasar tidak ditemukan'], 404);
-    //     }
-
-    //     $validated = $request->validate([
-    //         'nama_pasar' => 'sometimes|required|string|max:255',
-    //     ]);
-
-    //     $pasar->update($validated);
-
-    //     return response()->json([
-    //         'message' => 'Pasar berhasil diperbarui',
-    //         'data' => $pasar
-    //     ]);
-    // }
-
     public function update(Request $request, $id)
     {
         try {

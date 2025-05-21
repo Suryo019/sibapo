@@ -8,10 +8,12 @@ use App\Models\DPP;
 use App\Models\DKPP;
 use App\Models\User;
 use App\Models\DTPHP;
+use App\Models\Riwayat;
+use App\Models\JenisIkan;
+use App\Models\JenisTanaman;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
-use App\Models\Riwayat;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminDashboardController extends Controller
@@ -19,8 +21,8 @@ class AdminDashboardController extends Controller
     public function dashboard()
     {
         $jml_bahan_pokok = JenisBahanPokok::count();
-        $jml_komoditas = DTPHP::select('jenis_komoditas')->distinct()->count();
-        $jml_ikan = DP::select('jenis_ikan')->distinct()->count();
+        $jml_komoditas = JenisTanaman::count();
+        $jml_ikan = JenisIkan::count();
         $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
             ->where('roles.role', '!=', 'admin')
             ->count();

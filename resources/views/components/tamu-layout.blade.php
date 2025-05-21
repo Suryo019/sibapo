@@ -34,7 +34,7 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
 </head>
-<body class="h-screen w-screen overflow-x-hidden">
+<body class="h-screen w-screen overflow-x-hidden scrollbar-thin">
     <!-- Loading overlay -->
     <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
         <div class="w-full h-full flex items-center justify-center flex-col">

@@ -14,26 +14,24 @@ class DKPPController extends Controller
 {
     public function index(Request $request)
     {
-        // TAK UPDATE
         try {
-            // return response()->json(['data' => $request]);
-            $date = Carbon::createFromFormat('F Y', $request->periode);
-            // $date = Carbon::createFromFormat('F Y', 'April 2025');
+            $date = $request->periode ? Carbon::createFromFormat('F Y', $request->periode) : now();
             $month = $date->month;
             $year = $date->year;
+            $week =  $request->minggu ?? now()->weekOfMonth;
 
             $data = DKPP::whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->where('minggu', $request->minggu)
-            ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
-            ->get();
+                ->whereMonth('created_at', $month)
+                ->where('minggu', $week)
+                ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
+                ->get();
 
-            // dd($data);
-            
+            return response()->json(['data' => $data]);
+        } catch (\Throwable $th) {
             return response()->json([
-                'data' => $data,
-            ]);
-            
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $th->getMessage()
+            ], 500);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',

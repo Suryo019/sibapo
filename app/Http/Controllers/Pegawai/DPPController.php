@@ -16,16 +16,18 @@ class DPPController extends Controller
 {
     public function index(Request $request)
     {
-        $date = Carbon::createFromFormat('F Y', $request->periode);
+        $date = Carbon::createFromFormat('Y-m', $request->periode);
         $month = $date->month;
         $year = $date->year;
+
+        $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
 
         $dpp = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
             ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
             ->whereMonth('tanggal_dibuat', $month)
             ->whereYear('tanggal_dibuat', $year)
             ->where('pasar.nama_pasar', $request->pasar)
-            ->where('jenis_bahan_pokok.nama_bahan_pokok', $request->bahan_pokok)
+            // ->where('jenis_bahan_pokok.nama_bahan_pokok', $request->bahan_pokok)
             ->selectRaw("
                 jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok,
                 dinas_perindustrian_perdagangan.kg_harga,
@@ -33,12 +35,14 @@ class DPPController extends Controller
                 pasar.nama_pasar as pasar,
                 DAY(tanggal_dibuat) as hari
             ")
-            ->get();
+            ->get()
+            ->groupBy('jenis_bahan_pokok');
             
         // dd($dpp);
 
         return response()->json([
-            'data' => $dpp
+            'data' => $dpp,
+            'periode' => $periodFY,
         ]);
     }
 
@@ -82,6 +86,7 @@ class DPPController extends Controller
                 ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
                 ->where('pasar.nama_pasar', $request->data)
                 ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                ->orderBy('jenis_bahan_pokok.nama_bahan_pokok', $request->sort)
                 ->get()
                 ->groupBy('jenis_bahan_pokok')
                 // dd($dpp);

@@ -45,7 +45,11 @@
                                 class="w-40 h-40 block rounded-xl object-contain border border-pink-200 p-1 shadow">
                         </div>
                     @else
-                        <span class="text-gray-400 italic">Tidak ada gambar</span>
+                        <div class="mt-4 flex flex-col ml-8">
+                            <span class="text-slate-500 block" id="text-preview-gambar">Preview Gambar</span>
+                            <img src="{{ asset('storage/img/landscape-placeholder.svg') }}" id="gambar_preview" alt="Preview Gambar" 
+                                class="w-40 h-40 block rounded-xl object-contain border border-pink-200 p-1 shadow">
+                        </div>
                     @endif
                 </div>
             </form> 

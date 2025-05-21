@@ -23,11 +23,14 @@ class DkppController extends Controller
             return $item->periode_indonesia;
         });
 
+        $currentWeek = now()->weekOfMonth;
+
         // $data = DKPP::all();
         return view('admin.dkpp.admin-dkpp', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             // 'data' => $data,
             'periods' => $periodeUnikNama,
+            'currentWeek' => $currentWeek
         ]);
     }
 

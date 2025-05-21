@@ -1,15 +1,12 @@
-{{-- @dd($attributes['icon']) --}}
-
-{{-- @props(['viewHref', 'createHref', 'viewData', 'createData', 'updateData' => null, 'dataHref', 'dinas' => null,'viewDetailHref' => null]) --}}
-
-<li class="mb-2 rounded-lg max-md:bg-pink-650" >
+<li class="rounded-lg max-md:bg-pink-650" >
+    {{-- Kelola bahan pokok --}}
         <li class="pl-7 py-2  " id="kelola_bahan_pokok">
             <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/bahanpokok*') ? 'text-yellow-300' : '' }} md:bg-transparent ">
                 <span class="flex items-center gap-5 text-sm" >
                     <iconify-icon icon="healthicons:vegetables" class="text-xl"></iconify-icon>
                     Data Bahan Pokok
                 </span>
-                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/bahanpokok*') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }}   scale-50 pr-5"></i>
+                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/bahanpokok*') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }} scale-50 pr-5"></i>
             </div>
         </li>
 
@@ -42,13 +39,14 @@
                 </li>
             </ul>
 
-        <li class="px-7 py-2 " id="kelola_pasar">
+        {{-- Kelola pasar --}}
+        <li class="pl-7 py-2 " id="kelola_pasar">
             <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/pasar*') ? 'text-yellow-300' : '' }} md:bg-transparent ">
                 <span class="flex items-center gap-5 text-sm">
                     <iconify-icon icon="lsicon:marketplace-filled" class="text-xl"></iconify-icon>
                     Data Pasar
                 </span>
-                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/pasar*')  ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }}   scale-50 pr-5"></i>
+                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/pasar*')  ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }} scale-50 pr-5"></i>
             </div>
         </li>
 
@@ -81,22 +79,23 @@
                 </li>
             </ul>
 
-        <li class="px-7 py-2"  id="kelola_data">
-            <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag*') ? 'text-yellow-300' : '' }} md:bg-transparent " >
+        {{-- Kelola Data Disperindag --}}
+        <li class="pl-7 py-2"  id="kelola_data">
+            <div class="flex items-center justify-between cursor-pointer {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? 'text-yellow-300' : '' }} md:bg-transparent " >
                 <span class="flex items-center gap-5 text-sm">
                     <iconify-icon icon="ooui:chart" class="text-xl"></iconify-icon>
                     Kelola Data
                 </span>
-                <i class="caret-icon bi {{ request()->is('pegawai/disperindag*') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }}   scale-50 pr-5"></i>
+                <i class="caret-icon bi {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? ' bi-caret-up-fill' : 'bi-caret-down-fill' }} scale-50 pr-5"></i>
             </div>
         </li>
 
-        <ul class=" mt-1 {{ request()->is('pegawai/disperindag*') ? 'block' : 'hidden' }}" id="dropdown-content-kelola-data">
-        @php
-            $isView = request()->url() === route('pegawai.disperindag.index') || request()->url() === route('pegawai.disperindag.detail');
-            $isCreate = request()->url() === route('pegawai.disperindag.create');
-            $isEdit = request()->is('pegawai/disperindag/edit/*');
-        @endphp
+        <ul class=" mt-1 {{ request()->is('pegawai/disperindag/data*') || request()->is('pegawai/disperindag-detail') ? 'block' : 'hidden' }}" id="dropdown-content-kelola-data">
+            @php
+                $isView = request()->url() === route('pegawai.disperindag.index') || request()->url() === route('pegawai.disperindag.detail');
+                $isCreate = request()->url() === route('pegawai.disperindag.create');
+                $isEdit = request()->is('pegawai/disperindag/data/edit/*');
+            @endphp
 
             <li class="pl-[52px] py-1 rounded-md hover:bg-pink-600 {{ $isView ? 'bg-pink-450' : '' }}">
                 <a href="{{ route('pegawai.disperindag.index') }}" class="rounded py-1 flex items-center gap-5 text-sm">

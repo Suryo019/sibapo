@@ -14,8 +14,10 @@ use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
-use App\Http\Controllers\Web\PerikananDashboardController;
+use App\Http\Controllers\Web\Dkpp\JenisKomoditasDkppController;
+use App\Http\Controllers\Web\Dtphp\JenisTanamanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
+use App\Http\Controllers\Web\Perikanan\JenisIkanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
@@ -102,7 +104,7 @@ Route::get('perikanan-detail', [PerikananController::class, 'detail'])->name('pe
 // DISPERINDAG
 Route::get('/pegawai/disperindag/dashboard', [PegawaiDisperindagController::class, 'dashboard'])->name('pegawai.disperindag.dashboard');
 
-Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->names([
+Route::resource('/pegawai/disperindag/data', PegawaiDisperindagController::class)->names([
     'index' => 'pegawai.disperindag.index',
     'create' => 'pegawai.disperindag.create',
     'store' => 'pegawai.disperindag.store',
@@ -114,11 +116,12 @@ Route::resource('/pegawai/disperindag', PegawaiDisperindagController::class)->na
 Route::get('/pegawai/disperindag-detail', [PegawaiDisperindagController::class, 'dppDetail'])->name('pegawai.disperindag.detail');
 
 //pasar
-Route::get('/pegawai/disperindag/lihatpasar', [PegawaiPasarController::class, 'index'])->name('pegawai.disperindag.pasar.index');
+Route::get('/pegawai/disperindag/pasar/detail', [PegawaiPasarController::class, 'index'])->name('pegawai.disperindag.pasar.index');
 Route::get('/pegawai/disperindag/pasar/create', [PegawaiPasarController::class, 'create'])->name('pegawai.disperindag.pasar.create');
 Route::get('/pegawai/disperindag/pasar/edit/{pasar:id}', [PegawaiPasarController::class, 'edit'])->name('pegawai.disperindag.pasar.edit');
+
 //bahan pokok
-Route::get('/pegawai/disperindag/lihatbahanpokok', [PegawaiBahanPokokController::class, 'index'])->name('pegawai.disperindag.bahanpokok.index');
+Route::get('/pegawai/disperindag/bahanpokok/detail', [PegawaiBahanPokokController::class, 'index'])->name('pegawai.disperindag.bahanpokok.index');
 Route::get('/pegawai/disperindag/bahanpokok/create', [PegawaiBahanPokokController::class, 'create'])->name('pegawai.disperindag.bahanpokok.create');
 Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahanPokokController::class, 'edit'])->name('pegawai.disperindag.bahanpokok.edit');
 
@@ -139,10 +142,10 @@ Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->na
 
 
 // DTPHP
-Route::get('/pegawai/dtphp/dashboard', [DtphpController::class, 'dashboard'])
+Route::get('/pegawai/dtphp/dashboard', [PegawaiDtphpController::class, 'dashboard'])
     ->name('pegawai.dtphp.dashboard');
     
-Route::get('/pegawai/dtphp/dashboard-panen', [DtphpController::class, 'dashboardPanen'])
+Route::get('/pegawai/dtphp/dashboard-panen', [PegawaiDtphpController::class, 'dashboardPanen'])
     ->name('pegawai.dtphp.dashboard.panen');
 
 Route::resource('/pegawai/dtphp', PegawaiDtphpController::class)->names([
@@ -162,7 +165,7 @@ Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'
 
 
 // PERIKANAN
-Route::get('/pegawai/perikanan/dashboard', [PerikananController::class, 'dashboard'])
+Route::get('/pegawai/perikanan/dashboard', [PegawaiPerikananController::class, 'dashboard'])
     ->name('pegawai.perikanan.dashboard');
 
 Route::resource('/pegawai/perikanan', PegawaiPerikananController::class)->names([
@@ -231,3 +234,37 @@ Route::get('/pimpinan/dkpp', [PimpinanController::class,'dkpp'] )->name('pimpina
 Route::get('/pimpinan/dtphp-panen', [PimpinanController::class,'panen'] )->name('pimpinan.dtphp-panen');
 Route::get('/pimpinan/dtphp-volume', [PimpinanController::class,'volume'] )->name('pimpinan.dtphp-volume');
 Route::get('/pimpinan/perikanan', [PimpinanController::class,'perikanan'] )->name('pimpinan.perikanan');
+
+
+// JenisIkan
+Route::resource('jenis_ikan', JenisIkanController::class)->names([
+    'index' => 'jenis-ikan.index',
+    'create' => 'jenis-ikan.create',
+    'store' => 'jenis-ikan.store',
+    'show' => 'jenis-ikan.show',
+    'edit' => 'jenis-ikan.edit',
+    'update' => 'jenis-ikan.update',
+    'destroy' => 'jenis-ikan.destroy',
+]);
+
+// JenisTanaman
+Route::resource('jenis_tanaman', JenisTanamanController::class)->names([
+    'index' => 'jenis-tanaman.index',
+    'create' => 'jenis-tanaman.create',
+    'store' => 'jenis-tanaman.store',
+    'show' => 'jenis-tanaman.show',
+    'edit' => 'jenis-tanaman.edit',
+    'update' => 'jenis-tanaman.update',
+    'destroy' => 'jenis-tanaman.destroy',
+]);
+
+// Jenis Komoditas
+Route::resource('jenis_komoditas', JenisKomoditasDkppController::class)->names([
+    'index' => 'jenis-komoditas.index',
+    'create' => 'jenis-komoditas.create',
+    'store' => 'jenis-komoditas.store',
+    'show' => 'jenis-komoditas.show',
+    'edit' => 'jenis-komoditas.edit',
+    'update' => 'jenis-komoditas.update',
+    'destroy' => 'jenis-komoditas.destroy',
+]);

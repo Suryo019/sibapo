@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->dateTime('tanggal_input');
-            $table->string('jenis_ikan');
+            $table->string('jenis_ikan_id');
             $table->integer('ton_produksi');
             $table->softDeletes();
             $table->timestamps();
