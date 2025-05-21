@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login SIBAPO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen flex font-sans">
+
+  <div class="w-1/2 bg-gradient-to-b from-[#f83c8b] to-[#ff69b4] text-white flex flex-col items-center justify-center px-10 relative">  
+    <!-- Logo Pemerintah -->
+    <div class="mb-4">
+      <img src="logo-pemerintah.png" alt="Logo Pemerintah" class="h-20" />
+    </div>
+    <!-- Tulisan "Selamat Datang" -->
+    <h1 class="text-2xl font-semibold mb-2">Selamat Datang</h1>
+    <!-- Logo/Tulisan SIBAPO -->
+    <div class="mb-4">
+      <img src="logo-sibapo.png" alt="Logo SIBAPO" class="h-16" />
+    </div>
+
+    <!-- Deskripsi -->
+    <p class="text-center text-sm leading-relaxed max-w-md">
+      <em>
+        Semua Dicinta Fawait.
+      </em>
+    </p>
+    <p class="text-center text-sm leading-relaxed max-w-md">
+        <em>
+            Sistem Informasi Bahan Pokok menyajikan data harga bahan pangan di seluruh Kabupaten Jember, dengan pembaruan yang dilakukan setiap hari. 
+        </em>
+    </p>
+
+    <!-- Footer Instansi -->
+    <p class="absolute bottom-5 text-xs text-center">
+      Bagian Tata Pemerintahan Setda<br />Kabupaten Jember
+    </p>
+  </div>
+
+  <!-- Kanan: form login -->
+  <div class="w-1/2 flex flex-col justify-center items-center px-10">
+    <h2 class="text-2xl font-semibold mb-8">Masuk ke akun Anda</h2>
+
+    <form class="w-full max-w-sm">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium mb-2" for="username">
+          Username/Email
+        </label>
+        <input
+          class="w-full px-3 py-2 border-b border-pink-400 focus:outline-none focus:border-pink-600"
+          type="text"
+          id="username"
+          placeholder="Masukkan Username/Email"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium mb-2" for="password">
+          Kata Sandi
+        </label>
+        <input
+          class="w-full px-3 py-2 border-b border-pink-400 focus:outline-none focus:border-pink-600"
+          type="password"
+          id="password"
+          placeholder="Masukkan Kata Sandi"
+        />
+        <div class="text-right mt-2">
+          <a href="#" class="text-sm text-blue-500 hover:underline">Lupa Kata Sandi?</a>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-full transition duration-300"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>
