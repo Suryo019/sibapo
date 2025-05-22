@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\DKPP;
 use Illuminate\Http\Request;
+use App\Models\JenisKomoditasDkpp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -39,8 +40,10 @@ class DkppController extends Controller
      */
     public function create()
     {
+        $komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-create-dkpp', [
-            'title' => 'Tambah Data'
+            'title' => 'Tambah Data',
+            'commodities' => $komoditas,
         ]);
     }
 
@@ -65,9 +68,11 @@ class DkppController extends Controller
      */
     public function edit(DKPP $dkpp)
     {
+        $jenis_komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-update-dkpp', [
             'title' => 'Ubah Data',
-            'data' => $dkpp
+            'data' => $dkpp,
+            'commodities' => $jenis_komoditas,
         ]);
     }
 
@@ -99,12 +104,13 @@ class DkppController extends Controller
 
         $currentWeek = floor((now()->day - 1) / 7) + 1;
 
-        $data = DKPP::whereYear('created_at', now()->year)
-        ->whereMonth('created_at', now()->month)
-        ->where('minggu', $currentWeek)
+        $data = DKPP::join('jenis_komoditas_dkpp', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id', '=', 'jenis_komoditas_dkpp.id')
+        ->whereYear('dinas_ketahanan_pangan_peternakan.created_at', now()->year)
+        ->whereMonth('dinas_ketahanan_pangan_peternakan.created_at', now()->month)
+        ->where('dinas_ketahanan_pangan_peternakan.minggu', $currentWeek)
+        ->whereNull('dinas_ketahanan_pangan_peternakan.deleted_at')
         ->get();
-
-
+    
         return view('admin.dkpp.admin-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             'data' => $data,

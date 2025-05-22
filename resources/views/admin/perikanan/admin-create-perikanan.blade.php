@@ -12,12 +12,19 @@
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form action="{{ route('api.dp.store') }}" method="post">
                 @csrf
+                <!-- Nama Ikan -->
                 <div class="mb-4">
-                    <label class="block text-gray-700">Jenis Ikan</label>
-                    <input type="text" placeholder="Contoh: Lele" 
-                           class="border p-2 w-full rounded-full" id="jenis_ikan">
+                    <label class="block text-pink-500">Nama Ikan</label>
+                    <select id="jenis_ikan_id" name="jenis_ikan_id" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Ikan</option>
+                        @foreach ($fishes as $fish)
+                            <option value="{{ $fish->id }}">
+                                {{ $fish->nama_ikan }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-    
+
                 <div class="mb-4">
                     <label class="block text-gray-700">Volume Produksi (Ton)</label>
                     <input type="text" placeholder="Contoh: 100" 
@@ -43,7 +50,7 @@
             url: "{{ route('api.dp.store') }}",
             data: {
                 _token: "{{ csrf_token() }}",
-                jenis_ikan: $('#jenis_ikan').val(),
+                jenis_ikan_id: $('#jenis_ikan_id').val(),
                 ton_produksi: $('#ton_produksi').val(),
                 },
                 success: function(data) {
@@ -52,7 +59,7 @@
 
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: `Data ${data.data.jenis_ikan} telah disimpan.`,
+                    text: `Data ikan ${data.nama_ikan} telah disimpan.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });

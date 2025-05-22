@@ -80,7 +80,7 @@
                             @php $keterangan = $item->keterangan; @endphp         
                             <tr class="border-b text-center">
                                 <td class="p-2">{{ $loop->iteration }}</td>
-                                <td class="p-2">{{ $item->jenis_komoditas }}</td>
+                                <td class="p-2">{{ $item->nama_komoditas }}</td>
                                 <td class="p-2">{{ $item->ton_ketersediaan }}</td>
                                 <td class="p-2">{{ $item->ton_kebutuhan_perminggu }}</td>
                                 <td class="p-2">{{ $item->ton_neraca_mingguan }}</td>
@@ -141,7 +141,7 @@
                 success: function(data) {                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
+                        text: `Data ${data.data.jenis_komoditas_dkpp_id} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
