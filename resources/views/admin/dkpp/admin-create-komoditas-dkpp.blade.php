@@ -16,7 +16,7 @@
                 <!-- Nama Komoditas -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Komoditas</label>
-                    <input type="text" placeholder="Contoh: Nila" 
+                    <input type="text" placeholder="Contoh: Beras" 
                            class="border p-2 w-full rounded-xl" id="nama_komoditas">
                 </div>
     

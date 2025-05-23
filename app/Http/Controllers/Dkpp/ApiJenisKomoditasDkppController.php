@@ -17,17 +17,30 @@ class ApiJenisKomoditasDkppController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_komoditas' => 'required|string|max:255',
-        ]);
-        
-        $nama_komoditas = JenisKomoditasDkpp::create($validated);
+        try {
+            $validated = $request->validate([
+                'nama_komoditas' => 'required|string|unique:jenis_komoditas_dkpp,nama_komoditas|max:255',
+            ]);
 
-        return response()->json([
-            'message' => 'Jenis Komoditas berhasil ditambahkan',
-            'data' => $nama_komoditas
-        ], 201);
+            $nama_komoditas = JenisKomoditasDkpp::create($validated);
+
+            return response()->json([
+                'message' => 'Jenis Komoditas berhasil ditambahkan',
+                'data' => $nama_komoditas
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function update(Request $request, $id)
     {
@@ -38,9 +51,15 @@ class ApiJenisKomoditasDkppController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $validated = $request->validate([
-                'nama_komoditas' => 'sometimes|required|string|max:255'
-            ]);
+            $validated = [];
+
+            if ($request->nama_komoditas != $nama_komoditas->nama_komoditas) {
+                $validated = $request->validate([
+                    'nama_komoditas' => 'required|string|unique:jenis_komoditas_dkpp,nama_komoditas|max:255'
+                ]);
+            } else {
+                $validated['nama_komoditas'] = $nama_komoditas->nama_komoditas;
+            }
 
             $nama_komoditas->update($validated);
 
@@ -48,7 +67,7 @@ class ApiJenisKomoditasDkppController extends Controller
                 'message' => 'Data berhasil diperbarui',
                 'data' => $nama_komoditas
             ]);
-        } catch (ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Validasi gagal',
                 'errors' => $e->errors()
@@ -61,6 +80,7 @@ class ApiJenisKomoditasDkppController extends Controller
         }
     }
 
+
     public function destroy($id)
     {
         $nama_komoditas = JenisKomoditasDkpp::find($id);
@@ -71,6 +91,6 @@ class ApiJenisKomoditasDkppController extends Controller
 
         $nama_komoditas->delete();
 
-        return response()->json(['message' => 'Jenis Komoditas berhasil dihapus']);
+        return response()->json(['message' => 'Jenis Komoditas berhasil dihapus', 'data' => $nama_komoditas]);
     }    
 }

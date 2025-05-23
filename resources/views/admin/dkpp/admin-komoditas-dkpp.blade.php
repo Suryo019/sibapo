@@ -117,10 +117,10 @@
                 data: {
                     _token: '{{ csrf_token() }}',
                 },
-                success: function(data) {                    
+                success: function(response) {                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `${data.message}`,
+                        text: `Data komoditas ${response.data.nama_komoditas} telah diperbarui.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {

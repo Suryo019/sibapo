@@ -31,6 +31,7 @@ Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index'])->name('api.dkpp.index');
+Route::get('/dkpp/detail', [DKPPController::class, 'detail'])->name('api.dkpp.detail');
 Route::get('/dkpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dkpp.listItem');
 Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
 Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');

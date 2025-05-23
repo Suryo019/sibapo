@@ -58,10 +58,13 @@
                 <!-- Minggu -->
                 <div class="mb-4">
                     <label for="minggu" class="block text-pink-500">Minggu</label>
-                    <input type="number" name="minggu" id="minggu"
-                           value="{{ old('minggu', $data->minggu) }}" 
-                           class="border p-2 w-full rounded-xl" placeholder="Contoh: 1">
+                    <select class="border p-2 w-full rounded-xl" id="minggu" name="minggu">
+                        @for ($i = 1; $i <= 4; $i++)
+                            <option value="{{ $i }}" {{ old('minggu', $data->minggu) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
+                    </select>
                 </div>
+
             </form>
         </div>
 
@@ -84,11 +87,11 @@
                 ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
                 minggu: $('#minggu').val(),
                 },
-            success: function(data) {
+            success: function(response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: `Data berhasil diperbarui!`,
+                    text: `Data ${response.data.nama_komoditas} berhasil diubah!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
                     window.location.href = "{{ route('dkpp.detail') }}";

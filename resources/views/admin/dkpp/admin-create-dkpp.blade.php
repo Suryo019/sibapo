@@ -48,6 +48,15 @@
                         class="border p-2 w-full rounded-xl">
                 </div>
 
+                <div class="mb-4">
+                    <label for="minggu" class="block text-pink-500">Minggu</label>
+                    <select class="border p-2 w-full rounded-xl" id="minggu">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
             </form>
         </div>
         
@@ -69,8 +78,9 @@
                 jenis_komoditas_dkpp_id: $('#jenis_komoditas_dkpp_id').val(),
                 ton_ketersediaan: $('#ton_ketersediaan').val(),
                 ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
+                minggu: $('#minggu').val(),
                 },
-            success: function(data) {     
+            success: function(response) {  
                 
                 $('#jenis_komoditas_dkpp_id').val('');
                 $('#ton_ketersediaan').val('');
@@ -78,7 +88,7 @@
                            
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: `Data ${data.nama_komditas} telah disimpan.`,
+                    text: `Data ${response.data.nama_komoditas} telah disimpan.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });

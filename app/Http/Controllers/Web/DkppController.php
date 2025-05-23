@@ -94,27 +94,11 @@ class DkppController extends Controller
 
     public function detail()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
-            ->get()
-            ->map(function ($item) {
-                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-                return $item->periode_indonesia;
-            });
-
         $currentWeek = floor((now()->day - 1) / 7) + 1;
 
-        $data = DKPP::join('jenis_komoditas_dkpp', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id', '=', 'jenis_komoditas_dkpp.id')
-        ->whereYear('dinas_ketahanan_pangan_peternakan.created_at', now()->year)
-        ->whereMonth('dinas_ketahanan_pangan_peternakan.created_at', now()->month)
-        ->where('dinas_ketahanan_pangan_peternakan.minggu', $currentWeek)
-        ->whereNull('dinas_ketahanan_pangan_peternakan.deleted_at')
-        ->get();
-    
         return view('admin.dkpp.admin-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
-            'data' => $data,
-            'periods' => $periodeUnikNama,
+            'currentWeek' => $currentWeek,
         ]);
     }
 }
