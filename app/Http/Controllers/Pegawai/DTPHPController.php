@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pegawai;
 
+use Carbon\Carbon;
 use App\Models\DTPHP;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
@@ -23,12 +24,48 @@ class DTPHPController extends Controller
         }
     }
 
-    public function listItem($namaKomoditas)
+    public function konversi_nama_bulan_id($date)
+    {
+        $mapBulan = [
+            'January'   => 'Januari',
+            'February'  => 'Februari',
+            'March'     => 'Maret',
+            'April'     => 'April',
+            'May'       => 'Mei',
+            'June'      => 'Juni',
+            'July'      => 'Juli',
+            'August'   => 'Agustus',
+            'September' => 'September',
+            'October'   => 'Oktober',
+            'November'  => 'November',
+            'December'  => 'Desember'
+        ];
+
+        $bulanEn = Carbon::createFromFormat('Y-m', $date)->format('F');
+        $bulanId = $mapBulan[$bulanEn];
+
+        return $bulanId;
+    }
+
+    public function listItem(Request $request, $jenisTanaman)
     {
         try {
-            $data = DTPHP::where('jenis_komoditas', $namaKomoditas)
-            ->whereYear('tanggal_input', 2025)
-            ->get();
+            $data = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
+                ->where('jenis_tanaman.nama_tanaman', $jenisTanaman)
+                // ->whereRaw("DATE_FORMAT(dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                ->select(
+                    'dinas_tanaman_pangan_holtikultural_perkebunan.id as dtphp_id',
+                    'dinas_tanaman_pangan_holtikultural_perkebunan.*',
+                    'jenis_tanaman.nama_tanaman',
+                )
+                ->get()
+                ->map(function($item) {
+                    $carbon = Carbon::parse($item->tanggal_dibuat);
+                    $bulanEn = $carbon->format('Y-m');
+                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
+                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                    return $item;
+                });
             return response()->json(['data' => $data]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -36,14 +73,14 @@ class DTPHPController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
-    }  
+    }
 
     // Menyimpan data baru
     public function store(Request $request)
     {
         try{
             $validated = $request->validate([
-                'jenis_komoditas' => 'required|string',
+                'jenis_tanaman_id' => 'required|string',
                 // 'tanggal_input' => 'required|date',
                 'ton_volume_produksi' => 'required|numeric',
                 'hektar_luas_panen' => 'required|numeric'
@@ -54,7 +91,7 @@ class DTPHPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 4,
-                'komoditas' => $validated['jenis_komoditas'],
+                'komoditas' => $validated['jenis_tanaman_id'],
                 'aksi' => 'buat'
             ];
             
@@ -87,7 +124,7 @@ class DTPHPController extends Controller
             }
     
             $validated = $request->validate([
-                'jenis_komoditas' => 'sometimes|string',
+                'jenis_tanaman_id' => 'sometimes|string',
                 'tanggal_input' => 'sometimes|date',
                 'ton_volume_produksi' => 'sometimes|numeric',
                 'hektar_luas_panen' => 'sometimes|numeric'
@@ -95,7 +132,7 @@ class DTPHPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 4,
-                'komoditas' => $validated['jenis_komoditas'],
+                'komoditas' => $validated['jenis_tanaman_id'],
                 'aksi' => 'ubah'
             ];
             
@@ -127,7 +164,7 @@ class DTPHPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 4,
-                'komoditas' => $dtphp->jenis_komoditas,
+                'komoditas' => $dtphp->jenis_tanaman_id,
                 'aksi' => 'hapus'
             ];
             
@@ -148,8 +185,8 @@ class DTPHPController extends Controller
         try {
             $dtphp = DTPHP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
-            ->where('jenis_komoditas', 'Suket Teki')
-            ->select('jenis_komoditas', 'hektar_luas_panen')
+            ->where('jenis_tanaman_id', 'Suket Teki')
+            ->select('jenis_tanaman_id', 'hektar_luas_panen')
             ->get();
 
             return response()->json([
@@ -168,8 +205,8 @@ class DTPHPController extends Controller
         try {
             $dtphp = DTPHP::whereMonth('tanggal_input', 4)
             ->whereYear('tanggal_input', 2025)
-            ->where('jenis_komoditas', 'Suket Teki')
-            ->select('jenis_komoditas', 'ton_volume_produksi')
+            ->where('jenis_tanaman_id', 'Suket Teki')
+            ->select('jenis_tanaman_id', 'ton_volume_produksi')
             ->get();
 
             return response()->json([

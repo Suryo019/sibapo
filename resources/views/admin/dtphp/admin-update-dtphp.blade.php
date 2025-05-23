@@ -16,8 +16,8 @@
                 @csrf
                 @method('PUT')
                 
-                <!-- Jenis Komoditas -->
-                <div class="mb-4">
+                <!-- Jenis Tanaman -->
+                {{-- <div class="mb-4">
                     <label class="block text-pink-500 text-sm max-md:text-xs mb-1">Jenis Komoditas</label>
                     <input
                       type="text"
@@ -27,8 +27,20 @@
                       class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs"
                       value="{{ old('jenis_komoditas', $data->jenis_komoditas) }}"
                     />
-                </div>
+                </div> --}}
                   
+                <div class="mb-4">
+                    <label class="block text-pink-500">Nama Tanaman</label>
+                    <select id="jenis_tanaman_id" name="jenis_tanaman_id" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Tanaman</option>
+                        @foreach ($commodities as $commodity)
+                            <option value="{{ $commodity->id }}" {{ old('jenis_tanaman_id', $data->jenis_tanaman_id) == $commodity->id ? 'selected' : '' }}>
+                                {{ $commodity->nama_tanaman }}
+                            </option>                        
+                        @endforeach
+                    </select>
+                </div>
+
                 <!-- Volume Produksi -->
                 <div class="mb-4">
                     <label class="block text-pink-500 text-sm max-md:text-xs mb-1">Volume Produksi (Ton)</label>
@@ -88,7 +100,7 @@
                 url: "{{ route('api.dtphp.update', $data->id) }}",
                 data: {
                     _token: "{{ csrf_token() }}",
-                    jenis_komoditas: $('#jenis_komoditas').val(),
+                    jenis_tanaman_id: $('#jenis_tanaman_id').val(),
                     ton_volume_produksi: $('#ton_volume_produksi').val(),
                     hektar_luas_panen: $('#hektar_luas_panen').val(),
                     tanggal_input: $('#tanggal_input').val(),
@@ -97,7 +109,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',
-                        text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
+                        text: `Data berhasil diperbarui!`,
                         confirmButtonColor: '#16a34a'
                     }).then(() => {
                         window.location.href = "{{ route('dtphp.detail.produksi') }}";

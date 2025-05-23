@@ -12,7 +12,7 @@
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form id="agricultureForm">
                 @csrf
-
+{{-- 
                 <div class="mb-4">
                     <label for="jenis_komoditas" class="block text-sm font-medium text-pink-500 mb-1">Jenis Komoditas</label>
                     <input 
@@ -23,6 +23,19 @@
                         class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
                         required>
                     <p id="jenis_komoditas_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                </div> --}}
+
+                <!-- Nama Tanaman -->
+                <div class="mb-4">
+                    <label class="block text-pink-500">Nama Tanamanr</label>
+                    <select id="tanaman" name="tanaman" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Tanaman</option>
+                        @foreach ($commodities as $commodity)
+                            <option value="{{ $commodity->id }}">
+                                {{ $commodity->nama_tanaman }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
     
                 <div class="mb-4">
@@ -71,18 +84,18 @@
             url: "{{ route('api.dtphp.store') }}",
             data: {
                 _token: "{{ csrf_token() }}",
-                jenis_komoditas: $('#jenis_komoditas').val(),
+                jenis_tanaman_id: $('#tanaman').val(),
                 ton_volume_produksi: $('#ton_volume_produksi').val(),
                 hektar_luas_panen: $('#hektar_luas_panen').val(),
                 },
             success: function(data) {   
-                $('#jenis_komoditas').val('');
+                $('#tanaman').val('');
                 $('#ton_volume_produksi').val('');
                 $('#hektar_luas_panen').val('');
 
                 Swal.fire({
                     title: 'Berhasil!',
-                    text: `Data ${data.data.jenis_komoditas} telah disimpan.`,
+                    text: `Data tanaman telah disimpan.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });

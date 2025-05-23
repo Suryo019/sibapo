@@ -14,20 +14,19 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Jenis Ikan -->
+                <!-- Nama Ikan -->
                 <div class="mb-4">
-                    <label for="jenis_ikan" class="block text-sm font-medium text-pink-500 mb-1">Jenis Ikan</label>
-                    <input 
-                        type="text" 
-                        name="jenis_ikan" 
-                        id="jenis_ikan"
-                        value="{{ old('jenis_ikan', $data->jenis_ikan) }}"
-                        placeholder="Contoh: Lele" 
-                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                        required>
-                    <p id="jenis_ikan_error" class="mt-1 text-sm text-red-600 hidden"></p>
+                    <label class="block text-pink-500">Nama Ikan</label>
+                    <select id="jenis_ikan_id" name="jenis_ikan_id" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Ikan</option>
+                        @foreach ($fishes as $fish)
+                            <option value="{{ $fish->id }}" {{ old('jenis_ikan_id', $data->jenis_ikan_id) == $fish->id ? 'selected' : '' }}>
+                                {{ $fish->nama_ikan }}
+                            </option>                        
+                        @endforeach
+                    </select>
                 </div>
-    
+
                 <!-- Volume Produksi -->
                 <div class="mb-4">
                     <label for="ton_produksi" class="block text-sm font-medium text-pink-500 mb-1">Volume Produksi (Ton)</label>
@@ -75,7 +74,7 @@
             url: "{{ route('api.dp.update', $data->id) }}",
             data: {
                 _token: "{{ csrf_token() }}",
-                jenis_ikan: $('#jenis_ikan').val(),
+                jenis_ikan_id: $('#jenis_ikan_id').val(),
                 ton_produksi: $('#ton_produksi').val(),
                 tanggal_input: $('#tanggal_input').val(),
                 },
@@ -83,7 +82,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: `Data ${data.data.jenis_ikan} berhasil diperbarui!`,
+                    text: `Data berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
 

@@ -12,43 +12,48 @@
   
                 <!-- Modal Background -->
                 <x-filter-modal>
-                    <form action="" method="get">
+                    <form action="{{ route('perikanan.detail') }}" method="get">
                         <div class="space-y-4">
-                            <!-- pilih urutan -->
+                            <!-- Pilih urutan -->
                             <div class="flex flex-col">
                                 <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                                <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="" selected>Ascending</option>
-                                    <option value="">Descending</option>
+                                <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                    <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Descending</option>
                                 </select>
                             </div>
-
-                            <!-- pilih ikan -->
+                    
+                            <!-- Pilih ikan -->
                             <div class="flex flex-col">
                                 <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                                <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_ikan">
-                                    <option value="" selected>Teri</option>
+                                <select name="ikan" id="pilih_ikan" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="">Semua Ikan</option>
                                     @foreach ($fishes as $fish)
-                                        <option value="{{ $fish }}">{{ $fish }}</option>
+                                        <option value="{{ $fish->id }}" {{ request('ikan') == $fish->id ? 'selected' : '' }}>
+                                            {{ $fish->nama_ikan }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
-
-                            <!-- pilih periode -->
+                    
+                            <!-- Pilih periode -->
                             <div class="flex flex-col">
                                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" id="pilih_periode" disabled>
-                                    <option value="" disabled selected>April 2025</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}">{{ $period }}</option>
+                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="" disabled selected>Pilih Periode</option>
+                                    @foreach ($periods as $index => $period)
+                                        <option value="{{ $numberPeriods[$index] }}"
+                                            {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
+                                            {{ $period }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-
+                    
                         <div class="w-full flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                      <button type="Submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                            <a href="{{ route('perikanan.detail') }}" class="bg-yellow-550 text-white rounded-lg w-20 p-1 text-center">Reset</a>
+                            <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                         </div>
                     </form>
                 </x-filter-modal> 
@@ -91,7 +96,7 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
-                                <td class="border-b px-4 py-2 text-center">{{ $item['jenis_ikan'] }}</td>
+                                <td class="border-b px-4 py-2 text-center">{{ $item['nama_ikan'] }}</td>
 
                                 @for ($bulan = 1; $bulan <= 12; $bulan++)
                                     <td class="border-b px-2 py-2 text-center whitespace-nowrap">
@@ -106,12 +111,12 @@
                                 <td class="border-b px-4 py-2">
                                     <div class="flex justify-center gap-2">
                                         <button class="editBtn bg-yellow-400 hover:bg-yellow-500 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors"
-                                            data-ikan="{{ $item['jenis_ikan'] }}">
+                                            data-ikan="{{ $item['nama_ikan'] }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     
                                         <button class="deleteBtn bg-red-500 hover:bg-red-600 text-white rounded-md w-10 h-10 flex items-center justify-center transition-colors" 
-                                            data-ikan="{{ $item['jenis_ikan'] }}">
+                                            data-ikan="{{ $item['nama_ikan'] }}">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </div>
@@ -192,6 +197,7 @@
         $.ajax({
             type: "GET",
             url: `/api/dp/${jenisIkan}`,
+            // data: {jenis_ikan:jenisIkan},
             success: function(response) {
                 const data = response.data;
                 $('#editDataList').empty();
@@ -200,7 +206,7 @@
                     let listCard = `
                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.nama_ikan}</span></p>
                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                             </div>
@@ -233,7 +239,7 @@
                     let listCard = `
                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan}</span></p>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan_id}</span></p>
                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                 
@@ -266,7 +272,7 @@
                 success: function(data) {         
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan} telah dihapus.`,
+                        text: `Data ${data.data.jenis_ikan_id} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {

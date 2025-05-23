@@ -23,7 +23,7 @@ class DKPPController extends Controller
             $data = DKPP::whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
                 ->where('minggu', $week)
-                ->select('jenis_komoditas', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
+                ->select('jenis_komoditas_dkpp_id', 'ton_ketersediaan', 'ton_kebutuhan_perminggu')
                 ->get();
 
             return response()->json(['data' => $data]);
@@ -44,7 +44,7 @@ class DKPPController extends Controller
     {
         try {
             $validated = $request->validate([
-                'jenis_komoditas' => 'required|string',
+                'jenis_komoditas_dkpp_id' => 'required|string',
                 'ton_ketersediaan' => 'required|numeric',
                 'ton_kebutuhan_perminggu' => 'required|numeric',
             ]);
@@ -60,7 +60,7 @@ class DKPPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 3,
-                'komoditas' => $validated['jenis_komoditas'],
+                'komoditas' => $validated['jenis_komoditas_dkpp_id'],
                 'aksi' => 'buat'
             ];
             
@@ -94,7 +94,7 @@ class DKPPController extends Controller
             }
 
             $validated = $request->validate([
-                'jenis_komoditas' => 'required|string',
+                'jenis_komoditas_dkpp_id' => 'required|string',
                 'ton_ketersediaan' => 'required|numeric',
                 'ton_kebutuhan_perminggu' => 'required|numeric',
                 'minggu' => 'required|numeric',
@@ -107,7 +107,7 @@ class DKPPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 3,
-                'komoditas' => $validated['jenis_komoditas'],
+                'komoditas' => $validated['jenis_komoditas_dkpp_id'],
                 'aksi' => 'ubah'
             ];
             
@@ -142,7 +142,7 @@ class DKPPController extends Controller
 
             $riwayatStore = [
                 'user_id' => 3,
-                'komoditas' => $dkpp->jenis_komoditas,
+                'komoditas' => $dkpp->jenis_komoditas_dkpp_id,
                 'aksi' => 'hapus'
             ];
             

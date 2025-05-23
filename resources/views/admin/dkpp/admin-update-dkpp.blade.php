@@ -20,11 +20,23 @@
                 @method('PUT')
 
                 <!-- Jenis Komoditas -->
-                <div class="mb-4">
-                    <label for="jenis_komoditas" class="block text-pink-500">Jenis Komoditas</label>
-                    <input type="text" name="jenis_komoditas" id="jenis_komoditas"
-                           value="{{ old('jenis_komoditas', $data->jenis_komoditas) }}" 
+                {{-- <div class="mb-4">
+                    <label for="jenis_komoditas_dkpp_id" class="block text-pink-500">Jenis Komoditas</label>
+                    <input type="text" name="jenis_komoditas_dkpp_id" id="jenis_komoditas_dkpp_id"
+                           value="{{ old('jenis_komoditas_dkpp_id', $data->jenis_komoditas_dkpp_id) }}" 
                            class="border p-2 w-full rounded-xl" placeholder="Contoh: Daging">
+                </div> --}}
+
+                <div class="mb-4">
+                    <label class="block text-pink-500">Nama Komoditas</label>
+                    <select id="jenis_komoditas_dkpp_id" name="jenis_komoditas_dkpp_id" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
+                        <option value="" selected disabled>Pilih Komoditas</option>
+                        @foreach ($commodities as $commoditt)
+                            <option value="{{ $commoditt->id }}" {{ old('jenis_komoditas_dkpp_id', $data->jenis_komoditas_dkpp_id) == $commoditt->id ? 'selected' : '' }}>
+                                {{ $commoditt->nama_komoditas }}
+                            </option>                        
+                        @endforeach
+                    </select>
                 </div>
 
                 <!-- Ketersediaan -->
@@ -67,7 +79,7 @@
             url: "{{ route('api.dkpp.update', $data->id) }}",
             data: {
                 _token: "{{ csrf_token() }}",
-                jenis_komoditas: $('#jenis_komoditas').val(),
+                jenis_komoditas_dkpp_id: $('#jenis_komoditas_dkpp_id').val(),
                 ton_ketersediaan: $('#ton_ketersediaan').val(),
                 ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
                 minggu: $('#minggu').val(),
@@ -76,7 +88,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: `Data ${data.data.jenis_komoditas} berhasil diperbarui!`,
+                    text: `Data berhasil diperbarui!`,
                     confirmButtonColor: '#16a34a'
                 }).then(() => {
                     window.location.href = "{{ route('dkpp.detail') }}";

@@ -14,33 +14,48 @@
                 <x-filter-modal>
                     <form action="" method="get">
                         <div class="space-y-4">
-                            <!-- pilih komoditas -->
+                            <!-- Pilih urutan -->
                             <div class="flex flex-col">
-                            <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Komoditas</label>
-                            <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" id="pilih_komoditas">
-                                <option value="" selected>Suket Teki</option>
-                                @foreach ($commodities as $commodity)
-                                <option value="{{ $commodity }}">{{ $commodity }}</option>
-                                @endforeach
-                            </select>
+                                <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
+                                <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                    <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                </select>
                             </div>
-            
-                            <!-- Periode -->
+                    
+                            <!-- Pilih Tanaman -->
                             <div class="flex flex-col">
-                            <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
-                            <select class="select2 w-full rounded border border-gray-300 p-2 max-md:p-1 bg-white text-sm max-md:text-xs" disabled id="pilih_periode">
-                                <option value="" disabled selected>April 2025</option>
-                                @foreach ($periods as $period)
-                                <option value="{{ $period }}">{{ $period }}</option>
-                                @endforeach
-                            </select>
+                                <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
+                                <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="">Semua Tanaman</option>
+                                    @foreach ($commodities as $commodity)
+                                        <option value="{{ $commodity->id }}" {{ request('tanaman') == $commodity->id ? 'selected' : '' }}>
+                                            {{ $commodity->nama_tanaman }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                    
+                            <!-- Pilih periode -->
+                            <div class="flex flex-col">
+                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="" disabled selected>Pilih Periode</option>
+                                    @foreach ($periods as $index => $period)
+                                        <option value="{{ $numberPeriods[$index] }}"
+                                            {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
+                                            {{ $period }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
+                    
                         <div class="w-full flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
+                            <a href="{{ route('dtphp.detail.produksi') }}" class="bg-yellow-550 text-white rounded-lg w-20 p-1 text-center">Reset</a>
                             <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                         </div>
-                        </form>
+                    </form>
                 </x-filter-modal>
             </div>
             </div>
@@ -72,7 +87,7 @@
                 <table class="table-auto w-full">
                 <thead>
                     <tr>
-                    <th class="px-9 max-md:px-2 py-2 whitespace-nowrap text-sm max-md:text-xs">Jenis Komoditas</th>
+                    <th class="px-9 max-md:px-2 py-2 whitespace-nowrap text-sm max-md:text-xs">Jenis Tanaman</th>
                     @php
                     $namaBulan = [
                         1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr',
@@ -90,7 +105,7 @@
                 <tbody>
                     @foreach ($data_produksi as $item)
                     <tr class="border-b hover:bg-gray-50">
-                    <td class="p-2 max-md:p-1 text-sm max-md:text-xs text-center">{{ $item['jenis_komoditas'] }}</td>
+                    <td class="p-2 max-md:p-1 text-sm max-md:text-xs text-center">{{ $item['nama_tanaman'] }}</td>
                     @for ($bulan = 1; $bulan <= 12; $bulan++)
                     <td class="px-5 max-md:px-1 py-2 text-center whitespace-nowrap text-sm max-md:text-xs">
                         @if (isset($item['produksi_per_bulan'][$bulan]))
@@ -104,10 +119,10 @@
                         {{ number_format(array_sum($item['produksi_per_bulan'] ?? []), 1, ',', '.') }}
                     </td>
                     <td class="p-2 max-md:p-1 flex justify-center gap-2">
-                        <button class="editBtn bg-yellow-400 text-white rounded-md w-10 h-10 max-md:w-8 max-md:h-8" data-komoditas="{{ $item['jenis_komoditas'] }}">
+                        <button class="editBtn bg-yellow-400 text-white rounded-md w-10 h-10 max-md:w-8 max-md:h-8" data-tanaman="{{ $item['nama_tanaman'] }}">
                         <i class="bi bi-pencil-square text-sm max-md:text-xs"></i>
                         </button>
-                        <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 max-md:w-8 max-md:h-8" data-komoditas="{{ $item['jenis_komoditas'] }}">
+                        <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 max-md:w-8 max-md:h-8" data-tanaman="{{ $item['nama_tanaman'] }}">
                         <i class="bi bi-trash-fill text-sm max-md:text-xs"></i>
                         </button>
                     </td>
@@ -162,7 +177,7 @@
             width: '100%'
         });
 
-        $('#pilih_komoditas').on('change', function() {
+        $('#pilih_tanaman').on('change', function() {
             $('#pilih_periode').prop('disabled', false);
         });
     
@@ -170,11 +185,11 @@
             const modal = $("#modal");
             modal.removeClass("hidden").addClass("flex");
     
-            const jenisKomoditas = $(this).data('komoditas');
+            const jenisTanaman = $(this).data('tanaman');
     
             $.ajax({
                 type: "GET",
-                url: `/api/dtphp/${jenisKomoditas}`,
+                url: `/api/dtphp/${jenisTanaman}`,
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
@@ -183,7 +198,7 @@
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Jenis Komoditas: <span class="font-medium">${element.jenis_komoditas}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
                                     <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
                                     <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                 </div>
@@ -203,11 +218,11 @@
             const modal = $("#modal");
             modal.removeClass("hidden").addClass("flex");
     
-            const jenisKomoditas = $(this).data('komoditas');
+            const jenisTanaman = $(this).data('tanaman');
     
             $.ajax({
                 type: "GET",
-                url: `/api/dtphp/${jenisKomoditas}`,
+                url: `/api/dtphp/${jenisTanaman}`,
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
@@ -216,7 +231,7 @@
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Jenis Komoditas: <span class="font-medium">${element.jenis_komoditas}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
                                     <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
                                     <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
                                 </div>
@@ -248,7 +263,7 @@
                 success: function(data) {
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
+                        text: `Data tanaman telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
