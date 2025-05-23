@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use Carbon\Carbon;
 use App\Models\DKPP;
 use Illuminate\Http\Request;
+use App\Models\JenisKomoditasDkpp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -39,8 +40,10 @@ class DkppController extends Controller
      */
     public function create()
     {
+        $komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-create-dkpp', [
-            'title' => 'Tambah Data'
+            'title' => 'Tambah Data',
+            'commodities' => $komoditas,
         ]);
     }
 
@@ -65,9 +68,11 @@ class DkppController extends Controller
      */
     public function edit(DKPP $dkpp)
     {
+        $jenis_komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-update-dkpp', [
             'title' => 'Ubah Data',
-            'data' => $dkpp
+            'data' => $dkpp,
+            'commodities' => $jenis_komoditas,
         ]);
     }
 
@@ -89,26 +94,11 @@ class DkppController extends Controller
 
     public function detail()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
-            ->get()
-            ->map(function ($item) {
-                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-                return $item->periode_indonesia;
-            });
-
         $currentWeek = floor((now()->day - 1) / 7) + 1;
-
-        $data = DKPP::whereYear('created_at', now()->year)
-        ->whereMonth('created_at', now()->month)
-        ->where('minggu', $currentWeek)
-        ->get();
-
 
         return view('admin.dkpp.admin-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
-            'data' => $data,
-            'periods' => $periodeUnikNama,
+            'currentWeek' => $currentWeek,
         ]);
     }
 }

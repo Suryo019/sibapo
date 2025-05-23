@@ -3,25 +3,85 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Models\DP;
+use Carbon\Carbon;
 use App\Models\Riwayat;
+use App\Models\JenisIkan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 
 class DPController extends Controller
 {
-    // Menampilkan semua data
-    public function index()
+    public function index(Request $request)
+    {
+        $date = Carbon::createFromFormat('Y-m', $request->periode);
+        $month = $date->month;
+        $year = $date->year;
+
+        $dp = DP::join('jenis_ikan', 'dinas_perikanan.ikan_id', '=', 'jenis_ikan.id')
+            ->whereMonth('tanggal_dibuat', $month)
+            ->whereYear('tanggal_dibuat', $year)
+            ->where('jenis_ikan.nama_ikan', $request->jenis_ikan)
+            ->selectRaw("
+                jenis_ikan.nama_ikan as jenis_ikan,
+                dinas_perikanan.ton_produksi,
+                dinas_perikanan.tanggal_dibuat,
+                jenis_ikan.nama_ikan as jenis_ikan,
+                DAY(tanggal_dibuat) as hari
+            ")
+            ->get()
+            ->groupBy('jenis_ikan');
+            
+        // dd($dpp);
+
+        return response()->json([
+            'data' => $dp,
+        ]);
+    }
+
+    public function konversi_nama_bulan_id($date)
+    {
+        $mapBulan = [
+            'January'   => 'Januari',
+            'February'  => 'Februari',
+            'March'     => 'Maret',
+            'April'     => 'April',
+            'May'       => 'Mei',
+            'June'      => 'Juni',
+            'July'      => 'Juli',
+            'August'   => 'Agustus',
+            'September' => 'September',
+            'October'   => 'Oktober',
+            'November'  => 'November',
+            'December'  => 'Desember'
+        ];
+
+        $bulanEn = Carbon::createFromFormat('Y-m', $date)->format('F');
+        $bulanId = $mapBulan[$bulanEn];
+
+        return $bulanId;
+    }
+
+    public function listItem(Request $request, $jenisIkan)
     {
         try {
-            $dp = DP::whereYear('tanggal_input', 2025)
-            ->where('jenis_ikan', 'Tongkol')
-            ->select('jenis_ikan', 'ton_produksi')
-            ->get();
-
-            return response()->json([
-                'data' => $dp
-            ]);
+            $data = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+                ->where('jenis_ikan.nama_ikan', $jenisIkan)
+                // ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                ->select(
+                    'dinas_perikanan.id as dp_id',
+                    'dinas_perikanan.*',
+                    'jenis_ikan.nama_ikan',
+                )
+                ->get()
+                ->map(function($item) {
+                    $carbon = Carbon::parse($item->tanggal_dibuat);
+                    $bulanEn = $carbon->format('Y-m');
+                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
+                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                    return $item;
+                });
+            return response()->json(['data' => $data]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -30,47 +90,33 @@ class DPController extends Controller
         }
     }
 
-
-    public function listItem($namaIkan)
-    {
-        try {
-            $data = DP::where('jenis_ikan', $namaIkan)
-            ->whereYear('tanggal_input', 2025)
-            ->get();
-            return response()->json(['data' => $data]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
-    }  
-
     // Menyimpan data baru
     public function store(Request $request)
     {
         try{
             $validated = $request->validate([
-                // 'tanggal_input' => 'required|date',
-                'jenis_ikan' => 'required|string',
+                'jenis_ikan_id' => 'required|exists:jenis_ikan,id',
                 'ton_produksi' => 'required|numeric'
             ]);
             
             $validated['tanggal_input'] = now();
             $validated['user_id'] = 1;
             
+            $dp = DP::create($validated);
+            $nama_ikan = JenisIkan::find($dp->jenis_ikan_id)->nama_ikan;
+            $data_stored = JenisIkan::select('nama_ikan')->where('id', $dp->jenis_ikan_id)->first();
             $riwayatStore = [
-                'user_id' => 5,
-                'komoditas' => $validated['jenis_ikan'],
-                'aksi' => 'buat'
+                'user_id' => 2,
+                'komoditas' => $data_stored->nama_ikan,
+                'aksi' => 'buat',
             ];
             
             Riwayat::create($riwayatStore);
-            $dp = DP::create($validated);
 
             return response()->json([
                 'message' => 'Data berhasil disimpan',
-                'data' => $dp
+                'data' => $dp,
+                'nama_ikan' => $data_stored->nama_ikan
             ], 201);
             
         } catch (ValidationException $e) {
@@ -100,13 +146,13 @@ class DPController extends Controller
             
             $validated = $request->validate([
                 'tanggal_input' => 'required|date',
-                'jenis_ikan' => 'required|string',
+                'jenis_ikan_id' => 'required|string',
                 'ton_produksi' => 'required|numeric'
             ]);
 
             $riwayatStore = [
                 'user_id' => 5,
-                'komoditas' => $validated['jenis_ikan'],
+                'komoditas' => $validated['jenis_ikan_id'],
                 'aksi' => 'ubah'
             ];
             

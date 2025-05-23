@@ -241,8 +241,6 @@
 
     // Search
     search.on("input", function () {
-        console.log('pepek');
-        
         const input_value = $(this).val().toLowerCase();
         let jenis_bahan_pokok_col = $(".jenis_bahan_pokok_col");
 

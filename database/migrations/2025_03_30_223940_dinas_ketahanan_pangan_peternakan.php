@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dinas_ketahanan_pangan_peternakan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('jenis_komoditas');
+            $table->string('jenis_komoditas_dkpp_id');
             $table->integer('minggu');
             $table->float('ton_ketersediaan');
             $table->float('ton_kebutuhan_perminggu');

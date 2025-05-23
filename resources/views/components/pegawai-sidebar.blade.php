@@ -41,7 +41,7 @@ $namaRute = match(true) {
         @if ($pegawai == 'disperindag')
           <ul>
             {{-- Dashboard --}}
-            <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg text-sm max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'bg-pink-450 text-yellow-300' : '' }}">
+            <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg text-sm max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard') ? 'text-yellow-300' : '' }}">
               <a href="{{ route('pegawai.' . $pegawai . '.dashboard') }}" class="pl-4 gap-5 w-full flex items-center">
                   <i class="bi bi-house-door-fill"></i>
                   Dashboard
@@ -59,7 +59,7 @@ $namaRute = match(true) {
           </ul>
         @else  
           <ul>
-            <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg text-sm max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard*') ? 'bg-pink-450 text-yellow-300' : '' }}">
+            <li class="hover:bg-pink-600 block py-2 px-4 rounded-lg text-sm max-md:bg-pink-650 {{ request()->is('pegawai/' . $pegawai . '/dashboard*') ? 'text-yellow-300' : '' }}">
               <a href="{{ route('pegawai.' . $pegawai . '.dashboard') }}" class="pl-4 gap-5 w-full flex items-center">
                   <i class="bi bi-house-door-fill"></i>
                   Dashboard

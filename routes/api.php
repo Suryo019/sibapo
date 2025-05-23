@@ -14,6 +14,7 @@ use App\Http\Controllers\Disperindag\ApiBpokokController;
 use App\Http\Controllers\Dtphp\ApiJenisTanamanController;
 use App\Http\Controllers\Beranda\HargaKomoditasController;
 use App\Http\Controllers\Perikanan\ApiJenisIkanController;
+use App\Http\Controllers\Dkpp\ApiJenisKomoditasDkppController;
 
 // Dashboard
 Route::get('/persendkpp', [AdminDashboardController::class, 'persen_dkpp']);
@@ -30,6 +31,7 @@ Route::get('/pimpinan/dp', [ReadDataController::class, 'getDP']);
 
 // DKPP
 Route::get('/dkpp', [DKPPController::class, 'index'])->name('api.dkpp.index');
+Route::get('/dkpp/detail', [DKPPController::class, 'detail'])->name('api.dkpp.detail');
 Route::get('/dkpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dkpp.listItem');
 Route::post('/dkpp', [DKPPController::class, 'store'])->name('api.dkpp.store');
 Route::put('/dkpp/{id}', [DKPPController::class, 'update'])->name('api.dkpp.update');
@@ -114,3 +116,11 @@ Route::get('/jenis-tanaman', [ApiJenisTanamanController::class, 'index'])->name(
 Route::post('/jenis-tanaman', [ApiJenisTanamanController::class, 'store'])->name('api.jenis-tanaman.store');
 Route::put('/jenis-tanaman/{id}', [ApiJenisTanamanController::class, 'update'])->name('api.jenis-tanaman.update');
 Route::delete('/jenis-tanaman/{id}', [ApiJenisTanamanController::class, 'destroy']);
+
+
+
+// Jenis Komoditas
+Route::get('/jenis-komoditas', [ApiJenisKomoditasDkppController::class, 'index'])->name('api.jenis-komoditas.index');
+Route::post('/jenis-komoditas', [ApiJenisKomoditasDkppController::class, 'store'])->name('api.jenis-komoditas.store');
+Route::put('/jenis-komoditas/{id}', [ApiJenisKomoditasDkppController::class, 'update'])->name('api.jenis-komoditas.update');
+Route::delete('/jenis-komoditas/{id}', [ApiJenisKomoditasDkppController::class, 'destroy']);

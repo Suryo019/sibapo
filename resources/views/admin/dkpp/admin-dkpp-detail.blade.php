@@ -5,7 +5,7 @@
         <div class="flex flex-col gap-4 mb-6 lg:flex-row lg:justify-between">
             <!-- Search and Filter -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-4">
-                <x-search class="w-full sm:w-auto"></x-search>
+                <x-search>Cari komoditas...</x-search>
     
                 <div class="flex justify-end max-md:w-full">
                         <x-filter></x-filter>
@@ -14,50 +14,52 @@
                         <x-filter-modal>
                             <form action="" method="get" class="space-y-4">
                                 <div class="flex flex-col">
-                                    <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_urutan">
-                                        <option>Ascending</option>
-                                        <option>Descending</option>
+                                    <label for="ururtkan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
+                                    <select class="border border-black p-2 rounded bg-white w-full" name="urutkan" id="ururtkan">
+                                        <option value="asc" {{ old('urutkan') == 'asc' ? 'selected' : '' }}>A - Z</option>
+                                        <option value="desc" {{ old('urutkan') == 'desc' ? 'selected' : '' }}>Z - A</option>
                                     </select>
                                 </div>
 
                                 <div class="flex flex-col">
-                                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_periode">
-                                        @foreach ($periods as $period)
-                                            <option value="{{ $period }}">{{ $period }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
+                                    <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border border-black p-2 rounded bg-white w-full">
                                 </div>
 
                                 <div class="flex flex-col">
-                                    <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                                    <select class="border border-black p-2 rounded bg-white w-full" id="pilih_minggu">
-                                        <option>1</option>
-                                        <option selected>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <label for="minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
+                                    <select class="border border-black p-2 rounded bg-white w-full" id="minggu">
+                                        <option {{ $currentWeek == 1 ? 'selected' : '' }}>1</option>
+                                        <option {{ $currentWeek == 2 ? 'selected' : '' }}>2</option>
+                                        <option {{ $currentWeek == 3 ? 'selected' : '' }}>3</option>
+                                        <option {{ $currentWeek == 4 ? 'selected' : '' }}>4</option>
                                     </select>
                                 </div>
 
                                 <div class="w-full flex justify-end gap-3 mt-6">
                                     <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">Reset</button>
-                                    <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
+                                    <button type="button" id="submitFilterBtn" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                                 </div>
-                            </form></x-filter-modal> 
+                            </form>
+                        </x-filter-modal> 
                     </div> 
                 </div> 
             </div>
     
         <!-- Back Button + Title -->
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-        <div class="flex items-center gap-2 mb-4">
-            <a href="{{ route('dkpp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>                      
-            </a>
-            <h2 class="text-lg font-semibold">Neraca Ketersediaan</h2>
+        <div class="flex justify-between items-center mb-4 max-md:flex-col">
+            <div class="flex items-center gap-2">
+                <a href="{{ route('dkpp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>                      
+                </a>
+                <h2 class="text-2xl font-semibold text-black max-md:text-lg max-md:text-center">NERACA KETERSEDIAAN</h2>
+            </div>
+            <div>
+                <span id="periode_placeholder" class="text-lg font-bold max-md:text-base"></span> <span id="minggu_placeholder" class="text-lg font-bold max-md:text-base"></span>
+            </div>
         </div>
     
         <!-- Table Section -->
@@ -75,32 +77,8 @@
                             <th class="p-2">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($data as $item)  
-                            @php $keterangan = $item->keterangan; @endphp         
-                            <tr class="border-b text-center">
-                                <td class="p-2">{{ $loop->iteration }}</td>
-                                <td class="p-2">{{ $item->jenis_komoditas }}</td>
-                                <td class="p-2">{{ $item->ton_ketersediaan }}</td>
-                                <td class="p-2">{{ $item->ton_kebutuhan_perminggu }}</td>
-                                <td class="p-2">{{ $item->ton_neraca_mingguan }}</td>
-                                <td class="p-2 font-bold {{ $keterangan == 'Surplus' ? 'text-green-500' : ($keterangan == 'Defisit' ? 'text-red-500' : 'text-slate-600') }}">
-                                    {{ $keterangan }}
-                                </td>
-                                <td class="p-2">
-                                    <div class="flex justify-center gap-2">
-                                        <a href="{{ route('dkpp.edit', $item->id) }}">
-                                            <button class="bg-yellow-400 text-white rounded-md w-10 h-10">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                        </a>
-                                        <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10" data-id="{{ $item->id }}">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                    <tbody id="tbodyDKPP">
+                        {{-- diisi pake ajax --}}
                     </tbody>
                 </table>
             </div>
@@ -124,9 +102,91 @@
 </x-admin-layout>
 
 <script>
+    const periode = $('#periode');
+    const minggu = $('#minggu');
+    const search = $('#search');
+    const ururtkan = $('#ururtkan');
+
+    // select data
+    function filter() {
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('api.dkpp.detail') }}",
+            data: {
+                periode: periode.val(),
+                minggu: minggu.val(),
+                sort: ururtkan.val(),
+            },
+            success: function(response) {
+                $('#periode_placeholder').html(`${response.periode.toUpperCase()}, `)
+                $('#minggu_placeholder').html(`MINGGU KE-${minggu.val().toUpperCase()}`)
+                
+                let tbody = $('#tbodyDKPP');
+                tbody.empty();
+
+                let data = response.data;
+
+                if (data.length === 0) {
+                    let row = `
+                        <tr class="bg-white text-center">
+                            <td class="py-5 px-8 bg-pink-50 text-gray-500 italic" colspan="7">
+                                Data tidak ditemukan.
+                            </td>
+                        </tr>
+                    `;
+                    tbody.append(row);
+                } else {
+                    data.forEach((item, index) => {
+                        let keteranganClass = '';
+                        if (item.keterangan === 'Surplus') {
+                            keteranganClass = 'text-green-500';
+                        } else if (item.keterangan === 'Defisit') {
+                            keteranganClass = 'text-red-500';
+                        } else {
+                            keteranganClass = 'text-slate-600';
+                        }
+    
+                        let row = `
+                            <tr class="border-b text-center">
+                                <td class="p-2">${index + 1}</td>
+                                <td class="p-2 nama_komoditas_col">${item.nama_komoditas}</td>
+                                <td class="p-2">${item.ton_ketersediaan}</td>
+                                <td class="p-2">${item.ton_kebutuhan_perminggu}</td>
+                                <td class="p-2">${item.ton_neraca_mingguan}</td>
+                                <td class="p-2 font-bold ${keteranganClass}">${item.keterangan}</td>
+                                <td class="p-2">
+                                    <div class="flex justify-center gap-2">
+                                        <a href="/dkpp/${item.dkpp_id}/edit">
+                                            <button class="bg-yellow-400 text-white rounded-md w-10 h-10">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                        </a>
+                                        <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10" data-id="${item.dkpp_id}">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    });
+                }
+            }
+        });
+    }
+
+    filter();
+
+    $('#submitFilterBtn').on('click', function() {
+        filter();
+    });
+
+
     // Tombol Delete
     $(document).on('click', '.deleteBtn', function() {
         let id = $(this).data('id');
+        console.log(id);
+        
         $('#modal').show();
 
         $('#yesBtn').on('click', function() {
@@ -138,10 +198,10 @@
                 data: {
                     _token: '{{ csrf_token() }}',
                 },
-                success: function(data) {                    
+                success: function(response) {                    
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_komoditas} telah dihapus.`,
+                        text: `Data ${response.data.nama_komoditas} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {
@@ -175,6 +235,22 @@
         $("#filterModal").toggleClass("hidden");
     });
     // End Trigger Filter Modal
+
+    // search
+    search.on("input", function () {
+        const input_value = $(this).val().toLowerCase();
+        let nama_komoditas_col = $(".nama_komoditas_col");
+
+        nama_komoditas_col.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
+    });
 
 </script>
 
