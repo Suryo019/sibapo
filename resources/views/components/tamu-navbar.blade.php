@@ -24,10 +24,11 @@
     <select name="login" id="loginBtn" onchange="location = this.value;" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center p-2">
         <option value="" selected disabled>Login</option>
         <option value="{{ route('dashboard') }}">Admin</option>
-        <option value="{{ route('pegawai.disperindag.index') }}">Disperindag</option>
-        <option value="{{ route('pegawai.dkpp.index') }}">DKPP</option>
-        <option value="{{ route('pegawai.dtphp.index') }}">DTPHP</option>
-        <option value="{{ route('pegawai.perikanan.index') }}">DP</option>
+        <option value="{{ route('pimpinan.dashboard') }}">Pimpinan</option>
+        <option value="{{ route('pegawai.disperindag.dashboard') }}">Disperindag</option>
+        <option value="{{ route('pegawai.dkpp.dashboard') }}">DKPP</option>
+        <option value="{{ route('pegawai.dtphp.dashboard') }}">DTPHP</option>
+        <option value="{{ route('pegawai.perikanan.dashboard') }}">DP</option>
     </select>
 
     {{-- Hamburger --}}
