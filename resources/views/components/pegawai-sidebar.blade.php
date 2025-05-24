@@ -4,26 +4,53 @@ $pegawai = match(true) {
     request()->is('pegawai/dkpp*') => 'dkpp',
     request()->is('pegawai/dtphp*') => 'dtphp',
     request()->is('pegawai/perikanan*') => 'perikanan',
+
+    request()->is('pegawai/jenis_komoditas*') => 'dkpp',
+    request()->is('pegawai/jenis_tanaman*') => 'dtphp',
+    request()->is('pegawai/jenis_ikan*') => 'perikanan',
     default => null,
 };
 
 $kelolaData = match(true) {
-    request()->is('pegawai/disperindag*') => 'Kelola Disperindag',
-    request()->is('pegawai/dkpp*') => 'Kelola Komoditas',
-    request()->is('pegawai/dtphp*') => 'Kelola Tanaman',
-    request()->is('pegawai/perikanan*') => 'Kelola Ikan',
+    request()->is('pegawai/disperindag*') => 'Data Disperindag',
+    request()->is('pegawai/dkpp*') => 'Data Komoditas',
+    request()->is('pegawai/dtphp*') => 'Data Tanaman',
+    request()->is('pegawai/perikanan*') => 'Data Ikan',
+
+    request()->is('pegawai/jenis_komoditas*') => 'Data komoditas',
+    request()->is('pegawai/jenis_tanaman*') => 'Data Tanaman',
+    request()->is('pegawai/jenis_ikan*') => 'Data Ikan',
 };
+
 $url = match(true) {
-    request()->is('pegawai/disperindag*') => 'jenis_bahan_pokok',
-    request()->is('pegawai/dkpp*') => 'jenis_komoditas',
-    request()->is('pegawai/dtphp*') => 'jenis_tanaman',
-    request()->is('pegawai/perikanan*') => 'jenis_ikan',
+    request()->is('pegawai/disperindag*') => 'pegawai/jenis_bahan_pokok',
+    request()->is('pegawai/dkpp*') => 'pegawai/jenis_komoditas',
+    request()->is('pegawai/dtphp*') => 'pegawai/jenis_tanaman',
+    request()->is('pegawai/perikanan*') => 'pegawai/jenis_ikan',
+
+    request()->is('pegawai/jenis_komoditas*') => 'pegawai/jenis_komoditas',
+    request()->is('pegawai/jenis_tanaman*') => 'pegawai/jenis_tanaman',
+    request()->is('pegawai/jenis_ikan*') => 'pegawai/jenis_ikan',
 };
-$namaRute = match(true) {
-    request()->is('pegawai/disperindag*') => 'jenis-bahan-pokok.index',
-    request()->is('pegawai/dkpp*') => 'jenis-komoditas.index',
-    request()->is('pegawai/dtphp*') => 'jenis-tanaman.index',
-    request()->is('pegawai/perikanan*') => 'jenis-ikan.index',
+$ruteName = match(true) {
+    request()->is('pegawai/dkpp*') => 'jenis-komoditas',
+    request()->is('pegawai/dtphp*') => 'jenis-tanaman',
+    request()->is('pegawai/perikanan*') => 'jenis-ikan',
+
+    request()->is('pegawai/jenis_komoditas*') => 'jenis-komoditas',
+    request()->is('pegawai/jenis_tanaman*') => 'jenis-tanaman',
+    request()->is('pegawai/jenis_ikan*') => 'jenis-ikan',
+};
+
+$namaRuteView = match(true) {
+    request()->is('pegawai/disperindag*') => 'pegawai.jenis-bahan-pokok.index',
+    request()->is('pegawai/dkpp*') => 'pegawai.jenis-komoditas.index',
+    request()->is('pegawai/dtphp*') => 'pegawai.jenis-tanaman.index',
+    request()->is('pegawai/perikanan*') => 'pegawai.jenis-tanaman.index',
+
+    request()->is('pegawai/jenis_komoditas*') => 'pegawai.jenis-komoditas.index',
+    request()->is('pegawai/jenis_tanaman*') => 'pegawai.jenis-tanaman.index',
+    request()->is('pegawai/jenis_ikan*') => 'pegawai.jenis-tanaman.index',
 };
 @endphp
 
@@ -66,22 +93,22 @@ $namaRute = match(true) {
               </a>
             </li>
 
-            <x-pegawai-sidebar-link 
-              dataHref="{{ 'pegawai/' . $pegawai . '*' }}"
+            <x-pegawai-sidebar-link
               dinas="{{ $pegawai }}"
               kelolaData="{{ $kelolaData }}"
               routeKelolaKomoditas="{{ $url }}"
-              routeKelolaKomoditasView="{{ route($namaRute) }}"
-              routeKelolaKomoditasCreate="{{ route($namaRute) }}"
+              routeKelolaKomoditasView="{{ route($namaRuteView) }}"
+              routeKelolaKomoditasCreate="{{ route('pegawai.' . $ruteName . '.create') }}"
             >
-            <x-slot:name>PERIKANAN</x-slot:name>
             </x-pegawai-sidebar-link>  
-              <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
-                <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">
-                  <iconify-icon icon="bi:box-arrow-left" class="text-xl"></iconify-icon>
-                  Logout
-                </a>
-              </li>
+
+            {{-- logout --}}
+            <li class="mb-2 rounded-lg py-2 hover:bg-pink-600 md:bg-transparent max-md:bg-pink-650">
+              <a href="{{ route('beranda') }}" class="flex items-center gap-5 text-sm pl-7 rounded-md {{ request()->is('logout') ? 'text-yellow-300' : '' }}">
+                <iconify-icon icon="bi:box-arrow-left" class="text-xl"></iconify-icon>
+                Logout
+              </a>
+            </li>
           </ul>
         @endif
     </div>

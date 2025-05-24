@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\Dkpp\PegawaiJenisKomoditasDkppController;
 use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
@@ -66,6 +67,13 @@ Route::resource('dkpp', DkppController::class)->names([
     'destroy' => 'dkpp.destroy',
 ]);
 Route::get('dkpp-detail', [DkppController::class, 'detail'])->name('dkpp.detail');
+
+// Jenis Komoditas
+Route::resource('jenis_komoditas', JenisKomoditasDkppController::class)->names([
+    'index' => 'jenis-komoditas.index',
+    'create' => 'jenis-komoditas.create',
+    'edit' => 'jenis-komoditas.edit',
+]);
 
 
 // DTPHP
@@ -140,6 +148,12 @@ Route::resource('/pegawai/dkpp', PegawaiDkppController::class)->names([
 ]);
 Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->name('pegawai.dkpp.detail');
 
+// Jenis Komoditas
+Route::resource('/pegawai/jenis_komoditas', PegawaiJenisKomoditasDkppController::class)->names([
+    'index' => 'pegawai.jenis-komoditas.index',
+    'create' => 'pegawai.jenis-komoditas.create',
+    'edit' => 'pegawai.jenis-komoditas.edit',
+]);
 
 // DTPHP
 Route::get('/pegawai/dtphp/dashboard', [PegawaiDtphpController::class, 'dashboard'])
@@ -256,15 +270,4 @@ Route::resource('jenis_tanaman', JenisTanamanController::class)->names([
     'edit' => 'jenis-tanaman.edit',
     'update' => 'jenis-tanaman.update',
     'destroy' => 'jenis-tanaman.destroy',
-]);
-
-// Jenis Komoditas
-Route::resource('jenis_komoditas', JenisKomoditasDkppController::class)->names([
-    'index' => 'jenis-komoditas.index',
-    'create' => 'jenis-komoditas.create',
-    'store' => 'jenis-komoditas.store',
-    'show' => 'jenis-komoditas.show',
-    'edit' => 'jenis-komoditas.edit',
-    'update' => 'jenis-komoditas.update',
-    'destroy' => 'jenis-komoditas.destroy',
 ]);

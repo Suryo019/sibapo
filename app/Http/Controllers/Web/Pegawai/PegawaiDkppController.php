@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\JenisKomoditasDkpp;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PegawaiDkppController extends Controller
@@ -43,7 +44,7 @@ class PegawaiDkppController extends Controller
         $mingguSekarang = Carbon::now()->weekOfMonth;
         $mingguLalu = Carbon::now()->subWeek()->weekOfMonth;
 
-        $komoditasList = DKPP::select('jenis_komoditas')->pluck('jenis_komoditas');
+        $komoditasList = JenisKomoditasDkpp::pluck('nama_komoditas');
 
         // dd($komoditasList);
 
@@ -51,14 +52,16 @@ class PegawaiDkppController extends Controller
 
         foreach ($komoditasList as $komoditas) {
             $dataMingguSekarang = DB::table('dinas_ketahanan_pangan_peternakan')
+                ->join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                 ->where('minggu', $mingguSekarang)
-                ->where('jenis_komoditas', $komoditas)
+                ->where('jenis_komoditas_dkpp.nama_komoditas', $komoditas)
                 ->get();
             $avgMingguSekarang = $dataMingguSekarang->avg('ton_neraca_mingguan');
 
             $dataMingguLalu = DB::table('dinas_ketahanan_pangan_peternakan')
+                ->join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                 ->where('minggu', $mingguLalu)
-                ->where('jenis_komoditas', $komoditas)
+                ->where('jenis_komoditas_dkpp.nama_komoditas', $komoditas)
                 ->get();
             $avgMingguLalu = $dataMingguLalu->avg('ton_neraca_mingguan');
         
@@ -125,8 +128,10 @@ class PegawaiDkppController extends Controller
      */
     public function create()
     {
+        $komoditas = JenisKomoditasDkpp::all();
         return view('pegawai.dkpp.pegawai-create-dkpp', [
-            'title' => 'Tambah Data'
+            'title' => 'Tambah Data',
+            'commodities' => $komoditas,
         ]);
     }
 
@@ -151,9 +156,11 @@ class PegawaiDkppController extends Controller
      */
     public function edit(DKPP $dkpp)
     {
+        $jenis_komoditas = JenisKomoditasDkpp::all();
         return view('pegawai.dkpp.pegawai-update-dkpp', [
             'title' => 'Ubah Data',
-            'data' => $dkpp
+            'data' => $dkpp,
+            'commodities' => $jenis_komoditas,
         ]);
     }
 
@@ -175,25 +182,11 @@ class PegawaiDkppController extends Controller
 
     public function detail()
     {
-        $periodeUnikNama = DKPP::select(DB::raw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as periode'))
-            ->get()
-            ->map(function ($item) {
-                $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-                $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-                return $item->periode_indonesia;
-            });
-
         $currentWeek = floor((now()->day - 1) / 7) + 1;
-
-        $data = DKPP::whereYear('created_at', now()->year)
-        ->whereMonth('created_at', now()->month)
-        ->where('minggu', $currentWeek)
-        ->get();
 
         return view('pegawai.dkpp.pegawai-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
-            'data' => $data,
-            'periods' => $periodeUnikNama,
+            'currentWeek' => $currentWeek,
         ]);
     }
 }
