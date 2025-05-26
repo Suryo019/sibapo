@@ -38,6 +38,8 @@
                 pasar: $('#pasar').val(),
             },
             success: function (pasar) {
+                console.log(pasar);
+                
                 let datas = pasar.data;
                 let namaPasar = pasar.inputPasar;
 

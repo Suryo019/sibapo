@@ -32,7 +32,9 @@ $url = match(true) {
     request()->is('pegawai/jenis_tanaman*') => 'pegawai/jenis_tanaman',
     request()->is('pegawai/jenis_ikan*') => 'pegawai/jenis_ikan',
 };
+
 $ruteName = match(true) {
+  request()->is('pegawai/disperindag*') => 'jenis-bahan-pokok',
     request()->is('pegawai/dkpp*') => 'jenis-komoditas',
     request()->is('pegawai/dtphp*') => 'jenis-tanaman',
     request()->is('pegawai/perikanan*') => 'jenis-ikan',

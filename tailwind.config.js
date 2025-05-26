@@ -18,6 +18,7 @@ export default {
                 "pink-custom": "0px 0px 35px rgba(243, 26, 131, 1)",
                 "pink-hard": "0px 2.5px 0px rgba(243, 26, 131, 0.5)",
                 "black-custom": "0px 0px 15px rgba(0, 0, 0, 0.5)",
+                "white-custom": "0px 0px 50px rgba(255, 255, 255, 1)",
             },
             colors: {
                 green: {
@@ -29,6 +30,8 @@ export default {
                 },
                 gray: {
                     10: "rgba(0, 0, 0, 0.05)",
+                    90: "#F7F6F9",
+                    550: "#828486",
                 },
                 yellow: {
                     450: "#FFE500",
