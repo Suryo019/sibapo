@@ -26,6 +26,25 @@ use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
 use App\Http\Controllers\Web\Pegawai\PegawaiBahanPokokController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 
+// Login
+Route::get('/login', function() {
+    return view('login');
+});
+Route::get('/notifikasi', function() {
+    return view('admin.admin-notifikasi');
+});
+Route::get('/pegawai/disperindag/notifikasi', function() {
+    return view('pegawai.disperindag.pegawai-notifikasi-disperindag');
+});
+Route::get('/pegawai/dkpp/notifikasi', function() {
+    return view('pegawai.dkpp.pegawai-notifikasi-dkpp');
+});
+Route::get('/pegawai/dtphp/notifikasi', function() {
+    return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
+});
+Route::get('/pegawai/perikanan/notifikasi', function() {
+    return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
+});
 
 // Tamu
 Route::get('/', [TamuController::class, 'beranda'])->name('beranda');
