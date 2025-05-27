@@ -21,6 +21,9 @@ export default {
                 "white-custom": "0px 0px 50px rgba(255, 255, 255, 1)",
             },
             colors: {
+                gray: {
+                    10: "rgba(255, 158, 207, 1)",
+                },
                 green: {
                     910: "#264226",
                 },

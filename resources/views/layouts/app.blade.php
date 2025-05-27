@@ -7,6 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- SweetAlert2 --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -14,67 +17,42 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="min-h-screen flex flex-col lg:flex-row">
+    <div class="w-full h-screen flex justify-center lg:w-1/2 max-xl:h-[300px] max-xl:bg-gradient-to-b max-xl:from-pink-650 max-xl:from-45% max-xl:to-gray-10 max-xl:to-100%">
+        <img src="{{ asset('storage/img/bg-login.png') }}" alt="Background Pink" class="w-full h-full object-cover absolute inset-0 z-0 max-xl:hidden" />
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+        <div class="flex flex-col justify-between max-xl:justify-center h-full pr-6 max-xl:pr-0 py-10 text-white text-center relative">
+            <div>
+                <!-- Logo Pemerintah -->
+                <img src="{{ asset('storage/img/logo-pemda.png') }}" class="w-20 mx-auto hidden lg:block mb-10" />
+    
+                <!-- Selamat Datang -->
+                <h2 class="text-xl lg:text-2xl font-semibold hidden lg:block mb-10">Selamat Datang</h2>
+    
+                <!-- Logo SIBAPO -->
+                <img src="{{ asset('storage/img/logo.png') }}" class="w-64 lg:w-80 mb-10" />
+    
+                <!-- Deskripsi -->
+                <p class="text-sm lg:text-base leading-relaxed max-w-sm mx-auto mt-4 lg:mt-6 hidden lg:block">
+                Semua dicintai fawait.<br />
+                Sistem Informasi Bahan Pokok Penyusunan data kerja bahan peran di seluruh Kabupaten Jember, dengan pembaruan yang dilakukan setiap hari.
+                </p>
             </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            <!-- Footer -->
+            <div class="text-xs lg:text-lg hidden lg:block">
+                Bagian Tata Pemerintahan Setda<br />
+                Kabupaten Jember
+            </div>
+        </div>
     </div>
+    <div class="h-screen max-xl:h-auto w-full flex justify-center right-6 max-xl:right-0 max-xl:top-[17rem] max-xl:bg-white absolute">
+        <img src="{{ asset('storage/img/awan-login.png') }}" alt="Login Design" class="h-full max-xl:hidden">
+        <img src="{{ asset('storage/img/awan-login-mobile.png') }}" alt="Login Design" class="xl:hidden relative -top-20">
+    </div>
+
+    @yield('content')
 </body>
 </html>
