@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 3, 'role' => 'dkpp'],
             ['id' => 4, 'role' => 'dtphp'],
             ['id' => 5, 'role' => 'dp'],
+            ['id' => 6, 'role' => 'pimpinan'],
         ]);
 
         DB::table('users')->insert([

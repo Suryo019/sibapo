@@ -26,7 +26,7 @@
 
         <ul class=" mt-1 {{ request()->is('bahan_pokok*') ? 'block' : 'hidden' }}" id="dropdown-content-bahan-pokok">
             @php
-                $isView = request()->url() === route('bahan_pokok.index') || request()->url() === route('bahan_pokok.detail');
+                $isView = request()->url() === route('bahan_pokok.index');
                 $isCreate = request()->url() === route('bahan_pokok.create');
                 $isEdit = request()->is('bahan_pokok.edit');
             @endphp
@@ -65,7 +65,7 @@
 
         <ul class=" mt-1 {{ request()->is('pasar*') ? 'block' : 'hidden' }}" id="dropdown-content-kelola-pasar">
             @php
-                $isView = request()->url() === route('pasar.index') || request()->url() === route('pasar.detail');
+                $isView = request()->url() === route('pasar.index');
                 $isCreate = request()->url() === route('pasar.create');
                 $isEdit = request()->is('pasar.edit');
             @endphp

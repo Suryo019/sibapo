@@ -66,6 +66,10 @@
 <script>
 let user_id = $('#user_id').val()
 
+const email = $('#email').val();
+console.log(email);
+
+
 $('#submitBtn').on('click', function() {
     const formData = new FormData();
     formData.append('_token', '{{ csrf_token() }}');
@@ -82,10 +86,6 @@ $('#submitBtn').on('click', function() {
         contentType: false,
         success: function(data) {
             console.log(data);
-            $('#role_id').val('');
-            $('#nama').val('');
-            $('#username').val('');
-            $('#email').val('');
             
             Swal.fire({
                 title: 'Berhasil!',

@@ -21,15 +21,39 @@
     </div>
 
     {{-- Login --}}
-    <select name="login" id="loginBtn" onchange="location = this.value;" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center p-2">
-        <option value="" selected disabled>Login</option>
-        <option value="{{ route('dashboard') }}">Admin</option>
-        <option value="{{ route('pimpinan.dashboard') }}">Pimpinan</option>
-        <option value="{{ route('pegawai.disperindag.dashboard') }}">Disperindag</option>
-        <option value="{{ route('pegawai.dkpp.dashboard') }}">DKPP</option>
-        <option value="{{ route('pegawai.dtphp.dashboard') }}">DTPHP</option>
-        <option value="{{ route('pegawai.perikanan.dashboard') }}">DP</option>
-    </select>
+    @php
+        $userRole = Auth::check() ? Auth::user()->role->role : null;
+    @endphp
+
+    @auth    
+        @switch($userRole)
+            @case('admin')
+                <a href="{{ route('dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+
+            @case('pimpinan')
+                <a href="{{ route('pimpinan.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+
+            @case('disperindag')
+                <a href="{{ route('pegawai.disperindag.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+
+            @case('dkpp')
+                <a href="{{ route('pegawai.dkpp.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+
+            @case('dtphp')
+                <a href="{{ route('pegawai.dtphp.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+
+            @case('perikanan')
+                <a href="{{ route('pegawai.perikanan.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                @break
+        @endswitch
+    @else
+        <a href="{{ route('login') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Login</a>
+    @endauth
 
     {{-- Hamburger --}}
     <button onclick="toggleMobileMenu()" class="md:hidden text-white focus:outline-none w-12 flex flex-col items-end gap-[0.35rem]">
@@ -58,14 +82,35 @@
         <a href="{{ route('tamu.metadata') }}" class="{{ request()->is('metadata') ? 'text-pink-650 font-semibold' : '' }}">Metadata</a>
         <a href="{{ route('tamu.tentang-kami') }}" class="{{ request()->is('tentang-kami') ? 'text-pink-650 font-semibold' : '' }}">Tentang Kami</a>
 
-        <select name="loginMobile" onchange="location = this.value;" class="bg-white border border-pink-600 rounded-full text-center py-2">
-            <option value="" selected disabled>Login</option>
-            <option value="{{ route('dashboard') }}">Admin</option>
-            <option value="{{ route('pegawai.disperindag.index') }}">Disperindag</option>
-            <option value="{{ route('pegawai.dkpp.index') }}">DKPP</option>
-            <option value="{{ route('pegawai.dtphp.index') }}">DTPHP</option>
-            <option value="{{ route('pegawai.perikanan.index') }}">DP</option>
-        </select>
+        @auth    
+            @switch($userRole)
+                @case('admin')
+                    <a href="{{ route('dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+
+                @case('pimpinan')
+                    <a href="{{ route('pimpinan.dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+
+                @case('disperindag')
+                    <a href="{{ route('pegawai.disperindag.dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+
+                @case('dkpp')
+                    <a href="{{ route('pegawai.dkpp.dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+
+                @case('dtphp')
+                    <a href="{{ route('pegawai.dtphp.dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+
+                @case('perikanan')
+                    <a href="{{ route('pegawai.perikanan.dashboard') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Dashboard</a>
+                    @break
+            @endswitch
+        @else
+            <a href="{{ route('login') }}" class="bg-white border border-pink-600 rounded-full text-center py-2">Login</a>
+        @endauth
     </div>
 </div>
 

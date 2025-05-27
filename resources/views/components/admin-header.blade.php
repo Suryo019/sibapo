@@ -97,26 +97,30 @@
 
             {{-- Username & email --}}
             <div class="w-3/12 mb-4">
-                <label for="username" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
+                <label for="username_profile" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
                     <i class="bi bi-person-fill"></i>
                     Username
                 </label>
                 <div class="w-full bg-gray-90 rounded-full flex items-center">
-                    <input type="text" class="w-11/12 py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Username" value="brbrpatapim" id="username" name="username">
+                    <input type="text" class="w-11/12 py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Username" value="brbrpatapim" id="username_profile" name="username_profile">
                     <iconify-icon icon="heroicons:pencil-square-solid" class="w-1/12 text-gray-550 text-xl cursor-pointer"></iconify-icon>
                 </div>
             </div>
 
             <div class="w-3/12 mb-10">
-                <label for="email" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
+                <label for="email_profile" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
                     <i class="bi bi-envelope-fill"></i>
                     Email
                 </label>
-                <input type="text" class="w-full py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Email" value="user@example.com" id="email" name="email">
+                <input type="text" class="w-full py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Email" value="user@example.com" id="email_profile" name="email_profile">
             </div>
             <button type="button" class="w-32 mb-28 p-2 bg-pink-650 rounded-full text-white flex justify-center items-center">Simpan</button>
 
-            <button class="w-2/12 p-2 mb-8 bg-red-500 rounded-full text-white flex justify-center items-center">
+        </form>
+
+        <form class="w-full h-full flex flex-col items-center" action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="w-2/12 p-2 mb-8 bg-red-500 rounded-full text-white flex justify-center items-center">
                 Log Out
             </button>
         </form>

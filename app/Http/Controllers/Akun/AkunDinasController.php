@@ -60,6 +60,7 @@ class AkunDinasController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // dd($request->email);
             $user = User::findOrFail($id);
     
             $rules = [
