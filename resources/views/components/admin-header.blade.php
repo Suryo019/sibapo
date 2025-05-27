@@ -38,11 +38,9 @@
                             <span class="text-xs text-gray-400">Baru saja</span>
                         </div>
                     </div>
-
-                    <!-- Tambah notifikasi lainnya sesuai kebutuhan -->
                 </div>
-
-                <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
+                <a href="#"><p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p></a>
+                
             </div>
         </div>
 

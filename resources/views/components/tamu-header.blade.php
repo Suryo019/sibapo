@@ -24,7 +24,7 @@
 
     <!-- Gambar Bupati -->
     <div class="flex justify-center md:justify-end">
-      <img src="{{ asset('storage/img/k1.png') }}" class="h-full" alt="Bupati Jember"
+      <img src="{{ asset('storage/img/s2.png') }}" class="h-full" alt="Bupati Jember"
            class="w-40 sm:w-56 md:w-64 lg:w-80 xl:w-96 max-h-[32rem] object-contain">
     </div>
 
