@@ -1,5 +1,10 @@
-<header {{ $attributes }}>
+@php
+    $imagePath = optional(Auth::user())->user_image 
+        ? asset('storage/' . Auth::user()->user_image) 
+        : asset('storage/img/placeholder.png');
+@endphp
 
+<header {{ $attributes }}>
     <div class="flex md:hidden items-center">
         <div class="flex justify-center items-center text-green-900 bg-white rounded w-6 h-6 cursor-pointer" id="burger-menu">
             <i class="bi bi-list text-xl"></i>
@@ -46,7 +51,7 @@
 
         <!-- Gambar Profil dan Nama -->
         <div class="flex items-center gap-4 cursor-pointer" id="profile-toggler">     
-            <img src="{{ asset('storage/img/placeholder.png') }}" alt="Profile"
+            <img src="{{ $imagePath }}" alt="Profile"
                  class="w-10 h-10 rounded-full bg-gray-300 scale-95 md:scale-100">
             <span class="text-sm hidden md:block">Hi, <b class="text-yellow-500">{{ Auth::user()->username }}</b>!</span>
         </div>
@@ -74,12 +79,6 @@
         <form class="w-full h-full flex flex-col items-center" method="POST" action="#" enctype="multipart/form-data">
             @csrf
             <div class="w-64 h-64 rounded-full shadow-white-custom border-white border-4 mb-4 relative">
-                @php
-                    $imagePath = optional(Auth::user())->user_image 
-                        ? asset('storage/' . Auth::user()->user_image) 
-                        : asset('storage/img/placeholder.png');
-                @endphp
-
                 <img 
                 src="{{ $imagePath }}" 
                 alt="Profile Image" 
@@ -96,6 +95,16 @@
             <input type="text" hidden id="user_id_profile" value="{{ Auth::user()->id }}">
             <input type="text" hidden id="user_role_profile" value="{{ Auth::user()->role_id }}">
 
+            @php
+                $dinas = match(true) {
+                    Auth::user()->role->role == 'disperindag' => 'Dinas Perindustrian dan Perdagangan',
+                    Auth::user()->role->role == 'dkpp' => 'Dinas Ketahanan Pangan dan Peternakan',
+                    Auth::user()->role->role == 'dtphp' => 'Dinas Tanaman Pangan, Holtikultural, dan Perkebunan',
+                    Auth::user()->role->role == 'dp' => 'Dinas Perikanan',
+                    default => 'Admin'
+                };
+            @endphp
+
             {{-- Name & role --}}
             <div class="flex flex-col items-center gap-3 mb-10">
                 <div class="flex items-center gap-3">
@@ -103,7 +112,7 @@
                     {{-- <input type="text" id="nama" name="nama" value="{{ Auth::user()->name }}" class="w-11/12 py-2 px-4 rounded-full outline-gray-550 hidden border-gray-400 border-2 text-gray-550""> --}}
                     {{-- <iconify-icon icon="heroicons:pencil-square-solid" id="btn_edit_nama" class="text-gray-550 text-xl cursor-pointer"></iconify-icon> --}}
                 </div>
-                <div class="text-black text-xl">Admin</div>
+                <div class="text-black text-xl">{{ $dinas }}</div>
             </div>
 
             {{-- Name, username & email --}}
@@ -189,8 +198,8 @@
         $('#username_profile').attr('disabled', true);
         $('#username_profile').removeClass('border-2');
     });
-    // Ajax update
 
+    // Ajax update
     $(document).on('click', '#profile_submit', function() {
         const user_id = $('#user_id_profile').val();
         const formData = new FormData();

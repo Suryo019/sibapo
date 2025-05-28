@@ -80,9 +80,12 @@ $judul = match(true) {
             $('.select2').select2();
         });
 
+        const API_TOKEN = "{{ session('api_token') }}";
+
         $.ajaxSetup({
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization': 'Bearer ' + API_TOKEN,
             }
         });
 

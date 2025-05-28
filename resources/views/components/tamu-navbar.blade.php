@@ -1,4 +1,4 @@
-<nav class="w-full bg-pink-650 flex text-white justify-around items-center py-5 relative z-10">
+<nav class="w-full bg-pink-650 flex text-white justify-around max-md:justify-between items-center max-md:px-6 py-5 relative z-10">
     {{-- Logo --}}
     <a href="{{ route('beranda') }}">
         <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 scale-90">
@@ -54,7 +54,10 @@
                 @break
         @endswitch
     @else
-        <a href="{{ route('login') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Login</a>
+        <a href="{{ route('login') }}" class="hidden md:flex md:gap-5 md:items-center bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">
+            <iconify-icon icon="material-symbols:login" class="w-1/12 text-white  text-xl"></iconify-icon>
+            Login
+        </a>
     @endauth
 
     {{-- Hamburger --}}
