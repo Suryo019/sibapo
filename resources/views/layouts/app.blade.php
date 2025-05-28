@@ -32,7 +32,9 @@
                 <h2 class="text-xl lg:text-2xl font-semibold hidden lg:block mb-10">Selamat Datang</h2>
     
                 <!-- Logo SIBAPO -->
-                <img src="{{ asset('storage/img/logo.png') }}" class="w-64 lg:w-80 mb-10" />
+                <a href="{{ route('beranda') }}">
+                    <img src="{{ asset('storage/img/logo.png') }}" class="w-64 lg:w-80 lg:relative lg:z-20 mb-10" />
+                </a>
     
                 <!-- Deskripsi -->
                 <p class="text-sm lg:text-base leading-relaxed max-w-sm mx-auto mt-4 lg:mt-6 hidden lg:block">

@@ -1,6 +1,8 @@
-<nav class="w-full bg-pink-650 flex text-white justify-between items-center py-5 px-4 relative z-10">
+<nav class="w-full bg-pink-650 flex text-white justify-around items-center py-5 relative z-10">
     {{-- Logo --}}
-    <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 scale-90">
+    <a href="{{ route('beranda') }}">
+        <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" class="h-10 w-30 scale-90">
+    </a>
 
     <div class="hidden md:flex justify-between items-center text-lg">
         <span class="px-10">
@@ -28,31 +30,31 @@
     @auth    
         @switch($userRole)
             @case('admin')
-                <a href="{{ route('dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
 
             @case('pimpinan')
-                <a href="{{ route('pimpinan.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('pimpinan.dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
 
             @case('disperindag')
-                <a href="{{ route('pegawai.disperindag.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('pegawai.disperindag.dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
 
             @case('dkpp')
-                <a href="{{ route('pegawai.dkpp.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('pegawai.dkpp.dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
 
             @case('dtphp')
-                <a href="{{ route('pegawai.dtphp.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('pegawai.dtphp.dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
 
             @case('perikanan')
-                <a href="{{ route('pegawai.perikanan.dashboard') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
+                <a href="{{ route('pegawai.perikanan.dashboard') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Dashboard</a>
                 @break
         @endswitch
     @else
-        <a href="{{ route('login') }}" class="hidden md:block bg-pink-650 border-white border-2 rounded-full text-center py-2 px-8">Login</a>
+        <a href="{{ route('login') }}" class="hidden md:block bg-pink-500 border-white border-2 rounded-full text-center py-2 px-8">Login</a>
     @endauth
 
     {{-- Hamburger --}}

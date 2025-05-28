@@ -3,7 +3,7 @@
 @section('content')
 <div class="relative z-10 w-full lg:w-1/2 bg-white flex items-center justify-center py-10 lg:py-0">
   <div class="w-9/12">
-      <h2 class="text-2xl lg:text-4xl font-semibold text-gray-800 mb-8 lg:mb-16 text-center">Masuk ke akun Anda</h2>
+      <h2 class="text-2xl lg:text-4xl font-semibold text-gray-800 mb-8 lg:mb-16 text-center">Reset Kata Sandi Anda</h2>
       
       @if (session('status'))
           <script>
