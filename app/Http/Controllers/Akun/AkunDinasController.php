@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 // use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AkunDinasController extends Controller
@@ -60,14 +61,14 @@ class AkunDinasController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // dd($request->email);
             $user = User::findOrFail($id);
-    
+
             $rules = [
                 'role_id' => 'required|exists:roles,id',
                 'name' => 'required|string|max:255',
+                'user_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ];
-            
+
             if ($request->email != $user->email) {
                 $rules['email'] = 'required|string|email|max:255|unique:users,email,' . $user->id;
             }
@@ -77,14 +78,33 @@ class AkunDinasController extends Controller
             }
 
             $validated = $request->validate($rules);
-    
+
+            if ($request->hasFile('user_image')) {
+                $file = $request->file('user_image');
+
+                if ($file->isValid()) {
+                    $hash = md5_file($file->getRealPath());
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $hash . '.' . $extension;
+
+                    $path = 'profile/' . $filename;
+                    if (!Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->putFileAs('profile', $file, $filename);
+                    }
+
+                    $validated['user_image'] = $path;
+                } else {
+                    return response()->json(['message' => 'File tidak valid'], 400);
+                }
+            }
+
             $user->update($validated);
-    
+
             return response()->json([
                 'message' => 'Akun berhasil diperbarui',
                 'data' => $user
             ], 200);
-    
+
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Validasi gagal',
@@ -96,7 +116,8 @@ class AkunDinasController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
-    }    
+    }
+   
 
     public function destroy($id)
     {

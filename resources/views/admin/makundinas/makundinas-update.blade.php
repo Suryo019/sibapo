@@ -67,7 +67,6 @@
 let user_id = $('#user_id').val()
 
 const email = $('#email').val();
-console.log(email);
 
 
 $('#submitBtn').on('click', function() {
@@ -85,8 +84,6 @@ $('#submitBtn').on('click', function() {
         processData: false,
         contentType: false,
         success: function(data) {
-            console.log(data);
-            
             Swal.fire({
                 title: 'Berhasil!',
                 text: `Data user ${data.data.name} dari Dinas ${data.data.role} telah disimpan.`,
