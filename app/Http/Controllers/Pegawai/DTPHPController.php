@@ -180,43 +180,55 @@ class DTPHPController extends Controller
         }
     }
 
-    public function panen()
+    public function panen(Request $request)
     {
-        try {
-            $dtphp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->where('jenis_tanaman_id', 'Suket Teki')
-            ->select('jenis_tanaman_id', 'hektar_luas_panen')
-            ->get();
+        $date = Carbon::createFromFormat('Y-m', $request->periode);
+        $year = $date->year;
 
-            return response()->json([
-                'data' => $dtphp
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        // dd($year);
+
+        $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
+
+        $dp = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
+            ->whereRaw("DATE_FORMAT(dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_input, '%Y-%m') = ?", [$request->periode])
+            ->selectRaw("
+                jenis_tanaman.nama_tanaman as jenis_tanaman,
+                dinas_tanaman_pangan_holtikultural_perkebunan.hektar_luas_panen,
+                dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_input,
+                DAY(tanggal_input) as hari
+            ")
+            ->get()
+            ->groupBy('jenis_tanaman');
+            
+        return response()->json([
+            'data' => $dp,
+            'periode' => $periodFY,
+        ]);
     }    
 
-    public function produksi()
+    public function produksi(Request $request)
     {
-        try {
-            $dtphp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->where('jenis_tanaman_id', 'Suket Teki')
-            ->select('jenis_tanaman_id', 'ton_volume_produksi')
-            ->get();
+        $date = Carbon::createFromFormat('Y-m', $request->periode);
+        $year = $date->year;
 
-            return response()->json([
-                'data' => $dtphp
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
-    }    
+        // dd($year);
+
+        $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
+
+        $dp = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
+            ->whereRaw("DATE_FORMAT(dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_input, '%Y-%m') = ?", [$request->periode])
+            ->selectRaw("
+                jenis_tanaman.nama_tanaman as jenis_tanaman,
+                dinas_tanaman_pangan_holtikultural_perkebunan.ton_volume_produksi,
+                dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_input,
+                DAY(tanggal_input) as hari
+            ")
+            ->get()
+            ->groupBy('jenis_tanaman');
+            
+        return response()->json([
+            'data' => $dp,
+            'periode' => $periodFY,
+        ]);
+    }      
 }

@@ -48,11 +48,11 @@ $namaRuteView = match(true) {
     request()->is('pegawai/disperindag*') => 'pegawai.jenis-bahan-pokok.index',
     request()->is('pegawai/dkpp*') => 'pegawai.jenis-komoditas.index',
     request()->is('pegawai/dtphp*') => 'pegawai.jenis-tanaman.index',
-    request()->is('pegawai/perikanan*') => 'pegawai.jenis-tanaman.index',
+    request()->is('pegawai/perikanan*') => 'pegawai.jenis-ikan.index',
 
     request()->is('pegawai/jenis_komoditas*') => 'pegawai.jenis-komoditas.index',
     request()->is('pegawai/jenis_tanaman*') => 'pegawai.jenis-tanaman.index',
-    request()->is('pegawai/jenis_ikan*') => 'pegawai.jenis-tanaman.index',
+    request()->is('pegawai/jenis_ikan*') => 'pegawai.jenis-ikan.index',
 };
 @endphp
 

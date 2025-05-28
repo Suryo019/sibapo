@@ -15,27 +15,26 @@ class DPController extends Controller
     public function index(Request $request)
     {
         $date = Carbon::createFromFormat('Y-m', $request->periode);
-        $month = $date->month;
         $year = $date->year;
 
-        $dp = DP::join('jenis_ikan', 'dinas_perikanan.ikan_id', '=', 'jenis_ikan.id')
-            ->whereMonth('tanggal_dibuat', $month)
-            ->whereYear('tanggal_dibuat', $year)
-            ->where('jenis_ikan.nama_ikan', $request->jenis_ikan)
+        // dd($year);
+
+        $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
+
+        $dp = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+            ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_input, '%Y-%m') = ?", [$request->periode])
             ->selectRaw("
                 jenis_ikan.nama_ikan as jenis_ikan,
                 dinas_perikanan.ton_produksi,
-                dinas_perikanan.tanggal_dibuat,
-                jenis_ikan.nama_ikan as jenis_ikan,
-                DAY(tanggal_dibuat) as hari
+                dinas_perikanan.tanggal_input,
+                DAY(tanggal_input) as hari
             ")
             ->get()
             ->groupBy('jenis_ikan');
             
-        // dd($dpp);
-
         return response()->json([
             'data' => $dp,
+            'periode' => $periodFY,
         ]);
     }
 

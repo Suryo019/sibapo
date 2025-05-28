@@ -18,8 +18,8 @@
                         <div class="flex flex-col">
                             <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
                             <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>Ascending</option>
-                                <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A - Z</option>
+                                <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                             </select>
                         </div>
                 

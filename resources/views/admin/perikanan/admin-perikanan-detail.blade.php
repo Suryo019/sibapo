@@ -3,7 +3,9 @@
         <!-- Search dan Dropdown -->
         <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
             <!-- Search Component -->
-            <x-search></x-search>
+            <x-search>
+                Cari ikan...
+            </x-search>
             
             {{-- Filter --}}
         <div class="flex justify-end">
@@ -18,8 +20,8 @@
                             <div class="flex flex-col">
                                 <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
                                 <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>Ascending</option>
-                                    <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                    <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A - Z</option>
+                                    <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                                 </select>
                             </div>
                     
@@ -64,7 +66,7 @@
 
             <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <div class="w-full flex items-center gap-2 mb-4">
-                <a href="{{ route('dtphp.index') }}" class="text-decoration-none text-dark flex-shrink-0">
+                <a href="{{ route('perikanan.index') }}" class="text-decoration-none text-dark flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>                      
