@@ -107,7 +107,7 @@ class DtphpController extends Controller
         }
     
         $data = $query->join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
-            ->orderBy('tanggal_input', $order)
+            ->orderBy('jenis_tanaman.nama_tanaman', $order)
             ->get();
 
             $dtphpProduksiBulan = $data->groupBy('jenis_tanaman_id')
@@ -192,7 +192,7 @@ class DtphpController extends Controller
         }
     
         $data = $query->join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
-            ->orderBy('tanggal_input', $order)
+            ->orderBy('jenis_tanaman.nama_tanaman', $order)
             ->get();
 
             $dtphpPanenBulan = $data->groupBy('jenis_tanaman_id')
@@ -234,59 +234,6 @@ class DtphpController extends Controller
         ]);
     }
 
-    // public function detailPanen()
-    // {
-    //     Carbon::setLocale('id');
-
-    //     $periodeUnikNama = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
-    //                 ->get()
-    //                 ->map(function ($item) {
-    //                     $carbonDate = Carbon::createFromFormat('Y-m', $item->periode);
-    //                     $item->periode_indonesia = $carbonDate->translatedFormat('F Y');
-    //                     return $item->periode_indonesia;
-    //                 });
-    //     $periodeUnikAngka = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
-    //         ->get()
-    //         ->map(function ($item) {
-    //             return $item->periode;
-    //         });
-
-    //     // dd($periodeUnikAngka);
-    //     $periode = explode('-', '2025-04');
-    //     $jumlahHari = Carbon::createFromDate($periode[0], $periode[1])->daysInMonth;
-
-    //     $periode = '2025-04';
-    
-    //     $dtphpPanenBulan = DTPHP::get()
-    //         ->groupBy('jenis_tanaman_id')
-    //         ->map(function ($items) {
-    //             $row = [
-    //                 'jenis_tanaman_id' => $items[0]->jenis_tanaman,
-    //                 'panen_per_bulan' => [],
-    //             ];
-        
-    //             foreach ($items as $item) {
-    //                 $bulan = (int) date('m', strtotime($item->tanggal_input));
-    //                 if (!isset($row['panen_per_bulan'][$bulan])) {
-    //                     $row['panen_per_bulan'][$bulan] = 0;
-    //                 }
-    //                 $row['panen_per_bulan'][$bulan] += $item->hektar_luas_panen;
-    //             }
-        
-    //             return $row;
-    //         })->values();  
-
-    //     return view('admin.dtphp.admin-dtphp-detail-panen', [
-    //         'title' => 'Dinas Tanaman Pangan dan Holtikultura',
-    //         // 'data_panen' => $dtphpPanenHari,
-    //         'data_panen' => $dtphpPanenBulan,
-    //         'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
-    //         'periods' => $periodeUnikNama,
-    //         'numberPeriods' => $periodeUnikAngka,
-    //         'daysInMonth' => $jumlahHari,
-    //     ]);
-    // }
-
     public function panen()
     {
         $periodeUnikNama = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
@@ -297,17 +244,13 @@ class DtphpController extends Controller
             return $item->periode_indonesia;
         });
 
-        // $dp = DTPHP::all();
+        // $dp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_tanaman_id');
+        $dp = JenisTanaman::select('nama_tanaman')->get();
 
         return view('admin.dtphp.admin-dtphp-panen', [
-            'title' => 'Data Luas Panen',
+            'title' => 'Data Aktivitas Luas Panen Tanaman',
             'data' => $dp,
-            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -322,17 +265,13 @@ class DtphpController extends Controller
             return $item->periode_indonesia;
         });
 
-        // $dp = DTPHP::all();
+        // $dp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_tanaman_id');
+        $dp = JenisTanaman::select('nama_tanaman')->get();
 
         return view('admin.dtphp.admin-dtphp-produksi', [
-            'title' => 'Volume Produksi Panen',
+            'title' => 'Data Aktivitas Produksi Tanaman',
             'data' => $dp,
-            'commodities' => DTPHP::select('jenis_tanaman_id')->distinct()->pluck('jenis_tanaman_id'),
             'periods' => $periodeUnikNama,
         ]);
     }

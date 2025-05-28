@@ -26,15 +26,11 @@ class PerikananController extends Controller
 
         // $dp = DP::all();
 
-        $dp = DP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_ikan_id');
+        $dp = JenisIkan::select('nama_ikan')->get();
 
         return view('admin.perikanan.admin-perikanan', [
             'title' => 'Data Aktivitas Produksi Ikan',
             'data' => $dp,
-            'fishes' => DP::select('jenis_ikan_id')->distinct()->pluck('jenis_ikan_id'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -124,7 +120,7 @@ class PerikananController extends Controller
         }
     
         $data = $query->join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
-            ->orderBy('tanggal_input', $order)
+            ->orderBy('jenis_ikan.nama_ikan', $order)
             ->get();
 
         $dpProduksiHari = DP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif])

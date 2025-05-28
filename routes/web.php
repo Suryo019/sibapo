@@ -23,8 +23,10 @@ use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
 use App\Http\Controllers\Web\Dkpp\JenisKomoditasDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
+use App\Http\Controllers\Web\Dtphp\PegawaiJenisTanamanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiBahanPokokController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
+use App\Http\Controllers\Web\Perikanan\PegawaiJenisIkanController;
 use App\Http\Controllers\Web\Dkpp\PegawaiJenisKomoditasDkppController;
 
 // Login
@@ -234,6 +236,12 @@ Route::middleware(['auth', 'role:dtphp'])->group(function () {
     Route::get('/pegawai/dtphp-panen', [PegawaiDtphpController::class, 'panen'])->name('pegawai.dtphp.panen');
     Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'])->name('pegawai.dtphp.produksi');
     
+    Route::resource('/pegawai/jenis_tanaman', PegawaiJenisTanamanController::class)->names([
+        'index' => 'pegawai.jenis-tanaman.index',
+        'create' => 'pegawai.jenis-tanaman.create',
+        'edit' => 'pegawai.jenis-tanaman.edit',
+    ]);
+
     Route::get('/pegawai/dtphp/notifikasi', function() {
         return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
     });
@@ -257,6 +265,12 @@ Route::middleware(['auth', 'role:perikanan'])->group(function () {
     
     Route::get('/pegawai/perikanan-detail', [PegawaiPerikananController::class, 'detail'])->name('pegawai.perikanan.detail');
     
+    Route::resource('/pegawai/jenis_ikan', PegawaiJenisIkanController::class)->names([
+        'index' => 'pegawai.jenis-ikan.index',
+        'create' => 'pegawai.jenis-ikan.create',
+        'edit' => 'pegawai.jenis-ikan.edit',
+    ]);
+
     Route::get('/pegawai/perikanan/notifikasi', function() {
         return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
     });
