@@ -1,5 +1,5 @@
 {{-- @dd($data) --}}
-<x-pegawai-layout>
+<x-pegawai-layout title="Data Ikan">
     <div class="w-full flex flex-wrap justify-between gap-4">
         <!-- Search bar -->
         <x-search></x-search>

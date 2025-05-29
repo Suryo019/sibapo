@@ -1,4 +1,4 @@
-<x-tamu-layout>
+<x-tamu-layout title="Statistik">
 <div class="w-full flex flex-col justify-center items-center text-pink-650 mb-16">
     <h1 class="text-5xl font-extrabold mb-8 ">Statistik Harga</h1>
     <h5 class="text-xl text-shadow mb-16 mx-6 text-center">Data perubahan harga setiap bahan pokok dalam 1 bulan</h5>

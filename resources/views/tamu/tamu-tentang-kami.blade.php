@@ -1,4 +1,4 @@
-<x-tamu-layout>
+<x-tamu-layout title="Tentang Kami">
   <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center">
     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-pink-600 mb-6">
       Tentang SIBAPO

@@ -1,20 +1,11 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Data Pasar">
     <div class="w-full flex flex-wrap justify-between gap-4">
         <!-- Search bar -->
-        <x-search></x-search>
-    
-        {{-- Filter --}}
-        <div class="flex justify-end max-md:w-full">
-            <x-filter></x-filter>
-    
-            <!-- Modal Background -->
-            <x-filter-modal>
-            </x-filter-modal>
-        </div>
+        <x-search>Cari pasar..</x-search>
     </div>
     
     {{-- Main Content --}}
-    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px] mt-4">
     
         <div class="w-full flex items-center gap-2 mb-4 flex-wrap">
             <a href="{{ route('pegawai.disperindag.pasar.index') }}" class="text-dark flex-shrink-0">
@@ -40,7 +31,7 @@
                         @foreach ($data as $item)
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
-                            <td class="px-2 py-2 text-center">{{ $item['nama_pasar'] }}</td>
+                            <td class="px-2 py-2 text-center pasar_col">{{ $item['nama_pasar'] }}</td>
                             <td class="px-2 py-2 text-center">
                                 <div class="flex justify-center gap-1">
                                     <a href="{{ route('pegawai.disperindag.pasar.edit', $item->id) }}">
@@ -90,6 +81,21 @@
 </x-pegawai-layout>
 
 <script>
+    const search = $('#search');
+    search.on("input", function () {
+        const input_value = $(this).val().toLowerCase();
+        let pasar_col = $(".pasar_col");
+
+        pasar_col.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
+    });
 
     // Trigger Filter Modal
     function toggleModal() {

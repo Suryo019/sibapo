@@ -16,6 +16,8 @@
     {{-- Token CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('/storage/img/logo-pemda.png') }}" type="image/png">
+
     <title>{{ $judul }}</title>
     {{-- <link rel="stylesheet" href="../src/output.css"> --}}
     @vite('resources/css/app.css')

@@ -7,10 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('/storage/img/logo-pemda.png') }}" type="image/png">
+
     {{-- SweetAlert2 --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Default Title')</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

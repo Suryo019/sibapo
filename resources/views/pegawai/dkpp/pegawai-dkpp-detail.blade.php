@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Detail Data Dinas">
     <main class="flex-1 p-4 sm:p-6">
         <div class="flex flex-col gap-4 mb-6 lg:flex-row lg:justify-between">
             <!-- Search and Filter -->
@@ -30,7 +30,7 @@
                                         <option {{ $currentWeek == 1 ? 'selected' : '' }}>1</option>
                                         <option {{ $currentWeek == 2 ? 'selected' : '' }}>2</option>
                                         <option {{ $currentWeek == 3 ? 'selected' : '' }}>3</option>
-                                        <option {{ $currentWeek == 4 ? 'selected' : '' }}>4</option>
+                                        <option {{ $currentWeek == 4 || 5 ? 'selected' : '' }}>4</option>
                                     </select>
                                 </div>
 

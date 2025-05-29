@@ -182,8 +182,7 @@ class PegawaiDkppController extends Controller
 
     public function detail()
     {
-        $currentWeek = floor((now()->day - 1) / 7) + 1;
-
+        $currentWeek = now()->weekOfMonth;
         return view('pegawai.dkpp.pegawai-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',
             'currentWeek' => $currentWeek,

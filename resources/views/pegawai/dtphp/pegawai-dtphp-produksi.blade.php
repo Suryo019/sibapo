@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Visualisasi Data Produksi">
         
     <!-- Dropdown Section -->
     <div class="flex flex-col gap-4 my-4 w-full">

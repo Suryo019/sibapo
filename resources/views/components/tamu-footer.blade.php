@@ -4,8 +4,8 @@
     <!-- Konten teks -->
     <div class="max-w-8xl mx-auto flex flex-col gap-3 items-start text-left relative z-10 md:pr-40">
       <h2 class="text-2xl md:text-5xl font-semibold">Butuh Bantuan?</h2>
-      <p class="text-sm md:text-md mt-1">Tanyakan apapun dan kami siap membantu Anda!</p>
-      <a href="https://s.id/Wadul-Guse" class="bg-pink-650 text-white font-medium px-6 md:px-10 py-2 rounded-full border border-white">
+      <p class="text-sm md:text-md mt-1 mb-6">Tanyakan apapun dan kami siap membantu Anda!</p>
+      <a href="https://s.id/Wadul-Guse" target="_blank" class="bg-pink-650 text-white font-medium px-6 md:px-10 mb-6 py-2 rounded-full border border-white">
         Hubungi Kami Sekarang
       </a>
     </div>

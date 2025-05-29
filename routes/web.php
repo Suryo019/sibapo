@@ -30,10 +30,6 @@ use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 use App\Http\Controllers\Web\Perikanan\PegawaiJenisIkanController;
 use App\Http\Controllers\Web\Dkpp\PegawaiJenisKomoditasDkppController;
 
-// Login
-// Route::get('/login', function() {
-//     return view('login');
-// });
 
 // Tamu
 Route::get('/', [TamuController::class, 'beranda'])->name('beranda');
@@ -42,7 +38,7 @@ Route::get('/pasar/search', [TamuController::class, 'pasar_filter'])->name('tamu
 Route::get('/statistik', [TamuController::class, 'statistik'])->name('tamu.statistik');
 Route::get('/metadata', [TamuController::class, 'metadata'])->name('tamu.metadata');
 Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu.tentang-kami');
-Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu.hubungi-kami');
+// Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu.hubungi-kami');
 // Route::middleware('guest')->group(function () {
 // });
 

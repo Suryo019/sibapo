@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Visualisasi Data Dinas">
 
     <!-- Dropdown -->
     {{-- <x-filter></x-filter> --}}

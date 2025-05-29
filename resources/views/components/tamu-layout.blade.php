@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Beranda</title>
+    <link rel="icon" href="{{ asset('/storage/img/logo-pemda.png') }}" type="image/png">
+
+    <title>{{ $title ? $title . ' | Cintako' : 'Beranda | Cintako' }}</title>
     {{-- <link rel="stylesheet" href="../src/output.css"> --}}
     @vite('resources/css/app.css')
 

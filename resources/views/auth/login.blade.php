@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Login | ' . config('app.name', 'Laravel'))
+
 @section('content')
 <div class="relative z-10 w-full lg:w-1/2 bg-white flex items-center justify-center py-10 lg:py-0">
   <div class="w-9/12">

@@ -1,4 +1,4 @@
-<x-tamu-layout>
+<x-tamu-layout title="Metadata">
   <div class="px-4 sm:px-6 lg:px-8 py-10">
     <h1 class="text-center text-4xl md:text-5xl lg:text-6xl font-extrabold text-pink-600 mb-8">
       Metadata

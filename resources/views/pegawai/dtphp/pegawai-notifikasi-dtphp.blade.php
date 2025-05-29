@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Notifikasi">
     <div class="flex flex-wrap items-center gap-2 mb-4">
         <div class="flex-1 min-w-[150px]">
             <div class="h-[42px] w-full">

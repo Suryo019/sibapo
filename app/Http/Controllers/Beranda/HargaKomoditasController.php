@@ -63,46 +63,30 @@ class HargaKomoditasController extends Controller
 
     public function komoditas_filter(Request $request)
     {
-        $today = Carbon::today();
-        $yesterday = Carbon::yesterday();
+        // $today = Carbon::today();
+        // $yesterday = Carbon::yesterday();
         $komoditas = $request->jenis_bahan_pokok;
 
-        $dataToday = DB::table('dinas_perindustrian_perdagangan as dpp')
+        $data = DB::table('dinas_perindustrian_perdagangan as dpp')
             ->join('jenis_bahan_pokok as jbp', 'dpp.jenis_bahan_pokok_id', '=', 'jbp.id')
             ->join('pasar as p', 'dpp.pasar_id', '=', 'p.id')
-            ->whereDate('dpp.tanggal_dibuat', $today)
             ->where('jbp.nama_bahan_pokok', 'like', '%' . $komoditas . '%')
-            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga')
+            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga', 'dpp.tanggal_dibuat')
+            ->orderByDesc('dpp.tanggal_dibuat')
             ->get();
 
-        $dataYesterday = DB::table('dinas_perindustrian_perdagangan as dpp')
-            ->join('jenis_bahan_pokok as jbp', 'dpp.jenis_bahan_pokok_id', '=', 'jbp.id')
-            ->join('pasar as p', 'dpp.pasar_id', '=', 'p.id')
-            ->whereDate('dpp.tanggal_dibuat', $yesterday)
-            ->where('jbp.nama_bahan_pokok', 'like', '%' . $komoditas . '%')
-            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga')
-            ->get();
-
-        // Gabungkan berdasarkan nama_pasar dan nama_bahan_pokok
-        $groupedMarkets = $dataToday->merge($dataYesterday)->unique(function ($item) {
-            return $item->nama_pasar . '|' . $item->nama_bahan_pokok;
-        });
-
-        // dd($groupedMarkets);
+        $grouped = $data->groupBy(fn ($item) => $item->nama_bahan_pokok . '|' . $item->nama_pasar);
 
         $result = [];
 
-        foreach ($groupedMarkets as $market) {
-            $hargaToday = $dataToday->where('nama_bahan_pokok', $market->nama_bahan_pokok)
-                                    ->where('nama_pasar', $market->nama_pasar)
-                                    ->pluck('kg_harga');
+        foreach ($grouped as $key => $items) {
+            $twoLatest = $items->take(2)->values();
 
-            $hargaYesterday = $dataYesterday->where('nama_bahan_pokok', $market->nama_bahan_pokok)
-                                            ->where('nama_pasar', $market->nama_pasar)
-                                            ->pluck('kg_harga');
+            $latest = $twoLatest[0] ?? null;
+            $second = $twoLatest[1] ?? null;
 
-            $avgToday = $hargaToday->avg();
-            $avgYesterday = $hargaYesterday->avg();
+            $avgToday = $latest?->kg_harga;
+            $avgYesterday = $second?->kg_harga;
 
             $selisih = null;
             $status = 'Tidak ada data';
@@ -113,60 +97,44 @@ class HargaKomoditasController extends Controller
             }
 
             $result[] = [
-                'komoditas' => $market->nama_bahan_pokok,
-                'gambar_komoditas' => $market->gambar_bahan_pokok,
+                'komoditas' => $latest?->nama_bahan_pokok ?? $second?->nama_bahan_pokok,
+                'gambar_komoditas' => $latest?->gambar_bahan_pokok ?? $second?->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday ?? 0, 2),
                 'rata_rata_kemarin' => round($avgYesterday ?? 0, 2),
                 'selisih' => round($selisih ?? 0, 2),
                 'status' => $status,
-                'pasar' => $market->nama_pasar,
+                'pasar' => $latest?->nama_pasar ?? $second?->nama_pasar,
             ];
         }
 
         return response()->json(['data' => $result], 200);
+
     }
 
 
     public function pasar_filter(Request $request)
     {
-        $today = Carbon::today();
-        $yesterday = Carbon::yesterday();
         $pasar = $request->pasar;
-
-        $dataToday = DB::table('dinas_perindustrian_perdagangan as dpp')
+        $data = DB::table('dinas_perindustrian_perdagangan as dpp')
             ->join('pasar as p', 'dpp.pasar_id', '=', 'p.id')
             ->join('jenis_bahan_pokok as jbp', 'dpp.jenis_bahan_pokok_id', '=', 'jbp.id')
-            ->whereDate('dpp.tanggal_dibuat', $today)
             ->where('p.nama_pasar', 'like', '%' . $pasar . '%')
-            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga')
+            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga', 'dpp.tanggal_dibuat')
+            ->orderByDesc('dpp.tanggal_dibuat')
             ->get();
 
-        $dataYesterday = DB::table('dinas_perindustrian_perdagangan as dpp')
-            ->join('pasar as p', 'dpp.pasar_id', '=', 'p.id')
-            ->join('jenis_bahan_pokok as jbp', 'dpp.jenis_bahan_pokok_id', '=', 'jbp.id')
-            ->whereDate('dpp.tanggal_dibuat', $yesterday)
-            ->where('p.nama_pasar', 'like', '%' . $pasar . '%')
-            ->select('jbp.nama_bahan_pokok', 'jbp.gambar_bahan_pokok', 'p.nama_pasar', 'dpp.kg_harga')
-            ->get();
-
-        // Gabungkan komoditas-komoditas unik
-        $comodities = $dataToday->merge($dataYesterday)->unique(function ($item) {
-            return $item->nama_bahan_pokok . '|' . $item->nama_pasar;
-        });
+        $grouped = $data->groupBy(fn ($item) => $item->nama_bahan_pokok . '|' . $item->nama_pasar);
 
         $result = [];
 
-        foreach ($comodities as $item) {
-            $hargaToday = $dataToday->where('nama_bahan_pokok', $item->nama_bahan_pokok)
-                                    ->where('nama_pasar', $item->nama_pasar)
-                                    ->pluck('kg_harga');
+        foreach ($grouped as $key => $items) {
+            $twoLatest = $items->take(2)->values();
 
-            $hargaYesterday = $dataYesterday->where('nama_bahan_pokok', $item->nama_bahan_pokok)
-                                            ->where('nama_pasar', $item->nama_pasar)
-                                            ->pluck('kg_harga');
+            $latest = $twoLatest[0] ?? null;
+            $second = $twoLatest[1] ?? null;
 
-            $avgToday = $hargaToday->avg();
-            $avgYesterday = $hargaYesterday->avg();
+            $avgToday = $latest?->kg_harga;
+            $avgYesterday = $second?->kg_harga;
 
             $selisih = null;
             $status = 'Tidak ada data';
@@ -177,17 +145,18 @@ class HargaKomoditasController extends Controller
             }
 
             $result[] = [
-                'komoditas' => $item->nama_bahan_pokok,
-                'gambar_komoditas' => $item->gambar_bahan_pokok,
+                'komoditas' => $latest?->nama_bahan_pokok ?? $second?->nama_bahan_pokok,
+                'gambar_komoditas' => $latest?->gambar_bahan_pokok ?? $second?->gambar_bahan_pokok,
                 'rata_rata_hari_ini' => round($avgToday ?? 0, 2),
                 'rata_rata_kemarin' => round($avgYesterday ?? 0, 2),
                 'selisih' => round($selisih ?? 0, 2),
                 'status' => $status,
-                'pasar' => $item->nama_pasar,
+                'pasar' => $latest?->nama_pasar ?? $second?->nama_pasar,
             ];
         }
 
         return response()->json(['data' => $result, 'inputPasar' => $pasar], 200);
+
     }
 
 
