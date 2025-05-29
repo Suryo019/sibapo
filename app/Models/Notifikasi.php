@@ -12,6 +12,7 @@ class Notifikasi extends Model
     protected $table = 'notifikasi';
 
     protected $fillable = [
+        // 'role_id',
         'tanggal_pesan', 
         'pesan'
     ];

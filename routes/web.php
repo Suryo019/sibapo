@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
 use App\Http\Controllers\Web\DtphpController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
 use App\Http\Controllers\Web\DisperindagController;
@@ -48,7 +49,7 @@ Route::get('/hubungi-kami', [TamuController::class, 'hubungi_kami'])->name('tamu
 
 
 // ADMIN
-Route::middleware(['auth', 'role:admin'])->group(function () {
+// Route::middleware(['auth', 'role:admin'])->group(function () {
     
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
     
@@ -150,7 +151,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/notifikasi', function() {
         return view('admin.admin-notifikasi');
     });
-});
+// });
 // ADMIN END
 
 
@@ -294,3 +295,5 @@ Route::middleware(['auth', 'role:pimpinan'])->group(function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/tes-notifikasi', [NotifikasiController::class, 'tes'])->name('notifikasi.tes');
