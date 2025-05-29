@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Ubah Data Pasar">
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <div class="w-full flex items-center gap-2 mb-4">
             <a href="{{ route('pegawai.disperindag.pasar.index') }}" class="text-decoration-none text-dark flex-shrink-0">
@@ -20,7 +20,7 @@
                 <!-- Nama Pasar -->
                 <div class="mb-4">
                     <label for="nama_pasar" class="block text-pink-500">Nama Pasar</label>
-                    <input type="text" name="nama_pasar" placeholder="Contoh: Mangli" 
+                    <input type="text" name="nama_pasar" placeholder="Contoh: Pasar Mangli" 
                            class="border p-2 w-full rounded-xl" id="nama_pasar"
                            value="{{ old('nama_pasar', $data->nama_pasar) }}">
                 </div>

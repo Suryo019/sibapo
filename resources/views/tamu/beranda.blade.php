@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 
-<x-tamu-layout>
+<x-tamu-layout title="Beranda">
     <x-tamu-header></x-tamu-header>
 
     {{-- Body --}}
@@ -24,7 +24,7 @@
             <div class="bg-white rounded-3xl shadow-md overflow-hidden border py-3 px-2 w-[90%] sm:w-64 md:w-72 lg:w-80 xl:w-72 h-auto">
                 <div class="h-[40vw] sm:h-40 md:h-44 lg:h-48 flex justify-center items-center overflow-hidden">
                     @if ($item['gambar_komoditas'])
-                        <img src="{{ asset('storage/' . $item['gambar_komoditas']) }}" alt="komoditas" class="object-cover w-full h-full">
+                        <img src="{{ asset('storage/' . $item['gambar_komoditas']) }}" alt="komoditas" class="object-cover">
                     @else
                         <img src="{{ asset('storage/img/landscape-placeholder.svg') }}" alt="komoditas" class="object-cover w-full h-full">
                     @endif

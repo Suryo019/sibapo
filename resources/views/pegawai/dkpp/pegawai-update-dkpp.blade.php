@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Ubah Data Dinas">
     <main class="flex-1 p-6">
         <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
             <div class="w-full flex items-center gap-2 mb-4">

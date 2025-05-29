@@ -1,6 +1,4 @@
-{{-- @dd($dataSelisih) --}}
-
-<x-pegawai-layout>
+<x-pegawai-layout title="Dashboard">
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <!-- Chart Placeholder -->

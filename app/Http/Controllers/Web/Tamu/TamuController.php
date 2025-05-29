@@ -30,33 +30,33 @@ class TamuController extends Controller
         $data = [];
 
         foreach ($komoditasList as $komoditas) {
-            $avgToday = DB::table('dinas_perindustrian_perdagangan')
-                ->whereDate('tanggal_dibuat', $today)
+            $dataHarga = DB::table('dinas_perindustrian_perdagangan')
                 ->where('jenis_bahan_pokok_id', $komoditas->id)
-                ->avg('kg_harga');
-        
-            $avgYesterday = DB::table('dinas_perindustrian_perdagangan')
-                ->whereDate('tanggal_dibuat', $yesterday)
-                ->where('jenis_bahan_pokok_id', $komoditas->id)
-                ->avg('kg_harga');
-        
+                ->orderByDesc('tanggal_dibuat')
+                ->take(2)
+                ->pluck('kg_harga', 'tanggal_dibuat');
+
+            $hargaTerbaru = $dataHarga->values()[0] ?? null;
+            $hargaSebelumnya = $dataHarga->values()[1] ?? null;
+
             $selisih = null;
             $status = 'Tidak ada data';
-        
-            if (!is_null($avgToday) && !is_null($avgYesterday)) {
-                $selisih = $avgToday - $avgYesterday;
+
+            if (!is_null($hargaTerbaru) && !is_null($hargaSebelumnya)) {
+                $selisih = $hargaTerbaru - $hargaSebelumnya;
                 $status = $selisih > 0 ? 'Naik' : ($selisih < 0 ? 'Turun' : 'Stabil');
             }
-        
+
             $data[] = [
                 'komoditas' => $komoditas->nama_bahan_pokok,
                 'gambar_komoditas' => $komoditas->gambar_bahan_pokok,
-                'rata_rata_hari_ini' => round($avgToday, 2),
-                'rata_rata_kemarin' => round($avgYesterday, 2),
+                'rata_rata_hari_ini' => round($hargaTerbaru, 2),
+                'rata_rata_kemarin' => round($hargaSebelumnya, 2),
                 'selisih' => round($selisih, 2),
                 'status' => $status,
             ];
         }
+
 
         return view('tamu.beranda', [
             'title' => 'Beranda',

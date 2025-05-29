@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Visualisasi Data Dinas">
 
     <!-- Dropdown -->
     <div class="flex justify-end my-4">

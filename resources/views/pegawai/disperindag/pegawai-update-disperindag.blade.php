@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 
-<x-pegawai-layout>
+<x-pegawai-layout title="Ubah Data Dinas">
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         {{-- <h2 class="text-2xl font-semibold text-green-900">{{ $title }}</h2> --}}
         <div class="w-full flex items-center gap-2 mb-4">

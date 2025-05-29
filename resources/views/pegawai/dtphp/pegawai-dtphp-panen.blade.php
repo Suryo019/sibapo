@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-admin-layout title="Visualisasi Data Panen">
     
     <!-- Dropdown Section -->
     <div class="flex flex-col gap-4 my-4 w-full">

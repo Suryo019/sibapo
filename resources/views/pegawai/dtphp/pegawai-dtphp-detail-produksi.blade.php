@@ -1,4 +1,4 @@
-<x-pegawai-layout>
+<x-pegawai-layout title="Detail Data Produksi">
 
     <!-- Search dan Dropdown -->
     <div class="flex justify-between my-4 max-md:flex-col max-md:gap-4">
