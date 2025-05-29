@@ -41,8 +41,16 @@ class PegawaiDkppController extends Controller
     {
         Carbon::setLocale('id');
 
-        $mingguSekarang = Carbon::now()->weekOfMonth;
-        $mingguLalu = Carbon::now()->subWeek()->weekOfMonth;
+        $today = now();
+        $lastWeek = now()->copy()->subWeek();
+
+        $mingguSekarang = $today->weekOfMonth;
+        $bulanSekarang = $today->month;
+        $tahunSekarang = $today->year;
+
+        $mingguLalu = $lastWeek->weekOfMonth;
+        $bulanLalu = $lastWeek->month;
+        $tahunLalu = $lastWeek->year;
 
         $komoditasList = JenisKomoditasDkpp::pluck('nama_komoditas');
 
@@ -54,6 +62,8 @@ class PegawaiDkppController extends Controller
             $dataMingguSekarang = DB::table('dinas_ketahanan_pangan_peternakan')
                 ->join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                 ->where('minggu', $mingguSekarang)
+                ->whereMonth('dinas_ketahanan_pangan_peternakan.created_at', $bulanSekarang)
+                ->whereYear('dinas_ketahanan_pangan_peternakan.created_at', $tahunSekarang)
                 ->where('jenis_komoditas_dkpp.nama_komoditas', $komoditas)
                 ->get();
             $avgMingguSekarang = $dataMingguSekarang->avg('ton_neraca_mingguan');
@@ -61,6 +71,8 @@ class PegawaiDkppController extends Controller
             $dataMingguLalu = DB::table('dinas_ketahanan_pangan_peternakan')
                 ->join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                 ->where('minggu', $mingguLalu)
+                ->whereMonth('dinas_ketahanan_pangan_peternakan.created_at', $bulanLalu)
+                ->whereYear('dinas_ketahanan_pangan_peternakan.created_at', $tahunLalu)
                 ->where('jenis_komoditas_dkpp.nama_komoditas', $komoditas)
                 ->get();
             $avgMingguLalu = $dataMingguLalu->avg('ton_neraca_mingguan');

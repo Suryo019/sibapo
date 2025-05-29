@@ -67,8 +67,12 @@
 
       <!-- Donut Chart Placeholder -->
       <div class="bg-white border rounded-lg py-4">
-        <div class="text-center font-semibold mb-4">
-          Total komoditas ketahanan pangan<br>minggu ke {{ now()->weekOfMonth }}
+        @php
+            $mingguKe = now()->weekOfMonth > 4 ? 4 : now()->weekOfMonth;
+        @endphp
+
+        <div class="text-center font-semibold mb-4 text-sm md:text-base">
+            Total komoditas ketahanan pangan<br>minggu ke {{ $mingguKe }}
         </div>
         <div class="w-full flex justify-center" id="donutChart">
           {{-- pake ajax --}}

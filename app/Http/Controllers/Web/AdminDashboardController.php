@@ -55,6 +55,10 @@ class AdminDashboardController extends Controller
     {
         $currentWeek = now()->weekOfMonth;
 
+        if ($currentWeek > 4) {
+            $currentWeek = 4;
+        }
+
         $total_dkpp_minggu_ini = DKPP::where('minggu', $currentWeek)->count();
 
         $persen_kategori_dkpp = DKPP::select('keterangan')
