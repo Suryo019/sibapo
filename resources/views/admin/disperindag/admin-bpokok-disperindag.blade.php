@@ -2,20 +2,11 @@
 <x-admin-layout>
     <div class="w-full flex flex-wrap justify-between gap-4">
         <!-- Search bar -->
-        <x-search></x-search>
-    
-        {{-- Filter --}}
-        <div class="flex justify-end max-md:w-full">
-            <x-filter></x-filter>
-    
-            <!-- Modal Background -->
-            <x-filter-modal>
-            </x-filter-modal>
-        </div>
+        <x-search>Cari bahan pokok..</x-search>
     </div>
     
     {{-- Main Content --}}
-    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px] mt-4">
     
         <div class="w-full flex items-center gap-2 mb-4 flex-wrap">
             <a href="{{ route('bahan_pokok.index') }}" class="text-dark flex-shrink-0">
@@ -42,7 +33,7 @@
                         @foreach ($data as $item)
                         <tr class="hover:bg-gray-50">
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
-                            <td class="px-2 py-2 text-center">{{ $item['nama_bahan_pokok'] }}</td>
+                            <td class="px-2 py-2 text-center jenis_bahan_pokok_col">{{ $item['nama_bahan_pokok'] }}</td>
                             <td class="px-2 py-2">
                                 @if ($item['gambar_bahan_pokok'])
                                     <div class="flex justify-center">
@@ -103,6 +94,22 @@
 </x-admin-layout>
 
 <script>
+    const search = $('#search');
+    search.on("input", function () {
+        const input_value = $(this).val().toLowerCase();
+        let jenis_bahan_pokok_col = $(".jenis_bahan_pokok_col");
+
+        jenis_bahan_pokok_col.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
+    });
+
 
     // Trigger Filter Modal
     function toggleModal() {
