@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use App\Models\DKPP;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
+use App\Models\JenisKomoditasDkpp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\JenisKomoditasDkpp;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class DKPPController extends Controller
@@ -105,13 +106,13 @@ class DKPPController extends Controller
                 'minggu' => 'required|numeric', 
             ]);
 
-            $validated['user_id'] = 1;
+            $validated['user_id'] = Auth::user()->id;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
             $riwayatStore = [
-                'user_id' => 3,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $validated['jenis_komoditas_dkpp_id'],
                 'aksi' => 'buat'
             ];
@@ -153,13 +154,13 @@ class DKPPController extends Controller
                 'minggu' => 'required|numeric',
             ]);
 
-            $validated['user_id'] = 1;
+            $validated['user_id'] = Auth::user()->id;
             $validated['ton_neraca_mingguan'] = $validated['ton_ketersediaan'] - $validated['ton_kebutuhan_perminggu'];
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
             $riwayatStore = [
-                'user_id' => 3,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $validated['jenis_komoditas_dkpp_id'],
                 'aksi' => 'ubah'
             ];
@@ -197,7 +198,7 @@ class DKPPController extends Controller
             }
 
             $riwayatStore = [
-                'user_id' => 3,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $dkpp->jenis_komoditas_dkpp_id,
                 'aksi' => 'hapus'
             ];

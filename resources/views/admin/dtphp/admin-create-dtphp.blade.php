@@ -10,7 +10,7 @@
                     <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
                 </div>
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
-            <form id="agricultureForm">
+            <form id="agricultureForm" onkeydown="return event.key != 'Enter';">
                 @csrf
 {{-- 
                 <div class="mb-4">

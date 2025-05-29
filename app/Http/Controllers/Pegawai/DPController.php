@@ -8,6 +8,7 @@ use App\Models\Riwayat;
 use App\Models\JenisIkan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class DPController extends Controller
@@ -99,13 +100,13 @@ class DPController extends Controller
             ]);
             
             $validated['tanggal_input'] = now();
-            $validated['user_id'] = 1;
+            $validated['user_id'] = Auth::user()->id;
             
             $dp = DP::create($validated);
             $nama_ikan = JenisIkan::find($dp->jenis_ikan_id)->nama_ikan;
             $data_stored = JenisIkan::select('nama_ikan')->where('id', $dp->jenis_ikan_id)->first();
             $riwayatStore = [
-                'user_id' => 2,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $data_stored->nama_ikan,
                 'aksi' => 'buat',
             ];
@@ -150,7 +151,7 @@ class DPController extends Controller
             ]);
 
             $riwayatStore = [
-                'user_id' => 5,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $validated['jenis_ikan_id'],
                 'aksi' => 'ubah'
             ];
@@ -182,7 +183,7 @@ class DPController extends Controller
             }
 
             $riwayatStore = [
-                'user_id' => 5,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $dp->jenis_ikan,
                 'aksi' => 'hapus'
             ];

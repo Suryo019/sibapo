@@ -58,3 +58,13 @@
     @yield('content')
 </body>
 </html>
+
+<script>
+
+document.querySelector('form').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+});
+
+</script>

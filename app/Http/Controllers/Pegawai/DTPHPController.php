@@ -7,6 +7,7 @@ use App\Models\DTPHP;
 use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DTPHPController extends Controller
 {
@@ -87,10 +88,10 @@ class DTPHPController extends Controller
             ]);
     
             $validated['tanggal_input'] = now();
-            $validated['user_id'] = 1;
+            $validated['user_id'] = Auth::user()->id;
 
             $riwayatStore = [
-                'user_id' => 4,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $validated['jenis_tanaman_id'],
                 'aksi' => 'buat'
             ];
@@ -131,7 +132,7 @@ class DTPHPController extends Controller
             ]);
 
             $riwayatStore = [
-                'user_id' => 4,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $validated['jenis_tanaman_id'],
                 'aksi' => 'ubah'
             ];
@@ -163,7 +164,7 @@ class DTPHPController extends Controller
             }
 
             $riwayatStore = [
-                'user_id' => 4,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $dtphp->jenis_tanaman_id,
                 'aksi' => 'hapus'
             ];

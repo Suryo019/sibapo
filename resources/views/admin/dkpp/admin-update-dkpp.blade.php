@@ -15,7 +15,7 @@
     
 
         <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
-            <form action="{{ route('dkpp.update', $data->id) }}" method="POST">
+            <form action="{{ route('dkpp.update', $data->id) }}" method="POST" onkeydown="return event.key != 'Enter';">
                 @csrf
                 @method('PUT')
 

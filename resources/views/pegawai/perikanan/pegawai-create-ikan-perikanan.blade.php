@@ -11,7 +11,7 @@
 
     
         <div class="bg-white p-6 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
-            <form action="{{ route('api.jenis-ikan.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('api.jenis-ikan.store') }}" method="post" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
                 @csrf
                 <!-- Nama Ikan -->
                 <div class="mb-4">

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Pegawai;
 use Carbon\Carbon;
 use App\Models\DPP;
 use App\Models\Pasar;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
-use App\Models\Riwayat;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -157,13 +158,13 @@ class DPPController extends Controller
             // dd($request);
 
             $validated['tanggal_dibuat'] = now();
-            $validated['user_id'] = 1;
+            $validated['user_id'] = Auth::user()->id;
 
             $dpp = DPP::create($validated);
             
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
             $riwayatStore = [
-                'user_id' => 2,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $data_stored->nama_bahan_pokok,
                 'aksi' => 'buat',
             ];
@@ -207,12 +208,14 @@ class DPPController extends Controller
                 'tanggal_dibuat' => 'required|date'
             ]);
 
+            $validated['user_id'] = Auth::user()->id;
+
             
             $dpp->update($validated);
             
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
             $riwayatStore = [
-                'user_id' => 2,
+                'user_id' => Auth::user()->id,
                 'komoditas' =>  $data_stored->nama_bahan_pokok,
                 'aksi' => 'ubah'
             ];
@@ -253,7 +256,7 @@ class DPPController extends Controller
             
             $data_stored = JenisBahanPokok::select('nama_bahan_pokok')->where('id', $dpp->jenis_bahan_pokok_id)->first();
             $riwayatStore = [
-                'user_id' => 2,
+                'user_id' => Auth::user()->id,
                 'komoditas' => $data_stored->nama_bahan_pokok,
                 'aksi' => 'hapus'
             ];

@@ -78,6 +78,13 @@ $judul = match(true) {
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+
+        });
+        
+        document.querySelector('form').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
         });
 
         const API_TOKEN = "{{ session('api_token') }}";

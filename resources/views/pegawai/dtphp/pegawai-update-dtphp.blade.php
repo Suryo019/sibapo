@@ -12,7 +12,7 @@
             </div>
 
     <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
-        <form action="" method="POST">
+        <form action="" method="POST" onkeydown="return event.key != 'Enter';">
             @csrf
             @method('PUT')
             

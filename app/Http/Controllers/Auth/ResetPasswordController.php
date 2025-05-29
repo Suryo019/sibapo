@@ -26,19 +26,19 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = '/home';
-    protected function redirectTo()
-    {
-        $role = Auth::user()->role->role;
+    protected $redirectTo = '/login';
+    // protected function redirectTo()
+    // {
+    //     $role = Auth::user()->role->role;
 
-        return match ($role) {
-            'admin' => '/dashboard',
-            'pimpinan' => '/pimpinan/dashboard',
-            'disperindag' => '/pegawai/disperindag/dashboard',
-            'dkpp' => '/pegawai/dkpp/dashboard',
-            'dtphp' => '/pegawai/dtphp/dashboard',
-            'perikanan' => '/pegawai/perikanan/dashboard',
-            default => '/',
-        };
-    }
+    //     return match ($role) {
+    //         'admin' => '/dashboard',
+    //         'pimpinan' => '/pimpinan/dashboard',
+    //         'disperindag' => '/pegawai/disperindag/dashboard',
+    //         'dkpp' => '/pegawai/dkpp/dashboard',
+    //         'dtphp' => '/pegawai/dtphp/dashboard',
+    //         'perikanan' => '/pegawai/perikanan/dashboard',
+    //         default => '/',
+    //     };
+    // }
 }
