@@ -65,8 +65,9 @@
                     Auth::user()->role->role == 'disperindag' => 'Dinas Perindustrian dan Perdagangan',
                     Auth::user()->role->role == 'dkpp' => 'Dinas Ketahanan Pangan dan Peternakan',
                     Auth::user()->role->role == 'dtphp' => 'Dinas Tanaman Pangan, Holtikultural, dan Perkebunan',
-                    Auth::user()->role->role == 'dp' => 'Dinas Perikanan',
-                    default => 'Admin'
+                    Auth::user()->role->role == 'perikanan' => 'Dinas Perikanan',
+                    Auth::user()->role->role == 'pimpinan' => 'Pimpinan',
+                    Auth::user()->role->role == 'admin' => 'Admin',
                 };
             @endphp
 
