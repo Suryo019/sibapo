@@ -11,10 +11,16 @@ class Notifikasi extends Model
 
     protected $table = 'notifikasi';
 
+    public $timestamps = false;
+
     protected $fillable = [
-        // 'role_id',
+        'role_id',
         'tanggal_pesan', 
         'pesan'
+    ];
+
+    protected $casts = [
+        'tanggal_pesan' => 'datetime',
     ];
 
     public function role() {

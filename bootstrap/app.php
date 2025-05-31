@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Console\Scheduling\Schedule;
 use App\Http\Middleware\ApiAuthenticateWithSanctum;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,4 +24,19 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        // Disperindag (role_id: 2) — Setiap hari
+        $schedule->command('notifikasi:generate 2')->dailyAt('08:00');
+        // $schedule->command('notifikasi:generate 2')->everyThirtySeconds();
+
+        // DKPP (role_id: 3) — Setiap Senin
+        $schedule->command('notifikasi:generate 3')->weeklyOn(1, '08:00');
+
+        // DTPHP (role_id: 4) — Setiap tanggal 1
+        $schedule->command('notifikasi:generate 4')->monthlyOn(1, '08:00');
+
+        // Perikanan (role_id: 5) — Setiap tanggal 1
+        $schedule->command('notifikasi:generate 5')->monthlyOn(1, '08:00');
+    })
+    ->create();
