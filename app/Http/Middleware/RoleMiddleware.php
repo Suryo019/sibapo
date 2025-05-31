@@ -18,7 +18,11 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (Auth::check() && !in_array(Auth::user()->role->role, $roles)) {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (!in_array(Auth::user()->role->role, $roles)) {
             abort(403, 'Akses ditolak.');
         }
 

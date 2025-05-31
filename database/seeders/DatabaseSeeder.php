@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 2, 'role' => 'disperindag'],
             ['id' => 3, 'role' => 'dkpp'],
             ['id' => 4, 'role' => 'dtphp'],
-            ['id' => 5, 'role' => 'dp'],
+            ['id' => 5, 'role' => 'perikanan'],
             ['id' => 6, 'role' => 'pimpinan'],
         ]);
 
