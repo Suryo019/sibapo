@@ -45,7 +45,7 @@ Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu
 
 
 // ADMIN
-// Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
     
@@ -147,7 +147,7 @@ Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu
     Route::get('/notifikasi', function() {
         return view('admin.admin-notifikasi');
     });
-// });
+});
 // ADMIN END
 
 
