@@ -11,16 +11,19 @@ use App\Http\Controllers\Web\DtphpController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Web\PerikananController;
 use App\Http\Controllers\Web\Tamu\TamuController;
+use App\Http\Controllers\NotifikasiAdminController;
 use App\Http\Controllers\Web\DisperindagController;
 use App\Http\Controllers\Web\AdminDashboardController;
 use App\Http\Controllers\Web\Disperindag\PasarController;
 use App\Http\Controllers\Web\Pimpinan\PimpinanController;
 use App\Http\Controllers\Web\Disperindag\BpokokController;
 use App\Http\Controllers\Web\Dtphp\JenisTanamanController;
+use App\Http\Controllers\Web\Dkpp\NotifikasiDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDkppController;
 use App\Http\Controllers\Web\Perikanan\JenisIkanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDtphpController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPasarController;
+use App\Http\Controllers\Web\Dtphp\NotifikasiDtphpController;
 use App\Http\Controllers\Web\Makundinas\MakundinasController;
 use App\Http\Controllers\Web\Dkpp\JenisKomoditasDkppController;
 use App\Http\Controllers\Web\Pegawai\PegawaiPerikananController;
@@ -28,7 +31,9 @@ use App\Http\Controllers\Web\Dtphp\PegawaiJenisTanamanController;
 use App\Http\Controllers\Web\Pegawai\PegawaiBahanPokokController;
 use App\Http\Controllers\Web\Pegawai\PegawaiDisperindagController;
 use App\Http\Controllers\Web\Perikanan\PegawaiJenisIkanController;
+use App\Http\Controllers\Web\Perikanan\NotifikasiPerikananController;
 use App\Http\Controllers\Web\Dkpp\PegawaiJenisKomoditasDkppController;
+use App\Http\Controllers\Web\Disperindag\NotifikasiDisperindagController;
 
 
 // Tamu
@@ -144,9 +149,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         'edit' => 'makundinas.edit',
     ]);
     
-    Route::get('/notifikasi', function() {
-        return view('admin.admin-notifikasi');
-    });
+    // Route::get('/notifikasi', function() {
+    //     return view('admin.admin-notifikasi');
+    // });
+
+    Route::get('/notifikasi', [NotifikasiAdminController::class, 'index'])->name('notifikasi.index');
+
 });
 // ADMIN END
 
@@ -176,9 +184,10 @@ Route::middleware(['auth', 'role:disperindag'])->group(function () {
     Route::get('/pegawai/disperindag/bahanpokok/create', [PegawaiBahanPokokController::class, 'create'])->name('pegawai.disperindag.bahanpokok.create');
     Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahanPokokController::class, 'edit'])->name('pegawai.disperindag.bahanpokok.edit');
     
-    Route::get('/pegawai/disperindag/notifikasi', function() {
-        return view('pegawai.disperindag.pegawai-notifikasi-disperindag');
-    });
+    Route::get('/pegawai/disperindag/notifikasi', [NotifikasiDisperindagController::class, 'index'])->name('pegawai.disperindag.notifikasi.index');
+    // Route::get('/pegawai/disperindag/notifikasi', function() {
+    //     return view('pegawai.disperindag.pegawai-notifikasi-disperindag');
+    // });
 });
 // DISPERINDAG END
 
@@ -197,16 +206,17 @@ Route::middleware(['auth', 'role:dkpp'])->group(function () {
         'destroy' => 'pegawai.dkpp.destroy',
     ]);
     Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->name('pegawai.dkpp.detail');
-    
+   
     Route::resource('/pegawai/jenis_komoditas', PegawaiJenisKomoditasDkppController::class)->names([
         'index' => 'pegawai.jenis-komoditas.index',
         'create' => 'pegawai.jenis-komoditas.create',
         'edit' => 'pegawai.jenis-komoditas.edit',
     ]);
-    
-    Route::get('/pegawai/dkpp/notifikasi', function() {
-        return view('pegawai.dkpp.pegawai-notifikasi-dkpp');
-    });
+
+    Route::get('/pegawai/dkpp/notifikasi', [NotifikasiDkppController::class, 'index'])->name('pegawai.dkpp.notifikasi.index');
+    // Route::get('/pegawai/dkpp/notifikasi', function() {
+    //     return view('pegawai.dkpp.pegawai-notifikasi-dkpp');
+    // });
 });
 // DKPP END
 
@@ -239,9 +249,10 @@ Route::middleware(['auth', 'role:dtphp'])->group(function () {
         'edit' => 'pegawai.jenis-tanaman.edit',
     ]);
 
-    Route::get('/pegawai/dtphp/notifikasi', function() {
-        return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
-    });
+    Route::get('/pegawai/dtphp/notifikasi', [NotifikasiDtphpController::class, 'index'])->name('pegawai.dtphp.notifikasi.index');
+    // Route::get('/pegawai/dtphp/notifikasi', function() {
+    //     return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
+    // });
 });
 // DTPHP END
 
@@ -268,9 +279,10 @@ Route::middleware(['auth', 'role:perikanan'])->group(function () {
         'edit' => 'pegawai.jenis-ikan.edit',
     ]);
 
-    Route::get('/pegawai/perikanan/notifikasi', function() {
-        return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
-    });
+    Route::get('/pegawai/perikanan/notifikasi', [NotifikasiPerikananController::class, 'index'])->name('pegawai.perikanan.notifikasi.index');
+    // Route::get('/pegawai/perikanan/notifikasi', function() {
+    //     return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
+    // });
 });
 // PERIKANAN END
 

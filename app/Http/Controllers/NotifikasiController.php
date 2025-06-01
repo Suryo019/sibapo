@@ -16,66 +16,65 @@ class NotifikasiController extends Controller
 {
     public function kirimNotifikasi()
     {
-        $periode = Carbon::now()->format('Y-m'); // contoh format periode: 2025-05
+        $today = Carbon::now();
         $admin = Role::where('role', 'admin')->first();
+    
         $roles = Role::where('role', '!=', 'admin')->get();
-
+    
         foreach ($roles as $role) {
-            // Cek apakah role sudah input data untuk periode ini
-            $sudahInput = $this->cekInputData($role->role, $periode);
-
-            // Notifikasi untuk role itu sendiri
+            $roleName = $role->role;
+            $periode = $this->getPeriodeRangeByRole($roleName);
+    
+            $sudahInput = DB::table($this->getTableByRole($roleName))
+                ->whereBetween('created_at', $periode)
+                ->exists();
+    
+            // Kirim notifikasi ke dinas bersangkutan
             if (!$sudahInput) {
                 Notifikasi::create([
                     'role_id' => $role->id,
                     'tanggal_pesan' => now(),
-                    'pesan' => "{$role->role}, Dimohon segera menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut."
+                    'pesan' => strtoupper($roleName) . " belum menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut."
                 ]);
             }
-
-            // Notifikasi untuk admin
+    
+            // Kirim notifikasi ke admin
             $pesanAdmin = $sudahInput
-                ? "{$role->role}, Telah menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut."
-                : "{$role->role}, Belum menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut.";
-
+                ? strtoupper($roleName) . " telah menginputkan data untuk periode ini."
+                : strtoupper($roleName) . " belum menginputkan data untuk periode ini.";
+    
             Notifikasi::create([
                 'role_id' => $admin->id,
                 'tanggal_pesan' => now(),
                 'pesan' => $pesanAdmin
             ]);
         }
-
+    
         return response()->json(['message' => 'Notifikasi berhasil dikirim.']);
     }
-
-    private function cekInputData(string $role, string $periode = null): bool
+    
+    private function getPeriodeRangeByRole(string $role): array
     {
-        [$start, $end] = $this->getPeriodeRangeByRole($role);
+        $today = Carbon::now();
     
-        switch ($role) {
-            case 'disperindag':
-                return DB::table('dinas_perindustrian_perdagangan')
-                    ->whereBetween('created_at', [$start, $end])
-                    ->exists();
+        return match ($role) {
+            'disperindag' => [$today->copy()->startOfDay(), $today->copy()->endOfDay()], // harian
+            'dkpp' => [$today->copy()->startOfWeek(), $today->copy()->endOfWeek()], // mingguan
+            'dtphp' => [$today->copy()->startOfQuarter(), $today->copy()->endOfQuarter()], // triwulan
+            'perikanan' => [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()], // bulanan
+            default => [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()],
+        };
+    }
     
-            case 'dkpp':
-                return DB::table('dinas_ketahanan_pangan_peternakan')
-                    ->whereBetween('created_at', [$start, $end])
-                    ->exists();
-    
-            case 'dtphp':
-                return DB::table('dinas_tanaman_pertanaian_holtikultural_perkebunan')
-                    ->whereBetween('created_at', [$start, $end])
-                    ->exists();
-    
-            case 'dp':
-                return DB::table('dinas_perikanan')
-                    ->whereBetween('created_at', [$start, $end])
-                    ->exists();
-    
-            default:
-                return false;
-        }
+    private function getTableByRole(string $role): string
+    {
+        return match ($role) {
+            'disperindag' => 'dinas_perindustrian_perdagangan',
+            'dkpp' => 'dinas_ketahanan_pangan_peternakan',
+            'dtphp' => 'dinas_tanaman_pertanaian_holtikultural_perkebunan',
+            'dp' => 'dinas_perikanan',
+            default => 'unknown',
+        };
     }
 
     public function tes()
