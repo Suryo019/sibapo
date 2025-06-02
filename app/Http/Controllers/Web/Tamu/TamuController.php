@@ -57,10 +57,13 @@ class TamuController extends Controller
             ];
         }
 
+        $markets = Pasar::select('nama_pasar')->get();
+
 
         return view('tamu.beranda', [
             'title' => 'Beranda',
             'data' => $data,
+            'markets' => $markets,
             'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }

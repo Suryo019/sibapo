@@ -4,6 +4,7 @@ use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
 use App\Models\DTPHP;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
@@ -47,7 +48,8 @@ Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu
 // Route::middleware('guest')->group(function () {
 // });
 
-
+// Export Data PDF
+Route::post('/export-pdf-chart', [Controller::class, 'exportChartPdf']);
 
 // ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {

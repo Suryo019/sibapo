@@ -29,6 +29,10 @@ Route::middleware('auth:sanctum')->group(function () {
     require __DIR__.'/api/perikanan.php';
 });
 
+Route::get('/dpp', [DPPController::class, 'index'])->name('api.dpp.index');
+Route::get('/dpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dpp.listItem');
+Route::get('/dpp-filter', [DPPController::class, 'filter'])->name('api.dpp.filter');
+
 Route::middleware('auth:sanctum')->group(function () {
     require __DIR__.'/api/disperindag.php';
 });

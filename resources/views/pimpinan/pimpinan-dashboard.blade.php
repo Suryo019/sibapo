@@ -63,31 +63,15 @@
 
       <!-- Donut Chart Placeholder -->
       <div class="bg-white border rounded-lg py-4">
+        @php
+            $mingguKe = now()->weekOfMonth > 4 ? 4 : now()->weekOfMonth;
+        @endphp
         <div class="text-center font-semibold mb-4">
-          Total komoditas ketahanan pangan<br>minggu ke {{ now()->weekOfMonth }}
+          Total komoditas ketahanan pangan<br>minggu ke {{ $mingguKe }}
         </div>
         <div class="w-full flex justify-center" id="donutChart">
           {{-- pake ajax --}}
         </div>
-        {{-- 
-        <div class="flex justify-center gap-6 text-sm mt-2">
-          <div class="flex flex-col items-center gap-1">
-            <div class="text-3xl font-bold">30%</div>
-            <div class="flex gap-2 items-center">
-              <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-              Surplus
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-            45% Defisit
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-            25% Seimbang
-          </div>
-        </div>
-        --}}
       </div>
     </div>
 
@@ -192,7 +176,7 @@
 
 <script>
 
-$.ajax({
+  $.ajax({
     type: 'GET',
     url: '/api/grafikdkpp',
     success: function(response) {

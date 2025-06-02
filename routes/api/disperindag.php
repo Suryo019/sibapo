@@ -7,9 +7,6 @@ use App\Http\Controllers\Disperindag\ApiPasarController;
 use App\Http\Controllers\Disperindag\ApiBpokokController;
 
 // DPP
-Route::get('/dpp', [DPPController::class, 'index'])->name('api.dpp.index');
-Route::get('/dpp/{bahanPokok}', [DPPController::class, 'listItem'])->name('api.dpp.listItem');
-Route::get('/dpp-filter', [DPPController::class, 'filter'])->name('api.dpp.filter');
 Route::post('/dpp', [DPPController::class, 'store'])->name('api.dpp.store');
 Route::put('/dpp/{id}', [DPPController::class, 'update'])->name('api.dpp.update');
 Route::delete('/dpp/{id}', [DPPController::class, 'destroy']);
