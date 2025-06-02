@@ -61,6 +61,38 @@ class HargaKomoditasController extends Controller
         return response()->json(['message' => 'Data berhasil dimuat', 'data' => $data]);
     }
 
+    public function chart(Request $request)
+    {
+        $date = Carbon::createFromFormat('Y-m', $request->periode);
+        $month = $date->month;
+        $year = $date->year;
+
+        $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
+
+        $dpp = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+            ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+            ->whereMonth('tanggal_dibuat', $month)
+            ->whereYear('tanggal_dibuat', $year)
+            ->where('pasar.nama_pasar', $request->pasar)
+            // ->where('jenis_bahan_pokok.nama_bahan_pokok', $request->bahan_pokok)
+            ->selectRaw("
+                jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok,
+                dinas_perindustrian_perdagangan.kg_harga,
+                dinas_perindustrian_perdagangan.tanggal_dibuat,
+                pasar.nama_pasar as pasar,
+                DAY(tanggal_dibuat) as hari
+            ")
+            ->get()
+            ->groupBy('jenis_bahan_pokok');
+            
+        // dd($dpp);
+
+        return response()->json([
+            'data' => $dpp,
+            'periode' => $periodFY,
+        ]);
+    }
+
     public function komoditas_filter(Request $request)
     {
         // $today = Carbon::today();

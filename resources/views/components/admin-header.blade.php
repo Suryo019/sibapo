@@ -68,32 +68,29 @@
     class="fixed w-full h-full overflow-y-auto top-0 left-0 z-50 bg-cover p-8 transition-all duration-500 ease-in-out"
     style="background-image: url('/storage/img/profile-page-bg.png');"> --}}
 <div id="profile-web-page" class="fixed w-full h-full overflow-y-auto top-[-100%] left-0 z-50 bg-cover transition-all duration-500 ease-in-out bg-white">
-    <img src="{{ asset('/storage/img/profile-page-bg-fix.png') }}" alt="profile" class="w-full absolute z-0">
+    <img src="{{ asset('/storage/img/profile-page-bg-fix.png') }}" alt="profile" class="w-full absolute z-0 hidden md:block">
+    <img src="{{ asset('/storage/img/profile-page-bg-mobile-fix.png') }}" alt="profile" class="w-full absolute z-0 md:hidden">
     
-    <div class="relative z-10 h-auto p-8">
+    <div class="relative z-10 min-h-screen p-4 md:p-8">
+        <!-- Back Button -->
         <div class="flex items-center w-fit gap-2 text-white cursor-pointer mb-5" id="profile-back-toggler">
-            <iconify-icon icon="mingcute:left-fill" class="text-5xl"></iconify-icon>
-            {{-- <span class="text-2xl">KEMBALI</span> --}}
+            <iconify-icon icon="mingcute:left-fill" class="text-3xl md:text-5xl"></iconify-icon>
         </div>
-        
-        <form class="w-full h-full flex flex-col items-center" method="POST" action="#" enctype="multipart/form-data">
+
+        <form class="w-full flex flex-col items-center" method="POST" action="#" enctype="multipart/form-data">
             @csrf
-            <div class="w-64 h-64 rounded-full shadow-white-custom border-white border-4 mb-4 relative">
-                <img 
-                src="{{ $imagePath }}" 
-                alt="Profile Image" 
-                id="gambar_profil" 
-                class="rounded-full w-full h-full object-cover">
 
+            <!-- Profile Image -->
+            <div class="w-40 h-40 md:w-64 md:h-64 rounded-full shadow-white-custom border-white border-4 mb-4 relative">
+                <img src="{{ $imagePath }}" alt="Profile Image" id="gambar_profil" class="rounded-full w-full h-full object-cover">
                 <input type="file" name="gambar_input" id="gambar_input" hidden>
-
-                <button type="button" id="btn-upload" class="w-20 h-20 bg-pink-650 rounded-full absolute bottom-0 right-0 flex items-center justify-center text-white">
-                    <iconify-icon icon="solar:camera-broken" class="text-5xl"></iconify-icon>
+                <button type="button" id="btn-upload" class="w-12 h-12 md:w-20 md:h-20 bg-pink-650 rounded-full absolute bottom-0 right-0 flex items-center justify-center text-white">
+                    <iconify-icon icon="solar:camera-broken" class="text-2xl md:text-4xl"></iconify-icon>
                 </button>
             </div>
 
-            <input type="text" hidden id="user_id_profile" value="{{ Auth::user()->id }}">
-            <input type="text" hidden id="user_role_profile" value="{{ Auth::user()->role_id }}">
+            <input type="hidden" id="user_id_profile" value="{{ Auth::user()->id }}">
+            <input type="hidden" id="user_role_profile" value="{{ Auth::user()->role_id }}">
 
             @php
                 $dinas = match(true) {
@@ -105,66 +102,61 @@
                 };
             @endphp
 
-            {{-- Name & role --}}
-            <div class="flex flex-col items-center gap-3 mb-10">
-                <div class="flex items-center gap-3">
-                    <span class="text-4xl font-semibold text-pink-650">{{ Auth::user()->name }}</span>
-                    {{-- <input type="text" id="nama" name="nama" value="{{ Auth::user()->name }}" class="w-11/12 py-2 px-4 rounded-full outline-gray-550 hidden border-gray-400 border-2 text-gray-550""> --}}
-                    {{-- <iconify-icon icon="heroicons:pencil-square-solid" id="btn_edit_nama" class="text-gray-550 text-xl cursor-pointer"></iconify-icon> --}}
-                </div>
-                <div class="text-black text-xl">{{ $dinas }}</div>
+            <!-- Name & Role -->
+            <div class="flex flex-col items-center gap-2 mb-8 text-center">
+                <span class="text-2xl md:text-4xl font-semibold text-pink-650">{{ Auth::user()->name }}</span>
+                <div class="text-black text-lg md:text-xl">{{ $dinas }}</div>
             </div>
 
-            {{-- Name, username & email --}}
-            <div class="w-3/12 mb-4">
-                <label for="nama" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
-                    <i class="bi bi-person-fill"></i>
-                    Nama
+            <!-- Nama -->
+            <div class="w-full max-w-md mb-4 px-4">
+                <label for="nama" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
+                    <i class="bi bi-person-fill"></i> Nama
                 </label>
                 <div class="w-full bg-gray-90 rounded-full flex items-center gap-2">
-                    <input type="text" class="w-11/12 py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Username" value="{{ Auth::user()->name }}" id="nama" name="nama">
-                    <iconify-icon icon="heroicons:pencil-square-solid" class="w-1/12 text-gray-550 text-xl cursor-pointer" id="btn_edit_nama"></iconify-icon>
-                    <iconify-icon icon="ion:checkmark-done" class="w-1/12 text-gray-550 text-xl cursor-pointer hidden" id="btn_edit_nama_selesai"></iconify-icon>
+                    <input type="text" class="flex-1 py-2 px-4 rounded-full outline-none text-gray-550" disabled value="{{ Auth::user()->name }}" id="nama" name="nama">
+                    <iconify-icon icon="heroicons:pencil-square-solid" class="text-gray-550 text-xl cursor-pointer" id="btn_edit_nama"></iconify-icon>
+                    <iconify-icon icon="ion:checkmark-done" class="text-gray-550 text-xl cursor-pointer hidden" id="btn_edit_nama_selesai"></iconify-icon>
                 </div>
             </div>
 
-            <div class="w-3/12 mb-4">
-                <label for="username_profile" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
-                    <i class="bi bi-person-fill"></i>
-                    Username
+            <!-- Username -->
+            <div class="w-full max-w-md mb-4 px-4">
+                <label for="username_profile" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
+                    <i class="bi bi-person-fill"></i> Username
                 </label>
                 <div class="w-full bg-gray-90 rounded-full flex items-center gap-2">
-                    <input type="text" class="w-11/12 py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Username" value="{{ Auth::user()->username }}" id="username_profile" name="username_profile">
-                    <iconify-icon icon="heroicons:pencil-square-solid" class="w-1/12 text-gray-550 text-xl cursor-pointer" id="btn_edit_username"></iconify-icon>
-                    <iconify-icon icon="ion:checkmark-done" class="w-1/12 text-gray-550 text-xl cursor-pointer hidden" id="btn_edit_username_selesai"></iconify-icon>
+                    <input type="text" class="flex-1 py-2 px-4 rounded-full outline-none text-gray-550" disabled value="{{ Auth::user()->username }}" id="username_profile" name="username_profile">
+                    <iconify-icon icon="heroicons:pencil-square-solid" class="text-gray-550 text-xl cursor-pointer" id="btn_edit_username"></iconify-icon>
+                    <iconify-icon icon="ion:checkmark-done" class="text-gray-550 text-xl cursor-pointer hidden" id="btn_edit_username_selesai"></iconify-icon>
                 </div>
             </div>
 
-            <div class="w-3/12 mb-20">
-                <label for="email_profile" class="flex items-center text-pink-650 text-xl font-semibold mb-2 gap-2">
-                    <i class="bi bi-envelope-fill"></i>
-                    Email
+            <!-- Email -->
+            <div class="w-full max-w-md mb-6 px-4">
+                <label for="email_profile" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
+                    <i class="bi bi-envelope-fill"></i> Email
                 </label>
-                <input type="text" class="w-full py-2 px-4 rounded-full outline-none text-gray-550" disabled placeholder="Email" value="{{ Auth::user()->email }}" id="email_profile" name="email_profile">
+                <input type="text" class="w-full py-2 px-4 rounded-full outline-none text-gray-550 bg-gray-90" disabled value="{{ Auth::user()->email }}" id="email_profile" name="email_profile">
             </div>
 
-            <button type="button" id="profile_submit" class="w-2/12 mb-2 p-2 bg-green-500 rounded-full text-white flex justify-center items-center gap-4">
-                <iconify-icon icon="material-symbols:save" class="w-1/12 text-white  text-xl"></iconify-icon>
+            <!-- Save Button -->
+            <button type="button" id="profile_submit" class="w-10/12 max-w-xs mb-4 p-2 bg-green-500 rounded-full text-white flex justify-center items-center gap-2">
+                <iconify-icon icon="material-symbols:save" class="text-xl"></iconify-icon>
                 Simpan
             </button>
-            
         </form>
-        
-        <form class="w-full h-full flex flex-col items-center" action="{{ route('logout') }}" method="POST">
+
+        <!-- Logout -->
+        <form class="w-full flex justify-center" action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="w-2/12 p-2 mb-8 bg-red-500 rounded-full text-white flex justify-center items-center gap-4">
-                <iconify-icon icon="material-symbols:logout" class="w-1/12 text-white  text-xl"></iconify-icon>
+            <button type="submit" class="w-10/12 max-w-xs p-2 mb-8 bg-red-500 rounded-full text-white flex justify-center items-center gap-2">
+                <iconify-icon icon="material-symbols:logout" class="text-xl"></iconify-icon>
                 Log Out
             </button>
         </form>
     </div>
 </div>
-
 
 <script>
     $(document).on('click', '#btn_edit_nama', function() {
@@ -292,14 +284,6 @@
                     .addClass('pointer-events-none')
                     .removeClass('pointer-events-auto');
             });
-    });
-
-
-    $('#burger-menu').on('click', function() {
-        $('#sidebar')
-            .removeClass('hidden')
-            .toggleClass('hidden')
-            .slideToggle('slow');
     });
 
 
