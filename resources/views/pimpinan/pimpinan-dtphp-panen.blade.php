@@ -1,7 +1,7 @@
 <x-pimpinan-layout>
 
     <!-- Top Bar: Search & Filter -->
-<div class="flex flex-wrap md:flex-nowrap justify-between items-center gap-4 my-4">
+<div class="flex md:flex-nowrap justify-between items-center gap-4 my-4">
 <!-- Search Component -->
 <x-search></x-search>
 

@@ -1,5 +1,5 @@
 <x-pegawai-layout title="Data Pasar">
-    <div class="w-full flex flex-wrap justify-between gap-4">
+    <div class="w-full flex justify-between gap-4">
         <!-- Search bar -->
         <x-search>Cari pasar..</x-search>
     </div>

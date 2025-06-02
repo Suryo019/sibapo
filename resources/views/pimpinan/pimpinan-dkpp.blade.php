@@ -1,7 +1,7 @@
 {{-- @dd($data) --}}
 <x-pimpinan-layout>
 
-    <div class="flex justify-between items-center gap-4 my-4 max-md:flex-wrap max-md:justify-center">
+    <div class="flex justify-between items-center gap-4 my-4 max-md:justify-center">
     
         <!-- Search Component -->
         <x-search></x-search>
