@@ -2,7 +2,7 @@
   
       <!-- Dropdown -->
       <div class="flex justify-end my-4">
-          <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-end w-full">
+          <div class="flex gap-6 max-md:gap-4 items-end justify-end w-full">
 
             <!-- Button -->
             <button onclick="toggleModal()" class="px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600">
