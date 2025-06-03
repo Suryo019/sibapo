@@ -1,73 +1,73 @@
 @extends('layouts.app')
 
-@section('title', 'Login | ' . config('app.name', 'Laravel'))
-
 @section('content')
-<div class="relative z-10 w-full lg:w-1/2 bg-white flex items-center justify-center py-10 lg:py-0">
-  <div class="w-9/12">
-      <h2 class="text-2xl lg:text-4xl font-semibold text-gray-800 mb-8 lg:mb-16 text-center">Masuk ke akun Anda</h2>
-      @if (session('status'))
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: '{{ session('status') }}',
-                        confirmButtonColor: '#ef4444',
-                        confirmButtonText: 'Tutup'
-                    });
-                });
-            </script>
-        @endif
-      <form method="POST" action="{{ route('login') }}" class="space-y-6">
-          @csrf
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Login') }}</div>
 
-          <!-- Email -->
-          <div>
-              <label for="email" class="block text-gray-700 mb-2">Username/Email</label>
-              <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                  placeholder="Masukkan Username/Email"
-                  class="w-full border-b border-pink-400 outline-none py-2 text-sm text-gray-700 placeholder-gray-400 @error('email') border-red-500 @enderror">
-              @error('email')
-                  <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-              @enderror
-          </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
 
-          <!-- Password -->
-          <div>
-              <label for="password" class="block text-gray-700 mb-2">Kata Sandi</label>
-              <input id="password" type="password" name="password" required
-                  placeholder="Masukkan Kata Sandi"
-                  class="w-full border-b border-pink-400 outline-none py-2 text-sm text-gray-700 placeholder-gray-400 @error('password') border-red-500 @enderror">
-              @error('password')
-                  <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-              @enderror
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
-              <div class="flex w-full justify-between mt-4">
-                  <!-- Remember Me -->
-                  <div class="flex items-center">
-                      <input class="h-4 w-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                      <label for="remember" class="ml-2 block text-sm text-gray-900">Ingat Saya</label>
-                  </div>
-    
-                  {{-- Lupa password --}}
-                  <div class="text-right text-xs">
-                      @if (Route::has('password.request'))
-                          <a href="{{ route('password.request') }}" class="text-blue-500 hover:underline">Lupa Kata Sandi?</a>
-                      @endif
-                  </div>
-              </div>
-          </div>
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-          
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 
-          <!-- Submit -->
-          <div class="flex justify-center">
-              <button type="submit" class="w-32 bg-pink-500 text-white py-2 rounded-full font-semibold hover:bg-pink-600">
-                  Login
-              </button>
-          </div>
-      </form>
-  </div>
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Remember Me') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Login') }}
+                                </button>
+
+                                @if (Route::has('password.request'))
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

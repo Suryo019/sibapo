@@ -56,7 +56,7 @@
 
         <!-- Tombol Switch (TIDAK DIUBAH) -->
         <div class="flex w-auto">
-            <a href="{{ route('dtphp.panen') }}">
+            <a href="{{ route('dtphp.produksi') }}">
                 <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
                     Volume Produksi
                 </button>
