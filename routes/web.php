@@ -4,6 +4,7 @@ use App\Models\DP;
 use App\Models\DPP;
 use App\Models\DKPP;
 use App\Models\DTPHP;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DkppController;
@@ -47,7 +48,8 @@ Route::get('/tentang-kami', [TamuController::class, 'tentang_kami'])->name('tamu
 // Route::middleware('guest')->group(function () {
 // });
 
-
+// Export Data PDF
+Route::post('/export-pdf-chart', [Controller::class, 'exportChartPdf']);
 
 // ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -213,7 +215,7 @@ Route::middleware(['auth', 'role:dkpp'])->group(function () {
         'edit' => 'pegawai.jenis-komoditas.edit',
     ]);
 
-    Route::get('/pegawai/dkpp/notifikasi', [NotifikasiDkppController::class, 'index'])->name('pegawai.dkpp.notifikasi.index');
+    Route::get('/pegawai/dkpp-notifikasi', [NotifikasiDkppController::class, 'index'])->name('pegawai.dkpp.notifikasi.index');
     // Route::get('/pegawai/dkpp/notifikasi', function() {
     //     return view('pegawai.dkpp.pegawai-notifikasi-dkpp');
     // });
@@ -249,7 +251,7 @@ Route::middleware(['auth', 'role:dtphp'])->group(function () {
         'edit' => 'pegawai.jenis-tanaman.edit',
     ]);
 
-    Route::get('/pegawai/dtphp/notifikasi', [NotifikasiDtphpController::class, 'index'])->name('pegawai.dtphp.notifikasi.index');
+    Route::get('/pegawai/dtphp-notifikasi', [NotifikasiDtphpController::class, 'index'])->name('pegawai.dtphp.notifikasi.index');
     // Route::get('/pegawai/dtphp/notifikasi', function() {
     //     return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
     // });
@@ -279,7 +281,7 @@ Route::middleware(['auth', 'role:perikanan'])->group(function () {
         'edit' => 'pegawai.jenis-ikan.edit',
     ]);
 
-    Route::get('/pegawai/perikanan/notifikasi', [NotifikasiPerikananController::class, 'index'])->name('pegawai.perikanan.notifikasi.index');
+    Route::get('/pegawai/perikanan-notifikasi', [NotifikasiPerikananController::class, 'index'])->name('pegawai.perikanan.notifikasi.index');
     // Route::get('/pegawai/perikanan/notifikasi', function() {
     //     return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
     // });

@@ -23,7 +23,7 @@
         </li>
 
         {{-- Kelola dinas --}}
-        <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA DINAS </span>
+        <span class="block opacity-75 text-sm pl-7 my-4 max-xl:hidden"> KELOLA DATA DINAS </span>
 
         <!-- DISPERINDAG -->
         <x-disperindag-sidebar-link></x-disperindag-sidebar-link>
@@ -83,7 +83,7 @@
         </x-admin-sidebar-link>
 
         <!--kelola akun-->
-        <span class="block opacity-75 text-sm pl-7 my-4"> KELOLA DATA AKUN </span>
+        <span class="block opacity-75 text-sm pl-7 my-4 max-xl:hidden"> KELOLA DATA AKUN </span>
 
         <x-admin-makundinas-sidebar-link 
         dataHref="makundinas*"

@@ -75,7 +75,7 @@
     </div>
 
 </x-admin-layout> --}}
-
+{{-- @dd($notifikasis) --}}
 <x-admin-layout>
 
     <div class="flex items-center gap-2 mb-4">
@@ -105,7 +105,7 @@
                                             {{ 
                                                 $notif->role->role === 'disperindag' ? 'mage:basket-fill' :
                                                 ($notif->role->role === 'dkpp' ? 'healthicons:plantation-worker-alt' :
-                                                ($notif->role->role === 'dp' ? 'majesticons:fish' :
+                                                ($notif->role->role === 'perikanan' ? 'majesticons:fish' :
                                                 ($notif->role->role === 'dtphp' ? 'mdi:tree' : 'mdi:alert-circle')))
                                             }}" 
                                         class="text-xl text-pink-600">
