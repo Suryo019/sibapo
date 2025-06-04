@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#"><p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p></a>
+                <a href="{{ route('notifikasi.index') }}"><p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p></a>
                 
             </div>
         </div>

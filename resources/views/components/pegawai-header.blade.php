@@ -4,18 +4,24 @@
         : asset('storage/img/placeholder.png');
 @endphp
 
+@php
+    $imagePath = optional(Auth::user())->user_image 
+        ? asset('storage/' . Auth::user()->user_image) 
+        : asset('storage/img/placeholder.png');
+@endphp
+
 <header {{ $attributes }}>
+    <!-- Kiri: Burger Menu dan Nama Dinas di Mobile -->
     <div class="flex md:hidden items-center w-2/3">
-        <div class="flex justify-center items-center text-green-900 bg-white rounded w-7 h-6 cursor-pointer" id="burger-menu">
+        <div id="burger-menu" class="flex justify-center items-center text-green-900 bg-white rounded w-7 h-6 cursor-pointer">
             <i class="bi bi-list text-xl"></i>
         </div>
-        {{-- Nama Dinas (<= MD) --}}
         <div class="justify-center flex md:hidden ml-4">
             <h1 class="text-lg font-extrabold text-white">{{ $slot }}</h1>
         </div>
     </div>
 
-    {{-- Nama Dinas --}}
+    <!-- Tengah: Nama Dinas (Desktop) -->
     <h2 class="text-2xl font-extrabold text-center hidden md:block">{{ $slot }}</h2>
 
     @php
@@ -66,6 +72,7 @@
     </div>
 
 </header>
+
 
 <!-- Background dark layer -->
 <div id="bg-darker"

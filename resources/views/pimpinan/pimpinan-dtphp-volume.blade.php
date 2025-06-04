@@ -1,7 +1,7 @@
 <x-pimpinan-layout>
 
         
-    <div class="flex justify-between items-center gap-4 my-4 max-md:flex-wrap">
+    <div class="flex justify-between items-center gap-4 my-4 ">
         <!-- Search Component -->
         <x-search></x-search>
     

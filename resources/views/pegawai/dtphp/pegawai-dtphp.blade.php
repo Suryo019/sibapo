@@ -2,7 +2,7 @@
     
         <!-- Dropdown -->
         <div class="flex justify-end my-4">
-            <div class="flex flex-wrap gap-6 max-md:gap-4 items-end justify-end w-full">
+            <div class="flex gap-6 max-md:gap-4 items-end justify-end w-full">
                 <!-- Pilih Komoditas -->
                 <div class="flex flex-col">
                     <label for="pilih_komoditas" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">

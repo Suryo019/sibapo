@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 <x-pegawai-layout title="Data Komoditas">
-    <div class="w-full flex flex-wrap justify-between gap-4">
+    <div class="w-full flex justify-between gap-4">
         <!-- Search bar -->
         <x-search>Cari komoditas..</x-search>
     </div>
