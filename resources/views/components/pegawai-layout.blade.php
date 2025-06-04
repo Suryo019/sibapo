@@ -74,7 +74,7 @@ $judul = match(true) {
 
     {{-- BG --}}
     <div class="w-full h-screen fixed z-0 overflow-hidden">
-        <img src="{{ asset('img/kembang-sidebar-2.png') }}" class="fixed bottom-5 scale-95 -right-28" alt="">
+        <img src="{{ asset('/storage/img/kembang-sidebar-2.png') }}" class="fixed bottom-5 scale-95 -right-28" alt="">
     </div>
 
     <script>

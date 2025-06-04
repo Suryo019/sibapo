@@ -74,7 +74,7 @@
 
     {{-- BG --}}
     <div class="w-full h-screen fixed z-0 overflow-hidden">
-        <img src="{{ asset('img/kembang-sidebar-2.png') }}" class="fixed bottom-0 scale-90 -right-32" alt="">
+        <img src="{{ asset('/storage/img/kembang-sidebar-2.png') }}" class="fixed bottom-0 scale-90 -right-32" alt="">
     </div>
     
 

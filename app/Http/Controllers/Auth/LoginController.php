@@ -26,22 +26,22 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = '/';
+    protected $redirectTo = '/';
 
-    protected function redirectTo()
-    {
-        $role = Auth::user()->role->role;
+    // protected function redirectTo()
+    // {
+    //     $role = Auth::user()->role->role;
 
-        return match ($role) {
-            'admin' => '/dashboard',
-            'pimpinan' => '/pimpinan/dashboard',
-            'disperindag' => '/pegawai/disperindag/dashboard',
-            'dkpp' => '/pegawai/dkpp/dashboard',
-            'dtphp' => '/pegawai/dtphp/dashboard',
-            'perikanan' => '/pegawai/perikanan/dashboard',
-            default => '/',
-        };
-    }
+    //     return match ($role) {
+    //         'admin' => '/dashboard',
+    //         'pimpinan' => '/pimpinan/dashboard',
+    //         'disperindag' => '/pegawai/disperindag/dashboard',
+    //         'dkpp' => '/pegawai/dkpp/dashboard',
+    //         'dtphp' => '/pegawai/dtphp/dashboard',
+    //         'perikanan' => '/pegawai/perikanan/dashboard',
+    //         default => '/',
+    //     };
+    // }
 
     /**
      * Create a new controller instance.

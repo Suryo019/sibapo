@@ -30,7 +30,7 @@
                                         <option {{ $currentWeek == 1 ? 'selected' : '' }}>1</option>
                                         <option {{ $currentWeek == 2 ? 'selected' : '' }}>2</option>
                                         <option {{ $currentWeek == 3 ? 'selected' : '' }}>3</option>
-                                        <option {{ $currentWeek == 4 || 5 ? 'selected' : '' }}>4</option>
+                                        <option {{ $currentWeek == 4 || $currentWeek == 5 ? 'selected' : '' }} value="4">4</option>
                                     </select>
                                 </div>
 

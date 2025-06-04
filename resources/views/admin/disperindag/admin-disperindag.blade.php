@@ -150,7 +150,7 @@
                 chart: {
                     id: `${chartId}_${index}`,
                     type: 'line',
-                    height: 300,
+                    height: 350,
                     toolbar: {
                         show: true,
                         tools: {
@@ -163,7 +163,7 @@
                             reset: true,
                             customIcons: [
                                 {
-                                    icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon?',
+                                    icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon>',
                                     index: -1,
                                     title: 'Download PDF',
                                     class: 'custom-download-pdf',
