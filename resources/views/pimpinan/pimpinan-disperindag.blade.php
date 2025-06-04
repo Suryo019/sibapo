@@ -117,8 +117,56 @@
 
             const chart = new ApexCharts(document.querySelector(`#${chartId}`), {
                 chart: {
+                    id: `${chartId}_${index}`,
                     type: 'line',
-                    height: 300,
+                    height: 350,
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: true,
+                            selection: true,
+                            zoom: true,
+                            zoomin: true,
+                            zoomout: true,
+                            pan: true,
+                            reset: true,
+                            customIcons: [
+                                {
+                                    icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon>',
+                                    index: -1,
+                                    title: 'Download PDF',
+                                    class: 'custom-download-pdf',
+                                    click: function(chart, options, e) {
+                                        ApexCharts.exec(`${chartId}_${index}`, 'dataURI').then(({ imgURI }) => {
+                                            $.ajax({
+                                                url: '/export-pdf-chart',
+                                                type: 'POST',
+                                                data: {
+                                                    image: imgURI,
+                                                    title: bahan,
+                                                },
+                                                xhrFields: {
+                                                    responseType: 'blob'
+                                                },
+                                                success: function(blob) {
+                                                    const url = window.URL.createObjectURL(blob);
+                                                    const a = document.createElement('a');
+                                                    a.href = url;
+                                                    a.download = 'chart-export.pdf';
+                                                    document.body.appendChild(a);
+                                                    a.click();
+                                                    a.remove();
+                                                },
+                                                error: function () {
+                                                    alert("Gagal mengunduh PDF");
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            ]
+                        }
+                    },
                     animations: {
                         enabled: true,
                         easing: 'easeinout',

@@ -38,12 +38,12 @@
 </head>
 <body class="h-screen w-screen overflow-x-hidden scrollbar-thin">
     <!-- Loading overlay -->
-    <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
+    {{-- <div id="loading" class="fixed w-full h-full bg-black bg-opacity-50 z-50" style="display: none;">
         <div class="w-full h-full flex items-center justify-center flex-col">
             <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-450 border-solid mx-auto"></div>
             <p class="mt-4 text-gray-700 text-center">Loading, please wait...</p>
         </div>
-    </div>
+    </div> --}}
 
     {{-- BG wkwk --}}
     <div class="w-full h-full fixed z-0">

@@ -87,20 +87,47 @@
   // Fungsi Render Chart dari Response
   function renderChartFromData(response) {
     const dataset = response.data;
-    $('#chart_container').empty();
+    // console.log(dataset);
+
+    
+    const container = $('#chart_container');
+    container.empty();
+    
     charts.forEach(c => c.destroy());
     charts = [];
+    
+    const allWeeks = [];
 
-    const allWeeks = [1, 2, 3, 4];
+    Object.values(dataset).forEach(group => {
+      group.forEach(item => {
+        if (!allWeeks.includes(item.minggu)) {
+          allWeeks.push(item.minggu);
+        }
+      });
+    });
 
-    allWeeks.forEach((mingguKe) => {
+
+    allWeeks.sort((a, b) => a - b);
+
+
+    if (!dataset || Object.keys(dataset).length === 0) {
+        container.html(`
+            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+            </div>
+        `);
+        return;
+    }
+
+    allWeeks.forEach((mingguKe, index) => {
       const dataPerMinggu = dataset[mingguKe] || [];
       const labels = dataPerMinggu.map(item => item.nama_komoditas);
       const ketersediaan = dataPerMinggu.map(item => item.ton_ketersediaan);
       const kebutuhan = dataPerMinggu.map(item => item.ton_kebutuhan_perminggu);
 
       const chartId = `chart-minggu-${mingguKe}`;
-      $('#chart_container').append(`
+      container.append(`
         <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
           <h2 class="text-center text-lg font-semibold text-gray-700 mb-2 keterangan_minggu">Minggu ke-${mingguKe}</h2>
           <div id="${chartId}" class="shadow border rounded-md p-2 bg-white"></div>
@@ -109,9 +136,57 @@
 
       const options = {
         chart: {
+          id: `${chartId}_${index}`,
           type: 'line',
-          height: 350
-        },
+          height: 350,
+          toolbar: {
+                show: true,
+                tools: {
+                    download: true,
+                    selection: true,
+                    zoom: true,
+                    zoomin: true,
+                    zoomout: true,
+                    pan: true,
+                    reset: true,
+                    customIcons: [
+                        {
+                            icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon>',
+                            index: -1,
+                            title: 'Download PDF',
+                            class: 'custom-download-pdf',
+                            click: function(chart, options, e) {
+                                ApexCharts.exec(`${chartId}_${index}`, 'dataURI').then(({ imgURI }) => {
+                                    $.ajax({
+                                        url: '/export-pdf-chart',
+                                        type: 'POST',
+                                        data: {
+                                            image: imgURI,
+                                            title: `Data Minggu ke-${mingguKe}`,
+                                        },
+                                        xhrFields: {
+                                            responseType: 'blob'
+                                        },
+                                        success: function(blob) {
+                                            const url = window.URL.createObjectURL(blob);
+                                            const a = document.createElement('a');
+                                            a.href = url;
+                                            a.download = 'chart-export.pdf';
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            a.remove();
+                                        },
+                                        error: function () {
+                                            alert("Gagal mengunduh PDF");
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    ]
+                }
+            },
+          },
         series: [
           {
             name: 'Ketersediaan (ton)',

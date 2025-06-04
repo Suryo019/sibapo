@@ -35,9 +35,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="title">Laporan Grafik Harga</div>
+        <div class="title">Laporan Grafik Dinas</div>
         <div class="subtext"><strong>{{ $title }}</strong></div>
-        <img src="{{ $image }}" alt="Grafik Harga">
+        <img src="{{ $image }}" alt="Grafik Dinas">
     </div>
 </body>
 </html>
