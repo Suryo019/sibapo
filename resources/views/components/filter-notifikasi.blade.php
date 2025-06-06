@@ -1,4 +1,4 @@
-<div class="w-full flex justify-end mb-4 relative">
+{{-- <div class="w-full flex justify-end mb-4 relative">
     <!-- Tombol toggle -->
     <button id="dropdownToggle" class="bg-pink-600 rounded-[10px] text-white flex items-center justify-center w-28 h-10 gap-2 hover:bg-pink-500">
       Semua
@@ -13,28 +13,211 @@
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dropdown-item">Belum Selesai</a>
       </div>
     </div>
-  </div>
+  </div> --}}
   
-  <script>
-    const toggleBtn = document.getElementById('dropdownToggle');
-    const dropdown = document.getElementById('dropdownMenu');
-    const items = document.querySelectorAll('.dropdown-item');
+  <div class="relative">
+    <button id="filterToggle" class="bg-pink-600 rounded-[10px] text-white flex items-center justify-center w-28 h-10 gap-2 hover:bg-pink-500">
+        <iconify-icon icon="mdi:filter-variant" class="text-lg text-white"></iconify-icon>
+        <span class="text-sm font-medium text-white">Filter</span>
+        <iconify-icon icon="mdi:chevron-down" class="text-sm text-white transition-transform" id="filterChevron"></iconify-icon>
+    </button>
+
+    <!-- Filter Dropdown -->
+    <div id="filterDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-white border border-white rounded-lg shadow-lg z-10">
+        <div class="p-4 space-y-4">
+            <!-- Status Filter -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select id="statusFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                    <option value="">Semua Status</option>
+                    <option value="completed">Selesai</option>
+                    <option value="pending">Belum Selesai</option>
+                </select>
+            </div>
+
+            <!-- Message Filter -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <select id="messageFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                    <option value="">Semua Role</option>
+                    <option value="disperindag belum menginputkan data">DISPERINDAG</option>
+                    <option value="dkpp belum menginputkan data">DKPP</option>
+                    <option value="dp belum menginputkan data">PERIKANAN</option>
+                    <option value="dtphp belum menginputkan data">DTPHP</option>
+                </select>
+            </div>
+
+            <!-- Date Range Filter -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Periode</label>
+                <select id="dateFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                    <option value="">Semua Waktu</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="yesterday">Kemarin</option>
+                    <option value="week">Minggu Ini</option>
+                    <option value="month">Bulan Ini</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 pt-2 border-t border-gray-200">
+                <button id="applyFilter" class="flex-1 bg-pink-600 text-white text-sm px-4 py-2 rounded-md hover:bg-pink-700 transition-colors">
+                    Terapkan Filter
+                </button>
+                <button id="resetFilter" class="flex-1 bg-gray-200 text-gray-700 text-sm px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
   
-    toggleBtn.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
-    });
-  
-    items.forEach(item => {
-      item.addEventListener('click', () => {
-        dropdown.classList.add('hidden');
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const filterToggle = document.getElementById('filterToggle');
+      const filterDropdown = document.getElementById('filterDropdown');
+      const filterChevron = document.getElementById('filterChevron');
+      const applyFilterBtn = document.getElementById('applyFilter');
+      const resetFilterBtn = document.getElementById('resetFilter');
+
+      // Toggle dropdown
+      filterToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isHidden = filterDropdown.classList.contains('hidden');
+          
+          if (isHidden) {
+              filterDropdown.classList.remove('hidden');
+              filterChevron.style.transform = 'rotate(180deg)';
+          } else {
+              filterDropdown.classList.add('hidden');
+              filterChevron.style.transform = 'rotate(0deg)';
+          }
       });
-    });
-  
-    // Optional: Tutup dropdown jika klik di luar
-    document.addEventListener('click', (e) => {
-      if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
+
+      document.addEventListener('click', function(e) {
+          if (!filterToggle.contains(e.target) && !filterDropdown.contains(e.target)) {
+              filterDropdown.classList.add('hidden');
+              filterChevron.style.transform = 'rotate(0deg)';
+          }
+      });
+
+      // Apply filter
+      applyFilterBtn.addEventListener('click', function() {
+          const status = document.getElementById('statusFilter').value;
+          const message = document.getElementById('messageFilter').value;
+          const dateRange = document.getElementById('dateFilter').value;
+          
+          applyFilters(status, message, dateRange);
+          filterDropdown.classList.add('hidden');
+          filterChevron.style.transform = 'rotate(0deg)';
+          
+          updateFilterButtonState();
+      });
+
+      // Reset filter
+      resetFilterBtn.addEventListener('click', function() {
+          document.getElementById('statusFilter').value = '';
+          document.getElementById('messageFilter').value = '';
+          document.getElementById('dateFilter').value = '';
+          
+          const allNotifs = document.querySelectorAll('.notif-item');
+          allNotifs.forEach(notif => {
+              notif.style.display = 'flex';
+          });
+          
+          const allSections = document.querySelectorAll('[data-section]');
+          allSections.forEach(section => {
+              section.style.display = 'block';
+          });
+          
+          filterDropdown.classList.add('hidden');
+          filterChevron.style.transform = 'rotate(0deg)';
+          
+          filterToggle.classList.remove('bg-pink-50', 'border-pink-300');
+          filterToggle.classList.add('bg-white', 'border-gray-300');
+      });
+
+      function applyFilters(status, message, dateRange) {
+          const allNotifs = document.querySelectorAll('.notif-item');
+          
+          allNotifs.forEach(notif => {
+              let shouldShow = true;
+              
+              if (status) {
+                  const isCompleted = notif.classList.contains('opacity-75');
+                  if (status === 'completed' && !isCompleted) shouldShow = false;
+                  if (status === 'pending' && isCompleted) shouldShow = false;
+              }
+              
+              if (message) {
+                  const messageElement = notif.querySelector('.text-gray-600');
+                  const messageText = messageElement ? messageElement.textContent.toLowerCase() : '';
+                  if (!messageText.includes(message.toLowerCase())) {
+                      shouldShow = false;
+                  }
+              }
+              
+              if (dateRange) {
+                  const timeText = notif.querySelector('.text-gray-400');
+                  const timeStr = timeText ? timeText.textContent.toLowerCase() : '';
+                  
+                  switch(dateRange) {
+                      case 'today':
+                          if (!timeStr.includes('jam') && !timeStr.includes('menit') && !timeStr.includes('detik')) {
+                              shouldShow = false;
+                          }
+                          break;
+                      case 'yesterday':
+                          if (!timeStr.includes('1 hari') && !timeStr.includes('kemarin')) {
+                              shouldShow = false;
+                          }
+                          break;
+                      case 'week':
+                          if (timeStr.includes('minggu') || timeStr.includes('bulan') || timeStr.includes('tahun')) {
+                              shouldShow = false;
+                          }
+                          break;
+                      case 'month':
+                          if (timeStr.includes('bulan') || timeStr.includes('tahun')) {
+                              shouldShow = false;
+                          }
+                          break;
+                  }
+              }
+              
+              notif.style.display = shouldShow ? 'flex' : 'none';
+          });
+          
+          checkEmptySections();
       }
-    });
-  </script>
+      
+      function checkEmptySections() {
+          const sections = document.querySelectorAll('h3');
+          sections.forEach(sectionTitle => {
+              const sectionDiv = sectionTitle.parentElement;
+              const visibleNotifs = sectionDiv.querySelectorAll('.notif-item[style*="flex"], .notif-item:not([style*="none"])');
+              
+              if (visibleNotifs.length === 0) {
+                  sectionDiv.style.display = 'none';
+              } else {
+                  sectionDiv.style.display = 'block';
+              }
+          });
+      }
+      
+      function updateFilterButtonState() {
+          const hasActiveFilter = document.getElementById('statusFilter').value || 
+                                document.getElementById('messageFilter').value ||
+                                document.getElementById('dateFilter').value;
+          
+          if (hasActiveFilter) {
+              filterToggle.classList.remove('bg-white', 'border-gray-300');
+              filterToggle.classList.add('bg-pink-50', 'border-pink-300');
+          } else {
+              filterToggle.classList.remove('bg-pink-50', 'border-pink-300');
+              filterToggle.classList.add('bg-white', 'border-gray-300');
+          }
+      }
+  });
+</script>
   

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Riwayat;
 use App\Models\JenisIkan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;

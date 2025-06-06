@@ -156,6 +156,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // });
 
     Route::get('/notifikasi', [NotifikasiAdminController::class, 'index'])->name('notifikasi.index');
+    Route::get('/notifications/header', [NotifikasiAdminController::class, 'getHeaderNotifications']);
+    Route::post('/notifications/mark-read', [NotifikasiAdminController::class, 'markAsRead']);
+
+    Route::post('/notifications/{id}/complete', [NotifikasiAdminController::class, 'markAsCompleted']);
+    Route::post('/notifications/{id}/incomplete', [NotifikasiAdminController::class, 'markAsIncomplete']);
+    Route::delete('/notifications/{id}', [NotifikasiAdminController::class, 'destroy']);
+
+    Route::post('/notifikasi/filter', [NotifikasiAdminController::class, 'filter'])->name('admin.notifikasi.filter');
+    Route::get('/roles', [NotifikasiAdminController::class, 'getRoles'])->name('admin.roles');
 
 });
 // ADMIN END
