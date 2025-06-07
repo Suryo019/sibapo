@@ -94,7 +94,8 @@ class DkppController extends Controller
 
     public function detail()
     {
-        $currentWeek = floor((now()->day - 1) / 7) + 1;
+        $currentWeek = now()->weekOfMonth;
+        // dd($currentWeek);
 
         return view('admin.dkpp.admin-dkpp-detail', [
             'title' => 'Data Ketersediaan dan Kebutuhan Pangan Pokok',

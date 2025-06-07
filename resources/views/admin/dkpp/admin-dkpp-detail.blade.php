@@ -1,4 +1,4 @@
-{{-- @dd($data) --}}
+{{-- @dd($currentWeek) --}}
 
 <x-admin-layout>
     <main class="flex-1 p-4 sm:p-6">
@@ -29,10 +29,10 @@
                                 <div class="flex flex-col">
                                     <label for="minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
                                     <select class="border border-black p-2 rounded bg-white w-full" id="minggu">
-                                        <option {{ $currentWeek == 1 ? 'selected' : '' }}>1</option>
-                                        <option {{ $currentWeek == 2 ? 'selected' : '' }}>2</option>
-                                        <option {{ $currentWeek == 3 ? 'selected' : '' }}>3</option>
-                                        <option {{ $currentWeek == 4 || 5 ? 'selected' : '' }}>4</option>
+                                        <option {{ $currentWeek == 1 ? 'selected' : '' }} value="1">1</option>
+                                        <option {{ $currentWeek == 2 ? 'selected' : '' }} value="2">2</option>
+                                        <option {{ $currentWeek == 3 ? 'selected' : '' }} value="3">3</option>
+                                        <option {{ $currentWeek == 4 || $currentWeek == 5 ? 'selected' : '' }} value="4">4</option>
                                     </select>
                                 </div>
 

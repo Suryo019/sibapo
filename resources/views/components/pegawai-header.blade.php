@@ -37,18 +37,23 @@
         <!-- Icon Notifikasi -->
         <div class="relative mr-4">
             <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
-    
+        
+            <!-- Dot Merah Jumlah Notifikasi -->
+            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                3
+            </span>
+        
             <!-- Dropdown Notifikasi -->
             <div id="notifPanel" class="hidden absolute right-0 top-8 w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-bold">Notifikasi</h3>
                     <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
                 </div>
-    
+        
                 <div>
                     <p class="font-semibold mb-2">Hari ini</p>
-    
-                    <!-- Notifikasi 1 -->
+        
+                    <!-- Notifikasi -->
                     <div class="flex items-start p-3 mb-2 border rounded-lg border-pink-300">
                         <img src="https://via.placeholder.com/30" alt="Icon" class="w-7 h-7 mr-3">
                         <div>
@@ -58,10 +63,12 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ $linkNotifikasi }}"><p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p></a>
-                
+                <a href="{{ $linkNotifikasi }}">
+                    <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
+                </a>
             </div>
         </div>
+        
     
         <!-- Gambar Profil dan Nama -->
         <div class="flex items-center gap-4 cursor-pointer" id="profile-toggler">     
