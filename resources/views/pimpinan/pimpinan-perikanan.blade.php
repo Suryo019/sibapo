@@ -1,143 +1,325 @@
 <x-pimpinan-layout>
+  
+  <!-- Dropdown -->
+  <div class="flex justify-end my-4">
+    <div class="flex items-center justify-between w-full gap-6  max-md:gap-4">
+      <!-- Search Component -->
+      <x-search>
+        Cari ikan...
+      </x-search>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 my-4">
-        <!-- Search Component -->
-        <div class="w-full md:w-auto">
-            <x-search />
-        </div>
-    
-        <!-- Filter -->
-        <div class="w-full md:w-auto flex justify-end">
-            <div class="relative flex justify-end w-full md:w-auto">
-                <x-filter />
-    
-                <!-- Modal Background -->
-                <x-filter-modal>
-                    <form action="" method="get">
-                        <div class="space-y-4">
-                            <!-- Pilih Periode -->
-                            <div class="flex flex-col">
-                                <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                                    Pilih Periode
-                                </label>
-                                <select id="pilih_periode"
-                                    class="w-full rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="" disabled selected>Pilih Periode</option>
-                                    @foreach ($periods as $period)
-                                        <option value="{{ $period }}">{{ $period }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+      {{-- Filter --}}
+  <div class="flex justify-end">
+    <div class="relative flex justify-end">
+        <x-filter></x-filter>
 
-                            <!-- Pilih Minggu -->
-                            <div class="flex flex-col">
-                                <label for="pilih_minggu" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">
-                                    Minggu ke
-                                </label>
-                                <select id="pilih_minggu"
-                                    class="w-full rounded border border-gray-300 p-2 bg-white text-sm max-md:text-xs focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors" disabled>
-                                    <option value="" disabled selected>Pilih Minggu</option>
-                                    <option value="1">Minggu 1</option>
-                                    <option value="2">Minggu 2</option>
-                                    <option value="3">Minggu 3</option>
-                                    <option value="4">Minggu 4</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="w-full flex justify-end gap-3 mt-10">
-                            <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1">
-                                Reset
-                            </button>
-                            <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">
-                                Cari
-                            </button>
-                        </div>
-                    </form>
-                </x-filter-modal> 
+        <!-- Modal Background -->
+        <x-filter-modal>
+          <form action="" method="get">
+            <div class="space-y-4">
+                  <!-- Periode -->
+                  <div class="flex flex-col">
+                    <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
+                    <input 
+                    type="month" 
+                    name="periode" 
+                    id="pilih_periode" 
+                    value="{{ old('periode', date('Y-m')) }}" 
+                    class="border w-full max-md:w-full p-2 rounded bg-white text-xs">
+                </div>
             </div>
-        </div>
+
+            <div class="w-full flex justify-end gap-3 mt-10">
+              <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
+              <button type="button" id="filterSubmitBtn" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
+            </div>
+        </form>
+        </x-filter-modal> 
+    </div> 
+  </div>
+
     </div>
+</div>
     
-    <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
-        <div class="w-full flex items-center gap-2 mb-4">
-            <a href="{{ route('pimpinan.dashboard') }}" class="flex-shrink-0 text-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </a>
-            <h3 class="text-xl font-extrabold text-center max-md:text-base">
-                Volume Produksi
-            </h3>
-        </div>
-    
-        <!-- Chart Section -->
-        <div class="w-full bg-white rounded-2xl shadow-md p-8 flex flex-col items-center justify-center border bg-gray-10 border-gray-20">
-            <h3 class="text-lg font-bold text-green-900 mb-4 text-center">
-                Volume Produksi Ikan Tahun 2025
-            </h3>
-            <div id="chart" class="w-full">
-                {{-- Chart will render here --}}
-            </div>
-        </div>
-    
-    </main>
-    
+<main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px] relative">
+  <div class="w-full flex items-center justify-between gap-2 mb-5 max-md:flex-col max-md:items-start max-md:gap-1">
+    <div class="flex items-center justify-start max-md:gap-3">
+      <a href="javascript:history.back()" class="text-decoration-none text-dark flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </a>
+      <h2 class="text-2xl font-semibold text-black max-md:text-xl max-md:text-center">
+        DATA VOLUME PRODUKSI IKAN <span id="periode_placeholder"></span>
+      </h2>
+    </div>
+  </div>
+
+  <!-- Chart Card -->
+  <div class="w-full flex items-center justify-center flex-col" id="chart_container">
+    {{-- <div id="chart_container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4"> --}}
+        {{-- Diisi pake ajax --}}
+  </div>
+</main>
 </x-pimpinan-layout>
 
 <script>
-    $.ajax({
-        type: "GET",
-        url: "{{ route('api.dp.index') }}",
-        success: function(response) {
-            let dataset = response.data;
-            let jenis_ikan = [];
-            let produksi = [];
+  const periode = $('#pilih_periode');
+  const search = $('#search');
+  const container = $('#chart_container');
 
-            $.each(dataset, function(key, value) {
-                jenis_ikan.push(value.jenis_ikan);
-                produksi.push(value.ton_produksi);
-            });
+  // Trigger Filter Modal
+  function toggleModal() {
+    const modal = document.getElementById('filterModal');
+    modal.classList.toggle('hidden');
+    modal.classList.toggle('flex');
+  }
 
-            var options = {
-                chart: {
-                    type: 'line',
-                    height: 350
-                },
-                series: [{
-                    name: 'Produksi',
-                    data: produksi
-                }],
-                xaxis: {
-                    categories: jenis_ikan
-                }
-            };
+  $("#filterBtn").on("click", function() {
+      $("#filterModal").toggleClass("hidden");
+  });
+  // End Trigger Filter Modal
 
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-        },
-        error: function(xhr) {
-            console.log(xhr.responseText);
-        }
-    });
+  let charts = [];
 
-    $('#pilih_ikan').on('change', function() {
-        $('#pilih_periode').removeAttr('disabled');
-    });
+  // Fungsi Render Chart dari Response
+  function renderChartFromData(response) {
+    const dataset = response.data;
+    container.empty();
 
-    $('#pilih_periode').on('change', function() {
-        $('#pilih_ikan').removeAttr('disabled');
-    });
-
-    // Trigger Filter Modal
-    function toggleModal() {
-        const modal = document.getElementById('filterModal');
-        modal.classList.toggle('hidden');
-        modal.classList.toggle('flex');
+    if (!dataset || Object.keys(dataset).length === 0) {
+      container.html(`
+        <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+          <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+          <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+        </div>
+      `);
+      return;
     }
 
-    $("#filterBtn").on("click", function() {
-        $("#filterModal").toggleClass("hidden");
+    const labels = []; 
+    const seriesMap = {}; 
+
+    Object.keys(dataset).forEach(ikan => {
+      const entries = dataset[ikan];
+
+      entries.forEach(entry => {
+        const label = entry.jenis_ikan;
+
+        if (!labels.includes(label)) labels.push(label);
+
+        if (!seriesMap[ikan]) {
+          seriesMap[ikan] = {};
+        }
+
+        seriesMap[ikan][label] = (seriesMap[ikan][label] || 0) + entry.ton_produksi;
+      });
     });
-    // End Trigger Filter Modal
+
+    const series = Object.keys(seriesMap).map(ikan => {
+      return {
+        name: ikan,
+        data: labels.map(label => seriesMap[ikan][label] || 0)
+      };
+    });
+
+    const chartId = `chart-gabungan`;
+
+    const selectedPeriode = periode.val();
+    const [year, month] = selectedPeriode.split('-');
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    const monthName = monthNames[parseInt(month) - 1];
+    const chartTitle = `Produksi Ikan Bulan ${monthName} ${year}`;
+
+    $('#chart_container').append(`
+      <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
+        <h2 class="text-center text-lg font-semibold text-gray-700 mb-2">${chartTitle}</h2>
+        <div id="${chartId}" class="shadow border rounded-md p-2 bg-white"></div>
+      </div>
+    `);
+
+    const options = {   
+      chart: {
+        id: `${chartId}_main`,
+        type: 'bar',
+        height: 450,
+        stacked: false,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true,
+            customIcons: [
+              {
+                icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon>',
+                index: -1,
+                title: 'Download PDF',
+                class: 'custom-download-pdf',
+                click: function(chart, options, e) {
+                  ApexCharts.exec(`${chartId}_main`, 'dataURI').then(({ imgURI }) => {
+                    $.ajax({
+                      url: '/export-pdf-chart',
+                      type: 'POST',
+                      data: {
+                        _token: "{{ csrf_token() }}",
+                        image: imgURI,
+                        title: chartTitle,
+                      },
+                      xhrFields: {
+                        responseType: 'blob'
+                      },
+                      success: function(blob) {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${chartTitle.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                      },
+                      error: function (xhr) {
+                        console.error('PDF Export Error:', xhr.responseText);
+                        alert("Gagal mengunduh PDF. Silakan coba lagi.");
+                      }
+                    });
+                  }).catch(function(error) {
+                    console.error('Chart image generation error:', error);
+                    alert("Gagal menggenerate gambar chart untuk PDF.");
+                  });
+                }
+              }
+            ]
+          }
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800
+        },
+        selection: {
+          enabled: true,
+          type: 'x',
+          fill: {
+            color: '#24292e',
+            opacity: 0.1
+          },
+          stroke: {
+            width: 1,
+            dashArray: 3,
+            color: '#24292e',
+            opacity: 0.4
+          }
+        },
+        zoom: {
+          enabled: true,
+          type: 'x',
+          autoScaleYaxis: true
+        }
+      },
+      series: series,
+      xaxis: {
+        categories: labels,
+        title: { text: 'Jenis Ikan' }
+      },
+      yaxis: {
+        title: { text: 'Produksi (Ton)' },
+        labels: {
+          formatter: value => value.toLocaleString('id-ID') + ' Ton'
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: value => `${value.toLocaleString('id-ID')} ton`
+        }
+      },
+      legend: {
+        position: 'top',
+        onItemClick: {
+          toggleDataSeries: true
+        }
+      },
+      responsive: [{
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 300
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
+    };
+
+    const newChart = new ApexCharts(document.querySelector(`#${chartId}`), options);
+    newChart.render();
+    
+    charts.push(newChart);
+  }
+
+  function fetchDataAndRenderChart() {
+    $.ajax({
+      type: 'GET',
+      url: `{{ route('api.dp.index') }}`,
+      data: {
+        _token: "{{ csrf_token() }}",
+        periode: periode.val()
+      },
+      success: function (response) {
+        console.log(response);
+        
+        $('#periode_placeholder').html(`- ${response.periode.toUpperCase()}`)
+        renderChartFromData(response);
+      },
+      error: function (xhr) {
+        $('#chart_container').html(`
+          <div class="text-center p-4 border-2 border-dashed border-red-200 rounded-lg shadow-md bg-red-50">
+            <h3 class="text-lg font-semibold text-red-500">Error</h3>
+            <p class="text-red-400">Gagal memuat data. Silakan coba lagi.</p>
+          </div>
+        `);
+        console.error("AJAX Error:", xhr.responseText);
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    fetchDataAndRenderChart();
+  });
+
+  $('#filterSubmitBtn').on('click', function () {
+    charts.forEach(chart => {
+      if (chart) {
+        chart.destroy();
+      }
+    });
+    charts = [];
+    
+    fetchDataAndRenderChart();
+  });
+
+  // Search
+  search.on("input", function () {
+        const input_value = $(this).val().toLowerCase();
+        let nama_ikan = $(".nama_ikan");
+
+        nama_ikan.each(function () {
+            let item_text = $(this).text().toLowerCase();
+
+            if (item_text.includes(input_value)) {
+                $(this).parent().removeClass("hidden");
+            } else {
+                $(this).parent().addClass("hidden");
+            }
+        });
+    });
 </script>

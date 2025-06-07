@@ -13,13 +13,8 @@ class Notifikasi extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'role_id',
-        'tanggal_pesan', 
-        'pesan',
-        'is_read',
-        'is_completed',
-        'completed_at'
+    protected $guarded = [
+        'id'
     ];
 
     protected $casts = [

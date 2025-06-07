@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Pegawai;
 use Carbon\Carbon;
 use App\Models\DTPHP;
 use App\Models\Riwayat;
+use App\Models\JenisTanaman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class DTPHPController extends Controller
 {
@@ -90,20 +92,28 @@ class DTPHPController extends Controller
             $validated['tanggal_input'] = now();
             $validated['user_id'] = Auth::user()->id;
 
+            $dtphp = DTPHP::create($validated);
+
+            $data_stored = JenisTanaman::select('nama_tanaman')->where('id', $dtphp->jenis_tanaman_id)->first();
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $validated['jenis_tanaman_id'],
+                'komoditas' => $data_stored->nama_tanaman,
                 'aksi' => 'buat'
             ];
             
             Riwayat::create($riwayatStore);
             
-            $dtphp = DTPHP::create($validated);
     
             return response()->json([
                 'message' => 'Data berhasil disimpan',
-                'data' => $dtphp
+                'data' => $data_stored
             ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
 
         } catch (\Throwable $th) {
             return response()->json([

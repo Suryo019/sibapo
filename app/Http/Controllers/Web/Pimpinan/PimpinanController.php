@@ -9,6 +9,8 @@ use App\Models\DKPP;
 use App\Models\User;
 use App\Models\DTPHP;
 use App\Models\Pasar;
+use App\Models\JenisIkan;
+use App\Models\JenisTanaman;
 use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +23,8 @@ class PimpinanController extends Controller
     public function index()
     {
         $jml_bahan_pokok = JenisBahanPokok::count();
-        $jml_komoditas = DTPHP::select('jenis_komoditas')->distinct()->count();
-        $jml_ikan = DP::select('jenis_ikan')->distinct()->count();
+        $jml_komoditas = JenisTanaman::count();
+        $jml_ikan = JenisIkan::count();
         $jml_pegawai = User::join('roles', 'users.role_id', 'roles.id')
             ->where('roles.role', '!=', 'admin')
             ->count();
@@ -105,20 +107,16 @@ class PimpinanController extends Controller
 
         // $dp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_komoditas');
+        $dp = JenisTanaman::select('nama_tanaman')->get();
 
         return view('pimpinan.pimpinan-dtphp-panen', [
-            'title' => 'Data Luas Panen',
+            'title' => 'Data Aktivitas Luas Panen Tanaman',
             'data' => $dp,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
             'periods' => $periodeUnikNama,
         ]);
     }
 
-    public function volume()
+    public function volume(Request $request)
     {
         $periodeUnikNama = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
         ->get()
@@ -130,15 +128,11 @@ class PimpinanController extends Controller
 
         // $dp = DP::all();
 
-        $dp = DTPHP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_komoditas');
+        $dp = JenisTanaman::select('nama_tanaman')->get();
 
         return view('pimpinan.pimpinan-dtphp-volume', [
-            'title' => 'Volume Produksi Panen',
+            'title' => 'Data Aktivitas Produksi Tanaman',
             'data' => $dp,
-            'commodities' => DTPHP::select('jenis_komoditas')->distinct()->pluck('jenis_komoditas'),
             'periods' => $periodeUnikNama,
         ]);
     }
@@ -155,15 +149,11 @@ class PimpinanController extends Controller
 
         // $dp = DP::all();
 
-        $dp = DP::whereMonth('tanggal_input', 4)
-            ->whereYear('tanggal_input', 2025)
-            ->distinct()
-            ->pluck('jenis_ikan');
+        $dp = JenisIkan::select('nama_ikan')->get();
 
         return view('pimpinan.pimpinan-perikanan', [
             'title' => 'Data Aktivitas Produksi Ikan',
             'data' => $dp,
-            'fishes' => DP::select('jenis_ikan')->distinct()->pluck('jenis_ikan'),
             'periods' => $periodeUnikNama,
         ]);
     }

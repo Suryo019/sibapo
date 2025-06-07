@@ -10,7 +10,8 @@ class NotifikasiAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Notifikasi::with('role')->where('role_id', 1);
+        // $query = Notifikasi::with('role')->where('role_id', 1);
+        $query = Notifikasi::with('role')->where('is_admin', 1);
 
         // Filter berdasarkan status
         if ($request->filled('status')) {
@@ -133,12 +134,17 @@ class NotifikasiAdminController extends Controller
     public function getHeaderNotifications()
     {
         $recentNotifications = Notifikasi::with('role')
-            ->where('role_id', 1)
+            // ->where('role_id', 1)
+            ->where('is_admin', 1)
             ->orderByDesc('tanggal_pesan')
             ->limit(3)
             ->get();
 
-        $unreadCount = Notifikasi::where('role_id', 1)
+        // $unreadCount = Notifikasi::where('role_id', 1)
+        //     ->where('is_read', false)
+        //     ->count();
+
+        $unreadCount = Notifikasi::where('is_admin', 1)
             ->where('is_read', false)
             ->count();
 

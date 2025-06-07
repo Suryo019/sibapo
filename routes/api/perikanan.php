@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pegawai\DPController;
 use App\Http\Controllers\Perikanan\ApiJenisIkanController;
+use App\Http\Controllers\Web\Perikanan\NotifikasiPerikananController;
 
 // DP
 Route::get('/dp', [DPController::class, 'index'])->name('api.dp.index');

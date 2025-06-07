@@ -11,10 +11,10 @@
     <div class="flex justify-end">
         <div class="relative flex justify-end">
             <x-filter></x-filter>
-
+            
             <!-- Modal Background -->
             <x-filter-modal>
-                <form action="{{ route('perikanan.detail') }}" method="get">
+                <form action="" method="get">
                     <div class="space-y-4">
                         <!-- Pilih urutan -->
                         <div class="flex flex-col">
@@ -24,8 +24,8 @@
                                 <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                             </select>
                         </div>
-                
-                        <!-- Pilih ikan -->
+
+                        <!-- Pilih Ikan -->
                         <div class="flex flex-col">
                             <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
                             <select name="ikan" id="pilih_ikan" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
@@ -36,7 +36,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div>   
                 
                         <!-- Pilih periode -->
                         <div class="flex flex-col">
@@ -58,7 +58,7 @@
                         <button type="submit" class="bg-pink-650 text-white rounded-lg w-20 p-1">Cari</button>
                     </div>
                 </form>
-            </x-filter-modal> 
+            </x-filter-modal>
         </div> 
       </div> 
     </div>
@@ -296,5 +296,151 @@
 
     $(document).on('click', '#closeBtn', function() {
         $('#deleteModal').hide();  
+    });    
+
+    $(document).ready(function() {
+        $('#search').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase().trim();
+            const tableRows = $('tbody tr');
+            
+            if (searchTerm === '') {
+                tableRows.show();
+                updateNoDataMessage(false);
+                return;
+            }
+            
+            let visibleRowsCount = 0;
+            
+            tableRows.each(function() {
+                const fishName = $(this).find('td:first').text().toLowerCase();
+                
+                if (fishName.includes(searchTerm)) {
+                    $(this).show();
+                    visibleRowsCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            updateNoDataMessage(visibleRowsCount === 0);
+        });
+        
+        function updateNoDataMessage(show) {
+            const existingMessage = $('#no-search-results');
+            
+            if (show) {
+                if (existingMessage.length === 0) {
+                    const noResultsHTML = `
+                        <tr id="no-search-results">
+                            <td colspan="14" class="text-center py-8">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    <h3 class="text-lg font-medium text-gray-500 mb-2">Tidak ada hasil ditemukan</h3>
+                                    <p class="text-gray-400">Coba gunakan kata kunci yang berbeda</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    $('tbody').append(noResultsHTML);
+                } else {
+                    existingMessage.show();
+                }
+            } else {
+                existingMessage.hide();
+            }
+        }
+        
+        let searchTimeout;
+        $('#search').on('input', function() {
+            clearTimeout(searchTimeout);
+            const searchInput = $(this);
+            
+            searchTimeout = setTimeout(function() {
+                performSearch(searchInput.val());
+            }, 200);
+        });
+        
+        function performSearch(searchTerm) {
+            const normalizedSearch = searchTerm.toLowerCase().trim();
+            const tableRows = $('tbody tr:not(#no-search-results)');
+            
+            if (normalizedSearch === '') {
+                tableRows.show();
+                updateNoDataMessage(false);
+                return;
+            }
+            
+            let visibleRowsCount = 0;
+            
+            tableRows.each(function() {
+                const fishName = $(this).find('td:first').text().toLowerCase();
+                const isMatch = fishName.includes(normalizedSearch);
+                
+                if (isMatch) {
+                    $(this).show();
+                    visibleRowsCount++;
+                    
+                    highlightSearchTerm($(this).find('td:first'), searchTerm, fishName);
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            updateNoDataMessage(visibleRowsCount === 0);
+        }
+        
+        function highlightSearchTerm(element, searchTerm, originalText) {
+            if (searchTerm.trim() === '') {
+                element.html(originalText);
+                return;
+            }
+            
+            const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+        }
+        
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        function advancedSearch(searchTerm, searchInProduction = false) {
+            const normalizedSearch = searchTerm.toLowerCase().trim();
+            const tableRows = $('tbody tr:not(#no-search-results)');
+            
+            if (normalizedSearch === '') {
+                tableRows.show();
+                updateNoDataMessage(false);
+                return;
+            }
+            
+            let visibleRowsCount = 0;
+            
+            tableRows.each(function() {
+                const fishName = $(this).find('td:first').text().toLowerCase();
+                let isMatch = fishName.includes(normalizedSearch);
+                
+                if (!isMatch && searchInProduction) {
+                    $(this).find('td').each(function(index) {
+                        if (index > 0 && index < 13) {
+                            const cellText = $(this).text().toLowerCase();
+                            if (cellText.includes(normalizedSearch)) {
+                                isMatch = true;
+                                return false;
+                            }
+                        }
+                    });
+                }
+                
+                if (isMatch) {
+                    $(this).show();
+                    visibleRowsCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            updateNoDataMessage(visibleRowsCount === 0);
+        }
     });    
 </script>

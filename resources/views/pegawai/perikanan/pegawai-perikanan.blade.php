@@ -89,67 +89,185 @@
   // Fungsi Render Chart dari Response
   function renderChartFromData(response) {
     const dataset = response.data;
-
     container.empty();
 
     if (!dataset || Object.keys(dataset).length === 0) {
-          container.html(`
-              <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
-                  <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
-                  <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
-              </div>
-          `);
-          return;
-      }
-
-    Object.keys(dataset).forEach((ikan,index) => {
-      const entries = dataset[ikan];
-      const labels = entries.map(item => item.jenis_ikan);
-      const produksi = entries.map(item => item.ton_produksi);
-
-      const chartId = `chart-bulanan-${index}`;
-
-      $('#chart_container').append(`
-        <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
-          <h2 class="nama_ikan text-center text-lg font-semibold text-gray-700 mb-2">Produksi Ikan ${ikan}</h2>
-          <div id="${chartId}" class="shadow border rounded-md p-2 bg-white"></div>
+      container.html(`
+        <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+          <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+          <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
         </div>
       `);
+      return;
+    }
 
-      const options = {
-        chart: {
-          type: 'bar',
-          height: 350
-        },
-        series: [
-          {
-            name: 'Produksi (ton)',
-            data: produksi.length ? produksi : [0]
-          }
-        ],
-        xaxis: {
-          title: { text: 'Ikan' },
-          categories: labels,
-          labels: { style: { fontSize: '12px' } }
-        },
-        yaxis: {
-            title: { text: 'Produksi (Ton)' },
-            labels: {
-                formatter: function(value) {
-                    return value.toLocaleString('id-ID') + 'Ton';
+    const labels = []; 
+    const seriesMap = {}; 
+
+    Object.keys(dataset).forEach(ikan => {
+      const entries = dataset[ikan];
+
+      entries.forEach(entry => {
+        const label = entry.jenis_ikan;
+
+        if (!labels.includes(label)) labels.push(label);
+
+        if (!seriesMap[ikan]) {
+          seriesMap[ikan] = {};
+        }
+
+        seriesMap[ikan][label] = (seriesMap[ikan][label] || 0) + entry.ton_produksi;
+      });
+    });
+
+    const series = Object.keys(seriesMap).map(ikan => {
+      return {
+        name: ikan,
+        data: labels.map(label => seriesMap[ikan][label] || 0)
+      };
+    });
+
+    const chartId = `chart-gabungan`;
+
+    const selectedPeriode = periode.val();
+    const [year, month] = selectedPeriode.split('-');
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    const monthName = monthNames[parseInt(month) - 1];
+    const chartTitle = `Produksi Ikan Bulan ${monthName} ${year}`;
+
+    $('#chart_container').append(`
+      <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
+        <h2 class="text-center text-lg font-semibold text-gray-700 mb-2">${chartTitle}</h2>
+        <div id="${chartId}" class="shadow border rounded-md p-2 bg-white"></div>
+      </div>
+    `);
+
+    const options = {   
+      chart: {
+        id: `${chartId}_main`,
+        type: 'bar',
+        height: 450,
+        stacked: false,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true,
+            customIcons: [
+              {
+                icon: '<iconify-icon icon="teenyicons:pdf-solid"></iconify-icon>',
+                index: -1,
+                title: 'Download PDF',
+                class: 'custom-download-pdf',
+                click: function(chart, options, e) {
+                  ApexCharts.exec(`${chartId}_main`, 'dataURI').then(({ imgURI }) => {
+                    $.ajax({
+                      url: '/export-pdf-chart',
+                      type: 'POST',
+                      data: {
+                        _token: "{{ csrf_token() }}",
+                        image: imgURI,
+                        title: chartTitle,
+                      },
+                      xhrFields: {
+                        responseType: 'blob'
+                      },
+                      success: function(blob) {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${chartTitle.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                      },
+                      error: function (xhr) {
+                        console.error('PDF Export Error:', xhr.responseText);
+                        alert("Gagal mengunduh PDF. Silakan coba lagi.");
+                      }
+                    });
+                  }).catch(function(error) {
+                    console.error('Chart image generation error:', error);
+                    alert("Gagal menggenerate gambar chart untuk PDF.");
+                  });
                 }
-            }
+              }
+            ]
+          }
         },
-        tooltip: {
-          y: {
-            formatter: value => `${value} ton`
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800
+        },
+        selection: {
+          enabled: true,
+          type: 'x',
+          fill: {
+            color: '#24292e',
+            opacity: 0.1
+          },
+          stroke: {
+            width: 1,
+            dashArray: 3,
+            color: '#24292e',
+            opacity: 0.4
+          }
+        },
+        zoom: {
+          enabled: true,
+          type: 'x',
+          autoScaleYaxis: true
+        }
+      },
+      series: series,
+      xaxis: {
+        categories: labels,
+        title: { text: 'Jenis Ikan' }
+      },
+      yaxis: {
+        title: { text: 'Produksi (Ton)' },
+        labels: {
+          formatter: value => value.toLocaleString('id-ID') + ' Ton'
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: value => `${value.toLocaleString('id-ID')} ton`
+        }
+      },
+      legend: {
+        position: 'top',
+        onItemClick: {
+          toggleDataSeries: true
+        }
+      },
+      responsive: [{
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 300
+          },
+          legend: {
+            position: 'bottom'
           }
         }
+      }]
     };
 
     const newChart = new ApexCharts(document.querySelector(`#${chartId}`), options);
     newChart.render();
-    });
+    
+    charts.push(newChart);
   }
 
   function fetchDataAndRenderChart() {
@@ -183,6 +301,13 @@
   });
 
   $('#filterSubmitBtn').on('click', function () {
+    charts.forEach(chart => {
+      if (chart) {
+        chart.destroy();
+      }
+    });
+    charts = [];
+    
     fetchDataAndRenderChart();
   });
 

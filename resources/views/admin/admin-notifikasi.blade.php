@@ -1,3 +1,5 @@
+{{-- @dd($notifikasis["Hari Ini"] [0]->role->role) --}}
+
 <x-admin-layout>
     <div class="flex items-center gap-2 mb-4">
         <div class="flex-1 min-w-[150px]">
@@ -27,20 +29,21 @@
                             <div class="flex flex-col space-y-1">
                                 <div class="flex items-start space-x-4">
                                     {{-- Icon berdasarkan status --}}
-                                    @if($notif->is_completed)
-                                        <iconify-icon icon="mdi:check-circle" class="text-xl text-green-600"></iconify-icon>
-                                    @else
-                                        <iconify-icon 
-                                            icon="
-                                                {{ 
-                                                    $notif->role->role === 'disperindag' ? 'mage:basket-fill' :
-                                                    ($notif->role->role === 'dkpp' ? 'healthicons:plantation-worker-alt' :
-                                                    ($notif->role->role === 'perikanan' ? 'majesticons:fish' :
-                                                    ($notif->role->role === 'dtphp' ? 'mdi:tree' : 'mdi:alert-circle')))
-                                                }}" 
-                                            class="text-xl text-pink-600">
-                                        </iconify-icon>
-                                    @endif
+                                    @php
+                                        $roleIcons = [
+                                            'disperindag' => 'mage:basket-fill',
+                                            'dkpp'        => 'healthicons:plantation-worker-alt',
+                                            'perikanan'   => 'majesticons:fish',
+                                            'dtphp'       => 'mdi:tree',
+                                        ];
+                                    
+                                        $icon = $roleIcons[$notif->role->role] ?? 'mdi:alert-circle';
+                                    @endphp
+                                    
+                                    <iconify-icon 
+                                        icon="{{ $icon }}" 
+                                        class="text-xl text-pink-600">
+                                    </iconify-icon>
 
                                     <div class="flex-1">
                                         <p class="text-sm">
