@@ -54,8 +54,10 @@ $routeData = $pegawai ? $routes[$pegawai] : null;
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
 
       <div class="mb-5 justify-center mt-1 hidden md:flex">
-        <img class="scale-50 ml-4" src="{{ asset('storage/img/logo.png') }}" alt="logo">
+        <img class="w-12 ml-4" src="{{ asset('storage/img/LogoPemda.png') }}" alt="logo">
+        <img class="w-14  ml-4" src="{{ asset('storage/img/logo_1.png') }}" alt="logo">
       </div>
+      
 
       <ul>
         {{-- Dashboard --}}

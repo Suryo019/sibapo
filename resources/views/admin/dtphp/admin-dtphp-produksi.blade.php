@@ -51,25 +51,21 @@
         <h2 class="text-2xl font-semibold text-black max-md:text-xl max-md:text-center">
           DATA VOLUME PRODUKSI TANAMAN <span id="periode_placeholder"></span>
         </h2>
-      </div>    
-
-        <!-- Tombol Switch (TIDAK DIUBAH) -->
-        <div class="flex w-auto">
-            <a href="{{ route('dtphp.produksi') }}">
-                <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
-                    Volume Produksi
-                </button>
-            </a>
-            <a href="{{ route('dtphp.panen') }}">
-                <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">
-                    Luas Panen
-                </button>
-            </a>
-        </div>  
+      </div>      
 
       <div class="max-md:my-3">
         <a href="{{ route('dtphp.detail.produksi') }}" class="flex items-center text-lg font-semibold max-md:text-base w-full text-pink-650 gap-3">LIHAT DETAIL <i class="bi bi-arrow-right font-bold"></i></a>
       </div>
+    </div>
+
+    <!-- Tombol Switch -->
+    <div class="flex w-auto">
+      <a href="{{ route('dtphp.produksi') }}">
+          <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Volume Produksi</button>
+      </a>
+      <a href="{{ route('dtphp.panen') }}">
+          <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Luas Panen</button>
+      </a>
     </div>
 
     <!-- Chart Card -->

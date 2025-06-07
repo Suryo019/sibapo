@@ -105,7 +105,9 @@
                 </div>
                 <div class="p-3">
                     <p class="text-gray-600 text-sm md:text-base">{{ $item['komoditas'] }}</p>
-                    <h3 class="text-lg md:text-xl lg:text-2xl font-extrabold mb-2">Rp. {{ $item['rata_rata_hari_ini'] }}/kg</h3>
+                    <h3 class="text-lg md:text-xl lg:text-2xl font-extrabold mb-2">
+                        Rp. {{ number_format($item['rata_rata_hari_ini'], 0, ',', '.') }}/kg
+                    </h3>
                     @php
                         $statusClass = match($item['status']) {
                             'Naik' => 'bg-green-200 text-green-600',
@@ -124,12 +126,16 @@
                         @if ($icon)
                             <i class="bi {{ $icon }}"></i>
                         @endif
-                        {{ $item['status'] }} @if($item['selisih']) Rp. {{ $item['selisih'] }} @endif
+                        {{ $item['status'] }}
+                        @if($item['selisih'])
+                            Rp. {{ number_format($item['selisih'], 0, ',', '.') }}
+                        @endif
                     </span>
                 </div>
             </div>
             @endforeach
         </div>
+        
 
     </div>
 </x-tamu-layout>
