@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" href="{{ asset('/storage/img/logo-pemda.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('/storage/img/LogoPemda.png') }}" type="image/png">
 
     {{-- SweetAlert2 --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,20 +23,23 @@
 </head>
 <body class="min-h-screen flex flex-col lg:flex-row">
     <div class="w-full h-screen flex justify-center lg:w-1/2 max-xl:h-[300px] max-xl:bg-gradient-to-b max-xl:from-pink-650 max-xl:from-45% max-xl:to-gray-10 max-xl:to-100%">
-        <img src="{{ asset('storage/img/bg-login.png') }}" alt="Background Pink" class="w-full h-full object-cover absolute inset-0 z-0 max-xl:hidden" />
+        <img src="{{ asset('storage/img/bg-login.jpg') }}" alt="Background Pink" class="w-full h-full object-cover absolute inset-0 z-0 max-xl:hidden" />
 
         <div class="flex flex-col justify-between max-xl:justify-center h-full pr-6 max-xl:pr-0 py-10 text-white text-center relative">
             <div>
                 <!-- Logo Pemerintah -->
-                <img src="{{ asset('storage/img/logo-pemda.png') }}" class="w-20 mx-auto hidden lg:block mb-10" />
+                <img src="{{ asset('storage/img/LogoPemda.png') }}" class="w-20 mx-auto hidden lg:block mb-10" />
     
                 <!-- Selamat Datang -->
                 <h2 class="text-xl lg:text-2xl font-semibold hidden lg:block mb-10">Selamat Datang</h2>
     
-                <!-- Logo SIBAPO -->
-                <a href="{{ route('beranda') }}">
-                    <img src="{{ asset('storage/img/logo.png') }}" class="w-64 lg:w-80 lg:relative lg:z-20 mb-10" />
-                </a>
+                <!-- Logo Cintako -->
+                <div class="flex justify-center">
+                    <a href="{{ route('beranda') }}">
+                        <img src="{{ asset('storage/img/cintako.png') }}" class="w-40 lg:w-40 lg:relative lg:z-20 mb-10" />
+                    </a>
+                </div>
+                
     
                 <!-- Deskripsi -->
                 <p class="text-sm lg:text-base leading-relaxed max-w-sm mx-auto mt-4 lg:mt-6 hidden lg:block">

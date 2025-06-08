@@ -7,8 +7,7 @@
     <div class="bg-pink-650 max-md:bg-transparent rounded-xl relative z-10 shrink-0">
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
       <div class="mb-5 justify-center mt-1 hidden md:flex">
-        <img class="w-12 ml-4" src="{{ asset('storage/img/LogoPemda.png') }}" alt="logo">
-        <img class="w-14  ml-4" src="{{ asset('storage/img/logo_1.png') }}" alt="logo">
+        <img class="w-56 mt-4" src="{{ asset('storage/img/logogabungan.png') }}" alt="logo">
       </div>
     </div>
 

@@ -24,9 +24,9 @@
 
           <!-- Email -->
           <div>
-              <label for="email" class="block text-gray-700 mb-2">Username/Email</label>
+              <label for="email" class="block text-gray-700 mb-2">Email</label>
               <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                  placeholder="Masukkan Username/Email"
+                  placeholder="Masukkan Email"
                   class="w-full border-b border-pink-400 outline-none py-2 text-sm text-gray-700 placeholder-gray-400 @error('email') border-red-500 @enderror">
               @error('email')
                   <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
