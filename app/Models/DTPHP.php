@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DTPHP extends Model
 {
@@ -17,9 +18,10 @@ class DTPHP extends Model
 
     protected $guarded = ['id'];
     
-    public function jenis_tanaman(): HasMany
+    public function jenis_tanaman(): BelongsTo
     {
-        return $this->hasMany(JenisTanaman::class, 'id', 'jenis_tanaman_id');
+        // return $this->hasMany(JenisTanaman::class, 'id', 'jenis_tanaman_id');
+        return $this->belongsTo(JenisTanaman::class, 'jenis_tanaman_id', 'id');
     }
 
     public function user() {

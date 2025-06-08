@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Riwayat;
 use App\Models\JenisIkan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -190,9 +191,13 @@ class DPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
+            $dp->delete();
+            
+            $data_stored = JenisIkan::select('nama_ikan')->where('id', $dp->jenis_ikan_id)->first();
+
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $dp->jenis_ikan,
+                'komoditas' => $data_stored->nama_ikan,
                 'aksi' => 'hapus'
             ];
             
@@ -200,7 +205,7 @@ class DPController extends Controller
 
             $dp->delete();
 
-            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dp]);
+            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $data_stored,]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menghapus data',

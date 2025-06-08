@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pegawai\DPController;
 use App\Http\Controllers\Perikanan\ApiJenisIkanController;
+use App\Http\Controllers\Web\Perikanan\NotifikasiPerikananController;
 
 // DP
 Route::get('/dp', [DPController::class, 'index'])->name('api.dp.index');
+// Route::get('/dp/detail', [DPController::class, 'detail'])->name('api.dp.detail');
 Route::get('/dp/{jenisIkan}', [DPController::class, 'listItem'])->name('api.dp.listItem');
 Route::post('/dp', [DPController::class, 'store'])->name('api.dp.store');
 Route::put('/dp/{id}', [DPController::class, 'update'])->name('api.dp.update');

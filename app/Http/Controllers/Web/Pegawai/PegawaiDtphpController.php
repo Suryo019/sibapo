@@ -55,24 +55,26 @@ class PegawaiDtphpController extends Controller
         // Tabel Perubahan
         $now = Carbon::now();
 
-        $bulanIni = DTPHP::whereMonth('created_at', $now->month)
-            ->whereYear('created_at', $now->year)
+        $bulanIni = DTPHP::with('jenis_tanaman')
+            ->whereMonth('tanggal_input', $now->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_tanaman_id, SUM(ton_volume_produksi) as total_volume')
             ->groupBy('jenis_tanaman_id')
             ->get();
-
-        $bulanLalu = DTPHP::whereMonth('created_at', $now->subMonth()->month)
-            ->whereYear('created_at', $now->year)
+        
+        $bulanLalu = DTPHP::with('jenis_tanaman')
+            ->whereMonth('tanggal_input', $now->subMonth()->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_tanaman_id, SUM(ton_volume_produksi) as total_volume')
             ->groupBy('jenis_tanaman_id')
             ->get()
-            ->keyBy('jenis_tanaman_id'); 
+            ->keyBy('jenis_tanaman_id');
     
         $dataTabel = [];
     
         foreach ($bulanIni as $index => $item) {
             $jenisKomoditasId = $item->jenis_tanaman_id;
-            $jenisKomoditas = $item->jenis_tanaman;
+            $jenisKomoditas = $item->jenis_tanaman->nama_tanaman ?? '-';
             $volumeIni = $item->total_volume;
             $volumeLalu = $bulanLalu[$jenisKomoditasId]->total_volume ?? 0;
             $selisih = $volumeIni - $volumeLalu;
@@ -168,26 +170,29 @@ class PegawaiDtphpController extends Controller
         // Tabel Perubahan
         $now = Carbon::now();
 
-        $bulanIni = DTPHP::whereMonth('created_at', $now->month)
-            ->whereYear('created_at', $now->year)
+        $bulanIni = DTPHP::with('jenis_tanaman')
+            ->whereMonth('tanggal_input', $now->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_tanaman_id, SUM(hektar_luas_panen) as total_panen')
             ->groupBy('jenis_tanaman_id')
             ->get();
-
-        $bulanLalu = DTPHP::whereMonth('created_at', $now->subMonth()->month)
-            ->whereYear('created_at', $now->year)
+        
+        $bulanLalu = DTPHP::with('jenis_tanaman')
+            ->whereMonth('tanggal_input', $now->subMonth()->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_tanaman_id, SUM(hektar_luas_panen) as total_panen')
             ->groupBy('jenis_tanaman_id')
             ->get()
-            ->keyBy('jenis_tanaman_id'); 
+            ->keyBy('jenis_tanaman_id');
+     
     
         $dataTabel = [];
     
         foreach ($bulanIni as $index => $item) {
             $jenisKomoditasId = $item->jenis_tanaman_id;
-            $jenisKomoditas = $item->jenis_tanaman;
+            $jenisKomoditas = $item->jenis_tanaman->nama_tanaman ?? '-';
             $panenIni = $item->total_panen;
-            $panenLalu = $bulanLalu[$jenisKomoditasId]->total_volume ?? 0;
+            $panenLalu = $bulanLalu[$jenisKomoditasId]->total_panen ?? 0;
             $selisih = $panenIni - $panenLalu;
             $ikon = $selisih >= 0 ? 'twemoji:up-arrow' : 'twemoji:down-arrow';
     

@@ -37,31 +37,43 @@
         <!-- Icon Notifikasi -->
         <div class="relative mr-4">
             <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
-    
+            
+            <!-- Badge untuk jumlah notifikasi -->
+            <span id="notifBadge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center hidden">
+                0
+            </span>
+            
             <!-- Dropdown Notifikasi -->
             <div id="notifPanel" class="hidden absolute right-0 top-8 w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-bold">Notifikasi</h3>
                     <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
                 </div>
-    
-                <div>
-                    <p class="font-semibold mb-2">Hari ini</p>
-    
-                    <!-- Notifikasi 1 -->
-                    <div class="flex items-start p-3 mb-2 border rounded-lg border-pink-300">
-                        <img src="https://via.placeholder.com/30" alt="Icon" class="w-7 h-7 mr-3">
-                        <div>
-                            <p class="text-sm text-pink-600 font-bold">DISPERINDAG</p>
-                            <p class="text-sm text-gray-600">Belum menginputkan data untuk periode ini.</p>
-                            <span class="text-xs text-gray-400">Baru saja</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{ $linkNotifikasi }}"><p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p></a>
                 
+                <!-- Loading state -->
+                <div id="notifLoading" class="text-center py-4">
+                    <p class="text-gray-500">Memuat notifikasi...</p>
+                </div>
+                
+                <!-- Container untuk notifikasi -->
+                <div id="notifContainer" class="hidden">
+                    <p class="font-semibold mb-2">Terbaru</p>
+                    <div id="notifList">
+                        <!-- Notifikasi akan dimuat di sini -->
+                    </div>
+                    
+                    <!-- Tombol untuk menandai semua sebagai dibaca -->
+                    <button id="markAllRead" class="w-full text-sm text-gray-600 hover:text-gray-800 mt-3 py-2 border rounded">
+                        Tandai Semua Sebagai Dibaca
+                    </button>
+                </div>
+
+                <a href="{{ $linkNotifikasi }}">
+                    <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
+                </a>
             </div>
         </div>
+        
     
         <!-- Gambar Profil dan Nama -->
         <div class="flex items-center gap-4 cursor-pointer" id="profile-toggler">     
@@ -104,6 +116,7 @@
 
             <input type="hidden" id="user_id_profile" value="{{ Auth::user()->id }}">
             <input type="hidden" id="user_role_profile" value="{{ Auth::user()->role_id }}">
+            <input type="hidden" id="user_role_name" value="{{ Auth::user()->role->role }}">
 
             @php
                 $dinas = match(true) {
@@ -170,7 +183,11 @@
         </form>
     </div>
 </div>
+
 <script>
+    const dinas = $('#user_role_name').val();
+    // console.log(dinas);
+
     $(document).on('click', '#btn_edit_nama', function() {
         $(this).addClass('hidden');
         $('#btn_edit_nama_selesai').removeClass('hidden');
@@ -297,23 +314,6 @@
                     .removeClass('pointer-events-auto');
             });
     });
-
-    // Toggle panel notifikasi
-    $('#notifToggle').on('click', function () {
-        $('#notifPanel').toggleClass('hidden');
-    });
-
-    // Tombol close
-    $('#notifClose').on('click', function () {
-        $('#notifPanel').addClass('hidden');
-    });
-
-    // Klik di luar panel akan menutup
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#notifToggle, #notifPanel').length) {
-            $('#notifPanel').addClass('hidden');
-        }
-    });
     
     $('#burger-menu').on('click', function() {
         $('#sidebar')
@@ -321,4 +321,175 @@
         .toggleClass('hidden')
         .slideToggle('slow');
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const notifToggle = document.getElementById('notifToggle');
+    const notifPanel = document.getElementById('notifPanel');
+    const notifClose = document.getElementById('notifClose');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifContainer = document.getElementById('notifContainer');
+    const notifLoading = document.getElementById('notifLoading');
+    const notifList = document.getElementById('notifList');
+    const markAllRead = document.getElementById('markAllRead');
+
+    // Load notifikasi saat halaman dimuat
+    loadNotifications();
+
+    // Toggle dropdown notifikasi
+    notifToggle.addEventListener('click', function() {
+        notifPanel.classList.toggle('hidden');
+        if (!notifPanel.classList.contains('hidden')) {
+            loadNotifications();
+        }
+    });
+
+    // Tutup dropdown
+    notifClose.addEventListener('click', function() {
+        notifPanel.classList.add('hidden');
+    });
+
+    // Tutup dropdown jika klik di luar
+    document.addEventListener('click', function(event) {
+        if (!notifToggle.contains(event.target) && !notifPanel.contains(event.target)) {
+            notifPanel.classList.add('hidden');
+        }
+    });
+
+    // Tandai semua sebagai dibaca
+    markAllRead.addEventListener('click', function() {
+        fetch(`/pegawai/${dinas}/notifications/mark-read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Function untuk memuat notifikasi
+    function loadNotifications() {
+        notifLoading.classList.remove('hidden');
+        notifContainer.classList.add('hidden');
+
+        fetch(`/pegawai/${dinas}/notifications/header`)
+            .then(response => response.json())
+            .then(data => {
+                updateNotificationBadge(data.unread_count);
+                displayNotifications(data.notifications);
+                notifLoading.classList.add('hidden');
+                notifContainer.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                notifLoading.classList.add('hidden');
+                notifContainer.classList.remove('hidden');
+                notifList.innerHTML = '<p class="text-gray-500 text-center">Gagal memuat notifikasi</p>';
+            });
+    }
+
+    // Function untuk update badge notifikasi
+    function updateNotificationBadge(count) {
+        if (count > 0) {
+            notifBadge.textContent = count > 99 ? '99+' : count;
+            notifBadge.classList.remove('hidden');
+        } else {
+            notifBadge.classList.add('hidden');
+        }
+    }
+
+    // Function untuk menampilkan notifikasi
+    function displayNotifications(notifications) {
+        if (notifications.length === 0) {
+            notifList.innerHTML = '<p class="text-gray-500 text-center py-4">Tidak ada notifikasi</p>';
+            return;
+        }
+
+        let html = '';
+        notifications.forEach(function(notif) {
+            const isRead = notif.is_read;
+            const bgClass = isRead ? 'bg-gray-50' : 'bg-white border-pink-300';
+            const textClass = isRead ? 'text-gray-500' : 'text-pink-600';
+            
+            // Format tanggal
+            const date = new Date(notif.tanggal_pesan);
+            const timeAgo = getTimeAgo(date);
+
+            html += `
+                <div class="flex items-start p-3 mb-2 border rounded-lg ${bgClass} cursor-pointer hover:bg-gray-100" 
+                     onclick="markNotificationAsRead(${notif.id})">
+                    <img src="https://via.placeholder.com/30" alt="Icon" class="w-7 h-7 mr-3">
+                    <div class="flex-1">
+                        <p class="text-sm ${textClass} font-bold">${notif.role?.name || 'SISTEM'}</p>
+                        <p class="text-sm text-gray-600">${notif.pesan}</p>
+                        <span class="text-xs text-gray-400">${timeAgo}</span>
+                    </div>
+                    ${!isRead ? '<div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>' : ''}
+                </div>
+            `;
+        });
+        
+        notifList.innerHTML = html;
+    }
+
+    // Function untuk menandai notifikasi sebagai dibaca
+    window.markNotificationAsRead = function(notificationId) {
+        fetch(`/pegawai/${dinas}/notifications/mark-read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                notification_id: notificationId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    };
+
+    // Function untuk format waktu relatif
+    function getTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        if (diffInSeconds < 60) {
+            return 'Baru saja';
+        } else if (diffInSeconds < 3600) {
+            const minutes = Math.floor(diffInSeconds / 60);
+            return `${minutes} menit yang lalu`;
+        } else if (diffInSeconds < 86400) {
+            const hours = Math.floor(diffInSeconds / 3600);
+            return `${hours} jam yang lalu`;
+        } else {
+            const days = Math.floor(diffInSeconds / 86400);
+            return `${days} hari yang lalu`;
+        }
+    }
+
+    // Refresh notifikasi setiap 30 detik
+    setInterval(function() {
+        if (notifPanel.classList.contains('hidden')) {
+            // Hanya update badge jika panel tertutup
+            fetch(`/pegawai/${dinas}/notifications/header`)
+                .then(response => response.json())
+                .then(data => {
+                    updateNotificationBadge(data.unread_count);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }, 30000);
+});
 </script>

@@ -45,18 +45,19 @@ class GenerateNotifikasi extends Command
             ->exists();
 
         Notifikasi::create([
-            'role_id'       => $adminId,
+            'role_id'       => $roleId,
+            'is_admin'      => 1,
             'tanggal_pesan' => $now,
             'pesan'         => $sudahInput
-                ? "{$roleName} telah menginputkan data untuk periode ini."
-                : "{$roleName} belum menginputkan data untuk periode ini.",
+                ? "telah menginputkan data untuk periode ini."
+                : "belum menginputkan data untuk periode ini.",
         ]);
 
         if (!$sudahInput && $now->greaterThanOrEqualTo($deadline)) {
             Notifikasi::create([
                 'role_id'       => $roleId,
                 'tanggal_pesan' => $now,
-                'pesan'         => "{$roleName} segera menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut.",
+                'pesan'         => "segera menginputkan data untuk periode ini. Silakan lakukan peninjauan lebih lanjut.",
             ]);
         }
 

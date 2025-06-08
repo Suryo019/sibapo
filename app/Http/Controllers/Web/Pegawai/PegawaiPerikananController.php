@@ -50,24 +50,26 @@ class PegawaiPerikananController extends Controller
         // Tabel Perubahan
         $now = Carbon::now();
 
-        $bulanIni = DP::whereMonth('created_at', $now->month)
-            ->whereYear('created_at', $now->year)
+        $bulanIni = DP::with('jenis_ikan')
+            ->whereMonth('tanggal_input', $now->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_ikan_id, SUM(ton_produksi) as total_volume')
             ->groupBy('jenis_ikan_id')
             ->get();
-
-        $bulanLalu = DP::whereMonth('created_at', $now->subMonth()->month)
-            ->whereYear('created_at', $now->year)
+        
+        $bulanLalu = DP::with('jenis_ikan')
+            ->whereMonth('tanggal_input', $now->subMonth()->month)
+            ->whereYear('tanggal_input', $now->year)
             ->selectRaw('jenis_ikan_id, SUM(ton_produksi) as total_volume')
             ->groupBy('jenis_ikan_id')
             ->get()
-            ->keyBy('jenis_ikan_id'); 
+            ->keyBy('jenis_ikan_id');    
     
         $dataTabel = [];
     
         foreach ($bulanIni as $index => $item) {
             $jenisIkanId = $item->jenis_ikan_id;
-            $jenisIkan = $item->jenis_ikan;
+            $jenisIkan = $item->jenis_ikan->nama_ikan ?? '-';
             $volumeIni = $item->total_volume;
             $volumeLalu = $bulanLalu[$jenisIkanId]->total_volume ?? 0;            
             $selisih = $volumeIni - $volumeLalu;

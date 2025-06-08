@@ -6,6 +6,7 @@ use App\Models\JenisIkan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DP extends Model
@@ -17,9 +18,10 @@ class DP extends Model
 
     protected $guarded = ['id'];
 
-    public function jenis_ikan(): HasMany
+    public function jenis_ikan(): BelongsTo
     {
-        return $this->hasMany(JenisIkan::class, 'id', 'jenis_ikan_id');
+        // return $this->hasMany(JenisIkan::class, 'id', 'jenis_ikan_id');
+        return $this->belongsTo(JenisIkan::class, 'jenis_ikan_id', 'id');
     }
 
     public function user() {

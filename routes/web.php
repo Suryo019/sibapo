@@ -156,6 +156,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // });
 
     Route::get('/notifikasi', [NotifikasiAdminController::class, 'index'])->name('notifikasi.index');
+    Route::get('/notifications/header', [NotifikasiAdminController::class, 'getHeaderNotifications']);
+    Route::post('/notifications/mark-read', [NotifikasiAdminController::class, 'markAsRead']);
+
+    Route::post('/notifications/{id}/complete', [NotifikasiAdminController::class, 'markAsCompleted']);
+    Route::post('/notifications/{id}/incomplete', [NotifikasiAdminController::class, 'markAsIncomplete']);
+    Route::delete('/notifications/{id}', [NotifikasiAdminController::class, 'destroy']);
+
+    Route::post('/notifikasi/filter', [NotifikasiAdminController::class, 'filter'])->name('admin.notifikasi.filter');
 
 });
 // ADMIN END
@@ -187,6 +195,15 @@ Route::middleware(['auth', 'role:disperindag'])->group(function () {
     Route::get('/pegawai/disperindag/bahanpokok/edit/{bahanpokok:id}', [PegawaiBahanPokokController::class, 'edit'])->name('pegawai.disperindag.bahanpokok.edit');
     
     Route::get('/pegawai/disperindag/notifikasi', [NotifikasiDisperindagController::class, 'index'])->name('pegawai.disperindag.notifikasi.index');
+    Route::get('pegawai/disperindag/notifications/header', [NotifikasiDisperindagController::class, 'getHeaderNotifications']);
+    Route::post('pegawai/disperindag/notifications/mark-read', [NotifikasiDisperindagController::class, 'markAsRead']);
+
+    Route::post('/pegawai/disperindag/notifications/{id}/complete', [NotifikasiDisperindagController::class, 'markAsCompleted']);
+    Route::post('/pegawai/disperindag/notifications/{id}/incomplete', [NotifikasiDisperindagController::class, 'markAsIncomplete']);
+    Route::delete('pegawai/disperindag/notifications/{id}', [NotifikasiDisperindagController::class, 'destroy']);
+
+    Route::post('pegawai/disperindag/notifikasi/filter', [NotifikasiDisperindagController::class, 'filter'])->name('pegawai.disperindag.notifikasi.filter');
+    
     // Route::get('/pegawai/disperindag/notifikasi', function() {
     //     return view('pegawai.disperindag.pegawai-notifikasi-disperindag');
     // });
@@ -216,6 +233,16 @@ Route::middleware(['auth', 'role:dkpp'])->group(function () {
     ]);
 
     Route::get('/pegawai/dkpp-notifikasi', [NotifikasiDkppController::class, 'index'])->name('pegawai.dkpp.notifikasi.index');
+    Route::get('pegawai/dkpp/notifications/header', [NotifikasiDkppController::class, 'getHeaderNotifications']);
+    Route::post('pegawai/dkpp/notifications/mark-read', [NotifikasiDkppController::class, 'markAsRead']);
+
+    Route::post('/pegawai/dkpp/notifications/{id}/complete', [NotifikasiDkppController::class, 'markAsCompleted']);
+    Route::post('/pegawai/dkpp/notifications/{id}/incomplete', [NotifikasiDkppController::class, 'markAsIncomplete']);
+    Route::delete('pegawai/dkpp/notifications/{id}', [NotifikasiDkppController::class, 'destroy']);
+
+    Route::post('pegawai/dkpp/notifikasi/filter', [NotifikasiDkppController::class, 'filter'])->name('pegawai.dkpp.notifikasi.filter');
+
+
     // Route::get('/pegawai/dkpp/notifikasi', function() {
     //     return view('pegawai.dkpp.pegawai-notifikasi-dkpp');
     // });
@@ -252,6 +279,15 @@ Route::middleware(['auth', 'role:dtphp'])->group(function () {
     ]);
 
     Route::get('/pegawai/dtphp-notifikasi', [NotifikasiDtphpController::class, 'index'])->name('pegawai.dtphp.notifikasi.index');
+    Route::get('pegawai/dtphp/notifications/header', [NotifikasiDtphpController::class, 'getHeaderNotifications']);
+    Route::post('pegawai/dtphp/notifications/mark-read', [NotifikasiDtphpController::class, 'markAsRead']);
+
+    Route::post('/pegawai/dtphp/notifications/{id}/complete', [NotifikasiDtphpController::class, 'markAsCompleted']);
+    Route::post('/pegawai/dtphp/notifications/{id}/incomplete', [NotifikasiDtphpController::class, 'markAsIncomplete']);
+    Route::delete('pegawai/dtphp/notifications/{id}', [NotifikasiDtphpController::class, 'destroy']);
+
+    Route::post('pegawai/dtphp/notifikasi/filter', [NotifikasiDtphpController::class, 'filter'])->name('pegawai.dtphp.notifikasi.filter');
+
     // Route::get('/pegawai/dtphp/notifikasi', function() {
     //     return view('pegawai.dtphp.pegawai-notifikasi-dtphp');
     // });
@@ -282,6 +318,15 @@ Route::middleware(['auth', 'role:perikanan'])->group(function () {
     ]);
 
     Route::get('/pegawai/perikanan-notifikasi', [NotifikasiPerikananController::class, 'index'])->name('pegawai.perikanan.notifikasi.index');
+    Route::get('pegawai/perikanan/notifications/header', [NotifikasiPerikananController::class, 'getHeaderNotifications']);
+    Route::post('pegawai/perikanan/notifications/mark-read', [NotifikasiPerikananController::class, 'markAsRead']);
+
+    Route::post('/pegawai/perikanan/notifications/{id}/complete', [NotifikasiPerikananController::class, 'markAsCompleted']);
+    Route::post('/pegawai/perikanan/notifications/{id}/incomplete', [NotifikasiPerikananController::class, 'markAsIncomplete']);
+    Route::delete('pegawai/perikanan/notifications/{id}', [NotifikasiPerikananController::class, 'destroy']);
+
+    Route::post('pegawai/perikanan/notifikasi/filter', [NotifikasiPerikananController::class, 'filter'])->name('pegawai.perikanan.notifikasi.filter');
+
     // Route::get('/pegawai/perikanan/notifikasi', function() {
     //     return view('pegawai.perikanan.pegawai-notifikasi-perikanan');
     // });
@@ -306,4 +351,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/tes-notifikasi', [NotifikasiController::class, 'tes'])->name('notifikasi.tes');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
