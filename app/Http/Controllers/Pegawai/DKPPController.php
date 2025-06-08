@@ -10,6 +10,7 @@ use App\Models\JenisKomoditasDkpp;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
 class DKPPController extends Controller
@@ -19,28 +20,26 @@ class DKPPController extends Controller
         try {
             $date = Carbon::createFromFormat('Y-m', $request->periode);
             $year = $date->year;
-
             $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
 
-            $data = DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
-                ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
-                // ->where('minggu', $week)
-                ->select(
-                    'dinas_ketahanan_pangan_peternakan.id as dkpp_id',
-                    'dinas_ketahanan_pangan_peternakan.ton_ketersediaan',
-                    'dinas_ketahanan_pangan_peternakan.ton_kebutuhan_perminggu',
-                    'dinas_ketahanan_pangan_peternakan.minggu as minggu',
-                    'jenis_komoditas_dkpp.nama_komoditas as nama_komoditas',
-                )
-                ->get()
-                ->groupBy('minggu');
+            $cacheKey = "dkpp_index_{$request->periode}";
+
+            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
+                return DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
+                    ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
+                    ->select(
+                        'dinas_ketahanan_pangan_peternakan.id as dkpp_id',
+                        'dinas_ketahanan_pangan_peternakan.ton_ketersediaan',
+                        'dinas_ketahanan_pangan_peternakan.ton_kebutuhan_perminggu',
+                        'dinas_ketahanan_pangan_peternakan.minggu as minggu',
+                        'jenis_komoditas_dkpp.nama_komoditas as nama_komoditas'
+                    )
+                    ->get()
+                    ->groupBy('minggu');
+            });
 
             return response()->json(['data' => $data, 'periode' => $periodFY]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat mengambil data',
-                'error' => $th->getMessage()
-            ], 500);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -49,6 +48,7 @@ class DKPPController extends Controller
         }
     }
 
+
     public function detail(Request $request)
     {
         $currentWeek = $request->minggu;
@@ -56,22 +56,27 @@ class DKPPController extends Controller
         $year = $date->year;
         $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
 
-        $data = DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
-        ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
-        ->where('dinas_ketahanan_pangan_peternakan.minggu', $currentWeek)
-        ->orderBy('jenis_komoditas_dkpp.nama_komoditas', $request->sort)
-        ->select(
-            'dinas_ketahanan_pangan_peternakan.id as dkpp_id',
-            'dinas_ketahanan_pangan_peternakan.ton_ketersediaan',
-            'dinas_ketahanan_pangan_peternakan.ton_kebutuhan_perminggu',
-            'dinas_ketahanan_pangan_peternakan.ton_neraca_mingguan',
-            'dinas_ketahanan_pangan_peternakan.keterangan',
-            'jenis_komoditas_dkpp.nama_komoditas as nama_komoditas',
-        )
-        ->get();
+        $cacheKey = "dkpp_detail_{$request->periode}_minggu_{$currentWeek}_sort_{$request->sort}";
+
+        $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request, $currentWeek) {
+            return DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
+                ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
+                ->where('dinas_ketahanan_pangan_peternakan.minggu', $currentWeek)
+                ->orderBy('jenis_komoditas_dkpp.nama_komoditas', $request->sort)
+                ->select(
+                    'dinas_ketahanan_pangan_peternakan.id as dkpp_id',
+                    'dinas_ketahanan_pangan_peternakan.ton_ketersediaan',
+                    'dinas_ketahanan_pangan_peternakan.ton_kebutuhan_perminggu',
+                    'dinas_ketahanan_pangan_peternakan.ton_neraca_mingguan',
+                    'dinas_ketahanan_pangan_peternakan.keterangan',
+                    'jenis_komoditas_dkpp.nama_komoditas as nama_komoditas'
+                )
+                ->get();
+        });
 
         return response()->json(['data' => $data, 'periode' => $periodFY]);
     }
+
 
     public function konversi_nama_bulan_id($date)
     {

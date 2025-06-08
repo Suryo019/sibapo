@@ -9,6 +9,7 @@ use App\Models\JenisIkan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
 class DPController extends Controller
@@ -17,22 +18,23 @@ class DPController extends Controller
     {
         $date = Carbon::createFromFormat('Y-m', $request->periode);
         $year = $date->year;
-
-        // dd($year);
-
         $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
 
-        $dp = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
-            ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_input, '%Y-%m') = ?", [$request->periode])
-            ->selectRaw("
-                jenis_ikan.nama_ikan as jenis_ikan,
-                dinas_perikanan.ton_produksi,
-                dinas_perikanan.tanggal_input,
-                DAY(tanggal_input) as hari
-            ")
-            ->get()
-            ->groupBy('jenis_ikan');
-            
+        $cacheKey = "dp_index_{$request->periode}";
+
+        $dp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
+            return DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+                ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_input, '%Y-%m') = ?", [$request->periode])
+                ->selectRaw("
+                    jenis_ikan.nama_ikan as jenis_ikan,
+                    dinas_perikanan.ton_produksi,
+                    dinas_perikanan.tanggal_input,
+                    DAY(tanggal_input) as hari
+                ")
+                ->get()
+                ->groupBy('jenis_ikan');
+        });
+
         return response()->json([
             'data' => $dp,
             'periode' => $periodFY,
@@ -65,23 +67,28 @@ class DPController extends Controller
     public function listItem(Request $request, $jenisIkan)
     {
         try {
-            $data = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
-                ->where('jenis_ikan.nama_ikan', $jenisIkan)
-                // ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
-                ->select(
-                    'dinas_perikanan.id as dp_id',
-                    'dinas_perikanan.*',
-                    'jenis_ikan.nama_ikan',
-                )
-                ->get()
-                ->map(function($item) {
-                    $carbon = Carbon::parse($item->tanggal_dibuat);
-                    $bulanEn = $carbon->format('Y-m');
-                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
-                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
-                    return $item;
-                });
+            $cacheKey = "dp_listitem_{$jenisIkan}";
+
+            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($jenisIkan) {
+                return DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+                    ->where('jenis_ikan.nama_ikan', $jenisIkan)
+                    ->select(
+                        'dinas_perikanan.id as dp_id',
+                        'dinas_perikanan.*',
+                        'jenis_ikan.nama_ikan',
+                    )
+                    ->get()
+                    ->map(function ($item) {
+                        $carbon = Carbon::parse($item->tanggal_dibuat);
+                        $bulanEn = $carbon->format('Y-m');
+                        $bulanId = $this->konversi_nama_bulan_id($bulanEn);
+                        $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                        return $item;
+                    });
+            });
+
             return response()->json(['data' => $data]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -89,6 +96,7 @@ class DPController extends Controller
             ], 500);
         }
     }
+
 
     // Menyimpan data baru
     public function store(Request $request)

@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 <x-admin-layout>
-    <div class="w-full flex justify-between gap-4">
+    <div class="w-full flex mb-6 justify-between gap-4">
         <!-- Search bar -->
         <x-search>Cari bahan pokok...</x-search>
     

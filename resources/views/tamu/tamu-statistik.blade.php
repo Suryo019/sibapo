@@ -1,27 +1,32 @@
 <x-tamu-layout title="Statistik">
-<div class="w-full flex flex-col justify-center items-center text-pink-650 mb-16">
-    <h1 class="text-5xl font-extrabold mb-8 ">Statistik Harga</h1>
-    <h5 class="text-xl text-shadow mb-16 mx-6 text-center">Data perubahan harga setiap bahan pokok dalam 1 bulan</h5>
+<div class="w-full flex flex-col justify-center items-center text-pink-650 mb-16 px-4">
+    <h1 class="text-3xl sm:text-5xl font-extrabold mb-4 sm:mb-8 text-center">Statistik Harga</h1>
+    <h5 class="text-base sm:text-xl text-shadow mb-8 sm:mb-16 mx-4 text-center">
+        Data perubahan harga setiap bahan pokok dalam 1 bulan
+    </h5>
 
-    {{-- filter dekstop --}}
-    <form action="{{ route('tamu.komoditas') }}" method="GET" class="hidden md:flex flex-wrap gap-6 items-center justify-center">
+    {{-- Filter Form --}}
+    <form action="{{ route('tamu.komoditas') }}" method="GET"
+        class="w-full max-w-5xl flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 items-center justify-center">
         @csrf
 
         {{-- Sorting Root --}}
-        <div>
+        <div class="w-full sm:w-auto">
             <select name="sorting_category" id="sorting_category"
-                class="border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 focus:outline-none">
+                class="w-full border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 focus:outline-none">
                 <option value="pasar">Per Pasar</option>
                 <option value="jenis_bahan_pokok">Per Bahan Pokok</option>
             </select>
         </div>
 
         {{-- Sorting Child --}}
-        <div class="relative flex flex-col">
-            <div class="border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 flex items-center cursor-pointer"
+        <div class="w-full sm:w-auto relative">
+            <div
+                class="w-full border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 flex items-center cursor-pointer"
                 id="sorting_child">
-                <input type="text" value="{{ $markets[0]->nama_pasar }}" class="focus:outline-none flex-shrink"
-                    id="sorting_item_list_input" name="market" autocomplete="off" readonly>
+                <input type="text" value="{{ $markets[0]->nama_pasar }}"
+                    class="focus:outline-none flex-shrink bg-transparent w-full" id="sorting_item_list_input" name="market"
+                    autocomplete="off" readonly>
                 <i class="bi bi-caret-down-fill text-pink-650 text-xs ml-2"></i>
             </div>
             <ul class="bg-white border border-pink-650 rounded-2xl max-h-60 w-full absolute z-20 top-12 overflow-y-auto hidden"
@@ -39,62 +44,20 @@
         </div>
 
         {{-- Periode --}}
-        <div>
+        <div class="w-full sm:w-auto">
             <input type="month" name="periode" id="periode" value="{{ date('Y-m') }}"
-                class="border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 focus:outline-none">
+                class="w-full border border-pink-650 px-4 py-2 rounded-full bg-white text-sm text-gray-500 focus:outline-none">
         </div>
 
         {{-- Search --}}
-        <div class="relative">
+        <div class="w-full sm:w-auto relative">
             <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-pink-650"></i>
             <input type="text" name="search" id="search" placeholder="Cari Bahan Pokok"
-                class="pl-10 pr-4 py-2 border border-pink-650 rounded-full bg-white text-sm text-gray-500 focus:outline-none placeholder-gray-500">
+                class="pl-10 pr-4 py-2 w-full border border-pink-650 rounded-full bg-white text-sm text-gray-500 focus:outline-none placeholder-gray-500">
         </div>
     </form>
-
-    {{-- Button filter --}}
-    <div class="w-full flex justify-center mt-6 md:hidden relative">
-        <button id="mobileFilterBtn"
-            class="bg-pink-600 text-white px-6 py-2 rounded-full shadow hover:bg-pink-700 focus:outline-none flex items-center gap-2">
-            <i class="bi bi-funnel-fill"></i> Filter
-        </button>
-
-        {{-- dropdown --}}
-        <div id="mobileFilterDropdown"
-            class="absolute top-14 w-[95%] max-w-md bg-white border border-pink-200 rounded-2xl shadow-xl p-6 z-50 hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-pink-600">Filter</h2>
-                <button id="closeFilterDropdown"
-                    class="text-xl text-gray-600 hover:text-red-500 font-bold">&times;</button>
-            </div>
-            <form action="{{ route('tamu.komoditas') }}" method="GET" class="flex flex-col gap-4">
-                @csrf
-                <select name="sorting_category"
-                    class="border px-4 py-2 rounded-full bg-white text-sm text-gray-500">
-                    <option value="pasar">Per Pasar</option>
-                    <option value="jenis_bahan_pokok">Per Bahan Pokok</option>
-                </select>
-
-                <select name="market"
-                    class="border px-4 py-2 rounded-full bg-white text-sm text-gray-500">
-                    @foreach ($markets as $data)
-                        <option value="{{ $data->nama_pasar }}">{{ $data->nama_pasar }}</option>
-                    @endforeach
-                </select>
-
-                <input type="month" name="periode" value="{{ date('Y-m') }}"
-                    class="border px-4 py-2 rounded-full bg-white text-sm text-gray-500">
-
-                <div class="flex justify-end gap-4 mt-2"> {{-- revisi buttton --}}
-                    <button type="reset"
-                        class="px-4 py-2 bg-orange-500 text-white rounded-full text-sm hover:bg-yellow-550">Reset</button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-pink-600 text-white rounded-full text-sm hover:bg-pink-700">Cari</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
+
 
 {{-- Tabel Komoditas --}}
 <div class="w-[90%] max-w-7xl overflow-auto max-h-screen mx-auto rounded-lg" id="comoditiesList">

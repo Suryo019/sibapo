@@ -8,6 +8,7 @@ use App\Models\Riwayat;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DTPHPController extends Controller
 {
@@ -15,8 +16,14 @@ class DTPHPController extends Controller
     public function index()
     {
         try {
-            $data = DTPHP::all();
+            $cacheKey = 'dtphp_all_data';
+
+            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () {
+                return DTPHP::all();
+            });
+
             return response()->json($data);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -51,23 +58,28 @@ class DTPHPController extends Controller
     public function listItem(Request $request, $jenisTanaman)
     {
         try {
-            $data = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
-                ->where('jenis_tanaman.nama_tanaman', $jenisTanaman)
-                // ->whereRaw("DATE_FORMAT(dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
-                ->select(
-                    'dinas_tanaman_pangan_holtikultural_perkebunan.id as dtphp_id',
-                    'dinas_tanaman_pangan_holtikultural_perkebunan.*',
-                    'jenis_tanaman.nama_tanaman',
-                )
-                ->get()
-                ->map(function($item) {
-                    $carbon = Carbon::parse($item->tanggal_dibuat);
-                    $bulanEn = $carbon->format('Y-m');
-                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
-                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
-                    return $item;
-                });
+            $cacheKey = "dtphp_listitem_{$jenisTanaman}";
+
+            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($jenisTanaman) {
+                return DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
+                    ->where('jenis_tanaman.nama_tanaman', $jenisTanaman)
+                    ->select(
+                        'dinas_tanaman_pangan_holtikultural_perkebunan.id as dtphp_id',
+                        'dinas_tanaman_pangan_holtikultural_perkebunan.*',
+                        'jenis_tanaman.nama_tanaman',
+                    )
+                    ->get()
+                    ->map(function($item) {
+                        $carbon = Carbon::parse($item->tanggal_dibuat);
+                        $bulanEn = $carbon->format('Y-m');
+                        $bulanId = $this->konversi_nama_bulan_id($bulanEn);
+                        $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                        return $item;
+                    });
+            });
+
             return response()->json(['data' => $data]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -75,6 +87,7 @@ class DTPHPController extends Controller
             ], 500);
         }
     }
+
 
     // Menyimpan data baru
     public function store(Request $request)

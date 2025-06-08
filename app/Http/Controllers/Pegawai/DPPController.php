@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\JenisBahanPokok;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -23,29 +24,31 @@ class DPPController extends Controller
 
         $periodFY = $this->konversi_nama_bulan_id($request->periode) . ' ' . $year;
 
-        $dpp = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
-            ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
-            ->whereMonth('tanggal_dibuat', $month)
-            ->whereYear('tanggal_dibuat', $year)
-            ->where('pasar.nama_pasar', $request->pasar)
-            // ->where('jenis_bahan_pokok.nama_bahan_pokok', $request->bahan_pokok)
-            ->selectRaw("
-                jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok,
-                dinas_perindustrian_perdagangan.kg_harga,
-                dinas_perindustrian_perdagangan.tanggal_dibuat,
-                pasar.nama_pasar as pasar,
-                DAY(tanggal_dibuat) as hari
-            ")
-            ->get()
-            ->groupBy('jenis_bahan_pokok');
-            
-        // dd($dpp);
+        $cacheKey = "dpp_{$request->pasar}_{$year}_{$month}";
+
+        $dpp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($month, $year, $request) {
+            return DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+                ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+                ->whereMonth('tanggal_dibuat', $month)
+                ->whereYear('tanggal_dibuat', $year)
+                ->where('pasar.nama_pasar', $request->pasar)
+                ->selectRaw("
+                    jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok,
+                    dinas_perindustrian_perdagangan.kg_harga,
+                    dinas_perindustrian_perdagangan.tanggal_dibuat,
+                    pasar.nama_pasar as pasar,
+                    DAY(tanggal_dibuat) as hari
+                ")
+                ->get()
+                ->groupBy('jenis_bahan_pokok');
+        });
 
         return response()->json([
             'data' => $dpp,
             'periode' => $periodFY,
         ]);
     }
+
 
     public function konversi_nama_bulan_id($date)
     {
@@ -77,34 +80,35 @@ class DPPController extends Controller
         $bulanId = $this->konversi_nama_bulan_id($request->periode);
         $jumlahHari = $carbonDate->daysInMonth;
 
-        $dpp = DPP::select(
-                    'jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok',
-                    'dinas_perindustrian_perdagangan.kg_harga',
-                    'dinas_perindustrian_perdagangan.tanggal_dibuat',
-                    'pasar.nama_pasar as pasar'
-                )
-                ->join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
-                ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
-                ->where('pasar.nama_pasar', $request->data)
-                ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
-                ->orderBy('jenis_bahan_pokok.nama_bahan_pokok', $request->sort)
-                ->get()
-                ->groupBy('jenis_bahan_pokok')
-                // dd($dpp);
-                ->map(function($items) {
-                    $row = [
-                        'pasar' => $items[0]->pasar,
-                        'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
-                        'harga_per_tanggal' => [],
-                    ];
+        $cacheKey = "filter_dpp_{$request->data}_{$request->periode}_sort_{$request->sort}";
 
-                    foreach ($items as $item) {
-                        $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
-                        $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
-                    }
-
-                    return $row;
-                });
+        $dpp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
+            return DPP::select(
+                        'jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok',
+                        'dinas_perindustrian_perdagangan.kg_harga',
+                        'dinas_perindustrian_perdagangan.tanggal_dibuat',
+                        'pasar.nama_pasar as pasar'
+                    )
+                    ->join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+                    ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+                    ->where('pasar.nama_pasar', $request->data)
+                    ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                    ->orderBy('jenis_bahan_pokok.nama_bahan_pokok', $request->sort)
+                    ->get()
+                    ->groupBy('jenis_bahan_pokok')
+                    ->map(function($items) {
+                        $row = [
+                            'pasar' => $items[0]->pasar,
+                            'jenis_bahan_pokok' => $items[0]->jenis_bahan_pokok,
+                            'harga_per_tanggal' => [],
+                        ];
+                        foreach ($items as $item) {
+                            $tanggal = (int) date('d', strtotime($item->tanggal_dibuat));
+                            $row['harga_per_tanggal'][$tanggal] = $item->kg_harga;
+                        }
+                        return $row;
+                    });
+        });
 
         return response()->json([
             'data' => $dpp,
@@ -116,26 +120,32 @@ class DPPController extends Controller
     public function listItem(Request $request, $namaBahanPokok)
     {
         try {
-            $data = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
-                ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
-                ->where('jenis_bahan_pokok.nama_bahan_pokok', $namaBahanPokok)
-                ->where('pasar.nama_pasar', $request->pasar)
-                ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
-                ->select(
-                    'dinas_perindustrian_perdagangan.id as dpp_id',
-                    'dinas_perindustrian_perdagangan.*',
-                    'pasar.nama_pasar',
-                    'jenis_bahan_pokok.nama_bahan_pokok'
-                )
-                ->get()
-                ->map(function($item) {
-                    $carbon = Carbon::parse($item->tanggal_dibuat);
-                    $bulanEn = $carbon->format('Y-m');
-                    $bulanId = $this->konversi_nama_bulan_id($bulanEn);
-                    $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
-                    return $item;
-                });
+            $cacheKey = "listitem_{$request->pasar}_{$namaBahanPokok}_{$request->periode}";
+
+            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request, $namaBahanPokok) {
+                return DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+                    ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
+                    ->where('jenis_bahan_pokok.nama_bahan_pokok', $namaBahanPokok)
+                    ->where('pasar.nama_pasar', $request->pasar)
+                    ->whereRaw("DATE_FORMAT(dinas_perindustrian_perdagangan.tanggal_dibuat, '%Y-%m') = ?", [$request->periode])
+                    ->select(
+                        'dinas_perindustrian_perdagangan.id as dpp_id',
+                        'dinas_perindustrian_perdagangan.*',
+                        'pasar.nama_pasar',
+                        'jenis_bahan_pokok.nama_bahan_pokok'
+                    )
+                    ->get()
+                    ->map(function($item) {
+                        $carbon = Carbon::parse($item->tanggal_dibuat);
+                        $bulanEn = $carbon->format('Y-m');
+                        $bulanId = app()->make(self::class)->konversi_nama_bulan_id($bulanEn); // kalau static
+                        $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
+                        return $item;
+                    });
+            });
+
             return response()->json(['data' => $data]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat mengambil data',
@@ -143,6 +153,7 @@ class DPPController extends Controller
             ], 500);
         }
     }
+
 
     // Menyimpan data baru
     public function store(Request $request)

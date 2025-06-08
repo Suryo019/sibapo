@@ -87,7 +87,7 @@ $('#submitBtn').on('click', function() {
         processData: false,
         contentType: false,
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             $('#dinas').val('');
             $('#nama').val('');
             $('#username').val('');
