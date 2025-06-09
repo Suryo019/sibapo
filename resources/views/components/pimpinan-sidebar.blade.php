@@ -34,7 +34,7 @@
 
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.dtphp-volume')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dtphp-volume') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dtphp-volume') ||  request()->is('pimpinan/dtphp-panen') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="carbon:agriculture-analytics" class="text-xl"></iconify-icon>
                 DTPHP 
           </x-pimpinan-sidebar-link>

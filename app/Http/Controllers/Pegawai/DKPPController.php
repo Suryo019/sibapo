@@ -24,8 +24,7 @@ class DKPPController extends Controller
 
             $cacheKey = "dkpp_index_{$request->periode}";
 
-            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
-                return DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
+            $data = DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                     ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
                     ->select(
                         'dinas_ketahanan_pangan_peternakan.id as dkpp_id',
@@ -36,8 +35,6 @@ class DKPPController extends Controller
                     )
                     ->get()
                     ->groupBy('minggu');
-            });
-
             return response()->json(['data' => $data, 'periode' => $periodFY]);
 
         } catch (\Throwable $th) {
@@ -58,8 +55,7 @@ class DKPPController extends Controller
 
         $cacheKey = "dkpp_detail_{$request->periode}_minggu_{$currentWeek}_sort_{$request->sort}";
 
-        $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request, $currentWeek) {
-            return DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
+        $data = DKPP::join('jenis_komoditas_dkpp', 'jenis_komoditas_dkpp.id', '=', 'dinas_ketahanan_pangan_peternakan.jenis_komoditas_dkpp_id')
                 ->whereRaw("DATE_FORMAT(dinas_ketahanan_pangan_peternakan.created_at, '%Y-%m') = ?", [$request->periode])
                 ->where('dinas_ketahanan_pangan_peternakan.minggu', $currentWeek)
                 ->orderBy('jenis_komoditas_dkpp.nama_komoditas', $request->sort)
@@ -72,7 +68,6 @@ class DKPPController extends Controller
                     'jenis_komoditas_dkpp.nama_komoditas as nama_komoditas'
                 )
                 ->get();
-        });
 
         return response()->json(['data' => $data, 'periode' => $periodFY]);
     }

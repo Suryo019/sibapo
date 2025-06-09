@@ -26,8 +26,7 @@ class DPPController extends Controller
 
         $cacheKey = "dpp_{$request->pasar}_{$year}_{$month}";
 
-        $dpp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($month, $year, $request) {
-            return DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+        $dpp = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
                 ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
                 ->whereMonth('tanggal_dibuat', $month)
                 ->whereYear('tanggal_dibuat', $year)
@@ -41,8 +40,6 @@ class DPPController extends Controller
                 ")
                 ->get()
                 ->groupBy('jenis_bahan_pokok');
-        });
-
         return response()->json([
             'data' => $dpp,
             'periode' => $periodFY,
@@ -82,8 +79,7 @@ class DPPController extends Controller
 
         $cacheKey = "filter_dpp_{$request->data}_{$request->periode}_sort_{$request->sort}";
 
-        $dpp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
-            return DPP::select(
+        $dpp = DPP::select(
                         'jenis_bahan_pokok.nama_bahan_pokok as jenis_bahan_pokok',
                         'dinas_perindustrian_perdagangan.kg_harga',
                         'dinas_perindustrian_perdagangan.tanggal_dibuat',
@@ -108,7 +104,6 @@ class DPPController extends Controller
                         }
                         return $row;
                     });
-        });
 
         return response()->json([
             'data' => $dpp,
@@ -122,8 +117,7 @@ class DPPController extends Controller
         try {
             $cacheKey = "listitem_{$request->pasar}_{$namaBahanPokok}_{$request->periode}";
 
-            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request, $namaBahanPokok) {
-                return DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
+            $data = DPP::join('pasar', 'dinas_perindustrian_perdagangan.pasar_id', '=', 'pasar.id')
                     ->join('jenis_bahan_pokok', 'dinas_perindustrian_perdagangan.jenis_bahan_pokok_id', '=', 'jenis_bahan_pokok.id')
                     ->where('jenis_bahan_pokok.nama_bahan_pokok', $namaBahanPokok)
                     ->where('pasar.nama_pasar', $request->pasar)
@@ -142,7 +136,6 @@ class DPPController extends Controller
                         $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
                         return $item;
                     });
-            });
 
             return response()->json(['data' => $data]);
 

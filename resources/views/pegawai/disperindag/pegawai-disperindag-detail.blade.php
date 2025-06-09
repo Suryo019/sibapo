@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 <x-pegawai-layout title="Detail Data Dinas">
-    <div class="w-full flex justify-between gap-4">
+    <div class="w-full flex justify-between gap-4 mb-4">
         <!-- Search bar -->
         <x-search>Cari bahan pokok...</x-search>
     

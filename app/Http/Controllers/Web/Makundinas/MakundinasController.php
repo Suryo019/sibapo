@@ -18,7 +18,7 @@ class MakundinasController extends Controller
           
         $users = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.id', 'roles.role', 'users.name', 'users.username')
+            ->select('users.id', 'roles.role', 'users.name', 'users.username', 'users.email')
             ->get();
 
         return view('admin.makundinas.makundinas', [

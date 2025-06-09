@@ -2,10 +2,7 @@
     <!-- Dropdown Section -->
     <div class="flex flex-col gap-4 my-4 w-full">
         <div class="flex gap-6 max-md:gap-4 items-end justify-between w-full tabs">
-            <!-- Search Component -->
-            <x-search>
-                Cari tanaman...
-            </x-search>
+          <div></div>
 
             <!-- Filter Component -->
             <div class="flex justify-end">

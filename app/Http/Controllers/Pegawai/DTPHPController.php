@@ -20,9 +20,7 @@ class DTPHPController extends Controller
         try {
             $cacheKey = 'dtphp_all_data';
 
-            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () {
-                return DTPHP::all();
-            });
+            $data = DTPHP::all();
 
             return response()->json($data);
 
@@ -62,8 +60,7 @@ class DTPHPController extends Controller
         try {
             $cacheKey = "dtphp_listitem_{$jenisTanaman}";
 
-            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($jenisTanaman) {
-                return DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
+            $data = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
                     ->where('jenis_tanaman.nama_tanaman', $jenisTanaman)
                     ->select(
                         'dinas_tanaman_pangan_holtikultural_perkebunan.id as dtphp_id',
@@ -78,7 +75,6 @@ class DTPHPController extends Controller
                         $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
                         return $item;
                     });
-            });
 
             return response()->json(['data' => $data]);
 
