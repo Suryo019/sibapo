@@ -49,21 +49,23 @@
             DATA LUAS PANEN TANAMAN <span id="periode_placeholder"></span>
             </h2>
         </div>    
-
-            <!-- Tombol Switch (TIDAK DIUBAH) -->
-            <div class="flex w-auto">
-                <a href="{{ route('pimpinan.dtphp-volume') }}">
-                    <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
-                        Volume Produksi
-                    </button>
-                </a>
-                <a href="{{ route('pimpinan.dtphp-panen') }}">
-                    <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">
-                        Luas Panen
-                    </button>
-                </a>
-            </div>
         </div>
+
+        
+            <!-- Tombol Switch (TIDAK DIUBAH) -->
+            <div class="flex w-auto ml-4">
+              <a href="{{ route('pimpinan.dtphp-volume') }}">
+                  <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2 max-md:left-2">
+                      Volume Produksi
+                  </button>
+              </a>
+              <a href="{{ route('pimpinan.dtphp-panen') }}">
+                  <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">
+                      Luas Panen
+                  </button>
+              </a>
+          </div>
+        
 
         <!-- Chart Card -->
         <div class="w-full flex items-center justify-center flex-col" id="chart_container">

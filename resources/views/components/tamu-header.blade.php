@@ -13,7 +13,7 @@
       </p>
       <p class="text-sm sm:text-base md:text-lg leading-relaxed text-pink-600 mb-4"
          style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">
-        Sistem Informasi Bahan Pokok menyajikan data harga bahan pangan di seluruh Kabupaten Jember, 
+        Cinta Ekonomi menyajikan data harga bahan pangan di seluruh Kabupaten Jember, 
         dengan pembaruan yang dilakukan setiap hari. <a href="{{ route('tamu.tentang-kami') }}"><b class="text-pink-650">Selengkapnya...</b></a>
       </p>
       <a href="https://s.id/Wadul-Guse" target="_blank"

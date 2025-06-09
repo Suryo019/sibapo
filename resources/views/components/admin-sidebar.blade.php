@@ -7,8 +7,7 @@
     <div class="bg-pink-650 max-md:bg-transparent rounded-xl relative z-10 shrink-0">
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
       <div class="mb-5 justify-center mt-1 hidden md:flex">
-        <img class="w-12 ml-4" src="{{ asset('storage/img/Logo-pemda.png') }}" alt="logo">
-        <img class="w-14  ml-4" src="{{ asset('storage/img/logo_1.png') }}" alt="logo">
+        <img class="w-48 mt-4" src="{{ asset('storage/img/logo-gabungan.png') }}" alt="logo">
       </div>
     </div>
 
@@ -38,6 +37,7 @@
         routeKelolaKomoditasView="{{ route('jenis-komoditas.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-komoditas.create') }}"
         viewHref="{{ route('dkpp.index') }}"
+        viewDetailHref="{{ route('dkpp.detail') }}"
         createHref="{{ route('dkpp.create') }}"
         :viewData="'Lihat Data'"
         :createData="'Tambah Data'"
@@ -56,6 +56,9 @@
         routeKelolaKomoditasView="{{ route('jenis-tanaman.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-tanaman.create') }}"
         viewHref="{{ route('dtphp.produksi') }}"
+        viewHrefPanen="{{ route('dtphp.panen') }}"
+        viewDetailHref="{{ route('dtphp.detail.produksi') }}"
+        viewDetailHrefPanen="{{ route('dtphp.detail.panen') }}"
         createHref="{{ route('dtphp.create') }}"
         :viewData="'Lihat Data'"
         :createData="'Tambah Data'"
@@ -74,6 +77,7 @@
         routeKelolaKomoditasView="{{ route('jenis-ikan.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-ikan.create') }}"
         viewHref="{{ route('perikanan.index') }}"
+        viewDetailHref="{{ route('perikanan.detail') }}"
         createHref="{{ route('perikanan.create') }}"
         :viewData="'Lihat Data'"
         :createData="'Tambah Data'"

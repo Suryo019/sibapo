@@ -1,8 +1,7 @@
 <nav class="w-full bg-pink-650 flex text-white justify-around max-md:justify-between items-center max-md:px-6 py-5 relative z-10">
     {{-- Logo --}}
     <a href="{{ route('beranda') }}" class="flex items-center">
-        <img class="w-12 ml-4" src="{{ asset('storage/img/Logo-pemda.png') }}" alt="logo">
-        <img class="w-14 ml-4" src="{{ asset('storage/img/logo_1.png') }}" alt="logo">
+        <img class="w-14 ml-4" src="{{ asset('storage/img/cintako.png') }}" alt="logo">
     </a>
     
 

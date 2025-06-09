@@ -159,7 +159,7 @@
             </div>
 
             <!-- Email -->
-            <div class="w-full max-w-md mb-6 px-4">
+            <div class="w-full max-w-md mb-20 px-4">
                 <label for="email_profile" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
                     <i class="bi bi-envelope-fill"></i> Email
                 </label>

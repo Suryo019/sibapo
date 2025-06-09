@@ -102,6 +102,8 @@
                     text: `Data ${data.data.nama_bahan_pokok} telah diperbarui.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = "{{ route('bahan_pokok.index') }}";
                 });
             },
             error: function(xhr, status, error) {

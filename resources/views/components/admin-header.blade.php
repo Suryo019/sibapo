@@ -11,8 +11,8 @@
         </div>
         {{-- Logo --}}
         <div class="justify-center flex md:hidden">
-            <img src="{{ asset('/img/logo.png') }}" 
-            alt="logo" class="h-10 w-30 ml-2 scale-90">
+            <img src="{{ asset('/storage/img/logo-pemda.png') }}" 
+            alt="logo" class="h-10 w-30 ml-6 scale-90">
         </div>
     </div>
 
@@ -183,7 +183,7 @@
             </div>
 
             <!-- Email -->
-            <div class="w-full max-w-md mb-6 px-4">
+            <div class="w-full max-w-md mb-20 px-4">
                 <label for="email_profile" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
                     <i class="bi bi-envelope-fill"></i> Email
                 </label>
