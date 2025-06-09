@@ -15,7 +15,7 @@
                             <form action="" method="get" class="space-y-4">
                                 <div class="flex flex-col">
                                     <label for="ururtkan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                                    <select class="border border-black p-2 rounded bg-white w-full" name="urutkan" id="ururtkan">
+                                    <select class="border p-2 rounded-lg bg-white w-full" name="urutkan" id="ururtkan">
                                         <option value="asc" {{ old('urutkan') == 'asc' ? 'selected' : '' }}>A - Z</option>
                                         <option value="desc" {{ old('urutkan') == 'desc' ? 'selected' : '' }}>Z - A</option>
                                     </select>
@@ -23,12 +23,12 @@
 
                                 <div class="flex flex-col">
                                     <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                    <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border border-black p-2 rounded bg-white w-full">
+                                    <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border p-2 rounded-lg bg-white w-full">
                                 </div>
 
                                 <div class="flex flex-col">
                                     <label for="minggu" class="block text-sm font-medium text-gray-700 mb-1">Minggu ke</label>
-                                    <select class="border border-black p-2 rounded bg-white w-full" id="minggu">
+                                    <select class="border p-2 rounded-lg bg-white w-full" id="minggu">
                                         <option {{ $currentWeek == 1 ? 'selected' : '' }} value="1">1</option>
                                         <option {{ $currentWeek == 2 ? 'selected' : '' }} value="2">2</option>
                                         <option {{ $currentWeek == 3 ? 'selected' : '' }} value="3">3</option>

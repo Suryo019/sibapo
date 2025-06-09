@@ -11,8 +11,8 @@
         </div>
         {{-- Logo --}}
         <div class="justify-center flex md:hidden">
-            <img src="{{ asset('/storage/img/logo-pemda.png') }}" 
-            alt="logo" class="h-10 w-30 ml-6 scale-90">
+            <img src="{{ asset('storage/img/logo-gabungan.png') }}" 
+            alt="logo" class="h-10 w-30 ml-2 scale-90">
         </div>
     </div>
 
@@ -56,48 +56,52 @@
         </div> --}}
 
         <div class="flex items-center gap-4 mr-4">
-            <!-- Icon Notifikasi -->
-            <div class="relative mr-4">
-                <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
-                
-                <!-- Badge untuk jumlah notifikasi -->
-                <span id="notifBadge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center hidden">
-                    0
-                </span>
-                
-                <!-- Dropdown Notifikasi -->
-                <div id="notifPanel" class="hidden absolute right-0 top-8 w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Notifikasi</h3>
-                        <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
-                    </div>
-                    
-                    <!-- Loading state -->
-                    <div id="notifLoading" class="text-center py-4">
-                        <p class="text-gray-500">Memuat notifikasi...</p>
-                    </div>
-                    
-                    <!-- Container untuk notifikasi -->
-                    <div id="notifContainer" class="hidden">
-                        <p class="font-semibold mb-2">Terbaru</p>
-                        <div id="notifList">
-                            <!-- Notifikasi akan dimuat di sini -->
-                        </div>
-                        
-                        <!-- Tombol untuk menandai semua sebagai dibaca -->
-                        <button id="markAllRead" class="w-full text-sm text-gray-600 hover:text-gray-800 mt-3 py-2 border rounded">
-                            Tandai Semua Sebagai Dibaca
-                        </button>
-                    </div>
-                    
-                    <!-- Link ke halaman notifikasi lengkap -->
-                    <a href="{{ route('notifikasi.index') }}">
-                        <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
-                    </a>
+            <!-- Wrapper untuk ikon notifikasi -->
+            <div class="relative">
+              <!-- Icon -->
+              <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
+              <!-- Badge jumlah notifikasi -->
+              <span id="notifBadge"
+                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center hidden">
+                0
+              </span>
+          
+              <!-- Panel Notifikasi -->
+              <div id="notifPanel"
+                   class="hidden absolute top-8 right-0 w-[250px] sm:w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
+          
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-bold">Notifikasi</h3>
+                  <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
                 </div>
+          
+                <!-- Loading -->
+                <div id="notifLoading" class="text-center py-4">
+                  <p class="text-gray-500">Memuat notifikasi...</p>
+                </div>
+          
+                <!-- Kontainer Notifikasi -->
+                <div id="notifContainer" class="hidden">
+                  <p class="font-semibold mb-2">Terbaru</p>
+                  <div id="notifList">
+                    <!-- Notifikasi akan dimuat di sini -->
+                  </div>
+          
+                  <!-- Tombol tandai dibaca -->
+                  <button id="markAllRead"
+                          class="w-full text-sm text-gray-600 hover:text-gray-800 mt-3 py-2 border rounded">
+                    Tandai Semua Sebagai Dibaca
+                  </button>
+                </div>
+          
+                <!-- Link ke halaman semua notifikasi -->
+                <a href="{{ route('notifikasi.index') }}">
+                  <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
+                </a>
+              </div>
             </div>
         </div>
-
 
         <!-- Gambar Profil dan Nama -->
         <div class="flex items-center gap-4 cursor-pointer" id="profile-toggler">     

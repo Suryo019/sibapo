@@ -46,7 +46,7 @@
             
                 <!-- Email/No Telp. -->
                 <div class="mb-4">
-                    <label for="email" class="block text-pink-500">Email/ No Telp.</label>
+                    <label for="email" class="block text-pink-500">Email</label>
                     <input type="text" name="email" value="{{ old('email', $user->email) }}" 
                            placeholder="Contoh: ahmadselamet99@mail.com" 
                            class="border p-2 w-full rounded-xl" id="email" required>

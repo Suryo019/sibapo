@@ -78,7 +78,7 @@
 
 <div id="mobileMenu" class="fixed top-0 right-0 h-full w-3/4 bg-white text-black z-50 transform translate-x-full transition-transform duration-300 md:hidden shadow-lg">
     <div class="flex justify-between items-center p-4 border-gray-200">
-        <img src="{{ asset('storage/img/logo-2.png') }}" class="h-10 w-30 scale-90" alt="Logo" class="h-8">
+        <img src="{{ asset('storage/img/logo_1.png') }}" class="h-10 w-30 scale-90" alt="Logo" class="h-8">
         <button onclick="toggleMobileMenu()" class="text-2xl text-pink-600 font-bold">&times;</button>
     </div>
     <div class="flex flex-col gap-8 px-8 py-4 text-base font-medium">

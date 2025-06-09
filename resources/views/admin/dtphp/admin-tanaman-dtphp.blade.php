@@ -1,6 +1,6 @@
 {{-- @dd($data) --}}
 <x-admin-layout>
-    <div class="w-full flex justify-between gap-4 mb-4">
+    <div class="flex justify-between items-center gap-4 my-4">
         <!-- Search bar -->
         <x-search></x-search>
     
@@ -49,7 +49,7 @@
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     </a>
-                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 md:w-10 md:h-10 flex items-center justify-center"
                                         data-id="{{ $item['id'] }}"
                                         data-nama-jenis-tanaman="{{ $item['nama_tanaman'] }}"
                                         >
