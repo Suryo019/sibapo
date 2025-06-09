@@ -82,7 +82,7 @@ class PerikananController extends Controller
         Carbon::setLocale('id');
 
         $filterPeriode = $request->input('periode');
-        $filterIkan = $request->input('ikan');
+        // $filterIkan = $request->input('ikan');
         $order = $request->input('order', 'asc');
 
         $periodeUnikAngka = DP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
@@ -115,9 +115,9 @@ class PerikananController extends Controller
 
         $query = DP::query()->whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif]);
 
-        if ($filterIkan) {
-            $query->where('jenis_ikan_id', $filterIkan);
-        }
+        // if ($filterIkan) {
+        //     $query->where('jenis_ikan_id', $filterIkan);
+        // }
     
         $data = $query->join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
             ->orderBy('jenis_ikan.nama_ikan', $order)

@@ -4,9 +4,9 @@
 <div class="flex flex-col gap-4 my-4 w-full">
     <div class="flex gap-6 max-md:gap-4 items-end justify-between w-full tabs">
         <!-- Search Component -->
-        <x-search>
+        {{-- <x-search>
             Cari tanaman...
-        </x-search>
+        </x-search> --}}
 
         <!-- Filter Component -->
         <div class="flex justify-end">
@@ -79,7 +79,7 @@
 
 <script>
     const periode = $('#pilih_periode');
-    const search = $('#search');
+    // const search = $('#search');
     const container = $('#chart_container');
   
     // Trigger Filter Modal
@@ -309,18 +309,18 @@
     });
   
     // Search
-    search.on("input", function () {
-          const input_value = $(this).val().toLowerCase();
-          let nama_tanaman = $(".nama_tanaman");
+    // search.on("input", function () {
+    //       const input_value = $(this).val().toLowerCase();
+    //       let nama_tanaman = $(".nama_tanaman");
   
-          nama_tanaman.each(function () {
-              let item_text = $(this).text().toLowerCase();
+    //       nama_tanaman.each(function () {
+    //           let item_text = $(this).text().toLowerCase();
   
-              if (item_text.includes(input_value)) {
-                  $(this).parent().removeClass("hidden");
-              } else {
-                  $(this).parent().addClass("hidden");
-              }
-          });
-      });
+    //           if (item_text.includes(input_value)) {
+    //               $(this).parent().removeClass("hidden");
+    //           } else {
+    //               $(this).parent().addClass("hidden");
+    //           }
+    //       });
+    //   });
 </script>

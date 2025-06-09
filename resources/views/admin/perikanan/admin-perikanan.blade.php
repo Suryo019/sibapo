@@ -2,23 +2,23 @@
   
   <!-- Dropdown -->
   <div class="flex justify-end my-4">
-      <div class="flex items-center justify-between w-full gap-6  max-md:gap-4">
-        <!-- Search Component -->
-        <x-search>
-          Cari ikan...
-        </x-search>
+    <div class="flex items-center justify-between w-full gap-6  max-md:gap-4">
+      <!-- Search Component -->
+      {{-- <x-search>
+        Cari ikan...
+      </x-search> --}}
 
-        {{-- Filter --}}
-    <div class="flex justify-end">
-      <div class="relative flex justify-end">
-          <x-filter></x-filter>
+      {{-- Filter --}}
+      <div class="flex justify-end">
+        <div class="relative flex justify-end">
+            <x-filter></x-filter>
 
-          <!-- Modal Background -->
-          <x-filter-modal>
-            <form action="" method="get">
-              <div class="space-y-4">
-                    <!-- Periode -->
-                    <div class="flex flex-col">
+            <!-- Modal Background -->
+            <x-filter-modal>
+              <form action="" method="get">
+                <div class="space-y-4">
+                  <!-- Periode -->
+                  <div class="flex flex-col">
                       <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Periode</label>
                       <input 
                       type="month" 
@@ -27,18 +27,17 @@
                       value="{{ old('periode', date('Y-m')) }}" 
                       class="border w-full max-md:w-full p-2 rounded bg-white text-xs">
                   </div>
-              </div>
+                </div>
 
-              <div class="w-full flex justify-end gap-3 mt-10">
-                <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
-                <button type="button" id="filterSubmitBtn" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
-              </div>
-          </form>
-          </x-filter-modal> 
-      </div> 
-    </div>
-
+                <div class="w-full flex justify-end gap-3 mt-10">
+                  <button type="reset" class="bg-yellow-550 text-white rounded-lg w-20 p-1 max-md:w-1/2">Reset</button>
+                  <button type="button" id="filterSubmitBtn" class="bg-pink-650 text-white rounded-lg w-20 p-1 max-md:w-1/2">Cari</button>
+                </div>
+              </form>
+            </x-filter-modal> 
+        </div> 
       </div>
+    </div>
   </div>
       
   <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px] relative">
@@ -69,7 +68,7 @@
 
 <script>
   const periode = $('#pilih_periode');
-  const search = $('#search');
+  // const search = $('#search');
   const container = $('#chart_container');
 
   // Trigger Filter Modal
@@ -312,18 +311,18 @@
   });
 
   // Search
-  search.on("input", function () {
-        const input_value = $(this).val().toLowerCase();
-        let nama_ikan = $(".nama_ikan");
+  // search.on("input", function () {
+  //       const input_value = $(this).val().toLowerCase();
+  //       let nama_ikan = $(".nama_ikan");
 
-        nama_ikan.each(function () {
-            let item_text = $(this).text().toLowerCase();
+  //       nama_ikan.each(function () {
+  //           let item_text = $(this).text().toLowerCase();
 
-            if (item_text.includes(input_value)) {
-                $(this).parent().removeClass("hidden");
-            } else {
-                $(this).parent().addClass("hidden");
-            }
-        });
-    });
+  //           if (item_text.includes(input_value)) {
+  //               $(this).parent().removeClass("hidden");
+  //           } else {
+  //               $(this).parent().addClass("hidden");
+  //           }
+  //       });
+  //   });
 </script>

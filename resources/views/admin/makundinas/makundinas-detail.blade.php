@@ -97,7 +97,7 @@
 
 <script>
     $(document).on('click', '.deleteBtn', function() { 
-        let dataId = $(this).data('id');  // Mengambil data-id yang benar
+        let dataId = $(this).data('id');
         $('#deleteModal').show();
 
         $('#yesBtn').off('click').on('click', function() {
@@ -105,6 +105,7 @@
                 type: 'DELETE',
                 url: `/api/makundinas/${dataId}`,
                 success: function(data) {
+                    // console.log(data);
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `User ${data.data.name} dari Dinas ${data.data.role} telah dihapus.`,
@@ -130,5 +131,4 @@
     $(document).on('click', '#closeBtn', function() {
         $('#deleteModal').hide();  
     });
-
 </script>

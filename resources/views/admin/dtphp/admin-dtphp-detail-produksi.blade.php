@@ -24,7 +24,7 @@
                             </div>
                     
                             <!-- Pilih Tanaman -->
-                            <div class="flex flex-col">
+                            {{-- <div class="flex flex-col">
                                 <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
                                 <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="">Semua Tanaman</option>
@@ -34,12 +34,12 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                     
                             <!-- Pilih periode -->
                             <div class="flex flex-col">
                                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                {{-- <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="" disabled selected>Pilih Periode</option>
                                     @foreach ($periods as $index => $period)
                                         <option value="{{ $numberPeriods[$index] }}"
@@ -47,7 +47,8 @@
                                             {{ $period }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
+                                <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
                         </div>
                     
@@ -194,13 +195,19 @@
                     const data = response.data;
                     $('#editDataList').empty();
     
+                    const formatTanggal = (tanggalStr) => {
+                        const tanggal = new Date(tanggalStr);
+                        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                        return tanggal.toLocaleDateString('id-ID', options);
+                    };
+
                     data.forEach(element => {
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
                                     <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} Ton</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                                 </div>
                                 <a href="dtphp/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 max-md:w-full max-md:text-center max-md:text-xs">Ubah</a>
                             </div>
@@ -226,14 +233,20 @@
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
-    
+                    
+                    const formatTanggal = (tanggalStr) => {
+                        const tanggal = new Date(tanggalStr);
+                        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                        return tanggal.toLocaleDateString('id-ID', options);
+                    };
+
                     data.forEach(element => {
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
                                     <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} Ton</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                                 </div>
                                 <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 max-md:w-full max-md:text-center max-md:text-xs">Hapus</button>
                             </div>

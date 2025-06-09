@@ -121,21 +121,17 @@ class AkunDinasController extends Controller
 
     public function destroy($id)
     {
-        try {
-            $user = User::find($id);
+        $user = User::with('role')->findOrFail($id);
+        $deletedUser = $user->replicate();
+        $user->delete();
     
-            if (!$user) {
-                return response()->json(['message' => 'Data tidak ditemukan'], 404);
-            }
-    
-            $user->delete();
-    
-            return response()->json(['message' => 'Data berhasil dihapus', 'data' => $user]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat menghapus data',
-                'error' => $th->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'message' => 'Data berhasil dihapus',
+            'data' => [
+                'id' => $deletedUser->id,
+                'name' => $deletedUser->name,
+                'role' => $user->role->role ?? 'Tidak diketahui'
+            ]
+        ]);
     }
 }

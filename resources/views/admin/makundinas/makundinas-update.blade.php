@@ -67,7 +67,7 @@
 let user_id = $('#user_id').val()
 
 const email = $('#email').val();
-
+// console.log(data)
 
 $('#submitBtn').on('click', function() {
     const formData = new FormData();
@@ -84,13 +84,15 @@ $('#submitBtn').on('click', function() {
         processData: false,
         contentType: false,
         success: function(data) {
+            const selectedRoleName = $('#role_id option:selected').text();
+            
             Swal.fire({
                 title: 'Berhasil!',
-                text: `Data user ${data.data.name} dari Dinas ${data.data.role} telah disimpan.`,
+                text: `Data user ${data.data.name} dari Dinas ${selectedRoleName} telah disimpan.`,
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then(() => {
-                location.reload();
+                window.location.href = "{{ route('makundinas.index') }}";
             });
         },
         error: function(xhr) {

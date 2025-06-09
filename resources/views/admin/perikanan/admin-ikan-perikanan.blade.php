@@ -1,17 +1,10 @@
 {{-- @dd($data) --}}
 <x-admin-layout>
-    <div class="w-full flex justify-between gap-4">
-        <!-- Search bar -->
-        <x-search></x-search>
-    
-        {{-- Filter --}}
-        <div class="flex justify-end max-md:w-full">
-            <x-filter></x-filter>
-    
-            <!-- Modal Background -->
-            <x-filter-modal>
-            </x-filter-modal>
-        </div>
+    <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+        <!-- Search Component -->
+        <x-search>
+            Cari ikan...
+        </x-search>
     </div>
     
     {{-- Main Content --}}
@@ -91,19 +84,6 @@
 </x-admin-layout>
 
 <script>
-
-    // Trigger Filter Modal
-    function toggleModal() {
-        const modal = document.getElementById('filterModal');
-        modal.classList.toggle('hidden');
-        modal.classList.toggle('flex');
-    }
-
-    $("#filterBtn").on("click", function() {
-        $("#filterModal").toggleClass("hidden");
-    });
-    // End Trigger Filter Modal
-
     $(document).on('click', '.deleteBtn', function() {
         let id = $(this).data('id');
         $('#modal').show();
@@ -138,17 +118,114 @@
         });
     });
 
-
     $('#closeBtn').on('click', function() {
         $('#modal').hide();
     });
 
     $(document).ready(function() {
-
-        // Filter Value
-        $('#submitBtn').on('click', function() {
-            document.querySelector("#filterForm").submit();
+        $('#search').on('input', function() {
+            const searchTerm = $(this).val().toLowerCase().trim();
+            const tableRows = $('tbody tr');
+            
+            if (searchTerm === '') {
+                tableRows.show();
+                updateNoDataMessage(false);
+                return;
+            }
+            
+            let visibleRowsCount = 0;
+            
+            tableRows.each(function() {
+                const namaIkan = $(this).find('td').eq(1).text().toLowerCase();
+                
+                if (namaIkan.includes(searchTerm)) {
+                    $(this).show();
+                    visibleRowsCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            updateNoDataMessage(visibleRowsCount === 0);
         });
+        
+        function updateNoDataMessage(show) {
+            const existingMessage = $('#no-search-results');
+            
+            if (show) {
+                if (existingMessage.length === 0) {
+                    const noResultsHTML = `
+                        <tr id="no-search-results">
+                            <td colspan="14" class="text-center py-8">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    <h3 class="text-lg font-medium text-gray-500 mb-2">Tidak ada hasil ditemukan</h3>
+                                    <p class="text-gray-400">Coba gunakan kata kunci yang berbeda</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    $('tbody').append(noResultsHTML);
+                } else {
+                    existingMessage.show();
+                }
+            } else {
+                existingMessage.hide();
+            }
+        }
+        
+        let searchTimeout;
+        $('#search').on('input', function() {
+            clearTimeout(searchTimeout);
+            const searchInput = $(this);
+            
+            searchTimeout = setTimeout(function() {
+                performSearch(searchInput.val());
+            }, 200);
+        });
+        
+        function performSearch(searchTerm) {
+            const normalizedSearch = searchTerm.toLowerCase().trim();
+            const tableRows = $('tbody tr:not(#no-search-results)');
+            
+            if (normalizedSearch === '') {
+                tableRows.show();
+                updateNoDataMessage(false);
+                return;
+            }
+            
+            let visibleRowsCount = 0;
+            
+            tableRows.each(function() {
+                const namaIkan = $(this).find('td').eq(1).text().toLowerCase();
+                const isMatch = namaIkan.includes(normalizedSearch);
+                
+                if (isMatch) {
+                    $(this).show();
+                    visibleRowsCount++;
+                    
+                    highlightSearchTerm($(this).find('td:first'), searchTerm, namaIkan);
+                } else {
+                    $(this).hide();
+                }
+            });
 
+            updateNoDataMessage(visibleRowsCount === 0);
+        }
+        
+        function highlightSearchTerm(element, searchTerm, originalText) {
+            if (searchTerm.trim() === '') {
+                element.html(originalText);
+                return;
+            }
+            
+            const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+        }
+        
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
     });
 </script>

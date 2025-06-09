@@ -11,21 +11,29 @@ use App\Http\Controllers\Controller;
 
 class MakundinasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
         Carbon::setLocale('id');
-          
-        $users = DB::table('users')
+    
+        $query = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.id', 'roles.role', 'users.name', 'users.username')
-            ->get();
-
+            ->select('users.id', 'roles.role', 'users.name', 'users.username');
+    
+        if ($request->has('dinas') && $request->dinas != '') {
+            $query->where('roles.role', $request->dinas);
+        }
+    
+        $users = $query->get();
+    
+        $roles = DB::table('roles')->select('role')->get();
+    
         return view('admin.makundinas.makundinas', [
             'title' => 'Manajemen Akun Dinas',
-            'data' => $users
+            'data' => $users,
+            'roles' => $roles
         ]);
     }
+    
 
     public function create()
     {
@@ -60,10 +68,10 @@ class MakundinasController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
         //
-    }
+    }    
 
     public function filter(Request $request)
     {

@@ -69,7 +69,7 @@ class DtphpController extends Controller
         Carbon::setLocale('id');
 
         $filterPeriode = $request->input('periode');
-        $filterTanaman = $request->input('tanaman');
+        // $filterTanaman = $request->input('tanaman');
         $order = $request->input('order', 'asc');
 
         $periodeUnikAngka = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
@@ -102,9 +102,9 @@ class DtphpController extends Controller
 
         $query = DTPHP::query()->whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif]);
 
-        if ($filterTanaman) {
-            $query->where('jenis_tanaman_id', $filterTanaman);
-        }
+        // if ($filterTanaman) {
+        //     $query->where('jenis_tanaman_id', $filterTanaman);
+        // }
     
         $data = $query->join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
             ->orderBy('jenis_tanaman.nama_tanaman', $order)
@@ -154,7 +154,7 @@ class DtphpController extends Controller
         Carbon::setLocale('id');
 
         $filterPeriode = $request->input('periode');
-        $filterTanaman = $request->input('tanaman');
+        // $filterTanaman = $request->input('tanaman');
         $order = $request->input('order', 'asc');
 
         $periodeUnikAngka = DTPHP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
@@ -187,9 +187,9 @@ class DtphpController extends Controller
 
         $query = DTPHP::query()->whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif]);
 
-        if ($filterTanaman) {
-            $query->where('jenis_tanaman_id', $filterTanaman);
-        }
+        // if ($filterTanaman) {
+        //     $query->where('jenis_tanaman_id', $filterTanaman);
+        // }
     
         $data = $query->join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
             ->orderBy('jenis_tanaman.nama_tanaman', $order)
