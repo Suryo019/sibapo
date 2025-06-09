@@ -62,6 +62,7 @@
                                 {{-- <th rowspan="2" class="px-2 py-2 text-center">Id</th> --}}
                                 <th rowspan="2" class="px-2 py-2 text-center">Role</th>
                                 <th rowspan="2" class="px-2 py-2 text-center">Name</th>
+                                <th rowspan="2" class="px-2 py-2 text-center">Email</th>
                                 <th rowspan="2" class="px-2 py-2 text-center">Username</th>
                                 <th rowspan="2" class="px-2 py-2 text-center">Aksi</th>
                             </tr>
@@ -73,6 +74,7 @@
                                     {{-- <td class="px-2 py-2 text-center">{{ $item->id }}</td> --}}
                                     <td class="px-2 py-2 text-center">{{ $item->role }}</td>
                                     <td class="px-2 py-2 text-center">{{ $item->name }}</td>
+                                    <td class="px-2 py-2 text-center">{{ $item->email }}</td>
                                     <td class="px-2 py-2 text-center">{{ $item->username }}</td>
                                     <td class="px-2 py-2 text-center">
                                         <div class="flex justify-center gap-1">
@@ -81,7 +83,7 @@
                                                   <i class="bi bi-pencil-square"></i>
                                                 </button>
                                               </a>
-                                              <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                              <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 md:w-10 md:h-10 flex items-center justify-center"
                                                 data-id="{{ $item->id }}"> <!-- Menggunakan data-id di sini -->
                                               <i class="bi bi-trash-fill text-xs md:text-base"></i>
                                           </button>

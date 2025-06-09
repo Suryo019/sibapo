@@ -61,32 +61,34 @@
 </div>
 </div>
 
-<!-- Main Content -->
-<main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
+        <!-- Main Content -->
+        <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
 
-<!-- Back Button & Title -->
-<div class="flex items-center gap-2 mb-4">
-<a href="{{ route('pegawai.dtphp.panen') }}" class="flex-shrink-0">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-    </svg>
-</a>
-<h3 class="text-lg font-semibold max-md:text-base text-center">Data Luas Panen Tahun 2025 (Hektar)</h3>
-</div>
+        <!-- Back Button & Title -->
+        <div class="flex items-center gap-2 mb-4">
+        <a href="{{ route('pegawai.dtphp.panen') }}" class="flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <h3 class="text-lg font-semibold max-md:text-base text-center">Data Luas Panen Tahun 2025 (Hektar)</h3>
+        </div>
 
-<!-- Switch Button -->
-<div class="flex w-auto ">
-<a href="{{ route('pegawai.dtphp.detail.produksi') }}">
-    <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('pegawai.dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">
-        Volume Produksi
-    </button>
-</a>
-<a href="{{ route('pegawai.dtphp.detail.panen') }}">
-    <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('pegawai.dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">
-        Luas Panen
-    </button>
-</a>
-</div>
+        <!-- Switch Button -->
+        <div class="flex w-auto">
+            <a href="{{ route('pegawai.dtphp.detail.produksi') }}">
+                <button class="rounded-t-xl px-4 py-3 text-sm border border-gray-20 max-md:text-xs max-md:px-3 max-md:py-2
+                {{ request()->routeIs('pegawai.dtphp.detail.produksi') ? 'text-gray-400 bg-white font-semibold' : 'text-gray-400 bg-gray-100' }}">
+                    Volume Produksi
+                </button>
+            </a>
+            <a href="{{ route('pegawai.dtphp.detail.panen') }}">
+                <button class="rounded-t-xl px-4 py-3 text-sm border border-gray-20 max-md:text-xs max-md:px-3 max-md:py-2
+                {{ request()->routeIs('pegawai.dtphp.detail.panen') ? 'text-pink-500 bg-white font-semibold' : 'text-gray-400 bg-gray-100' }}">
+                    Luas Panen
+                </button>
+            </a>
+        </div>
 
 <!-- Table or Data Empty -->
 <div class="bg-white p-6 max-md:p-4 rounded shadow-md border bg-gray-10 border-gray-20">

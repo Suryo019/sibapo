@@ -4,7 +4,7 @@
         {{-- Header --}}
         <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
         <div class="mb-5 justify-center mt-1 hidden md:flex">
-          <img class="w-56 mt-4" src="{{ asset('storage/img/logogabungan.png') }}" alt="logo">
+          <img class="w-48 mt-4" src="{{ asset('storage/img/logo-gabungan.png') }}" alt="logo">
         </div>
   
         {{-- Link --}}
@@ -33,7 +33,7 @@
 
           <x-pimpinan-sidebar-link
                 href="{{ route('pimpinan.dtphp-volume')}}"
-                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dtphp-volume') ? 'bg-pink-450 text-yellow-300' : '' }}">
+                class="hover:bg-pink-600 block py-2 px-4 rounded-lg mb-2 max-md:bg-pink-650 {{ request()->is('pimpinan/dtphp-volume') ||  request()->is('pimpinan/dtphp-panen') ? 'bg-pink-450 text-yellow-300' : '' }}">
                 <iconify-icon icon="carbon:agriculture-analytics" class="text-xl"></iconify-icon>
                 DTPHP 
           </x-pimpinan-sidebar-link>

@@ -227,12 +227,13 @@
                   }</td>
               `;
 
-                        for (let i = 1; i <= jumlahHari; i++) {
-                            const harga = row.harga_per_tanggal[i] ?? "-";
-                            const roundedClass =
-                                i === jumlahHari ? "rounded-r-full" : "";
-                            tbodyHtml += `<td class="px-4 py-3 text-center ${roundedClass} whitespace-nowrap">Rp. ${harga}</td>`;
-                        }
+                for (let i = 1; i <= jumlahHari; i++) {
+                const hargaRaw = row.harga_per_tanggal[i];
+                const hargaFormatted = hargaRaw ? parseInt(hargaRaw).toLocaleString("id-ID") : "-";
+                const roundedClass = i === jumlahHari ? "rounded-r-full" : "";
+                tbodyHtml += `<td class="px-4 py-3 text-center ${roundedClass} whitespace-nowrap">Rp. ${hargaFormatted}</td>`;
+                }
+
 
                         tbodyHtml += "</tr>";
                     });

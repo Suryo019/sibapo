@@ -1,6 +1,6 @@
 {{-- @dd($attributes['routeKelolaKomoditas']) --}}
 
-@props(['viewHref', 'createHref', 'viewData', 'createData', 'updateData' => null, 'dataHref', 'dinas' => null,'viewDetailHref' => null, 'kelolaData' => null, 'routeKelolaKomoditasView' => null, 'routeKelolaKomoditasCreate' => null, 'routeKelolaKomoditas' => null])
+@props(['viewHref', 'viewHrefPanen' => null, 'createHref', 'viewData', 'createData', 'updateData' => null, 'dataHref', 'dinas' => null,'viewDetailHref' => null, 'viewDetailHrefPanen' => null, 'kelolaData' => null, 'routeKelolaKomoditasView' => null, 'routeKelolaKomoditasCreate' => null, 'routeKelolaKomoditas' => null])
 
 <li class="mb-2 rounded-lg max-md:bg-pink-650" id="{{ $dinas }}">
   <div class="cursor-pointer toggle-dropdown {{ request()->is($dataHref) || request()->is($routeKelolaKomoditas . '*') ? 'text-yellow-300' : '' }} md:bg-transparent">
@@ -59,7 +59,7 @@
     </li>
   
     <ul class="mt-1 dropdown-content-kelola-data {{ request()->is($dataHref) ? 'block' : 'hidden' }}">
-      <li class="pl-[84px] py-1 rounded-md hover:bg-pink-600 {{ request()->url() === $viewHref || request()->url() === $viewDetailHref ? 'bg-pink-450' : '' }}">
+      <li class="pl-[84px] py-1 rounded-md hover:bg-pink-600 {{ request()->url() === $viewHref || request()->url() === $viewDetailHref || request()->url() === $viewHrefPanen || request()->url() === $viewDetailHrefPanen ? 'bg-pink-450' : '' }}">
         <a href="{{ $viewHref }}" class="rounded py-1 flex items-center gap-5 text-sm">
           <i class="bi bi-eye-fill"></i>
           {{ $viewData }}

@@ -39,8 +39,8 @@
 
                 <!-- Email/No Telp. -->
                 <div class="mb-4">
-                    <label class="block text-pink-500">Email/ No Telp.</label>
-                    <input type="text" name="email" placeholder="Contoh: ahmadselamet99@mail.com / 081234567890" 
+                    <label class="block text-pink-500">Email</label>
+                    <input type="text" name="email" placeholder="Contoh: ahmadselamet99@mail.com" 
                            class="border p-2 w-full rounded-xl" id="emailno" required>
                 </div>
 

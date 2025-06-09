@@ -23,8 +23,7 @@ class DPController extends Controller
 
         $cacheKey = "dp_index_{$request->periode}";
 
-        $dp = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
-            return DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+        $dp = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
                 ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_input, '%Y-%m') = ?", [$request->periode])
                 ->selectRaw("
                     jenis_ikan.nama_ikan as jenis_ikan,
@@ -34,7 +33,6 @@ class DPController extends Controller
                 ")
                 ->get()
                 ->groupBy('jenis_ikan');
-        });
 
         return response()->json([
             'data' => $dp,
@@ -70,8 +68,7 @@ class DPController extends Controller
         try {
             $cacheKey = "dp_listitem_{$jenisIkan}";
 
-            $data = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($jenisIkan) {
-                return DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
+            $data = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
                     ->where('jenis_ikan.nama_ikan', $jenisIkan)
                     ->select(
                         'dinas_perikanan.id as dp_id',
@@ -86,7 +83,6 @@ class DPController extends Controller
                         $item->tanggal_dibuat = $carbon->format('d') . ' ' . $bulanId . ' ' . $carbon->format('Y');
                         return $item;
                     });
-            });
 
             return response()->json(['data' => $data]);
 

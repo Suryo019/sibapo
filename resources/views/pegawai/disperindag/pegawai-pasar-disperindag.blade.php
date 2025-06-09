@@ -39,7 +39,7 @@
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     </a>
-                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 md:w-10 md:h-10 flex items-center justify-center"
                                         data-id="{{ $item['id'] }}"
                                         data-nama-pasar="{{ $item['nama_pasar'] }}"
                                         >

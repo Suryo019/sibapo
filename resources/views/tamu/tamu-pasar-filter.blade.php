@@ -28,8 +28,7 @@
             word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         ).join(" ");
     }
-    
-    
+
     function loadKomoditas() {
         $.ajax({
             type: "GET",
@@ -39,7 +38,7 @@
             },
             success: function (pasar) {
                 console.log(pasar);
-                
+
                 let datas = pasar.data;
                 let namaPasar = pasar.inputPasar;
 
@@ -59,24 +58,28 @@
                     $('#namaPasar').html(`di ${capitalize(namaPasar)}`);
                     $.each(datas, function (index, value) {
                         let statusSpan = '';
-    
+
+                        // Format harga dan selisih
+                        const formattedHarga = Number(value.rata_rata_hari_ini).toLocaleString('id-ID');
+                        const formattedSelisih = Number(value.selisih).toLocaleString('id-ID');
+
                         if (value.status == 'Stabil') {
                             statusSpan = `
                                 <span class="flex justify-center items-center bg-blue-200 w-full rounded-full p-2 text-blue-600 font-extrabold gap-3">
                                     <i class="bi bi-circle font-extrabold"></i>
-                                    ${value.status} Rp. ${value.selisih}
+                                    ${value.status} Rp. ${formattedSelisih}
                                 </span>`;
                         } else if (value.status == 'Naik') {
                             statusSpan = `
                                 <span class="flex justify-center items-center bg-green-200 w-full rounded-full p-2 text-green-600 font-extrabold gap-3">
                                     <i class="bi bi-arrow-up font-extrabold"></i>
-                                    ${value.status} Rp. ${value.selisih}
+                                    ${value.status} Rp. ${formattedSelisih}
                                 </span>`;
                         } else if (value.status == 'Turun') {
                             statusSpan = `
                                 <span class="flex justify-center items-center bg-red-200 w-full rounded-full p-2 text-red-600 font-extrabold gap-3">
                                     <i class="bi bi-arrow-down font-extrabold"></i>
-                                    ${value.status} Rp. ${value.selisih}
+                                    ${value.status} Rp. ${formattedSelisih}
                                 </span>`;
                         } else {
                             statusSpan = `
@@ -84,7 +87,7 @@
                                     ${value.status}
                                 </span>`;
                         }
-    
+
                         let card = `
                             <div class="bg-white rounded-3xl shadow-md overflow-hidden border h-auto w-72 py-3 px-1">
                                 <div class="h-[40vw] sm:h-40 md:h-44 lg:h-48 flex justify-center items-center overflow-hidden">
@@ -92,13 +95,13 @@
                                 </div>
                                 <div class="p-4 flex flex-col items-center gap-1">
                                     <p class="text-gray-600">${value.komoditas}</p>
-                                    <h3 class="text-2xl font-extrabold">Rp. ${value.rata_rata_hari_ini}/kg</h3>
+                                    <h3 class="text-2xl font-extrabold">Rp. ${formattedHarga}/kg</h3>
                                     <p class="text-lg mb-3">${value.pasar}</p>
                                     ${statusSpan}
                                 </div>
                             </div>`;
-    
-                        $('#comoditiesList').append(card); 
+
+                        $('#comoditiesList').append(card);
                     });
                 }
             },
@@ -129,5 +132,4 @@
     $('#submitBtn').on('click', function () {
         loadKomoditas();
     });
-
 </script>

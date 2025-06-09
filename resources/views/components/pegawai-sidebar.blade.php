@@ -54,7 +54,7 @@ $routeData = $pegawai ? $routes[$pegawai] : null;
       <h2 class="md:hidden font-medium mb-3 text-black">Menu</h2>
 
       <div class="mb-5 justify-center mt-1 hidden md:flex">
-        <img class="w-56 mt-4" src="{{ asset('storage/img/logogabungan.png') }}" alt="logo">
+        <img class="w-48 mt-4" src="{{ asset('/storage/img/logo-gabungan.png') }}" alt="logo">
       </div>
       
 

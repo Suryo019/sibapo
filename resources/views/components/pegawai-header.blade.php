@@ -33,46 +33,53 @@
             default => 'Admin'
         };
     @endphp
-    <div class="flex items-center gap-4">
-        <!-- Icon Notifikasi -->
-        <div class="relative mr-4">
-            <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
-            
-            <!-- Badge untuk jumlah notifikasi -->
-            <span id="notifBadge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center hidden">
-                0
-            </span>
-            
-            <!-- Dropdown Notifikasi -->
-            <div id="notifPanel" class="hidden absolute right-0 top-8 w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold">Notifikasi</h3>
-                    <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
-                </div>
-                
-                <!-- Loading state -->
-                <div id="notifLoading" class="text-center py-4">
-                    <p class="text-gray-500">Memuat notifikasi...</p>
-                </div>
-                
-                <!-- Container untuk notifikasi -->
-                <div id="notifContainer" class="hidden">
-                    <p class="font-semibold mb-2">Terbaru</p>
-                    <div id="notifList">
-                        <!-- Notifikasi akan dimuat di sini -->
-                    </div>
-                    
-                    <!-- Tombol untuk menandai semua sebagai dibaca -->
-                    <button id="markAllRead" class="w-full text-sm text-gray-600 hover:text-gray-800 mt-3 py-2 border rounded">
-                        Tandai Semua Sebagai Dibaca
-                    </button>
-                </div>
-
-                <a href="{{ $linkNotifikasi }}">
-                    <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
-                </a>
+    
+    <div class="flex items-center gap-4 mr-4">
+        <!-- Wrapper untuk ikon notifikasi -->
+        <div class="relative">
+          <!-- Icon -->
+          <i class="bi bi-bell-fill text-gray-600 cursor-pointer text-2xl" id="notifToggle"></i>
+          <!-- Badge jumlah notifikasi -->
+          <span id="notifBadge"
+                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center hidden">
+            0
+          </span>
+      
+          <!-- Panel Notifikasi -->
+            <div id="notifPanel"
+               class="hidden absolute top-8 right-0 w-[250px] sm:w-96 bg-white shadow-lg rounded-2xl z-50 p-5">
+      
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-bold">Notifikasi</h3>
+              <button id="notifClose" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
             </div>
+      
+            <!-- Loading -->
+            <div id="notifLoading" class="text-center py-4">
+              <p class="text-gray-500">Memuat notifikasi...</p>
+            </div>
+      
+            <!-- Kontainer Notifikasi -->
+            <div id="notifContainer" class="hidden">
+              <p class="font-semibold mb-2">Terbaru</p>
+              <div id="notifList">
+                <!-- Notifikasi dimuat di sini -->
+              </div>
+      
+              <!-- Tombol tandai dibaca -->
+              <button id="markAllRead"
+                      class="w-full text-sm text-gray-600 hover:text-gray-800 mt-3 py-2 border rounded">
+                Tandai Semua Sebagai Dibaca
+              </button>
+            </div>
+      
+            <!-- Link ke halaman semua notifikasi -->
+            <a href="{{ route('notifikasi.index') }}">
+              <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
+            </a>
         </div>
+    </div>
         
     
         <!-- Gambar Profil dan Nama -->
@@ -81,7 +88,6 @@
                 class="w-10 h-10 rounded-full bg-gray-300 scale-95 md:scale-100">
             <span class="text-sm hidden md:block">Hi, <b class="text-yellow-500">{{ Auth::user()->username }}</b>!</span>
         </div>
-    </div>
 
 </header>
 
@@ -159,7 +165,7 @@
             </div>
 
             <!-- Email -->
-            <div class="w-full max-w-md mb-6 px-4">
+            <div class="w-full max-w-md mb-20 px-4">
                 <label for="email_profile" class="flex items-center text-pink-650 text-lg md:text-xl font-semibold mb-2 gap-2">
                     <i class="bi bi-envelope-fill"></i> Email
                 </label>

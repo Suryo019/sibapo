@@ -57,7 +57,7 @@
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    window.location.href = "{{ route('pasar.index') }}";
+                    window.location.href = "{{ route('pegawai.disperindag.pasar.index') }}";
                 });
             },
             error: function(xhr, status, error) {

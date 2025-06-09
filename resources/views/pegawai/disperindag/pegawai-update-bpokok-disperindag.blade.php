@@ -102,7 +102,9 @@
                     text: `Data ${data.data.nama_bahan_pokok} telah diperbarui.`,
                     icon: 'success',
                     confirmButtonText: 'OK'
-                }).then();
+                }).then(() => {
+                    window.location.href = "{{ route('pegawai.disperindag.bahanpokok.index') }}";
+                });
             },
             error: function(xhr, status, error) {
                 let errors = xhr.responseJSON.errors;

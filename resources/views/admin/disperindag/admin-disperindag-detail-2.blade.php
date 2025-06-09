@@ -84,13 +84,13 @@
                             <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="px-2 py-2 text-center">
                                 <div class="flex justify-center gap-1">
-                                    <button class="editBtn bg-yellow-400 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                    <button class="editBtn bg-yellow-400 text-white rounded-md w-10 h-10 md:w-10 md:h-10 flex items-center justify-center"
                                         data-bahan-pokok="{{ $item['jenis_bahan_pokok'] }}"
                                         data-periode-bulan="{{ $splitNumberPeriod[1] }}"
                                         data-periode-tahun="{{ $splitNumberPeriod[0] }}">
                                         <i class="bi bi-pencil-square text-xs md:text-base"></i>
                                     </button>
-                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+                                    <button class="deleteBtn bg-red-500 text-white rounded-md w-10 h-10 md:w-10 md:h-10 flex items-center justify-center"
                                         data-bahan-pokok="{{ $item['jenis_bahan_pokok'] }}"
                                         data-periode-bulan="{{ $splitNumberPeriod[1] }}"
                                         data-periode-tahun="{{ $splitNumberPeriod[0] }}">
