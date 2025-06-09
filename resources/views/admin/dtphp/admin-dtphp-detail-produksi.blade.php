@@ -17,7 +17,7 @@
                             <!-- Pilih urutan -->
                             <div class="flex flex-col">
                                 <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                                <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <select name="order" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A - Z</option>
                                     <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                                 </select>
@@ -26,7 +26,7 @@
                             <!-- Pilih Tanaman -->
                             <div class="flex flex-col">
                                 <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
-                                <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="">Semua Tanaman</option>
                                     @foreach ($commodities as $commodity)
                                         <option value="{{ $commodity->id }}" {{ request('tanaman') == $commodity->id ? 'selected' : '' }}>
@@ -39,7 +39,7 @@
                             <!-- Pilih periode -->
                             <div class="flex flex-col">
                                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="" disabled selected>Pilih Periode</option>
                                     @foreach ($periods as $index => $period)
                                         <option value="{{ $numberPeriods[$index] }}"
@@ -73,12 +73,12 @@
         
             <!-- Tombol Switch Produksi / Panen -->
             <div class="flex w-auto">
-            <a href="{{ route('dtphp.detail.produksi') }}">
-                <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Volume Produksi</button>
-            </a>
-            <a href="{{ route('dtphp.detail.panen') }}">
-                <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Luas Panen</button>
-            </a>
+                <a href="{{ route('dtphp.detail.produksi') }}">
+                    <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Volume Produksi</button>
+                </a>
+                <a href="{{ route('dtphp.detail.panen') }}">
+                    <button class="text-gray-400 rounded-t-xl bg-gray-100 px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.panen') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Luas Panen</button>
+                </a>
             </div>
         
             <div class="bg-white p-6 max-md:p-4 rounded shadow-md relative z-10 overflow-x-auto">

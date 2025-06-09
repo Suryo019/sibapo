@@ -14,7 +14,7 @@
                     <!-- Urutan -->
                     <div class="flex flex-col">
                         <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                        <select name="urutkan" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_urutan">
                             <option value="asc" {{ old('urutkan') == 'asc' ? 'selected' : '' }}>A - Z</option>
                             <option value="desc" {{ old('urutkan') == 'desc' ? 'selected' : '' }}>Z - A</option>
                         </select>
@@ -23,7 +23,7 @@
                     <!-- Pilih Pasar -->
                     <div class="flex flex-col">
                         <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                        <select name="pasar" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_pasar">
                             @foreach ($markets as $market)
                                 <option value="{{ $market->nama_pasar }}" {{ old('pasar') == $market->nama_pasar ? 'selected' : '' }}>{{ $market->nama_pasar }}</option>
                             @endforeach
@@ -93,7 +93,7 @@
             {{-- Modal Delete --}}
             <div id="deleteModal" class="hidden w-full h-full">
                 <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
-                    <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                    <div class="bg-white p-6 rounded-lg w-[90%] max-w-sm shadow-lg">
                         <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                         <div class="flex justify-around">
                             <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>
@@ -137,11 +137,17 @@
     // End Trigger Filter Modal
 
     // Trigger Close btn modal edit & hapus
-    $('#closeListModal').on('click', function() {
+    function formatRupiah(angka) {
+    if (angka === undefined || angka === null || angka === "-") return "-";
+    angka = parseInt(angka.toString().replace(/\./g, ""), 10);
+    return angka.toLocaleString("id-ID");
+    }
+
+    $('#closeListModal').on('click', function () {
         $(this).closest('#modal').removeClass("flex").addClass("hidden");
     });
 
-    $(document).on('click', '.editBtn', function() {
+    $(document).on('click', '.editBtn', function () {
         modal.removeClass("hidden").addClass("flex");
         $("#actionPlaceholder").html("edit");
 
@@ -156,30 +162,32 @@
             },
             success: function (response) {
                 const data = response.data;
-                
+
                 $("#editDataList").empty();
-                    data.forEach((element) => {
-                        let listCard = `
-                            <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
-                                    <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
-                                    <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                    <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
-                                </div>
-                                <a href="/disperindag/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                data.forEach((element) => {
+                    let harga = formatRupiah(element.kg_harga);
+
+                    let listCard = `
+                        <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
+                                <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
+                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${harga}</span></p>
                             </div>
-                        `;
-                        $("#editDataList").append(listCard);
-                    });
-                },
+                            <a href="/pegawai/disperindag/data/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
+                        </div>
+                    `;
+                    $("#editDataList").append(listCard);
+                });
+            },
             error: function (xhr) {
                 console.log(xhr.responseText);
             },
         });
     });
 
-    $(document).on('click', '.deleteBtn', function() {
+    $(document).on('click', '.deleteBtn', function () {
         const modal = $("#modal");
         modal.removeClass("hidden").addClass("flex");
         $("#actionPlaceholder").html("hapus");
@@ -195,16 +203,18 @@
             },
             success: function (response) {
                 const data = response.data;
-                
+
                 $("#editDataList").empty();
                 data.forEach((element) => {
+                    let harga = formatRupiah(element.kg_harga);
+
                     let listCard = `
                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-500">Jenis Bahan Pokok: <span class="font-medium">${element.nama_bahan_pokok}</span></p>
                                 <p class="text-sm text-gray-500">Pasar: <span class="font-medium">${element.nama_pasar}</span></p>
                                 <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_dibuat}</span></p>
-                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${element.kg_harga}</span></p>
+                                <p class="text-sm text-gray-500">Harga: <span class="font-medium">Rp. ${harga}</span></p>
                             </div>
                             <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
                         </div>
@@ -217,19 +227,19 @@
             },
         });
     });
-    
+
     // Delete
-    $(document).on('click', '.btnConfirm', function() { 
+    $(document).on('click', '.btnConfirm', function () {
         let dataId = $(this).data('id');
         $('#deleteModal').show();
 
-        $('#yesBtn').off('click').on('click', function() {
+        $('#yesBtn').off('click').on('click', function () {
             $.ajax({
                 type: 'DELETE',
                 url: `/api/dpp/${dataId}`,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
-                    
+
                     Swal.fire({
                         title: 'Berhasil!',
                         text: `Data ${response.data.nama_bahan_pokok} telah dihapus.`,
@@ -239,7 +249,7 @@
                         location.reload();
                     });
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -252,9 +262,10 @@
         });
     });
 
-    $(document).on('click', '#closeBtn', function() {
-        $('#deleteModal').hide();  
+    $(document).on('click', '#closeBtn', function () {
+        $('#deleteModal').hide();
     });
+
 
     // Filter Bahan Pokok
     filter("/api/dpp-filter");
@@ -328,12 +339,21 @@
                         `;
 
                         for (let i = 1; i <= jumlahHari; i++) {
-                            const harga = row.harga_per_tanggal[i] ?? "-";
-                            tbodyHtml += `<td class="px-2 py-2 text-center whitespace-nowrap">Rp. ${harga}</td>`;
+                        let harga = row.harga_per_tanggal[i];
+
+                        if (harga !== undefined && harga !== null && harga !== "-") {
+                            harga = parseInt(harga.toString().replace(/\./g, ""), 10); // hilangkan titik
+                            harga = harga.toLocaleString("id-ID"); // format ribuan
+                            harga = `Rp. ${harga}`;
+                        } else {
+                            harga = "-";
                         }
 
-                        tbodyHtml += "</tr>";
-                    });
+                        tbodyHtml += `<td class="px-2 py-2 text-center whitespace-nowrap">${harga}</td>`;
+                    }
+
+                    tbodyHtml += "</tr>";
+                })
                 }
 
                 $("#comoditiesTbody").html(tbodyHtml);
