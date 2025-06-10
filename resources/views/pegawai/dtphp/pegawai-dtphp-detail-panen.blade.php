@@ -17,7 +17,7 @@
                 <!-- Pilih urutan -->
                 <div class="flex flex-col">
                     <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                    <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                    <select name="order" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A - Z</option>
                         <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                     </select>
@@ -26,7 +26,7 @@
                 <!-- Pilih Tanaman -->
                 <div class="flex flex-col">
                     <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
-                    <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                    <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         <option value="">Semua Tanaman</option>
                         @foreach ($commodities as $commodity)
                             <option value="{{ $commodity->id }}" {{ request('tanaman') == $commodity->id ? 'selected' : '' }}>
@@ -39,7 +39,7 @@
                 <!-- Pilih periode -->
                 <div class="flex flex-col">
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                    <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         <option value="" disabled selected>Pilih Periode</option>
                         @foreach ($periods as $index => $period)
                             <option value="{{ $numberPeriods[$index] }}"
@@ -147,7 +147,7 @@
         {{-- Modal Delete --}}
         <div id="deleteModal" class="hidden w-full h-full">
             <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
-                <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                <div class="bg-white p-6 rounded-lg w-[90%] max-w-sm shadow-lg">
                     <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                     <div class="flex justify-around">
                         <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>

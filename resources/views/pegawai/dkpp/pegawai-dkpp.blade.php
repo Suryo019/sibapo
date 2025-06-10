@@ -19,7 +19,7 @@
                 <!-- Pilih Periode -->
                 <div class="flex flex-col">
                   <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                  <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border border-black p-2 rounded bg-white w-full">
+                  <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="border p-2 rounded bg-white w-full">
                 </div>
               </div>
   

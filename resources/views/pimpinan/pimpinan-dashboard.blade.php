@@ -130,7 +130,7 @@
     </div>
 
 <!-- RIWAYAT AKTIVITAS - MOBILE -->
-    <div class=" p-4 block md:hidden">
+    <div class=" p-4 block md:hidden bg-white">
       <h2 class="text-lg font-semibold mb-4">Riwayat Aktivitas</h2>
       <div class="space-y-3">
         @foreach ($aktivitas as $item)
