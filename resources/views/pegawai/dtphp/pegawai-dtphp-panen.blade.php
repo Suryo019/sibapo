@@ -1,4 +1,4 @@
-<x-admin-layout title="Visualisasi Data Panen">
+<x-pegawai-layout title="Visualisasi Data Panen">
     
     <!-- Dropdown Section -->
     <div class="flex flex-col gap-4 my-4 w-full">
@@ -80,7 +80,7 @@
         </div>
     </main>
     
-    </x-admin-layout>
+    </x-pegawai-layout>
     
     <script>
         const periode = $('#pilih_periode');

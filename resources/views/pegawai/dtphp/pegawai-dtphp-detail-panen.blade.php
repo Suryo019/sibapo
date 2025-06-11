@@ -1,7 +1,7 @@
 <x-pegawai-layout title="Detail Data Panen">
 
     <!-- Search dan Filter -->
-<div class="flex justify-between my-4 max-md:flex-col max-md:gap-4">
+<div class="flex justify-between items-center my-4 max-md:gap-4">
 <!-- Search Component -->
 <x-search>Cari tanaman...</x-search>
 

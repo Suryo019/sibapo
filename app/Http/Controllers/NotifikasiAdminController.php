@@ -161,11 +161,7 @@ class NotifikasiAdminController extends Controller
     {
         $notificationId = $request->input('notification_id');
         
-        if ($notificationId) {
-            Notifikasi::where('id', $notificationId)->update(['is_read' => true]);
-        } else {
-            Notifikasi::where('role_id', 1)->update(['is_read' => true]);
-        }
+        Notifikasi::where('is_admin', 1)->update(['is_read' => true]);
 
         return response()->json(['success' => true]);
     }
