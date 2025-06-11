@@ -32,40 +32,5 @@
 </x-pegawai-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.jenis-tanaman.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_tanaman: $('#nama_tanaman').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_tanaman').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data tanaman ${data.data.nama_tanaman} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.jenis-tanaman.store') }}",data:{_token:"{{ csrf_token() }}",nama_tanaman:$("#nama_tanaman").val()},success:function(a){$("#nama_tanaman").val(""),Swal.fire({title:"Berhasil!",text:`Data tanaman ${a.data.nama_tanaman} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a,n,t){let e=a.responseJSON.errors,r="";$.each(e,(function(a,n){r+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:r})}})}));
 </script>

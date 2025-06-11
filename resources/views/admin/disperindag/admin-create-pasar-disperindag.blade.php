@@ -32,40 +32,5 @@
 </x-admin-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.pasar.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_pasar: $('#nama_pasar').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_pasar').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ${data.data.nama_pasar} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.pasar.store') }}",data:{_token:"{{ csrf_token() }}",nama_pasar:$("#nama_pasar").val()},success:function(a){$("#nama_pasar").val(""),Swal.fire({title:"Berhasil!",text:`Data ${a.data.nama_pasar} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a,t,r){let e=a.responseJSON.errors,n="";$.each(e,(function(a,t){n+=t+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
 </script>

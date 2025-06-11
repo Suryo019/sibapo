@@ -86,29 +86,5 @@
 
 
 <script>
-  $(document).ready(function () {
-    $('#{{ $dinas }} .toggle-dropdown').on('click', function () {
-      const $dropdown = $(this).next('ul.dropdown-content-dkpp-dtphp-dp');
-      const $icon = $(this).find('.caret-icon');
-        
-      $dropdown.slideToggle(200);
-      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
-    });
-
-    $("#kelola_data_{{ $dinas }}").on('click', function () {
-      const $dropdown = $(this).next("ul.dropdown-content-kelola-data");
-      const $icon = $(this).find('.caret-icon');
-
-      $dropdown.slideToggle(200);
-      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
-    });
-
-    $('#kelola_komoditas_{{ $dinas }}').on('click', function () {
-      const $dropdown = $(this).next("ul.dropdown-content-komoditas");
-      const $icon = $(this).find('.caret-icon');
-
-      $dropdown.slideToggle(200);
-      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
-    });
-  });
+$(document).ready((function(){$("#{{ $dinas }} .toggle-dropdown").on("click",(function(){const o=$(this).next("ul.dropdown-content-dkpp-dtphp-dp"),t=$(this).find(".caret-icon");o.slideToggle(200),t.toggleClass("bi-caret-down-fill bi-caret-up-fill")})),$("#kelola_data_{{ $dinas }}").on("click",(function(){const o=$(this).next("ul.dropdown-content-kelola-data"),t=$(this).find(".caret-icon");o.slideToggle(200),t.toggleClass("bi-caret-down-fill bi-caret-up-fill")})),$("#kelola_komoditas_{{ $dinas }}").on("click",(function(){const o=$(this).next("ul.dropdown-content-komoditas"),t=$(this).find(".caret-icon");o.slideToggle(200),t.toggleClass("bi-caret-down-fill bi-caret-up-fill")}))}));
 </script>

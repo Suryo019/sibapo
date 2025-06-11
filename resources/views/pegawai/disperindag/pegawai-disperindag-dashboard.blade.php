@@ -161,43 +161,5 @@
   </x-pegawai-layout>>
 
 <script>
-
-$.ajax({
-  type: 'GET',
-  url: "{{ route('api.beranda.index') }}",
-  success: function(response) {
-    const data = response.data;
-    const tbody = document.getElementById("tabel-komoditas");
-
-    data.forEach((item, index) => {
-      let ikon = '';
-      if (item.selisih > 0) {
-        ikon = `<div class='bg-green-600 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-up-circle-fill text-white"></i></div>`;
-      } else if (item.selisih < 0) {
-        ikon = `<div class='bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-arrow-down-circle-fill text-white"></i></div>`;
-      } else {
-        ikon = `<div class='bg-gray-400 rounded flex justify-center items-center w-10 h-10 p-2'><i class="bi bi-dash-circle-fill text-white"></i></div>`
-      }
-
-      const hargaHariIni = item.rata_rata_hari_ini ? `Rp. ${item.rata_rata_hari_ini.toLocaleString()}` : '-';
-      const selisih = item.selisih > 0 
-        ? `+ Rp. ${item.selisih.toLocaleString()}`
-        : item.selisih < 0
-          ? `- Rp. ${Math.abs(item.selisih).toLocaleString()}`
-          : 'Rp. 0';
-
-      const tr = `
-        <tr class="border-t">
-          <td class="p-2">${index + 1}</td>
-          <td class="p-2">${item.komoditas}</td>
-          <td class="p-2">${ikon}</td>
-          <td class="p-2">${hargaHariIni}</td>
-          <td class="p-2">${selisih}</td>
-        </tr>
-      `;
-      tbody.innerHTML += tr;
-    });
-  }
-});
-
+$.ajax({type:"GET",url:"{{ route('api.beranda.index') }}",success:function(i){const t=i.data,e=document.getElementById("tabel-komoditas");t.forEach(((i,t)=>{let s="";s=i.selisih>0?"<div class='bg-green-600 rounded flex justify-center items-center w-10 h-10 p-2'><i class=\"bi bi-arrow-up-circle-fill text-white\"></i></div>":i.selisih<0?"<div class='bg-red-500 rounded flex justify-center items-center w-10 h-10 p-2'><i class=\"bi bi-arrow-down-circle-fill text-white\"></i></div>":"<div class='bg-gray-400 rounded flex justify-center items-center w-10 h-10 p-2'><i class=\"bi bi-dash-circle-fill text-white\"></i></div>";const a=i.rata_rata_hari_ini?`Rp. ${i.rata_rata_hari_ini.toLocaleString()}`:"-",l=i.selisih>0?`+ Rp. ${i.selisih.toLocaleString()}`:i.selisih<0?`- Rp. ${Math.abs(i.selisih).toLocaleString()}`:"Rp. 0",r=`\n        <tr class="border-t">\n          <td class="p-2">${t+1}</td>\n          <td class="p-2">${i.komoditas}</td>\n          <td class="p-2">${s}</td>\n          <td class="p-2">${a}</td>\n          <td class="p-2">${l}</td>\n        </tr>\n      `;e.innerHTML+=r}))}});
 </script>

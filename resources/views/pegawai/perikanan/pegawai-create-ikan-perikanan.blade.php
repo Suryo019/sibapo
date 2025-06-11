@@ -32,40 +32,5 @@
 </x-pegawai-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.jenis-ikan.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_ikan: $('#nama_ikan').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_ikan').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ikan ${data.data.nama_ikan} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.jenis-ikan.store') }}",data:{_token:"{{ csrf_token() }}",nama_ikan:$("#nama_ikan").val()},success:function(a){$("#nama_ikan").val(""),Swal.fire({title:"Berhasil!",text:`Data ikan ${a.data.nama_ikan} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a,n,t){let i=a.responseJSON.errors,e="";$.each(i,(function(a,n){e+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
 </script>

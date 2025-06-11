@@ -45,27 +45,6 @@
                     <input type="text" placeholder="Contoh: 100000,-" 
                            class="border p-2 w-full rounded-xl" id="kg_harga">
                 </div>
-                
-                <!-- Gambar Bahan Pokok -->
-                {{-- <div class="mb-4">
-                    <label class="block text-pink-500 mb-2" for="gambar_bahan_pokok_input">Gambar Bahan Pokok</label>
-
-                    <!-- Custom file upload button -->
-                    <label for="gambar_bahan_pokok_input" 
-                        class="inline-flex items-center px-4 py-2 bg-pink-500 text-white text-sm font-medium rounded-xl cursor-pointer hover:bg-pink-600 transition">
-                        <i class="bi bi-upload me-2"></i> Pilih Gambar
-                    </label>
-
-                    <input type="file" name="gambar_bahan_pokok" id="gambar_bahan_pokok_input" class="hidden" accept="image/*">
-
-                    <!-- Preview -->
-                    <div class="mt-4 flex flex-col ml-8">
-                        <span class="text-slate-500 hidden" id="text-preview-gambar">Preview Gambar</span>
-                        <img id="gambar_preview" alt="Preview Gambar" 
-                            class="w-40 h-40 hidden rounded-xl object-contain border border-pink-200 p-1 shadow">
-                    </div>
-                </div> --}}
-    
             </form> 
         </div>
         
@@ -78,76 +57,5 @@
 </x-admin-layout>
 
 <script>
-    // preview
-    // const input = document.getElementById('gambar_bahan_pokok_input');
-    // const preview = document.getElementById('gambar_preview');
-
-    // $('#gambar_bahan_pokok_input').on('change', function() {
-    //     let gambar = this;
-    //     let text = $('#text-preview-gambar');
-    //     let gambar_preview = $('#gambar_preview');
-
-    //     gambar_preview.toggleClass('hidden');
-    //     gambar_preview.toggleClass('block');
-    //     text.toggleClass('hidden');
-    //     text.toggleClass('block');
-        
-    //     const oFReader = new FileReader();
-    //     oFReader.readAsDataURL(gambar.files[0]);
-
-    //     oFReader.onload = function(oFREvent) {
-    //         gambar_preview.attr('src', oFREvent.target.result);
-    //     }
-    // });
-
-    $('#submitBtn').on('click', function() {
-        const formData = new FormData();
-        formData.append('_token', '{{ csrf_token() }}');
-        formData.append('pasar_id', $('#pasar').val());
-        formData.append('jenis_bahan_pokok_id', $('#jenis_bahan_pokok').val());
-        formData.append('kg_harga', $('#kg_harga').val());
-
-        // let fileInput = $('#gambar_bahan_pokok_input')[0].files[0];
-        // if (fileInput !== undefined) {
-        //     formData.append('gambar_bahan_pokok', fileInput);
-        // }
-
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.dpp.store') }}",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                $('#pasar').val('');
-                $('#jenis_bahan_pokok').val('');
-                $('#gambar_bahan_pokok_input').val('');
-                $('#kg_harga').val('');
-
-                // $('#gambar_preview').attr('src', '').addClass('hidden');
-
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ${response.data.nama_bahan_pokok} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            },
-            error: function(xhr) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
-
+$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("pasar_id",$("#pasar").val()),a.append("jenis_bahan_pokok_id",$("#jenis_bahan_pokok").val()),a.append("kg_harga",$("#kg_harga").val()),$.ajax({type:"POST",url:"{{ route('api.dpp.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#pasar").val(""),$("#jenis_bahan_pokok").val(""),$("#gambar_bahan_pokok_input").val(""),$("#kg_harga").val(""),Swal.fire({title:"Berhasil!",text:`Data ${a.data.nama_bahan_pokok} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a){let n=a.responseJSON.errors,e="";$.each(n,(function(a,n){e+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
 </script>

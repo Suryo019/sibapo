@@ -12,19 +12,6 @@
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form id="agricultureForm" onkeydown="return event.key != 'Enter';">
                 @csrf
-{{-- 
-                <div class="mb-4">
-                    <label for="jenis_komoditas" class="block text-sm font-medium text-pink-500 mb-1">Jenis Komoditas</label>
-                    <input 
-                        type="text" 
-                        name="jenis_komoditas" 
-                        id="jenis_komoditas"
-                        placeholder="Contoh: Padi" 
-                        class="w-full border border-gray-300 p-2 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
-                        required>
-                    <p id="jenis_komoditas_error" class="mt-1 text-sm text-red-600 hidden"></p>
-                </div> --}}
-
                 <!-- Nama Tanaman -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Tanamanr</label>
@@ -78,42 +65,5 @@
 </x-admin-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.dtphp.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenis_tanaman_id: $('#tanaman').val(),
-                ton_volume_produksi: $('#ton_volume_produksi').val(),
-                hektar_luas_panen: $('#hektar_luas_panen').val(),
-                },
-            success: function(data) {   
-                $('#tanaman').val('');
-                $('#ton_volume_produksi').val('');
-                $('#hektar_luas_panen').val('');
-
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data tanaman telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.dtphp.store') }}",data:{_token:"{{ csrf_token() }}",jenis_tanaman_id:$("#tanaman").val(),ton_volume_produksi:$("#ton_volume_produksi").val(),hektar_luas_panen:$("#hektar_luas_panen").val()},success:function(a){$("#tanaman").val(""),$("#ton_volume_produksi").val(""),$("#hektar_luas_panen").val(""),Swal.fire({title:"Berhasil!",text:"Data tanaman telah disimpan.",icon:"success",confirmButtonText:"OK"})},error:function(a,n,t){let e=a.responseJSON.errors,o="";$.each(e,(function(a,n){o+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:o})}})}));
 </script>

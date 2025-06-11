@@ -65,11 +65,5 @@
 </html>
 
 <script>
-
-document.querySelector('form').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-    }
-});
-
+document.querySelector("form").addEventListener("keydown",(function(e){"Enter"===e.key&&e.preventDefault()}));
 </script>

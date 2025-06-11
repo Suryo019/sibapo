@@ -74,42 +74,5 @@
 </x-admin-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: "{{ route('api.dkpp.update', $data->id) }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenis_komoditas_dkpp_id: $('#jenis_komoditas_dkpp_id').val(),
-                ton_ketersediaan: $('#ton_ketersediaan').val(),
-                ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
-                minggu: $('#minggu').val(),
-                },
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: `Data ${response.data.nama_komoditas} berhasil diubah!`,
-                    confirmButtonColor: '#16a34a'
-                }).then(() => {
-                    window.location.href = "{{ route('dkpp.detail') }}";
-                });
-
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:"{{ route('api.dkpp.update', $data->id) }}",data:{_token:"{{ csrf_token() }}",jenis_komoditas_dkpp_id:$("#jenis_komoditas_dkpp_id").val(),ton_ketersediaan:$("#ton_ketersediaan").val(),ton_kebutuhan_perminggu:$("#ton_kebutuhan_perminggu").val(),minggu:$("#minggu").val()},success:function(t){Swal.fire({icon:"success",title:"Berhasil",text:`Data ${t.data.nama_komoditas} berhasil diubah!`,confirmButtonColor:"#16a34a"}).then((()=>{window.location.href="{{ route('dkpp.detail') }}"}))},error:function(t,a,e){let n=t.responseJSON.errors,i="";$.each(n,(function(t,a){i+=a+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:i})}})}));
 </script>

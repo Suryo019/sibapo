@@ -71,46 +71,6 @@
 </div>
   
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const filterToggle = document.getElementById('filterToggle');
-      const filterDropdown = document.getElementById('filterDropdown');
-      const filterChevron = document.getElementById('filterChevron');
-      const applyFilterBtn = document.getElementById('applyFilter');
-
-      // Toggle dropdown
-      filterToggle.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const isHidden = filterDropdown.classList.contains('hidden');
-          
-          if (isHidden) {
-              filterDropdown.classList.remove('hidden');
-              filterChevron.style.transform = 'rotate(180deg)';
-          } else {
-              filterDropdown.classList.add('hidden');
-              filterChevron.style.transform = 'rotate(0deg)';
-          }
-      });
-
-      document.addEventListener('click', function(e) {
-          if (!filterToggle.contains(e.target) && !filterDropdown.contains(e.target)) {
-              filterDropdown.classList.add('hidden');
-              filterChevron.style.transform = 'rotate(0deg)';
-          }
-      });
-
-      function checkEmptySections() {
-          const sections = document.querySelectorAll('h3');
-          sections.forEach(sectionTitle => {
-              const sectionDiv = sectionTitle.parentElement;
-              const visibleNotifs = sectionDiv.querySelectorAll('.notif-item[style*="flex"], .notif-item:not([style*="none"])');
-              
-              if (visibleNotifs.length === 0) {
-                  sectionDiv.style.display = 'none';
-              } else {
-                  sectionDiv.style.display = 'block';
-              }
-          });
-      }
-  });
+document.addEventListener("DOMContentLoaded",(function(){const t=document.getElementById("filterToggle"),e=document.getElementById("filterDropdown"),n=document.getElementById("filterChevron");document.getElementById("applyFilter");t.addEventListener("click",(function(t){t.stopPropagation();e.classList.contains("hidden")?(e.classList.remove("hidden"),n.style.transform="rotate(180deg)"):(e.classList.add("hidden"),n.style.transform="rotate(0deg)")})),document.addEventListener("click",(function(d){t.contains(d.target)||e.contains(d.target)||(e.classList.add("hidden"),n.style.transform="rotate(0deg)")}))}));
 </script>
   

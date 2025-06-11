@@ -66,45 +66,5 @@
 </x-admin-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.dkpp.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenis_komoditas_dkpp_id: $('#jenis_komoditas_dkpp_id').val(),
-                ton_ketersediaan: $('#ton_ketersediaan').val(),
-                ton_kebutuhan_perminggu: $('#ton_kebutuhan_perminggu').val(),
-                minggu: $('#minggu').val(),
-                },
-            success: function(response) {  
-                
-                $('#jenis_komoditas_dkpp_id').val('');
-                $('#ton_ketersediaan').val('');
-                $('#ton_kebutuhan_perminggu').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ${response.data.nama_komoditas} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.dkpp.store') }}",data:{_token:"{{ csrf_token() }}",jenis_komoditas_dkpp_id:$("#jenis_komoditas_dkpp_id").val(),ton_ketersediaan:$("#ton_ketersediaan").val(),ton_kebutuhan_perminggu:$("#ton_kebutuhan_perminggu").val(),minggu:$("#minggu").val()},success:function(t){$("#jenis_komoditas_dkpp_id").val(""),$("#ton_ketersediaan").val(""),$("#ton_kebutuhan_perminggu").val(""),Swal.fire({title:"Berhasil!",text:`Data ${t.data.nama_komoditas} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(t,e,n){let a=t.responseJSON.errors,i="";$.each(a,(function(t,e){i+=e+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:i})}})}));
 </script>
