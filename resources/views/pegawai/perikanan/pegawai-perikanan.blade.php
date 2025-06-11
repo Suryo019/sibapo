@@ -3,11 +3,6 @@
     <!-- Dropdown -->
     <div class="flex justify-end my-4">
         <div class="flex items-center justify-between w-full gap-6 max-md:gap-4">
-          <!-- Search Component -->
-          <x-search>
-            Cari ikan...
-          </x-search>
-
           {{-- Filter --}}
       <div class="flex justify-end">
         <div class="relative flex justify-end">
@@ -69,7 +64,6 @@
 
 <script>
   const periode = $('#pilih_periode');
-  const search = $('#search');
   const container = $('#chart_container');
 
   // Trigger Filter Modal
@@ -310,20 +304,4 @@
     
     fetchDataAndRenderChart();
   });
-
-  // Search
-  search.on("input", function () {
-        const input_value = $(this).val().toLowerCase();
-        let nama_ikan = $(".nama_ikan");
-
-        nama_ikan.each(function () {
-            let item_text = $(this).text().toLowerCase();
-
-            if (item_text.includes(input_value)) {
-                $(this).parent().removeClass("hidden");
-            } else {
-                $(this).parent().addClass("hidden");
-            }
-        });
-    });
 </script>

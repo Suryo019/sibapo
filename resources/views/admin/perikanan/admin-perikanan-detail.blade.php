@@ -1,7 +1,7 @@
 <x-admin-layout>
     
     <!-- Search dan Dropdown -->
-    <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+    <div class="flex items-center justify-between gap-4 mb-6">
         <!-- Search Component -->
         <x-search>
             Cari ikan...
@@ -25,32 +25,10 @@
                             </select>
                         </div>
                 
-                        <!-- Pilih ikan -->
-                        {{-- <div class="flex flex-col">
-                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                            <select name="ikan" id="pilih_ikan" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                <option value="">Semua Ikan</option>
-                                @foreach ($fishes as $fish)
-                                    <option value="{{ $fish->id }}" {{ request('ikan') == $fish->id ? 'selected' : '' }}>
-                                        {{ $fish->nama_ikan }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                
                         <!-- Pilih periode -->
                         <div class="flex flex-col">
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            {{-- <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                <option value="" disabled selected>Pilih Periode</option>
-                                @foreach ($periods as $index => $period)
-                                    <option value="{{ $numberPeriods[$index] }}"
-                                        {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
-                                        {{ $period }}
-                                    </option>
-                                @endforeach
-                            </select> --}}
-                            <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                            <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         </div>
                     </div>
                 
@@ -168,6 +146,8 @@
 </x-admin-layout>
 
 <script>
+    const periode = $('#periode');
+
     // Trigger Filter Modal
     function toggleModal() {
         const modal = document.getElementById('filterModal');
@@ -198,7 +178,9 @@
         $.ajax({
             type: "GET",
             url: `/api/dp/${jenisIkan}`,
-            // data: {jenis_ikan:jenisIkan},
+            data: {
+                periode: periode.val(),
+            },
             success: function(response) {
                 const data = response.data;
                 $('#editDataList').empty();
@@ -238,6 +220,9 @@
         $.ajax({
             type: "GET",
             url: `/api/dp/${jenisIkan}`,
+            data: {
+                    periode: periode.val(),
+                },
             success: function(response) {
                 const data = response.data;
                 $('#editDataList').empty();

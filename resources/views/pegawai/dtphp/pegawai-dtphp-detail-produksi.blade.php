@@ -1,7 +1,7 @@
 <x-pegawai-layout title="Detail Data Produksi">
 
     <!-- Search dan Dropdown -->
-    <div class="flex justify-between my-4 max-md:flex-col max-md:gap-4">
+    <div class="flex items-center justify-between my-4 max-md:gap-4">
         <!-- Search Component -->
         <x-search>Cari tanaman...</x-search>
     
@@ -23,31 +23,10 @@
                                 </select>
                             </div>
                     
-                            <!-- Pilih Tanaman -->
-                            <div class="flex flex-col">
-                                <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
-                                <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="">Semua Tanaman</option>
-                                    @foreach ($commodities as $commodity)
-                                        <option value="{{ $commodity->id }}" {{ request('tanaman') == $commodity->id ? 'selected' : '' }}>
-                                            {{ $commodity->nama_tanaman }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                    
                             <!-- Pilih periode -->
                             <div class="flex flex-col">
                                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="" disabled selected>Pilih Periode</option>
-                                    @foreach ($periods as $index => $period)
-                                        <option value="{{ $numberPeriods[$index] }}"
-                                            {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
-                                            {{ $period }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
                         </div>
                     
@@ -172,6 +151,8 @@
 </x-pegawai-layout>
 
 <script>
+    const periode = $('#periode');
+
     $(document).ready(function() {
         $('.select2').select2({
             width: '100%'
@@ -190,17 +171,26 @@
             $.ajax({
                 type: "GET",
                 url: `/api/dtphp/${jenisTanaman}`,
+                data: {
+                    periode: periode.val(),
+                },
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
+
+                    const formatTanggal = (tanggalStr) => {
+                        const tanggal = new Date(tanggalStr);
+                        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                        return tanggal.toLocaleDateString('id-ID', options);
+                    };
 
                     data.forEach(element => {
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
                                     <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} Ton</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                                 </div>
                                 <a href="dtphp/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 max-md:w-full max-md:text-center max-md:text-xs">Ubah</a>
                             </div>
@@ -223,17 +213,26 @@
             $.ajax({
                 type: "GET",
                 url: `/api/dtphp/${jenisTanaman}`,
+                data: {
+                    periode: periode.val(),
+                },
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
+
+                    const formatTanggal = (tanggalStr) => {
+                        const tanggal = new Date(tanggalStr);
+                        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                        return tanggal.toLocaleDateString('id-ID', options);
+                    };
 
                     data.forEach(element => {
                         let listCard = `
                             <div class="border rounded-md p-4 shadow-sm flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
                                 <div class="max-md:w-full">
                                     <p class="text-sm text-gray-500 max-md:text-xs">Jenis Tanaman: <span class="font-medium">${element.nama_tanaman}</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} ton</span></p>
-                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Volume Produksi: <span class="font-medium">${element.ton_volume_produksi} Ton</span></p>
+                                    <p class="text-sm text-gray-500 max-md:text-xs">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                                 </div>
                                 <button data-id="${element.id}" class="btnConfirm bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 max-md:w-full max-md:text-center max-md:text-xs">Hapus</button>
                             </div>

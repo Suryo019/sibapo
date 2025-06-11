@@ -28,7 +28,7 @@
         <div class="flex flex-col justify-between max-xl:justify-center h-full pr-6 max-xl:pr-0 py-10 text-white text-center relative">
             <div>
                 <!-- Logo Pemerintah -->
-                <img src="{{ asset('storage/img/logo-pemda.png') }}" class="w-16 mx-auto hidden lg:block mb-6" />
+                <img src="{{ asset('storage/img/logo-pemda.png') }}" class="w-16 mx-auto hidden lg:block mb-20" />
     
                 <!-- Selamat Datang -->
                 <h2 class="text-xl lg:text-2xl font-semibold hidden lg:block mb-6">Selamat Datang</h2>

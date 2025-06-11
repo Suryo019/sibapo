@@ -163,7 +163,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/notifications/{id}/incomplete', [NotifikasiAdminController::class, 'markAsIncomplete']);
     Route::delete('/notifications/{id}', [NotifikasiAdminController::class, 'destroy']);
 
-    Route::post('/notifikasi/filter', [NotifikasiAdminController::class, 'filter'])->name('admin.notifikasi.filter');
+    Route::get('/notifikasi/filter', [NotifikasiAdminController::class, 'filter'])->name('admin.notifikasi.filter');
 
 });
 // ADMIN END

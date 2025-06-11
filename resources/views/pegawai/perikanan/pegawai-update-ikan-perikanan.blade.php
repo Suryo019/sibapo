@@ -57,7 +57,7 @@
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    window.location.href = "{{ route('jenis-ikan.index') }}";
+                    window.location.href = "{{ route('pegawai.jenis-ikan.index') }}";
                 });
             },
             error: function(xhr, status, error) {

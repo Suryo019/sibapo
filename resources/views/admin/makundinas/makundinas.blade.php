@@ -17,7 +17,7 @@
                             <!-- Pilih Dinas -->
                             <div class="flex flex-col">
                                 <label for="pilih_dinas" class="block text-sm font-medium text-gray-700 mb-1">Pilih Dinas</label>
-                                <select name="dinas" id="pilih_dinas" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <select name="dinas" id="pilih_dinas" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                     <option value="">Semua Dinas</option>
                                     @foreach ($roles as $dinas)
                                         <option value="{{ $dinas->role }}" {{ request('dinas') == $dinas->role ? 'selected' : '' }}>

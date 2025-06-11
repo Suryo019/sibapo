@@ -81,21 +81,23 @@ class PerikananController extends Controller
     {
         Carbon::setLocale('id');
 
-        $filterPeriode = $request->input('periode');
-        // $filterIkan = $request->input('ikan');
+        $inputPeriode = $request->input('periode');
+
+        if ($inputPeriode){
+            $filterPeriode = Carbon::createFromFormat('Y-m', $inputPeriode)
+                ->translatedFormat('Y');
+        } else {
+            $filterPeriode = null;
+        }
+
         $order = $request->input('order', 'asc');
 
-        $periodeUnikAngka = DP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y-%m") as periode'))
+        $periodeUnikAngka = DP::select(DB::raw('DISTINCT DATE_FORMAT(tanggal_input, "%Y") as periode'))
             ->orderBy('periode', 'desc')
             ->get()
             ->map(function ($item) {
                 return $item->periode;
             });
-
-        $periodeUnikNama = $periodeUnikAngka->map(function ($periode) {
-            $carbonDate = Carbon::createFromFormat('Y-m', $periode);
-            return $carbonDate->translatedFormat('F Y');
-        });
 
         if ($periodeUnikAngka->isEmpty()) {
             return view('admin.perikanan.admin-perikanan-detail', [
@@ -104,44 +106,16 @@ class PerikananController extends Controller
                 'fishes' => [],
                 'periods' => [],
                 'numberPeriods' => [],
-                'daysInMonth' => 0,
             ]);
         }
 
         $periodeAktif = $filterPeriode ?? $periodeUnikAngka->first();
-        
-        $periodeParts = explode('-', $periodeAktif);
-        $jumlahHari = Carbon::createFromDate($periodeParts[0], $periodeParts[1])->daysInMonth;
 
-        $query = DP::query()->whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif]);
+        $query = DP::query()->whereRaw('DATE_FORMAT(tanggal_input, "%Y") = ?', [$periodeAktif]);
 
-        // if ($filterIkan) {
-        //     $query->where('jenis_ikan_id', $filterIkan);
-        // }
-    
         $data = $query->join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
             ->orderBy('jenis_ikan.nama_ikan', $order)
             ->get();
-
-        $dpProduksiHari = DP::whereRaw('DATE_FORMAT(tanggal_input, "%Y-%m") = ?', [$periodeAktif])
-            ->get()
-            ->groupBy('jenis_ikan_id')
-            ->map(function ($items) {
-                $row = [
-                    'id' => $items[0]->id,
-                    'user_id' => $items[0]->user_id,
-                    'jenis_ikan_id' => $items[0]->jenis_ikan_id,
-                    'ton_produksi' => $items[0]->ton_produksi,
-                    'data_asli' => $items, // Untuk debugging/detail
-                ];
-
-                foreach ($items as $item) {
-                    $tanggal = (int) date('d', strtotime($item->tanggal_input));
-                    $row['produksi_per_tanggal'][$tanggal] = $item->ton_produksi;
-                }
-
-                return $row;
-            })->values();  
 
             $dpProduksiBulanan = $data->groupBy('jenis_ikan_id')
             ->map(function ($items) {
@@ -151,7 +125,6 @@ class PerikananController extends Controller
                     'jenis_ikan_id' => $items[0]->jenis_ikan_id,
                     'nama_ikan' => $items[0]->nama_ikan,
                     'produksi_per_bulan' => [],
-                    'data_asli' => $items, // opsional
                 ];
     
                 foreach ($items as $item) {
@@ -176,9 +149,7 @@ class PerikananController extends Controller
             'title' => 'Dinas Perikanan',
             'data' => $dpProduksiBulanan,
             'fishes' => $fishes,
-            'periods' => $periodeUnikNama,
             'numberPeriods' => $periodeUnikAngka,
-            'daysInMonth' => $jumlahHari,
         ]);
     }
 }
