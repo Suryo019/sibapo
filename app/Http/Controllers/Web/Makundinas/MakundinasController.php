@@ -17,7 +17,7 @@ class MakundinasController extends Controller
     
         $query = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.id', 'roles.role', 'users.name', 'users.username');
+            ->select('users.id', 'roles.role', 'users.name', 'users.username', 'users.email');
     
         if ($request->has('dinas') && $request->dinas != '') {
             $query->where('roles.role', $request->dinas);

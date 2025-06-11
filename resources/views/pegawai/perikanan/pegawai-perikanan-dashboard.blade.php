@@ -150,7 +150,7 @@
         </div>
       
         <!-- MOBILE: Card Riwayat -->
-        <div class="md:hidden space-y-4">
+        <div class="md:hidden space-y-4 bg-white">
           <div class="block md:hidden text-lg font-semibold mb-2">Riwayat Aktivitas</div>
           @foreach ($aktivitas as $item)
           @php

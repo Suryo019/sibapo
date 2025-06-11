@@ -1,7 +1,7 @@
 <x-admin-layout>
 
         <!-- Search dan Dropdown -->
-        <div class="flex justify-between my-4 max-md:flex-col max-md:gap-4">
+        <div class="flex items-center justify-between my-4 max-md:gap-4">
             <!-- Search Component -->
             <x-search>Cari tanaman...</x-search>
         
@@ -124,7 +124,7 @@
                 {{-- Modal Delete --}}
                 <div id="deleteModal" class="hidden w-full h-full">
                     <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
-                        <div class="bg-white p-6 rounded-lg w-[25%] max-w-2xl shadow-lg relative">
+                        <div class="bg-white p-6 rounded-lg w-[90%] max-w-sm shadow-lg">
                             <h2 class="text-xl font-semibold mb-6 text-center">Yakin menghapus data?</h2>
                             <div class="flex justify-around">
                                 <button class="bg-pink-500 hover:bg-pink-400 text-white px-4 py-2 rounded-full" id="closeBtn">Tutup</button>

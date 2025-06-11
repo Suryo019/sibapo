@@ -1,7 +1,7 @@
 <x-pegawai-layout title="Detail Data Dinas">
     
     <!-- Search dan Dropdown -->
-    <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+    <div class="flex items-center justify-between gap-4 mb-6">
         <!-- Search Component -->
         <x-search>
             Cari ikan...
@@ -19,7 +19,7 @@
                         <!-- Pilih urutan -->
                         <div class="flex flex-col">
                             <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Urutan</label>
-                            <select name="order" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                            <select name="order" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                                 <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A - Z</option>
                                 <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                             </select>

@@ -1,7 +1,7 @@
 <nav class="w-full bg-pink-650 flex text-white justify-around max-md:justify-between items-center max-md:px-6 py-5 relative z-10">
     {{-- Logo --}}
     <a href="{{ route('beranda') }}" class="flex items-center">
-        <img class="w-14 ml-4" src="{{ asset('storage/img/cintako.png') }}" alt="logo">
+        <img class="w-36 ml-4" src="{{ asset('storage/img/logo-cintako.png') }}" alt="logo">
     </a>
     
 
@@ -77,9 +77,9 @@
 <div id="black_screen" class="fixed inset-0 bg-black bg-opacity-80 z-40 hidden opacity-0 transition-opacity duration-300"></div>
 
 <div id="mobileMenu" class="fixed top-0 right-0 h-full w-3/4 bg-white text-black z-50 transform translate-x-full transition-transform duration-300 md:hidden shadow-lg">
-    <div class="flex justify-between items-center p-4 border-gray-200">
-        <img src="{{ asset('storage/img/logo_1.png') }}" class="h-10 w-30 scale-90" alt="Logo" class="h-8">
-        <button onclick="toggleMobileMenu()" class="text-2xl text-pink-600 font-bold">&times;</button>
+    <div class="flex justify-between items-center p-4 border-gray-200 bg-pink-650">
+        <img src="{{ asset('storage/img/logo-cintako.png') }}" class="h-12 w-30 scale-90" alt="Logo" class="h-8">
+        <button onclick="toggleMobileMenu()" class="text-2xl text-black font-bold">&times;</button>
     </div>
     <div class="flex flex-col gap-8 px-8 py-4 text-base font-medium">
         <a href="{{ route('tamu.komoditas') }}" class="{{ request()->is('komoditas') ? 'text-pink-650 font-semibold' : '' }}">Bahan Pokok</a>

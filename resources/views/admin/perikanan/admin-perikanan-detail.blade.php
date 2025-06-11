@@ -1,7 +1,7 @@
 <x-admin-layout>
     
     <!-- Search dan Dropdown -->
-    <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+    <div class="flex items-center justify-between gap-4 mb-6">
         <!-- Search Component -->
         <x-search>
             Cari ikan...

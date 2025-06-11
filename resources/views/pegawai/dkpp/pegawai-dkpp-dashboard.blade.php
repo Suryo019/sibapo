@@ -105,7 +105,7 @@
     <!-- TABLE -->
     <div class="bg-white md:border border-0 rounded-lg p-4 mb-8">
       <!-- DESKTOP -->
-      <div class="hidden md:block">
+      <div class="hidden md:block ">
         <table class="w-full text-center text-sm">
           <thead>
             <tr>

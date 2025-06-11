@@ -28,7 +28,7 @@
                 <div class="mb-4">
                     <label class="block text-gray-700">Volume Produksi (Ton)</label>
                     <input type="text" placeholder="Contoh: 100" 
-                           class="border p-2 w-full rounded-full" id="ton_produksi">
+                           class="border p-2 w-full rounded-xl" id="ton_produksi">
                 </div>
     
             </form>
