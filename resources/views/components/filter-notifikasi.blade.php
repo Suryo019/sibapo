@@ -24,12 +24,12 @@
 
     <!-- Filter Dropdown -->
     <div id="filterDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-white border border-white rounded-lg shadow-lg z-10">
-        <form class="p-4 space-y-4" action="{{ route('admin.notifikasi.filter') }}" method="post">
+        <form class="p-4 space-y-4" action="{{ route('admin.notifikasi.filter') }}" method="GET">
             @csrf
             <!-- Status Filter -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                <select id="statusFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                <select id="statusFilter" name="status" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
                     <option value="">Semua Status</option>
                     <option value="completed">Selesai</option>
                     <option value="pending">Belum Selesai</option>
@@ -39,19 +39,19 @@
             <!-- Message Filter -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                <select id="messageFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                <select id="messageFilter" name="role_id" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
                     <option value="">Semua Role</option>
-                    <option value="disperindag belum menginputkan data">DISPERINDAG</option>
-                    <option value="dkpp belum menginputkan data">DKPP</option>
-                    <option value="dp belum menginputkan data">PERIKANAN</option>
-                    <option value="dtphp belum menginputkan data">DTPHP</option>
+                    <option value="2">DISPERINDAG</option>
+                    <option value="3">DKPP</option>
+                    <option value="4">DTPHP</option>
+                    <option value="5">PERIKANAN</option>
                 </select>
             </div>
 
             <!-- Date Range Filter -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Periode</label>
-                <select id="dateFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                <select id="dateFilter" name="tanggal_pesan" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
                     <option value="">Semua Waktu</option>
                     <option value="today">Hari Ini</option>
                     <option value="yesterday">Kemarin</option>

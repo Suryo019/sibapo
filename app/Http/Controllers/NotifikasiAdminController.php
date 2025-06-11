@@ -43,14 +43,14 @@ class NotifikasiAdminController extends Controller
             }
         }
 
-        if ($request->filled('role')) {
+        if ($request->filled('role_id')) {
             $query->whereHas('role', function($q) use ($request) {
-                $q->where('role', $request->role);
+                $q->where('role_id', $request->role_id);
             });
         }
 
-        if ($request->filled('date_range')) {
-            switch ($request->date_range) {
+        if ($request->filled('tanggal_pesan')) {
+            switch ($request->tanggal_pesan) {
                 case 'today':
                     $query->whereDate('tanggal_pesan', Carbon::today());
                     break;
@@ -65,10 +65,11 @@ class NotifikasiAdminController extends Controller
                     break;
                 case 'month':
                     $query->whereMonth('tanggal_pesan', Carbon::now()->month)
-                          ->whereYear('tanggal_pesan', Carbon::now()->year);
+                        ->whereYear('tanggal_pesan', Carbon::now()->year);
                     break;
             }
         }
+
 
         if ($request->filled('search')) {
             $searchTerm = $request->search;
@@ -82,11 +83,7 @@ class NotifikasiAdminController extends Controller
                     : (Carbon::parse($item->tanggal_pesan)->isYesterday() ? 'Kemarin' : 'Sebelumnya');
             });
 
-        return response()->json([
-            'success' => true,
-            'data' => $notifikasis,
-            'count' => $notifikasis->flatten()->count()
-        ]);
+        return view('admin.admin-notifikasi', compact('notifikasis'));
     }
 
     public function getHeaderNotifications()
