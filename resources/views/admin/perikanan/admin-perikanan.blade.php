@@ -4,9 +4,9 @@
   <div class="flex justify-end my-4">
     <div class="flex items-center justify-between w-full gap-6  max-md:gap-4">
       <!-- Search Component -->
-      {{-- <x-search>
+      <x-search>
         Cari ikan...
-      </x-search> --}}
+      </x-search>
 
       {{-- Filter --}}
       <div class="flex justify-end">

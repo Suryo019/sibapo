@@ -50,7 +50,7 @@
                                     </option>
                                 @endforeach
                             </select> --}}
-                            <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                            <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         </div>
                     </div>
                 
