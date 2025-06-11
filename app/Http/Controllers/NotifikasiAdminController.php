@@ -144,7 +144,8 @@ class NotifikasiAdminController extends Controller
         //     ->where('is_read', false)
         //     ->count();
 
-        $unreadCount = Notifikasi::where('is_admin', 1)
+        $unreadCount = Notifikasi::with('role')
+            ->where('is_admin', 1)
             ->where('is_read', false)
             ->count();
 

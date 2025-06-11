@@ -17,54 +17,44 @@
         <div id="alertMessage" class="p-4 rounded-lg text-sm"></div>
     </div>
 
-    <div class="space-y-6 mt-6">
+    <div class="space-y-4 mt-6">
         @foreach ($notifikasis as $label => $items)
             <div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ $label }}</h3>
-
-                <div class="space-y-3">
+                <h3 class="text-base font-semibold text-gray-800 mb-2">{{ $label }}</h3>
+    
+                <div class="space-y-2">
                     @foreach ($items as $notif)
-                        <div class="flex flex-col sm:flex-row sm:items-center bg-white p-4 rounded-lg shadow justify-between notif-item {{ $notif->is_completed ? 'opacity-75 bg-gray-50' : '' }}" 
+                        <div class="flex items-start justify-between bg-white p-3 rounded-lg shadow notif-item {{ $notif->is_completed ? 'opacity-75 bg-gray-50' : '' }}" 
                              data-notif-id="{{ $notif->id }}">
-                            <div class="flex flex-col space-y-1">
-                                <div class="flex items-start space-x-4">
-                                    {{-- Icon berdasarkan status --}}
-                                    @php
-                                        $roleIcons = [
-                                            'disperindag' => 'mage:basket-fill',
-                                            'dkpp'        => 'healthicons:plantation-worker-alt',
-                                            'perikanan'   => 'majesticons:fish',
-                                            'dtphp'       => 'mdi:tree',
-                                        ];
-                                    
-                                        $icon = $roleIcons[$notif->role->role] ?? 'mdi:alert-circle';
-                                    @endphp
-                                    
-                                    <iconify-icon 
-                                        icon="{{ $icon }}" 
-                                        class="text-xl text-pink-600">
-                                    </iconify-icon>
-
-                                    <div class="flex-1">
-                                        <p class="text-sm">
-                                            <span class="font-semibold text-yellow-500 text-uppercase">{{ strtoupper($notif->role->role) }}</span>,
-                                            <span class="text-gray-600 {{ $notif->is_completed ? 'line-through' : '' }}">{{ $notif->pesan }}</span>
-                                        </p>
-                                        
-                                        {{-- Tampilkan info jika sudah selesai --}}
-                                        @if($notif->is_completed && $notif->completed_at)
-                                            <p class="text-xs text-green-600 mt-1">
-                                                <iconify-icon icon="mdi:check" class="text-xs"></iconify-icon>
-                                                Selesai pada {{ $notif->completed_at->format('d M Y H:i') }}
-                                            </p>
-                                        @endif
-                                    </div>
-                                </div>
-                                <span class="text-xs text-gray-400 ml-8">{{ $notif->tanggal_pesan->diffForHumans() }}</span>
-                            </div>
                             
-                            {{-- Action buttons --}}
-                            <div class="mt-3 sm:mt-0 flex flex-wrap gap-2">
+                            <!-- Kiri: Icon + Text -->
+                            <div class="flex items-start space-x-3">
+                                @php
+                                    $roleIcons = [
+                                        'disperindag' => 'mage:basket-fill',
+                                        'dkpp'        => 'healthicons:plantation-worker-alt',
+                                        'perikanan'   => 'majesticons:fish',
+                                        'dtphp'       => 'mdi:tree',
+                                    ];
+                                    $icon = $roleIcons[$notif->role->role] ?? 'mdi:alert-circle';
+                                @endphp
+    
+                                <iconify-icon 
+                                    icon="{{ $icon }}" 
+                                    class="text-4xl text-pink-600">
+                                </iconify-icon>
+    
+                                <div>
+                                    <p class="text-sm leading-snug">
+                                        <span class="font-semibold text-yellow-500 uppercase">{{ strtoupper($notif->role->role) }}</span>, 
+                                        <span class="text-pink-600 {{ $notif->is_completed ? 'line-through' : '' }}">{{ $notif->pesan }}</span>
+                                    </p>
+                                    <span class="text-xs text-gray-400">{{ $notif->tanggal_pesan->diffForHumans() }}</span>
+                                </div>
+                            </div>
+    
+                            <!-- Kanan: Tombol -->
+                            <div class="flex items-center gap-2 ml-4 shrink-0">
                                 @if($notif->is_completed)
                                     <button onclick="markAsIncomplete({{ $notif->id }})" 
                                             class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors">
@@ -78,8 +68,7 @@
                                         Tandai Selesai
                                     </button>
                                 @endif
-                                
-                                {{-- Tombol hapus --}}
+    
                                 <button onclick="deleteNotification({{ $notif->id }})" 
                                         class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-full whitespace-nowrap transition-colors">
                                     <iconify-icon icon="mdi:delete" class="text-xs mr-1"></iconify-icon>
@@ -92,6 +81,7 @@
             </div>
         @endforeach
     </div>
+    
 
     {{-- Loading overlay --}}
     <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

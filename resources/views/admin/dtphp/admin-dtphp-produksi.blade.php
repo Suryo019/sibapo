@@ -59,7 +59,7 @@
     </div>
 
     <!-- Tombol Switch -->
-    <div class="flex w-auto ml-4">
+    <div class="flex w-auto ml-4" id="switch_button">
       <a href="{{ route('dtphp.produksi') }}">
           <button class="text-pink-500 rounded-t-xl bg-white px-4 py-3 shadow-md text-sm border bg-gray-10 border-gray-20 {{ request()->routeIs('dtphp.detail.produksi') ? 'font-bold' : '' }} max-md:text-xs max-md:px-3 max-md:py-2">Volume Produksi</button>
       </a>
@@ -108,8 +108,11 @@
             <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
           </div>
         `);
+          $('#switch_button').addClass('hidden');
         return;
       }
+      $('#switch_button').removeClass('hidden');
+
 
       // Gabung semua data dalam satu chart
       const labels = []; // jenis tanaman

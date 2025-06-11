@@ -73,9 +73,19 @@
                 Tandai Semua Sebagai Dibaca
               </button>
             </div>
-      
+            
+            @php
+                $dinas = match(true) {
+                    Auth::user()->role->role == 'disperindag' => 'pegawai.disperindag.notifikasi.index',
+                    Auth::user()->role->role == 'dkpp' => 'pegawai.dkpp.notifikasi.index',
+                    Auth::user()->role->role == 'dtphp' => 'pegawai.dtphp.notifikasi.index',
+                    Auth::user()->role->role == 'perikanan' => 'pegawai.perikanan.notifikasi.index',
+                    default => 'Admin'
+                };
+            @endphp
+
             <!-- Link ke halaman semua notifikasi -->
-            <a href="{{ route('notifikasi.index') }}">
+            <a href="{{ route($dinas) }}">
               <p class="text-center text-pink-600 mt-4 cursor-pointer hover:underline">Semua Notifikasi</p>
             </a>
         </div>
@@ -428,17 +438,31 @@
             const date = new Date(notif.tanggal_pesan);
             const timeAgo = getTimeAgo(date);
 
+            const dinas = {
+                disperindag : 'mage:basket-fill',
+                dkpp       : 'healthicons:plantation-worker-alt',
+                perikanan   : 'majesticons:fish',
+                dtphp       : 'mdi:tree',
+            };
+            let icon = dinas [notif.role.role]?? 'mdi:alert-circle'
+
             html += `
-                <div class="flex items-start p-3 mb-2 border rounded-lg ${bgClass} cursor-pointer hover:bg-gray-100" 
-                     onclick="markNotificationAsRead(${notif.id})">
-                    <img src="https://via.placeholder.com/30" alt="Icon" class="w-7 h-7 mr-3">
-                    <div class="flex-1">
-                        <p class="text-sm ${textClass} font-bold">${notif.role?.name || 'SISTEM'}</p>
-                        <p class="text-sm text-gray-600">${notif.pesan}</p>
-                        <span class="text-xs text-gray-400">${timeAgo}</span>
-                    </div>
-                    ${!isRead ? '<div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>' : ''}
+            <div class="flex items-start p-4 mb-2 border rounded-lg ${bgClass} cursor-pointer hover:bg-gray-100" 
+                onclick="markNotificationAsRead(${notif.id})">
+                <iconify-icon 
+                    icon="${icon}" 
+                    class="text-4xl text-pink-600 mr-3">
+                </iconify-icon>
+                <div class="flex-1">
+                    <p class="text-sm ${textClass} font-bold">
+                        <span class="text-yellow-500">${notif.role?.role || 'SISTEM'}</span>, 
+                        <span class="text-pink-600 font-normal">${notif.pesan}</span>
+                    </p>
+                    <span class="text-xs text-gray-400">${timeAgo}</span>
                 </div>
+                ${!isRead ? '<div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>' : ''}
+            </div>
+
             `;
         });
         
