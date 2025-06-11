@@ -24,7 +24,8 @@
 
     <!-- Filter Dropdown -->
     <div id="filterDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-white border border-white rounded-lg shadow-lg z-10">
-        <div class="p-4 space-y-4">
+        <form class="p-4 space-y-4" action="{{ route('admin.notifikasi.filter') }}" method="post">
+            @csrf
             <!-- Status Filter -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
@@ -61,11 +62,11 @@
 
             <!-- Action Buttons -->
             <div class="flex gap-2 pt-2 border-t border-gray-200">
-                <button id="applyFilter" class="flex-1 bg-pink-600 text-white text-sm px-4 py-2 rounded-md hover:bg-pink-700">
+                <button type="submit" id="applyFilter" class="flex-1 bg-pink-600 text-white text-sm px-4 py-2 rounded-md hover:bg-pink-700">
                     Terapkan Filter
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
   
@@ -97,73 +98,6 @@
           }
       });
 
-      // Apply filter
-      applyFilterBtn.addEventListener('click', function() {
-          const status = document.getElementById('statusFilter').value;
-          const message = document.getElementById('messageFilter').value;
-          const dateRange = document.getElementById('dateFilter').value;
-          
-          applyFilters(status, message, dateRange);
-          filterDropdown.classList.add('hidden');
-          filterChevron.style.transform = 'rotate(0deg)';
-          
-          updateFilterButtonState();
-      });
-
-      function applyFilters(status, message, dateRange) {
-          const allNotifs = document.querySelectorAll('.notif-item');
-          
-          allNotifs.forEach(notif => {
-              let shouldShow = true;
-              
-              if (status) {
-                  const isCompleted = notif.classList.contains('opacity-75');
-                  if (status === 'completed' && !isCompleted) shouldShow = false;
-                  if (status === 'pending' && isCompleted) shouldShow = false;
-              }
-              
-              if (message) {
-                  const messageElement = notif.querySelector('.text-gray-600');
-                  const messageText = messageElement ? messageElement.textContent.toLowerCase() : '';
-                  if (!messageText.includes(message.toLowerCase())) {
-                      shouldShow = false;
-                  }
-              }
-              
-              if (dateRange) {
-                  const timeText = notif.querySelector('.text-gray-400');
-                  const timeStr = timeText ? timeText.textContent.toLowerCase() : '';
-                  
-                  switch(dateRange) {
-                      case 'today':
-                          if (!timeStr.includes('jam') && !timeStr.includes('menit') && !timeStr.includes('detik')) {
-                              shouldShow = false;
-                          }
-                          break;
-                      case 'yesterday':
-                          if (!timeStr.includes('1 hari') && !timeStr.includes('kemarin')) {
-                              shouldShow = false;
-                          }
-                          break;
-                      case 'week':
-                          if (timeStr.includes('minggu') || timeStr.includes('bulan') || timeStr.includes('tahun')) {
-                              shouldShow = false;
-                          }
-                          break;
-                      case 'month':
-                          if (timeStr.includes('bulan') || timeStr.includes('tahun')) {
-                              shouldShow = false;
-                          }
-                          break;
-                  }
-              }
-              
-            //   notif.style.display = shouldShow ? 'flex' : 'none';
-          });
-          
-          checkEmptySections();
-      }
-      
       function checkEmptySections() {
           const sections = document.querySelectorAll('h3');
           sections.forEach(sectionTitle => {
@@ -176,20 +110,6 @@
                   sectionDiv.style.display = 'block';
               }
           });
-      }
-      
-      function updateFilterButtonState() {
-          const hasActiveFilter = document.getElementById('statusFilter').value || 
-                                document.getElementById('messageFilter').value ||
-                                document.getElementById('dateFilter').value;
-          
-          if (hasActiveFilter) {
-              filterToggle.classList.remove('bg-white', 'border-gray-300');
-              filterToggle.classList.add('bg-pink-50', 'border-pink-300');
-          } else {
-              filterToggle.classList.remove('bg-pink-50', 'border-pink-300');
-              filterToggle.classList.add('bg-white', 'border-gray-300');
-          }
       }
   });
 </script>

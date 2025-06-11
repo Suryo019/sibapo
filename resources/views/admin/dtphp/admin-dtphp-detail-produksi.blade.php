@@ -22,33 +22,11 @@
                                     <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                                 </select>
                             </div>
-                    
-                            <!-- Pilih Tanaman -->
-                            {{-- <div class="flex flex-col">
-                                <label for="pilih_tanaman" class="block text-sm font-medium text-gray-700 mb-1">Pilih Tanaman</label>
-                                <select name="tanaman" id="pilih_tanaman" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="">Semua Tanaman</option>
-                                    @foreach ($commodities as $commodity)
-                                        <option value="{{ $commodity->id }}" {{ request('tanaman') == $commodity->id ? 'selected' : '' }}>
-                                            {{ $commodity->nama_tanaman }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-                    
+                
                             <!-- Pilih periode -->
                             <div class="flex flex-col">
                                 <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                                {{-- <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                    <option value="" disabled selected>Pilih Periode</option>
-                                    @foreach ($periods as $index => $period)
-                                        <option value="{{ $numberPeriods[$index] }}"
-                                            {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
-                                            {{ $period }}
-                                        </option>
-                                    @endforeach
-                                </select> --}}
-                                <input type="month" value="{{ date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
                         </div>
                     
@@ -173,6 +151,8 @@
 </x-admin-layout>
 
 <script>
+    const periode = $('#periode');
+
     $(document).ready(function() {
         $('.select2').select2({
             width: '100%'
@@ -191,6 +171,9 @@
             $.ajax({
                 type: "GET",
                 url: `/api/dtphp/${jenisTanaman}`,
+                data: {
+                    periode: periode.val(),
+                },
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();
@@ -221,7 +204,7 @@
             });
         });
     
-        $('.deleteBtn').on('click', function() {
+        $(document).on('click', '.deleteBtn', function() {
             const modal = $("#modal");
             modal.removeClass("hidden").addClass("flex");
     
@@ -230,6 +213,9 @@
             $.ajax({
                 type: "GET",
                 url: `/api/dtphp/${jenisTanaman}`,
+                data: {
+                    periode: periode.val(),
+                },
                 success: function(response) {
                     const data = response.data;
                     $('#editDataList').empty();

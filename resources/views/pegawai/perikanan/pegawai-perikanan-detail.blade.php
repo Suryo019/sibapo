@@ -24,32 +24,11 @@
                                 <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z - A</option>
                             </select>
                         </div>
-
-                        <!-- Pilih Ikan -->
-                        <div class="flex flex-col">
-                            <label for="pilih_ikan" class="block text-sm font-medium text-gray-700 mb-1">Pilih Ikan</label>
-                            <select name="ikan" id="pilih_ikan" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                <option value="">Semua Ikan</option>
-                                @foreach ($fishes as $fish)
-                                    <option value="{{ $fish->id }}" {{ request('ikan') == $fish->id ? 'selected' : '' }}>
-                                        {{ $fish->nama_ikan }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>   
                 
                         <!-- Pilih periode -->
                         <div class="flex flex-col">
                             <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                            <select name="periode" id="pilih_periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                <option value="" disabled selected>Pilih Periode</option>
-                                @foreach ($periods as $index => $period)
-                                    <option value="{{ $numberPeriods[$index] }}"
-                                        {{ request('periode') == $numberPeriods[$index] ? 'selected' : '' }}>
-                                        {{ $period }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                         </div>
                     </div>
                 
@@ -169,6 +148,8 @@
 </x-pegawai-layout>
 
 <script>
+    const periode = $('#periode');
+
     // Trigger Filter Modal
     function toggleModal() {
         const modal = document.getElementById('filterModal');
@@ -199,10 +180,18 @@
         $.ajax({
             type: "GET",
             url: `/api/dp/${jenisIkan}`,
-            // data: {jenis_ikan:jenisIkan},
+            data: {
+                periode: periode.val(),
+            },
             success: function(response) {
                 const data = response.data;
                 $('#editDataList').empty();
+
+                const formatTanggal = (tanggalStr) => {
+                    const tanggal = new Date(tanggalStr);
+                    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                    return tanggal.toLocaleDateString('id-ID', options);
+                };
 
                 data.forEach(element => {
                     let listCard = `
@@ -210,7 +199,7 @@
                             <div>
                                 <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.nama_ikan}</span></p>
                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                             </div>
                             <a href="perikanan/${element.id}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Ubah</a>
                         </div>
@@ -233,17 +222,25 @@
         $.ajax({
             type: "GET",
             url: `/api/dp/${jenisIkan}`,
+            data: {
+                periode: periode.val(),
+            },
             success: function(response) {
                 const data = response.data;
                 $('#editDataList').empty();
+                const formatTanggal = (tanggalStr) => {
+                    const tanggal = new Date(tanggalStr);
+                    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                    return tanggal.toLocaleDateString('id-ID', options);
+                };
 
                 data.forEach(element => {
                     let listCard = `
                         <div class="border rounded-md p-4 shadow-sm flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.jenis_ikan_id}</span></p>
+                                <p class="text-sm text-gray-500">Jenis Ikan: <span class="font-medium">${element.nama_ikan}</span></p>
                                 <p class="text-sm text-gray-500">Produksi: <span class="font-medium">${element.ton_produksi}</span></p>
-                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${element.tanggal_input}</span></p>
+                                <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">${formatTanggal(element.tanggal_input)}</span></p>
                                 
                             </div>
                             
@@ -274,7 +271,7 @@
                 success: function(data) {         
                     Swal.fire({
                         title: 'Berhasil!',
-                        text: `Data ${data.data.jenis_ikan_id} telah dihapus.`,
+                        text: `Data ${data.data.nama_ikan} telah dihapus.`,
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then(() => {

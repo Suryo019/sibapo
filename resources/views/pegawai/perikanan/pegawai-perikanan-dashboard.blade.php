@@ -37,11 +37,6 @@
       </div>
     </div>
   </div>
-  
-  
-  
-  
-
 
       <!-- table -->
       <div class="bg-white md:border rounded-lg p-4 mb-8 mt-4">
@@ -120,20 +115,23 @@
             </thead>
             <tbody>
               @foreach ($aktivitas as $item)
-                @php
-                    $warnaDinas = [
-                        'Perikanan' => 'bg-teal-500',
-                    ];
-      
-                    $ikonAksi = [
-                        'buat' => 'bi-plus-circle-fill',
-                        'ubah' => 'bi-pencil-square',
-                        'hapus' => 'bi-trash-fill',
-                    ];
-      
-                    $bgColor = $warnaDinas[$item->dinas] ?? 'bg-gray-400';
-                    $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill';
-                @endphp
+              @php
+                $warnaDinas = [
+                  'DTPHP'     => 'bg-green-600',
+                  'DKPP'      => 'bg-red-500',
+                  'DISPERINDAG'=> 'bg-yellow-500',
+                  'PERIKANAN' => 'bg-teal-500',
+                ];
+
+                $ikonAksi = [
+                  'buat' => 'bi-plus-circle-fill',
+                  'ubah' => 'bi-pencil-square',
+                  'hapus' => 'bi-trash-fill',
+                ];
+
+                $bgColor = $warnaDinas[$item->dinas] ?? 'bg-gray-400';
+                $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill';
+              @endphp
       
                 <tr class="border-t">
                   <td class="p-2">{{ $item->waktu }}</td>
@@ -155,20 +153,23 @@
         <div class="md:hidden space-y-4">
           <div class="block md:hidden text-lg font-semibold mb-2">Riwayat Aktivitas</div>
           @foreach ($aktivitas as $item)
-            @php
-                $warnaDinas = [
-                    'Perikanan' => 'bg-teal-500',
-                ];
-      
-                $ikonAksi = [
-                    'buat' => 'bi-plus-circle-fill',
-                    'ubah' => 'bi-pencil-square',
-                    'hapus' => 'bi-trash-fill',
-                ];
-      
-                $bgColor = $warnaDinas[$item->dinas] ?? 'bg-gray-400';
-                $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill';
-            @endphp
+          @php
+            $warnaDinas = [
+              'DTPHP'     => 'bg-green-600',
+              'DKPP'      => 'bg-red-500',
+              'DISPERINDAG'=> 'bg-yellow-500',
+              'PERIKANAN' => 'bg-teal-500',
+            ];
+
+            $ikonAksi = [
+              'buat' => 'bi-plus-circle-fill',
+              'ubah' => 'bi-pencil-square',
+              'hapus' => 'bi-trash-fill',
+            ];
+
+            $bgColor = $warnaDinas[$item->dinas] ?? 'bg-gray-400';
+            $ikon = $ikonAksi[$item->aksi] ?? 'bi-question-circle-fill';
+          @endphp
       
             <div class="flex items-center justify-between border rounded-lg p-3 shadow-sm">
               <div class="flex items-center space-x-3">

@@ -13,48 +13,6 @@ class NotifikasiAdminController extends Controller
         // $query = Notifikasi::with('role')->where('role_id', 1);
         $query = Notifikasi::with('role')->where('is_admin', 1);
 
-        // Filter berdasarkan status
-        if ($request->filled('status')) {
-            if ($request->status === 'completed') {
-                $query->where('is_completed', true);
-            } elseif ($request->status === 'pending') {
-                $query->where('is_completed', false);
-            }
-        }
-
-        // Filter berdasarkan jenis pesan
-        if ($request->filled('message')) {
-            $query->where('pesan', 'like', "%{$request->message}%");
-        }
-
-        // Filter berdasarkan periode
-        if ($request->filled('date_range')) {
-            switch ($request->date_range) {
-                case 'today':
-                    $query->whereDate('tanggal_pesan', Carbon::today());
-                    break;
-                case 'yesterday':
-                    $query->whereDate('tanggal_pesan', Carbon::yesterday());
-                    break;
-                case 'week':
-                    $query->whereBetween('tanggal_pesan', [
-                        Carbon::now()->startOfWeek(),
-                        Carbon::now()->endOfWeek()
-                    ]);
-                    break;
-                case 'month':
-                    $query->whereMonth('tanggal_pesan', Carbon::now()->month)
-                          ->whereYear('tanggal_pesan', Carbon::now()->year);
-                    break;
-            }
-        }
-
-        // Filter berdasarkan pencarian
-        if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where('pesan', 'like', "%{$searchTerm}%");
-        }
-
         $notifikasis = $query->orderByDesc('tanggal_pesan')
             ->get()
             ->groupBy(function ($item) {
@@ -74,7 +32,7 @@ class NotifikasiAdminController extends Controller
 
     public function filter(Request $request)
     {
-        $query = Notifikasi::with('role')->where('role_id', 1);
+        $query = Notifikasi::with('role')->where('is_admin', 1);
 
         // Apply filters
         if ($request->filled('status')) {
@@ -164,7 +122,7 @@ class NotifikasiAdminController extends Controller
         if ($notificationId) {
             Notifikasi::where('id', $notificationId)->update(['is_read' => true]);
         } else {
-            Notifikasi::where('role_id', 1)->update(['is_read' => true]);
+            Notifikasi::where('is_admin', 1)->update(['is_read' => true]);
         }
 
         return response()->json(['success' => true]);

@@ -68,8 +68,18 @@ class DPController extends Controller
         try {
             $cacheKey = "dp_listitem_{$jenisIkan}";
 
+            $inputPeriode = $request->input('periode');
+
+            if ($inputPeriode){
+                $filterPeriode = Carbon::createFromFormat('Y-m', $inputPeriode)
+                    ->translatedFormat('Y');
+            } else {
+                $filterPeriode = now()->year;
+            }
+
             $data = DP::join('jenis_ikan', 'dinas_perikanan.jenis_ikan_id', '=', 'jenis_ikan.id')
                     ->where('jenis_ikan.nama_ikan', $jenisIkan)
+                    ->whereRaw("DATE_FORMAT(dinas_perikanan.tanggal_input, '%Y') = ?", [$filterPeriode])
                     ->select(
                         'dinas_perikanan.id as dp_id',
                         'dinas_perikanan.*',

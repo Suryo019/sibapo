@@ -59,9 +59,19 @@ class DTPHPController extends Controller
     {
         try {
             $cacheKey = "dtphp_listitem_{$jenisTanaman}";
+            
+            $inputPeriode = $request->input('periode');
 
+            if ($inputPeriode){
+                $filterPeriode = Carbon::createFromFormat('Y-m', $inputPeriode)
+                    ->translatedFormat('Y');
+            } else {
+                $filterPeriode = now()->year;
+            }
+            
             $data = DTPHP::join('jenis_tanaman', 'dinas_tanaman_pangan_holtikultural_perkebunan.jenis_tanaman_id', '=', 'jenis_tanaman.id')
                     ->where('jenis_tanaman.nama_tanaman', $jenisTanaman)
+                    ->whereRaw("DATE_FORMAT(dinas_tanaman_pangan_holtikultural_perkebunan.tanggal_input, '%Y') = ?", [$filterPeriode])
                     ->select(
                         'dinas_tanaman_pangan_holtikultural_perkebunan.id as dtphp_id',
                         'dinas_tanaman_pangan_holtikultural_perkebunan.*',

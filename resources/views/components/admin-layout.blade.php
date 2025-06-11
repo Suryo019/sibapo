@@ -115,6 +115,5 @@
                 $("#loading").hide();
         });
     </script>
-    
 </body>
 </html>
