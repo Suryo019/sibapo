@@ -29,7 +29,7 @@
                     autocomplete="off" readonly>
                 <i class="bi bi-caret-down-fill text-pink-650 text-xs ml-2"></i>
             </div>
-            <ul class="bg-white border border-pink-650 rounded-2xl max-h-60 w-full absolute z-20 top-12 overflow-y-auto hidden"
+            <ul class="bg-white border border-pink-650 rounded-2xl max-h-60 w-full absolute z-20 top-10 overflow-y-auto hidden"
                 id="sorting_item_list_container">
                 <div class="overflow-hidden w-full h-full border-pink-650 rounded-2xl p-1"
                     id="sorting_item_list_container_injector">
