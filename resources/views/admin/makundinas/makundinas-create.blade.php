@@ -70,55 +70,5 @@
 </x-admin-layout>
 
 <script>
-$('#submitBtn').on('click', function() {
-    const formData = new FormData();
-    formData.append('_token', '{{ csrf_token() }}');
-    formData.append('role_id', $('#dinas').val());
-    formData.append('name', $('#nama').val());
-    formData.append('username', $('#username').val());
-    formData.append('email', $('#emailno').val());
-    formData.append('password', $('#pass').val());
-    formData.append('password_confirmation', $('#conpass').val());
-
-    $.ajax({
-        type: "POST",
-        url: "{{ route('api.makundinas.store') }}",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            // console.log(response);
-            $('#dinas').val('');
-            $('#nama').val('');
-            $('#username').val('');
-            $('#emailno').val('');
-            $('#pass').val('');
-            $('#conpass').val('');
-            
-            Swal.fire({
-                title: 'Berhasil!',
-                text: `Data user ${response.data.name} dari Dinas ${response.data.role.role} telah disimpan.`,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                location.reload();
-            });
-        },
-        error: function(xhr) {
-            let errors = xhr.responseJSON.errors;
-            let message = '';
-
-            $.each(errors, function(key, value) {
-                message += value + '<br>';
-            });
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: message
-            });
-        }
-    });
-});
-
+$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("role_id",$("#dinas").val()),a.append("name",$("#nama").val()),a.append("username",$("#username").val()),a.append("email",$("#emailno").val()),a.append("password",$("#pass").val()),a.append("password_confirmation",$("#conpass").val()),$.ajax({type:"POST",url:"{{ route('api.makundinas.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#dinas").val(""),$("#nama").val(""),$("#username").val(""),$("#emailno").val(""),$("#pass").val(""),$("#conpass").val(""),Swal.fire({title:"Berhasil!",text:`Data user ${a.data.name} dari Dinas ${a.data.role.role} telah disimpan.`,icon:"success",confirmButtonText:"OK"}).then((()=>{location.reload()}))},error:function(a){let e=a.responseJSON.errors,n="";$.each(e,(function(a,e){n+=e+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
 </script>

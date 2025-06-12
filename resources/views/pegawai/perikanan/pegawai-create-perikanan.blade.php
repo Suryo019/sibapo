@@ -44,40 +44,5 @@
 </x-pegawai-layout>
 
 <script>
-$('#submitBtn').on('click', function() {
-    $.ajax({
-        type: "POST",
-        url: "{{ route('api.dp.store') }}",
-        data: {
-            _token: "{{ csrf_token() }}",
-            jenis_ikan_id: $('#jenis_ikan_id').val(),
-            ton_produksi: $('#ton_produksi').val(),
-            },
-            success: function(data) {
-            $('#jenis_ikan').val('');
-            $('#ton_produksi').val('');
-
-            Swal.fire({
-                title: 'Berhasil!',
-                text: `Data ikan ${data.nama_ikan} telah disimpan.`,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        },
-        error: function(xhr, status, error) {
-            let errors = xhr.responseJSON.errors;
-            let message = '';
-
-            $.each(errors, function(key, value) {
-                message += value + '<br>';
-            });
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: message
-            });
-        }
-    });
-});
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.dp.store') }}",data:{_token:"{{ csrf_token() }}",jenis_ikan_id:$("#jenis_ikan_id").val(),ton_produksi:$("#ton_produksi").val()},success:function(i){$("#jenis_ikan").val(""),$("#ton_produksi").val(""),Swal.fire({title:"Berhasil!",text:`Data ikan ${i.nama_ikan} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(i,n,t){let e=i.responseJSON.errors,a="";$.each(e,(function(i,n){a+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:a})}})}));
 </script>

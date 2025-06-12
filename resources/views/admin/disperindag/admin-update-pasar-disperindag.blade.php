@@ -37,43 +37,5 @@
 </x-admin-layout>
 
 <script>
-    const id = $("#pasar_id").val()
-
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: `/api/pasar/${id}`,
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_pasar: $('#nama_pasar').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_pasar').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ${data.data.nama_pasar} telah diperbarui.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = "{{ route('pasar.index') }}";
-                });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+const id=$("#pasar_id").val();$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:`/api/pasar/${id}`,data:{_token:"{{ csrf_token() }}",nama_pasar:$("#nama_pasar").val()},success:function(a){$("#nama_pasar").val(""),Swal.fire({title:"Berhasil!",text:`Data ${a.data.nama_pasar} telah diperbarui.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('pasar.index') }}"}))},error:function(a,r,t){let n=a.responseJSON.errors,e="";$.each(n,(function(a,r){e+=r+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
 </script>

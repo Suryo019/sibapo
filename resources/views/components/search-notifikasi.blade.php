@@ -4,41 +4,5 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchNotifikasi');
-        let searchTimeout;
-
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                performSearch(searchTerm);
-            }, 300);
-        });
-
-        function performSearch(searchTerm) {
-            const allNotifs = document.querySelectorAll('.notif-item');
-            let hasResults = false;
-            
-            allNotifs.forEach(notif => {
-                const message = notif.querySelector('.text-gray-600');
-                const role = notif.querySelector('.text-yellow-500');
-                
-                const messageText = message ? message.textContent.toLowerCase() : '';
-                const roleText = role ? role.textContent.toLowerCase() : '';
-                
-                const shouldShow = searchTerm === '' || 
-                                    messageText.includes(searchTerm) || 
-                                    roleText.includes(searchTerm);
-                
-                if (shouldShow) {
-                    notif.style.display = 'flex';
-                    hasResults = true;
-                } else {
-                    notif.style.display = 'none';
-                }
-            });
-        }
-    });
+document.addEventListener("DOMContentLoaded",(function(){let e;document.getElementById("searchNotifikasi").addEventListener("input",(function(){const t=this.value.toLowerCase().trim();clearTimeout(e),e=setTimeout((()=>{!function(e){const t=document.querySelectorAll(".notif-item");let n=!1;t.forEach((t=>{const o=t.querySelector(".text-gray-600"),i=t.querySelector(".text-yellow-500"),l=o?o.textContent.toLowerCase():"",s=i?i.textContent.toLowerCase():"";""===e||l.includes(e)||s.includes(e)?(t.style.display="flex",n=!0):t.style.display="none"}))}(t)}),300)}))}));
 </script>

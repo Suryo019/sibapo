@@ -38,13 +38,5 @@
 </ul>
     
 <script>
-    
-$('#kelola_dkpp_komoditas').on('click', function () {
-    const $dropdown = $("#dropdown-content-komoditas");
-    const $icon = $(this).find('.caret-icon');
-
-    $dropdown.slideToggle(200);
-    $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill');
-});
-
+$("#kelola_dkpp_komoditas").on("click",(function(){const o=$("#dropdown-content-komoditas"),i=$(this).find(".caret-icon");o.slideToggle(200),i.toggleClass("bi-caret-down-fill bi-caret-up-fill")}));
 </script>

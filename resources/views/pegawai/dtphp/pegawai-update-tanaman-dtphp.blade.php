@@ -37,43 +37,5 @@
 </x-admin-layout>
 
 <script>
-    const id = $("#jenis_tanaman_id").val()
-    
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: `/api/jenis-tanaman/${id}`,
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_tanaman: $('#nama_tanaman').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_tanaman').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data tanaman ${data.data.nama_tanaman} telah diperbarui.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = "{{ route('jenis-tanaman.index') }}";
-                });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+const id=$("#jenis_tanaman_id").val();$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:`/api/jenis-tanaman/${id}`,data:{_token:"{{ csrf_token() }}",nama_tanaman:$("#nama_tanaman").val()},success:function(a){$("#nama_tanaman").val(""),Swal.fire({title:"Berhasil!",text:`Data tanaman ${a.data.nama_tanaman} telah diperbarui.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('jenis-tanaman.index') }}"}))},error:function(a,n,t){let e=a.responseJSON.errors,i="";$.each(e,(function(a,n){i+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:i})}})}));
 </script>

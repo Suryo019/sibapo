@@ -75,41 +75,7 @@
     
 
     <script>
-        // Select2
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-
-        document.querySelector('form').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-            }
-        });
-
-        const API_TOKEN = "{{ session('api_token') }}";
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'Authorization': 'Bearer ' + API_TOKEN,
-            }
-        });
-
-        function showLoading() {
-            document.getElementById("loading").style.display = "flex";
-        }
-
-        function hideLoading() {
-            document.getElementById("loading").style.display = "none";
-        }
-
-        $(document)
-            .ajaxStart(function () {
-                $("#loading").show();
-            })
-            .ajaxStop(function () {
-                $("#loading").hide();
-        });
+$(document).ready((function(){$(".select2").select2()})),document.querySelector("form").addEventListener("keydown",(function(e){"Enter"===e.key&&e.preventDefault()}));const API_TOKEN="{{ session('api_token') }}";function showLoading(){document.getElementById("loading").style.display="flex"}function hideLoading(){document.getElementById("loading").style.display="none"}$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content"),Authorization:"Bearer "+API_TOKEN}}),$(document).ajaxStart((function(){$("#loading").show()})).ajaxStop((function(){$("#loading").hide()}));
     </script>
 </body>
 </html>

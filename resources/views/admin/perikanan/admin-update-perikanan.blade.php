@@ -68,40 +68,5 @@
 </x-admin-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: "{{ route('api.dp.update', $data->id) }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                jenis_ikan_id: $('#jenis_ikan_id').val(),
-                ton_produksi: $('#ton_produksi').val(),
-                tanggal_input: $('#tanggal_input').val(),
-                },
-                success: function(data) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: `Data berhasil diperbarui!`,
-                    confirmButtonColor: '#16a34a'
-                }).then(() => {
-
-                window.location.href = "{{ route('perikanan.detail') }}";});
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:"{{ route('api.dp.update', $data->id) }}",data:{_token:"{{ csrf_token() }}",jenis_ikan_id:$("#jenis_ikan_id").val(),ton_produksi:$("#ton_produksi").val(),tanggal_input:$("#tanggal_input").val()},success:function(t){Swal.fire({icon:"success",title:"Berhasil",text:"Data berhasil diperbarui!",confirmButtonColor:"#16a34a"}).then((()=>{window.location.href="{{ route('perikanan.detail') }}"}))},error:function(t,i,n){let a=t.responseJSON.errors,e="";$.each(a,(function(t,i){e+=i+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
 </script>

@@ -32,40 +32,5 @@
 </x-pegawai-layout>
 
 <script>
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('api.jenis-komoditas.store') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_komoditas: $('#nama_komoditas').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_komoditas').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data komoditas ${data.data.nama_komoditas} telah disimpan.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+$("#submitBtn").on("click",(function(){$.ajax({type:"POST",url:"{{ route('api.jenis-komoditas.store') }}",data:{_token:"{{ csrf_token() }}",nama_komoditas:$("#nama_komoditas").val()},success:function(t){$("#nama_komoditas").val(""),Swal.fire({title:"Berhasil!",text:`Data komoditas ${t.data.nama_komoditas} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(t,a,o){let i=t.responseJSON.errors,e="";$.each(i,(function(t,a){e+=a+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
 </script>

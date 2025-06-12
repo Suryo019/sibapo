@@ -96,39 +96,5 @@
 </x-admin-layout>
 
 <script>
-    $(document).on('click', '.deleteBtn', function() { 
-        let dataId = $(this).data('id');
-        $('#deleteModal').show();
-
-        $('#yesBtn').off('click').on('click', function() {
-            $.ajax({
-                type: 'DELETE',
-                url: `/api/makundinas/${dataId}`,
-                success: function(data) {
-                    // console.log(data);
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        text: `User ${data.data.name} dari Dinas ${data.data.role} telah dihapus.`,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: error
-                    });
-                }
-            });
-
-            $('#deleteModal').hide();
-        });
-    });
-
-    $(document).on('click', '#closeBtn', function() {
-        $('#deleteModal').hide();  
-    });
+$(document).on("click",".deleteBtn",(function(){let e=$(this).data("id");$("#deleteModal").show(),$("#yesBtn").off("click").on("click",(function(){$.ajax({type:"DELETE",url:`/api/makundinas/${e}`,success:function(e){Swal.fire({title:"Berhasil!",text:`User ${e.data.name} dari Dinas ${e.data.role} telah dihapus.`,icon:"success",confirmButtonText:"OK"}).then((()=>{location.reload()}))},error:function(e,t,n){Swal.fire({icon:"error",title:"Oops...",html:n})}}),$("#deleteModal").hide()}))})),$(document).on("click","#closeBtn",(function(){$("#deleteModal").hide()}));
 </script>
