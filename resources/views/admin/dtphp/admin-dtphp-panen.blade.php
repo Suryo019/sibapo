@@ -289,7 +289,6 @@
           periode: periode.val()
         },
         success: function (response) {
-          console.log(response);
           
           $('#periode_placeholder').html(`- ${response.periode.toUpperCase()}`)
           renderChartFromData(response);
