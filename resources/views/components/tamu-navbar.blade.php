@@ -121,13 +121,5 @@
 </div>
 
 <script>
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        const blackScreen = $('#black_screen');
-
-        blackScreen.toggleClass('hidden');
-        blackScreen.toggleClass('opacity-0');
-        menu.classList.toggle('translate-x-full');
-        menu.classList.toggle('translate-x-0');
-    }
+function toggleMobileMenu(){const e=document.getElementById("mobileMenu"),l=$("#black_screen");l.toggleClass("hidden"),l.toggleClass("opacity-0"),e.classList.toggle("translate-x-full"),e.classList.toggle("translate-x-0")}
 </script>

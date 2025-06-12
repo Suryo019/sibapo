@@ -34,14 +34,5 @@
 </li>
 
 <script>
-  $(document).ready(function () {
-    $('#{{ $dinas }} .toggle-dropdown').on('click', function () {
-      const $parent = $(this).closest('li');
-      const $dropdown = $parent.find('.dropdown-content');
-      const $icon = $parent.find('.caret-icon');
-
-      $dropdown.slideToggle(200);
-      $icon.toggleClass('bi-caret-down-fill bi-caret-up-fill'); // ganti icon
-    });
-  });
+$(document).ready((function(){$("#{{ $dinas }} .toggle-dropdown").on("click",(function(){const n=$(this).closest("li"),o=n.find(".dropdown-content"),i=n.find(".caret-icon");o.slideToggle(200),i.toggleClass("bi-caret-down-fill bi-caret-up-fill")}))}));
 </script>

@@ -37,43 +37,5 @@
 </x-admin-layout>
 
 <script>
-    const id = $("#jenis_ikan_id").val()
-    
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: `/api/jenis-ikan/${id}`,
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_ikan: $('#nama_ikan').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_ikan').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data ikan ${data.data.nama_ikan} telah diperbarui.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = "{{ route('jenis-ikan.index') }}";
-                });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+const id=$("#jenis_ikan_id").val();$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:`/api/jenis-ikan/${id}`,data:{_token:"{{ csrf_token() }}",nama_ikan:$("#nama_ikan").val()},success:function(n){$("#nama_ikan").val(""),Swal.fire({title:"Berhasil!",text:`Data ikan ${n.data.nama_ikan} telah diperbarui.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('jenis-ikan.index') }}"}))},error:function(n,a,i){let e=n.responseJSON.errors,t="";$.each(e,(function(n,a){t+=a+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:t})}})}));
 </script>

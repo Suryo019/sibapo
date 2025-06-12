@@ -38,43 +38,5 @@
 </x-admin-layout>
 
 <script>
-    const id = $("#jenis_komoditas_dkpp_id").val()
-    
-    $('#submitBtn').on('click', function() {
-        $.ajax({
-            type: "PUT",
-            url: `/api/jenis-komoditas/${id}`,
-            data: {
-                _token: "{{ csrf_token() }}",
-                nama_komoditas: $('#nama_komoditas').val(),
-                },
-            success: function(data) {     
-                
-                $('#nama_komoditas').val('');
-                           
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: `Data komoditas ${data.data.nama_komoditas} telah diperbarui.`,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = "{{ route('jenis-komoditas.index') }}";
-                });
-            },
-            error: function(xhr, status, error) {
-                let errors = xhr.responseJSON.errors;
-                let message = '';
-
-                $.each(errors, function(key, value) {
-                    message += value + '<br>';
-                });
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: message
-                });
-            }
-        });
-    });
+const id=$("#jenis_komoditas_dkpp_id").val();$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:`/api/jenis-komoditas/${id}`,data:{_token:"{{ csrf_token() }}",nama_komoditas:$("#nama_komoditas").val()},success:function(o){$("#nama_komoditas").val(""),Swal.fire({title:"Berhasil!",text:`Data komoditas ${o.data.nama_komoditas} telah diperbarui.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('jenis-komoditas.index') }}"}))},error:function(o,t,a){let i=o.responseJSON.errors,n="";$.each(i,(function(o,t){n+=t+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
 </script>

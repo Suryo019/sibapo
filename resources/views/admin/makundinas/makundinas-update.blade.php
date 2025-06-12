@@ -64,52 +64,5 @@
 </x-admin-layout>
 
 <script>
-let user_id = $('#user_id').val()
-
-const email = $('#email').val();
-// console.log(data)
-
-$('#submitBtn').on('click', function() {
-    const formData = new FormData();
-    formData.append('_token', '{{ csrf_token() }}');
-    formData.append('role_id', $('#role_id').val());
-    formData.append('name', $('#name').val());
-    formData.append('username', $('#username').val());
-    formData.append('email', $('#email').val());
-
-    $.ajax({
-        type: "POST",
-        url: `/api/makundinas/${user_id}?_method=PUT`,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            const selectedRoleName = $('#role_id option:selected').text();
-            
-            Swal.fire({
-                title: 'Berhasil!',
-                text: `Data user ${data.data.name} dari Dinas ${selectedRoleName} telah disimpan.`,
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = "{{ route('makundinas.index') }}";
-            });
-        },
-        error: function(xhr) {
-            let errors = xhr.responseJSON.errors;
-            let message = '';
-
-            $.each(errors, function(key, value) {
-                message += value + '<br>';
-            });
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: message
-            });
-        }
-    });
-});
-
+let user_id=$("#user_id").val();const email=$("#email").val();$("#submitBtn").on("click",(function(){const e=new FormData;e.append("_token","{{ csrf_token() }}"),e.append("role_id",$("#role_id").val()),e.append("name",$("#name").val()),e.append("username",$("#username").val()),e.append("email",$("#email").val()),$.ajax({type:"POST",url:`/api/makundinas/${user_id}?_method=PUT`,data:e,processData:!1,contentType:!1,success:function(e){const a=$("#role_id option:selected").text();Swal.fire({title:"Berhasil!",text:`Data user ${e.data.name} dari Dinas ${a} telah disimpan.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('makundinas.index') }}"}))},error:function(e){let a=e.responseJSON.errors,n="";$.each(a,(function(e,a){n+=a+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
 </script>

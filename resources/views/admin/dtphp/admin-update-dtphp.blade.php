@@ -13,20 +13,6 @@
             <form action="" method="POST" onkeydown="return event.key != 'Enter';">
                 @csrf
                 @method('PUT')
-                
-                <!-- Jenis Tanaman -->
-                {{-- <div class="mb-4">
-                    <label class="block text-pink-500 text-sm max-md:text-xs mb-1">Jenis Komoditas</label>
-                    <input
-                      type="text"
-                      name="jenis_komoditas"
-                      id="jenis_komoditas"
-                      placeholder="Contoh: Padi"
-                      class="border border-gray-300 p-2 max-md:p-1.5 w-full rounded-xl text-sm max-md:text-xs"
-                      value="{{ old('jenis_komoditas', $data->jenis_komoditas) }}"
-                    />
-                </div> --}}
-                  
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Tanaman</label>
                     <select id="jenis_tanaman_id" name="jenis_tanaman_id" class="border p-2 w-full rounded-xl bg-white text-black dark:text-black dark:bg-white">
@@ -91,44 +77,5 @@
 </x-admin-layout>
 
 <script>
-    $(document).ready(function() {
-        $('#submitBtn').on('click', function() {
-            $.ajax({
-                type: "PUT",
-                url: "{{ route('api.dtphp.update', $data->id) }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    jenis_tanaman_id: $('#jenis_tanaman_id').val(),
-                    ton_volume_produksi: $('#ton_volume_produksi').val(),
-                    hektar_luas_panen: $('#hektar_luas_panen').val(),
-                    tanggal_input: $('#tanggal_input').val(),
-                },
-                success: function(data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: `Data berhasil diperbarui!`,
-                        confirmButtonColor: '#16a34a'
-                    }).then(() => {
-                        window.location.href = "{{ route('dtphp.detail.produksi') }}";
-                    });
-                },
-                error: function(xhr, status, error) {
-                    let errors = xhr.responseJSON.errors;
-                    let message = '';
-
-                    $.each(errors, function(key, value) {
-                        message += value + '<br>';
-                    });
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: message,
-                        confirmButtonColor: '#16a34a'
-                    });
-                }
-            });
-        });
-    });
+$(document).ready((function(){$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:"{{ route('api.dtphp.update', $data->id) }}",data:{_token:"{{ csrf_token() }}",jenis_tanaman_id:$("#jenis_tanaman_id").val(),ton_volume_produksi:$("#ton_volume_produksi").val(),hektar_luas_panen:$("#hektar_luas_panen").val(),tanggal_input:$("#tanggal_input").val()},success:function(t){Swal.fire({icon:"success",title:"Berhasil",text:"Data berhasil diperbarui!",confirmButtonColor:"#16a34a"}).then((()=>{window.location.href="{{ route('dtphp.detail.produksi') }}"}))},error:function(t,a,n){let e=t.responseJSON.errors,o="";$.each(e,(function(t,a){o+=a+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:o,confirmButtonColor:"#16a34a"})}})}))}));
 </script>
