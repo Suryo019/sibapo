@@ -67,6 +67,14 @@ class DatabaseSeeder extends Seeder
                 'email' => 'dp@example.com',
                 'password' => Hash::make('password'),
             ],
+            [
+                'id' => 6,
+                'name' => 'Pimpinan User',
+                'role_id' => 6,
+                'username' => 'pimpinanuser',
+                'email' => 'pimpinan@example.com',
+                'password' => Hash::make('password'),
+            ],
         ]);
 
         $this->call(disperindagSeeder::class);
