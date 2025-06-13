@@ -146,7 +146,7 @@
 
             <!-- Name & Role -->
             <div class="flex flex-col items-center gap-2 mb-8 text-center">
-                <span class="text-2xl md:text-4xl font-semibold text-pink-650">{{ Auth::user()->name }}</span>
+                <span class="text-2xl md:text-4xl font-semibold text-pink-650 drop-shadow-[0_0_2px_white]">{{ Auth::user()->name }}</span>
                 <div class="text-black text-lg md:text-xl">{{ $dinas }}</div>
             </div>
 

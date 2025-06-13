@@ -3,7 +3,7 @@
   <!-- Dropdown -->
   <div class="flex justify-end my-4">
     <div class="flex items-center justify-between w-full gap-6  max-md:gap-4">
-      <x-search></x-search>
+      <div></div>
 
       {{-- Filter --}}
   <div class="flex justify-end">
