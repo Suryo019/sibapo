@@ -1,9 +1,14 @@
 @php
     $judul = match(true) {
         request()->is('disperindag*') => 'DISPERINDAG',
+        request()->is('bahan_pokok*') => 'DISPERINDAG',
+        request()->is('pasar*') => 'DISPERINDAG',
         request()->is('dkpp*') => 'DKPP',
+        request()->is('jenis_komoditas*') => 'DKPP',
         request()->is('dtphp*') => 'DTPHP',
+        request()->is('jenis_tanaman*') => 'DTPHP',
         request()->is('perikanan*') => 'PERIKANAN',
+        request()->is('jenis_ikan*') => 'PERIKANAN',
         default => 'DASHBOARD'
     };
 @endphp
@@ -12,7 +17,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{-- Token CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -20,16 +24,15 @@
 
     <title>{{ $judul . ' | Cintako'}}</title>
     {{-- <link rel="stylesheet" href="../src/output.css"> --}}
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{ asset('build/assets/app-B_jcilra.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-CwY9jbiq.css') }}">
+    <script type="module" src="{{ asset('build/assets/app-h9wISXzc.js') }}"></script>
+    
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+
 
     {{-- Jquery --}}
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
-
-    {{-- Bootstrap Icon --}}
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> --}}
-
-    {{-- SweetAlert2 --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- ApexChart --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -41,6 +44,9 @@
 
     {{-- Iconify Figma --}}
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link href="{{ asset('js/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('js/select2/dist/js/select2.min.js') }}"></script>
 
 </head>
 <body class="h-screen w-screen overflow-hidden">

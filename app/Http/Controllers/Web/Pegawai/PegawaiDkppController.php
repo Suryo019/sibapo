@@ -142,7 +142,7 @@ class PegawaiDkppController extends Controller
     {
         $komoditas = JenisKomoditasDkpp::all();
         return view('pegawai.dkpp.pegawai-create-dkpp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'commodities' => $komoditas,
         ]);
     }
@@ -170,7 +170,7 @@ class PegawaiDkppController extends Controller
     {
         $jenis_komoditas = JenisKomoditasDkpp::all();
         return view('pegawai.dkpp.pegawai-update-dkpp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $dkpp,
             'commodities' => $jenis_komoditas,
         ]);

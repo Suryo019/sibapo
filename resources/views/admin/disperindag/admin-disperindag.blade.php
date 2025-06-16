@@ -1,6 +1,5 @@
 <x-admin-layout>
-    {{-- Abaikan DULU! --}}
-    <div class="flex justify-between items-center gap-4 my-4 ">
+    <div class="flex w-full justify-between items-center gap-4 my-4 ">
         <!-- Search Component -->
         <x-search>Cari bahan pokok...</x-search>
     
@@ -15,7 +14,7 @@
                         <!-- Nama Pasar -->
                         <div class="flex flex-col">
                             <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1 max-md:text-xs">Pilih Pasar</label>
-                            <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-full bg-white w-full select2 text-sm max-md:text-xs">
+                            <select name="pasar" id="pilih_pasar" class="border border-black p-2 rounded-lg bg-white w-full select2 text-sm max-md:text-xs">
                                 <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
                                 @foreach ($markets as $index => $market)
                                     <option value="{{ $market->nama_pasar }}"

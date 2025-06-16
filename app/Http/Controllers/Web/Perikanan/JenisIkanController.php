@@ -13,7 +13,7 @@ class JenisIkanController extends Controller
         $data = JenisIkan::all();
 
         return view('admin.perikanan.admin-ikan-perikanan', [
-            'title' => 'Data Jenis Ikan',
+            'title' => 'TABEL DATA IKAN',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class JenisIkanController extends Controller
     {
         $nama_ikan = JenisIkan::all();
         return view('admin.perikanan.admin-create-ikan-perikanan', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA IKAN',
             'fishes' => $nama_ikan,
         ]);
     }
@@ -30,7 +30,7 @@ class JenisIkanController extends Controller
     public function edit(JenisIkan $jenis_ikan)
     {
         return view('admin.perikanan.admin-update-ikan-perikanan', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA IKAN',
             'data' => $jenis_ikan,
         ]);
     }

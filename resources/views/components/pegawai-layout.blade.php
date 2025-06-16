@@ -1,9 +1,14 @@
 @php
 $judul = match(true) {
     request()->is('pegawai/disperindag*') => 'DISPERINDAG',
+    request()->is('pegawai/bahanpokok*') => 'DISPERINDAG',
+    request()->is('pegawai/pasar*') => 'DISPERINDAG',
     request()->is('pegawai/dkpp*') => 'DKPP',
+    request()->is('pegawai/jenis_komoditas*') => 'DKPP',
     request()->is('pegawai/dtphp*') => 'DTPHP',
+    request()->is('pegawai/jenis_tanaman*') => 'DTPHP',
     request()->is('pegawai/perikanan*') => 'PERIKANAN',
+    request()->is('pegawai/jenis_ikan*') => 'PERIKANAN',
     default => 'DASHBOARD'
 };
 @endphp
@@ -20,16 +25,14 @@ $judul = match(true) {
 
     <title>{{ $title ? $title . ' | Cintako' : 'DISPERINDAG'  }}</title>
     {{-- <link rel="stylesheet" href="../src/output.css"> --}}
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{ asset('build/assets/app-B_jcilra.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-CwY9jbiq.css') }}">
+    <script type="module" src="{{ asset('build/assets/app-h9wISXzc.js') }}"></script>
+    
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
 
     {{-- Jquery --}}
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
-
-    {{-- Bootstrap Icon --}}
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> --}}
-
-    {{-- SweetAlert2 --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- ApexChart --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -41,6 +44,9 @@ $judul = match(true) {
 
     {{-- Iconify Figma --}}
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link href="{{ asset('js/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('js/select2/dist/js/select2.min.js') }}"></script>
 
 
 </head>

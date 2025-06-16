@@ -40,7 +40,7 @@ class PerikananController extends Controller
     {
         $ikan = JenisIkan::all();
         return view('admin.perikanan.admin-create-perikanan', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'fishes' => $ikan,
         ]);
     }
@@ -60,7 +60,7 @@ class PerikananController extends Controller
         $jenis_ikan = JenisIkan::all();
 
         return view('admin.perikanan.admin-update-perikanan', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $perikanan,
             'fishes' => $jenis_ikan,
         ]);

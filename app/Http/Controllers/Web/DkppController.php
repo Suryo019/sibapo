@@ -42,7 +42,7 @@ class DkppController extends Controller
     {
         $komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-create-dkpp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'commodities' => $komoditas,
         ]);
     }
@@ -70,7 +70,7 @@ class DkppController extends Controller
     {
         $jenis_komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-update-dkpp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $dkpp,
             'commodities' => $jenis_komoditas,
         ]);

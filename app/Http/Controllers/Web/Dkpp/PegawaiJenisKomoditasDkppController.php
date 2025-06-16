@@ -16,7 +16,7 @@ class PegawaiJenisKomoditasDkppController extends Controller
         $data = JenisKomoditasDkpp::all();
 
         return view('pegawai.dkpp.pegawai-komoditas-dkpp', [
-            'title' => 'Data Jenis Komoditas',
+            'title' => 'TABEL DATA KOMODITAS',
             'data' => $data
         ]);
     }
@@ -25,7 +25,7 @@ class PegawaiJenisKomoditasDkppController extends Controller
     {
         $nama_komoditas = JenisKomoditasDkpp::all();
         return view('pegawai.dkpp.pegawai-create-komoditas-dkpp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA KOMODITAS',
             'commodities' => $nama_komoditas,
         ]);
     }
@@ -35,7 +35,7 @@ class PegawaiJenisKomoditasDkppController extends Controller
         // dd($jenis_komoditas);
         $jenis_komoditas = JenisKomoditasDkpp::findOrFail($id);
         return view('pegawai.dkpp.pegawai-update-komoditas-dkpp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA KOMODITAS',
             'data' => $jenis_komoditas,
         ]);
     }

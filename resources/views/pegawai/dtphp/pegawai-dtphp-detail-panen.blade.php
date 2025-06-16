@@ -26,7 +26,7 @@
                 <!-- Pilih periode -->
                 <div class="flex flex-col">
                     <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                    <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-full bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                    <input type="month" value="{{ $_GET['periode'] ?? date('Y-m') }}" name="periode" id="periode" class="w-full border border-gray-300 p-2 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                 </div>
             </div>
         
@@ -50,7 +50,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
         </a>
-        <h3 class="text-lg font-semibold max-md:text-base text-center">Data Luas Panen Tahun 2025 (Hektar)</h3>
+        <h3 class="text-2xl font-semibold max-md:text-base text-center">DATA LUAS PANEN TAHUN 2025 (Hektar)</h3>
         </div>
 
         <!-- Switch Button -->

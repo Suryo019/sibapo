@@ -13,7 +13,7 @@ class BpokokController extends Controller
         $data = JenisBahanPokok::all();
 
         return view('admin.disperindag.admin-bpokok-disperindag', [
-            'title' => 'Data Bahan Pokok',
+            'title' => 'TABEL DATA BAHAN POKOK',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class BpokokController extends Controller
     {
         $bahan_pokok = JenisBahanPokok::all();
         return view('admin.disperindag.admin-create-bpokok-disperindag', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA BAHAN POKOK',
             'items' => $bahan_pokok,
         ]);
     }
@@ -30,7 +30,7 @@ class BpokokController extends Controller
     public function edit(JenisBahanPokok $bahan_pokok)
     {
         return view('admin.disperindag.admin-update-bpokok-disperindag', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA BAHAN POKOK',
             'data' => $bahan_pokok,
         ]);
     }

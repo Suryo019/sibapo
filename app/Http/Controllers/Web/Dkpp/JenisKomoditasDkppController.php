@@ -13,7 +13,7 @@ class JenisKomoditasDkppController extends Controller
         $data = JenisKomoditasDkpp::all();
 
         return view('admin.dkpp.admin-komoditas-dkpp', [
-            'title' => 'Data Jenis Komoditas',
+            'title' => 'TABEL DATA KOMODITAS',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class JenisKomoditasDkppController extends Controller
     {
         $nama_komoditas = JenisKomoditasDkpp::all();
         return view('admin.dkpp.admin-create-komoditas-dkpp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA KOMODITAS',
             'commodities' => $nama_komoditas,
         ]);
     }
@@ -32,7 +32,7 @@ class JenisKomoditasDkppController extends Controller
         // dd($jenis_komoditas);
         $jenis_komoditas = JenisKomoditasDkpp::findOrFail($id);
         return view('admin.dkpp.admin-update-komoditas-dkpp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA KOMODITAS',
             'data' => $jenis_komoditas,
         ]);
     }
