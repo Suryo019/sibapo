@@ -50,7 +50,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>                      
             </a>
-            <h2 class="text-lg font-semibold">Data Volume Produksi Ikan Tahun 2025</h2>
+            <h2 class="text-2xl font-semibold">DATA VOLUME PRODUKSI IKAN TAHUN 2025</h2>
         </div>        
 
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">

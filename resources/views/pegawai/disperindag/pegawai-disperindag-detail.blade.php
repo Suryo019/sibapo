@@ -54,7 +54,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>                      
             </a>
-            <h3 class="text-lg md:text-xl font-semibold text-black hidden" id="header_data"><span id="header_pasar"></span> - Bulan <span id="header_periode"></span></h3>
+            <h3 class="text-lg md:text-2xl font-semibold text-black hidden" id="header_data"><span id="header_pasar"></span> - Bulan <span id="header_periode"></span></h3>
         </div>
     
         <div class="bg-white p-4 md:p-6 rounded shadow-md mt-4">

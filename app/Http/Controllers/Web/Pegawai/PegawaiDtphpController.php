@@ -274,7 +274,7 @@ class PegawaiDtphpController extends Controller
     {
         $tanaman = JenisTanaman::all();
         return view('pegawai.dtphp.pegawai-create-dtphp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'commodities' => $tanaman,
         ]);
     }
@@ -294,7 +294,7 @@ class PegawaiDtphpController extends Controller
         $jenis_tanaman = JenisTanaman::all();
 
         return view('pegawai.dtphp.pegawai-update-dtphp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $dtphp,
             'commodities' => $jenis_tanaman,
         ]);

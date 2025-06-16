@@ -13,7 +13,7 @@ class PegawaiPasarController extends Controller
         $data = Pasar::all();
 
         return view('pegawai.disperindag.pegawai-pasar-disperindag', [
-            'title' => 'Data Pasar',
+            'title' => 'TABEL DATA PASAR',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class PegawaiPasarController extends Controller
     {
         $pasar = Pasar::all();
         return view('pegawai.disperindag.pegawai-create-pasar-disperindag', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA PASAR',
             'markets' => $pasar,
         ]);
     }
@@ -30,7 +30,7 @@ class PegawaiPasarController extends Controller
     public function edit(Pasar $pasar)
     {
         return view('pegawai.disperindag.pegawai-update-pasar-disperindag', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA PASAR',
             'data' => $pasar,
         ]);
     }

@@ -152,7 +152,7 @@ class PegawaiPerikananController extends Controller
     {
         $ikan = JenisIkan::all();
         return view('pegawai.perikanan.pegawai-create-perikanan', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'fishes' => $ikan,
         ]);
     }
@@ -172,7 +172,7 @@ class PegawaiPerikananController extends Controller
         $jenis_ikan = JenisIkan::all();
 
         return view('pegawai.perikanan.pegawai-update-perikanan', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $perikanan,
             'fishes' => $jenis_ikan,
         ]);

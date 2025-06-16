@@ -1,9 +1,14 @@
 @php
 $judul = match(true) {
     request()->is('pegawai/disperindag*') => 'DISPERINDAG',
+    request()->is('pegawai/bahanpokok*') => 'DISPERINDAG',
+    request()->is('pegawai/pasar*') => 'DISPERINDAG',
     request()->is('pegawai/dkpp*') => 'DKPP',
+    request()->is('pegawai/jenis_komoditas*') => 'DKPP',
     request()->is('pegawai/dtphp*') => 'DTPHP',
+    request()->is('pegawai/jenis_tanaman*') => 'DTPHP',
     request()->is('pegawai/perikanan*') => 'PERIKANAN',
+    request()->is('pegawai/jenis_ikan*') => 'PERIKANAN',
     default => 'DASHBOARD'
 };
 @endphp

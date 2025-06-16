@@ -28,7 +28,7 @@ class MakundinasController extends Controller
         $roles = DB::table('roles')->select('role')->get();
     
         return view('admin.makundinas.makundinas', [
-            'title' => 'Manajemen Akun Dinas',
+            'title' => 'TABEL DATA AKUN',
             'data' => $users,
             'roles' => $roles
         ]);
@@ -40,7 +40,7 @@ class MakundinasController extends Controller
         $roles = Role::all();
     
         return view('admin.makundinas.makundinas-create', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA AKUN',
             'roles' => $roles,
         ]);
     }
@@ -60,7 +60,11 @@ class MakundinasController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        return view('admin.makundinas.makundinas-update', compact('user', 'roles'));
+        return view('admin.makundinas.makundinas-update',[
+            'title' => 'UBAH DATA AKUN',
+            'user' => $user,
+            'roles' => $roles,
+        ]);
     }
 
     public function update(Request $request, string $id)

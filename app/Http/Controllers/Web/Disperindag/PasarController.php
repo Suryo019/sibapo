@@ -13,7 +13,7 @@ class PasarController extends Controller
         $data = Pasar::all();
 
         return view('admin.disperindag.admin-pasar-disperindag', [
-            'title' => 'Data Pasar',
+            'title' => 'TABEL DATA PASAR',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class PasarController extends Controller
     {
         $pasar = Pasar::all();
         return view('admin.disperindag.admin-create-pasar-disperindag', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA PASAR',
             'markets' => $pasar,
         ]);
     }
@@ -30,7 +30,7 @@ class PasarController extends Controller
     public function edit(Pasar $pasar)
     {
         return view('admin.disperindag.admin-update-pasar-disperindag', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA PASAR',
             'data' => $pasar,
         ]);
     }

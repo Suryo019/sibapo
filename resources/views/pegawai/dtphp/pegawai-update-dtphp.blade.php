@@ -8,7 +8,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>                      
                 </a>
-                <h3 class="text-lg font-semibold text-center max-md:text-base">Tambah Data</h3>
+                <h3 class="text-2xl font-semibold text-center max-md:text-base">{{ $title }}</h3>
             </div>
 
     <div class="bg-white p-6 max-md:p-4 rounded shadow-md mt-4 border bg-gray-10 border-gray-20">
