@@ -13,7 +13,7 @@ class PegawaiJenisTanamanController extends Controller
         $data = JenisTanaman::all();
 
         return view('pegawai.dtphp.pegawai-tanaman-dtphp', [
-            'title' => 'Data Jenis Tanaman',
+            'title' => 'TABEL DATA TANAMAN',
             'data' => $data
         ]);
     }
@@ -22,7 +22,7 @@ class PegawaiJenisTanamanController extends Controller
     {
         $nama_tanaman = JenisTanaman::all();
         return view('pegawai.dtphp.pegawai-create-tanaman-dtphp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA TANAMAN',
             'fishes' => $nama_tanaman,
         ]);
     }
@@ -30,7 +30,7 @@ class PegawaiJenisTanamanController extends Controller
     public function edit(JenisTanaman $jenis_tanaman)
     {
         return view('pegawai.dtphp.pegawai-update-tanaman-dtphp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA TANAMAN',
             'data' => $jenis_tanaman,
         ]);
     }

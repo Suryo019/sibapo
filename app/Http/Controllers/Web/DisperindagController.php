@@ -51,7 +51,7 @@ class DisperindagController extends Controller
         $pasar = Pasar::all();
         $bahan_pokok = JenisBahanPokok::all();
         return view('admin.disperindag.admin-create-disperindag', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'markets' => $pasar,
             'items' => $bahan_pokok,
         ]);
@@ -84,7 +84,7 @@ class DisperindagController extends Controller
         $pasar = Pasar::all();
         $bahan_pokok = JenisBahanPokok::all();
         return view('admin.disperindag.admin-update-disperindag', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $disperindag,
             'markets' => $pasar,
             'items' => $bahan_pokok,

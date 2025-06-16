@@ -109,7 +109,7 @@ class PegawaiDisperindagController extends Controller
         $pasar = Pasar::all();
         $bahan_pokok = JenisBahanPokok::all();
         return view('pegawai.disperindag.pegawai-create-disperindag', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'markets' => $pasar,
             'items' => $bahan_pokok,
         ]);
@@ -142,7 +142,7 @@ class PegawaiDisperindagController extends Controller
         $pasar = Pasar::all();
         $bahan_pokok = JenisBahanPokok::all();
         return view('pegawai.disperindag.pegawai-update-disperindag', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $data,
             'markets' => $pasar,
             'items' => $bahan_pokok,

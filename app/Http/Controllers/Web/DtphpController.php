@@ -28,7 +28,7 @@ class DtphpController extends Controller
     {
         $tanaman = JenisTanaman::all();
         return view('admin.dtphp.admin-create-dtphp', [
-            'title' => 'Tambah Data',
+            'title' => 'TAMBAH DATA',
             'commodities' => $tanaman,
         ]);
     }
@@ -48,7 +48,7 @@ class DtphpController extends Controller
         $jenis_tanaman = JenisTanaman::all();
 
         return view('admin.dtphp.admin-update-dtphp', [
-            'title' => 'Ubah Data',
+            'title' => 'UBAH DATA',
             'data' => $dtphp,
             'commodities' => $jenis_tanaman,
         ]);

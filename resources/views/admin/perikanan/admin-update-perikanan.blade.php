@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>                      
                 </a>
-                <h3 class="text-lg font-semibold text-center max-md:text-base">Ubah Data</h3>
+                <h3 class="text-2xl font-semibold text-center max-md:text-base">{{ $title }}</h3>
             </div>
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mt-4 border bg-gray-10 border-gray-20">
             <form id="editFishForm" onkeydown="return event.key != 'Enter';">
