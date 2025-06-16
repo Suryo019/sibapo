@@ -32,7 +32,7 @@
         <x-admin-sidebar-link 
         dataHref="dkpp*"
         dinas="dkpp"
-        kelolaData="Kelola Komoditas"
+        kelolaData="Data Komoditas"
         routeKelolaKomoditas="jenis_komoditas"
         routeKelolaKomoditasView="{{ route('jenis-komoditas.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-komoditas.create') }}"
@@ -51,7 +51,7 @@
         <x-admin-sidebar-link 
         dataHref="dtphp*"
         dinas="dtphp"
-        kelolaData="Kelola Tanaman"
+        kelolaData="Data Tanaman"
         routeKelolaKomoditas="jenis_tanaman"
         routeKelolaKomoditasView="{{ route('jenis-tanaman.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-tanaman.create') }}"
@@ -72,7 +72,7 @@
         <x-admin-sidebar-link 
         dataHref="perikanan*"
         dinas="perikanan"
-        kelolaData="Kelola Ikan"
+        kelolaData="Data Ikan"
         routeKelolaKomoditas="jenis_ikan"
         routeKelolaKomoditasView="{{ route('jenis-ikan.index') }}"
         routeKelolaKomoditasCreate="{{ route('jenis-ikan.create') }}"

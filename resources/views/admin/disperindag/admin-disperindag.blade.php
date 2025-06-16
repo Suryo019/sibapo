@@ -1,6 +1,5 @@
 <x-admin-layout>
-    {{-- Abaikan DULU! --}}
-    <div class="flex justify-between items-center gap-4 my-4 ">
+    <div class="flex w-full justify-between items-center gap-4 my-4 ">
         <!-- Search Component -->
         <x-search>Cari bahan pokok...</x-search>
     

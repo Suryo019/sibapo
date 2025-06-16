@@ -48,7 +48,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
         </a>
-        <h3 class="text-lg font-semibold max-md:text-base text-center">Data Luas Panen Tahun 2025 (Hektar)</h3>
+        <h3 class="text-2xl font-semibold max-md:text-base text-center">DATA LUAS PANEN TAHUN 2025 (Hektar)</h3>
     </div>
 
     <!-- Switch Button -->

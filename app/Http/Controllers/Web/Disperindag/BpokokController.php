@@ -13,7 +13,7 @@ class BpokokController extends Controller
         $data = JenisBahanPokok::all();
 
         return view('admin.disperindag.admin-bpokok-disperindag', [
-            'title' => 'Data Bahan Pokok',
+            'title' => 'TABEL DATA BAHAN POKOK',
             'data' => $data
         ]);
     }

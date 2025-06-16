@@ -227,10 +227,15 @@ Route::middleware(['auth', 'role:dkpp'])->group(function () {
     Route::get('/pegawai/dkpp-detail', [PegawaiDkppController::class, 'detail'])->name('pegawai.dkpp.detail');
    
     Route::resource('/pegawai/jenis_komoditas', PegawaiJenisKomoditasDkppController::class)->names([
-        'index' => 'pegawai.jenis-komoditas.index',
-        'create' => 'pegawai.jenis-komoditas.create',
-        'edit' => 'pegawai.jenis-komoditas.edit',
+        'index'   => 'pegawai.jenis-komoditas.index',
+        'create'  => 'pegawai.jenis-komoditas.create',
+        'store'   => 'pegawai.jenis-komoditas.store',
+        'show'    => 'pegawai.jenis-komoditas.show',
+        'edit'    => 'pegawai.jenis-komoditas.edit',
+        'update'  => 'pegawai.jenis-komoditas.update',
+        'destroy' => 'pegawai.jenis-komoditas.destroy',
     ]);
+
 
     Route::get('/pegawai/dkpp-notifikasi', [NotifikasiDkppController::class, 'index'])->name('pegawai.dkpp.notifikasi.index');
     Route::get('pegawai/dkpp/notifications/header', [NotifikasiDkppController::class, 'getHeaderNotifications']);
@@ -273,10 +278,15 @@ Route::middleware(['auth', 'role:dtphp'])->group(function () {
     Route::get('/pegawai/dtphp-produksi', [PegawaiDtphpController::class, 'produksi'])->name('pegawai.dtphp.produksi');
     
     Route::resource('/pegawai/jenis_tanaman', PegawaiJenisTanamanController::class)->names([
-        'index' => 'pegawai.jenis-tanaman.index',
-        'create' => 'pegawai.jenis-tanaman.create',
-        'edit' => 'pegawai.jenis-tanaman.edit',
+        'index'   => 'pegawai.jenis-tanaman.index',
+        'create'  => 'pegawai.jenis-tanaman.create',
+        'store'   => 'pegawai.jenis-tanaman.store',
+        'show'    => 'pegawai.jenis-tanaman.show',
+        'edit'    => 'pegawai.jenis-tanaman.edit',
+        'update'  => 'pegawai.jenis-tanaman.update',
+        'destroy' => 'pegawai.jenis-tanaman.destroy',
     ]);
+
 
     Route::get('/pegawai/dtphp-notifikasi', [NotifikasiDtphpController::class, 'index'])->name('pegawai.dtphp.notifikasi.index');
     Route::get('pegawai/dtphp/notifications/header', [NotifikasiDtphpController::class, 'getHeaderNotifications']);
@@ -312,10 +322,15 @@ Route::middleware(['auth', 'role:perikanan'])->group(function () {
     Route::get('/pegawai/perikanan-detail', [PegawaiPerikananController::class, 'detail'])->name('pegawai.perikanan.detail');
     
     Route::resource('/pegawai/jenis_ikan', PegawaiJenisIkanController::class)->names([
-        'index' => 'pegawai.jenis-ikan.index',
-        'create' => 'pegawai.jenis-ikan.create',
-        'edit' => 'pegawai.jenis-ikan.edit',
+        'index'   => 'pegawai.jenis-ikan.index',
+        'create'  => 'pegawai.jenis-ikan.create',
+        'store'   => 'pegawai.jenis-ikan.store',
+        'show'    => 'pegawai.jenis-ikan.show',
+        'edit'    => 'pegawai.jenis-ikan.edit',
+        'update'  => 'pegawai.jenis-ikan.update',
+        'destroy' => 'pegawai.jenis-ikan.destroy',
     ]);
+
 
     Route::get('/pegawai/perikanan-notifikasi', [NotifikasiPerikananController::class, 'index'])->name('pegawai.perikanan.notifikasi.index');
     Route::get('pegawai/perikanan/notifications/header', [NotifikasiPerikananController::class, 'getHeaderNotifications']);
