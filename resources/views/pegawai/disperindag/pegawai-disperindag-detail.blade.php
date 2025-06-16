@@ -14,7 +14,7 @@
                     <!-- Urutan -->
                     <div class="flex flex-col">
                         <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                        <select name="urutkan" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_urutan">
                             <option value="asc" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
                             <option value="desc" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
                         </select>
@@ -23,7 +23,7 @@
                     <!-- Pilih Pasar -->
                     <div class="flex flex-col">
                         <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                        <select name="pasar" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_pasar">
                             @foreach ($markets as $market)
                                 <option value="{{ $market->nama_pasar }}" {{ old('pasar') == $market->nama_pasar ? 'selected' : '' }}>{{ $market->nama_pasar }}</option>
                             @endforeach

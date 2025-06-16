@@ -14,7 +14,7 @@
                     <!-- Urutan -->
                     <div class="flex flex-col">
                         <label for="pilih_urutan" class="block text-sm font-medium text-gray-700 mb-1">Urutkan</label>
-                        <select name="urutkan" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_urutan">
+                        <select name="urutkan" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_urutan">
                             <option value="az" {{ old('urutkan') == 'az' ? 'selected' : '' }}>A - Z</option>
                             <option value="za" {{ old('urutkan') == 'za' ? 'selected' : '' }}>Z - A</option>
                         </select>
@@ -23,7 +23,7 @@
                     <!-- Pilih Pasar -->
                     <div class="flex flex-col">
                         <label for="pilih_pasar" class="block text-sm font-medium text-gray-700 mb-1">Pilih Pasar</label>
-                        <select name="pasar" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_pasar">
+                        <select name="pasar" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_pasar">
                             <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
                             @foreach ($markets as $market)
                                 <option value="{{ $market }}" {{ old('pasar') == $market ? 'selected' : '' }}>{{ $market }}</option>
@@ -34,7 +34,7 @@
                     <!-- Pilih Periode -->
                     <div class="flex flex-col">
                         <label for="pilih_periode" class="block text-sm font-medium text-gray-700 mb-1">Pilih Periode</label>
-                        <select name="periode" class="border border-black p-2 rounded-full bg-white w-full select2" id="pilih_periode">
+                        <select name="periode" class="border border-black p-2 rounded-lg bg-white w-full select2" id="pilih_periode">
                             <option value="" disabled {{ old('periode') ? '' : 'selected' }}>Pilih Periode</option>
                             @foreach ($periods as $period)
                                 <option value="{{ $period }}" {{ old('periode') == $period ? 'selected' : '' }}>{{ $period }}</option>
