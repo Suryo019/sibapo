@@ -32,6 +32,8 @@
     <link href="{{ asset('js/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('js/select2/dist/js/select2.min.js') }}"></script>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 <body class="h-screen w-screen overflow-x-hidden scrollbar-thin">
     <!-- Loading overlay -->
@@ -62,7 +64,7 @@
 
     
     <script>
-function showLoading(){document.getElementById("loading").style.display="flex"}function hideLoading(){document.getElementById("loading").style.display="none"}$(document).ready((function(){$(".select2").select2()})),$(document).ajaxStart((function(){$("#loading").show()})).ajaxStop((function(){$("#loading").hide()}));
+        function showLoading(){document.getElementById("loading").style.display="flex"}function hideLoading(){document.getElementById("loading").style.display="none"}$(document).ready((function(){$(".select2").select2(),$.ajaxSetup({headers:{"X-CSRF-TOKEN":document.querySelector('meta[name="csrf-token"]').getAttribute("content")}})})),$(document).ajaxStart((function(){$("#loading").show()})).ajaxStop((function(){$("#loading").hide()}));
     </script>
     
 </body>
