@@ -47,7 +47,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
         </a>
-        <h3 class="text-2xl font-semibold text-center max-md:text-base">DATA VOLUME PRODUKSI TAHUN 2025 (Ton)</h3>
+        <h3 class="text-2xl font-semibold text-center max-md:text-base">
+            DATA VOLUME PRODUKSI TAHUN {{ isset($_GET['periode']) ? date('Y', strtotime($_GET['periode'] . '-01')) : date('Y') }} (Ton)
+        </h3>
         </div>
     
         <!-- Tombol Switch Produksi / Panen -->
