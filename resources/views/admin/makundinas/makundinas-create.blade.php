@@ -27,7 +27,7 @@
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Lengkap</label>
                     <input type="text" placeholder="Contoh: Ahmad Selamet" 
-                           class="border p-2 w-full rounded-xl" id="nama">
+                           class="border p-2 w-full rounded-xl" id="nama_akun">
                 </div>
     
                 <!-- Username -->
@@ -70,5 +70,5 @@
 </x-admin-layout>
 
 <script>
-$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("role_id",$("#dinas").val()),a.append("name",$("#nama").val()),a.append("username",$("#username").val()),a.append("email",$("#emailno").val()),a.append("password",$("#pass").val()),a.append("password_confirmation",$("#conpass").val()),$.ajax({type:"POST",url:"{{ route('api.makundinas.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#dinas").val(""),$("#nama").val(""),$("#username").val(""),$("#emailno").val(""),$("#pass").val(""),$("#conpass").val(""),Swal.fire({title:"Berhasil!",text:`Data user ${a.data.name} dari Dinas ${a.data.role.role} telah disimpan.`,icon:"success",confirmButtonText:"OK"}).then((()=>{location.reload()}))},error:function(a){let e=a.responseJSON.errors,n="";$.each(e,(function(a,e){n+=e+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
+$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("role_id",$("#dinas").val()),a.append("name",$("#nama_akun").val()),a.append("username",$("#username").val()),a.append("email",$("#emailno").val()),a.append("password",$("#pass").val()),a.append("password_confirmation",$("#conpass").val()),$.ajax({type:"POST",url:"{{ route('api.makundinas.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#dinas").val(""),$("#nama_akun").val(""),$("#username").val(""),$("#emailno").val(""),$("#pass").val(""),$("#conpass").val(""),Swal.fire({title:"Berhasil!",text:`Data user ${a.data.name} dari Dinas ${a.data.role.role} telah disimpan.`,icon:"success",confirmButtonText:"OK"}).then((()=>{location.reload()}))},error:function(a){let e=a.responseJSON.errors,n="";$.each(e,(function(a,e){n+=e+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:n})}})}));
 </script>
