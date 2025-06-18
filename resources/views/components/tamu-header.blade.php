@@ -7,10 +7,6 @@
           style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">
         JEMBER
       </h1>
-      <p class="text-base sm:text-lg text-pink-600 mb-2"
-         style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">
-        Semua Dicintai Fawait.
-      </p>
       <p class="text-sm sm:text-base md:text-lg leading-relaxed text-pink-600 mb-4"
          style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">
         Cinta Ekonomi menyajikan data harga bahan pangan di seluruh Kabupaten Jember, 

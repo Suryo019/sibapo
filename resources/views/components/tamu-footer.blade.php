@@ -25,7 +25,7 @@
       <div class="flex flex-col md:items-start ">
         <img src="{{ asset('storage/img/logo-cintako.png') }}" alt="Logo SIBAPO" class="w-[65%]  mb-6 mx-auto md:mx-0">
         <p class="text-sm text-justify">
-         Cinta Ekonomi (CINTAKO) adalah pusat data harga bahan pangan di seluruh wilayah Kabupaten Jember yang diperbarui setiap hari.
+         Cinta Ekonomi (CintaKo) adalah pusat data harga bahan pangan di seluruh wilayah Kabupaten Jember yang diperbarui setiap hari.
         </p>
         <p class="text-xs mt-4 text-start">
           Copyright © 2025 Cinta Ekonomi
