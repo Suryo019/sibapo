@@ -45,6 +45,12 @@
                     <input type="text" placeholder="Contoh: 100000,-" 
                            class="border p-2 w-full rounded-xl" id="kg_harga">
                 </div>
+
+                <!-- Tanggal Dibuat -->
+                <div class="mb-4">
+                    <label class="block text-pink-500">Tanggal Dibuat</label>
+                    <input type="date" class="border p-2 w-full rounded-xl" id="tanggal_dibuat" value="{{ date('Y-m-d') }}">
+                </div>
             </form> 
         </div>
         
@@ -57,5 +63,5 @@
 </x-admin-layout>
 
 <script>
-$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("pasar_id",$("#pasar").val()),a.append("jenis_bahan_pokok_id",$("#jenis_bahan_pokok").val()),a.append("kg_harga",$("#kg_harga").val()),$.ajax({type:"POST",url:"{{ route('api.dpp.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#pasar").val(""),$("#jenis_bahan_pokok").val(""),$("#gambar_bahan_pokok_input").val(""),$("#kg_harga").val(""),Swal.fire({title:"Berhasil!",text:`Data ${a.data.nama_bahan_pokok} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a){let n=a.responseJSON.errors,e="";$.each(n,(function(a,n){e+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:e})}})}));
+$("#submitBtn").on("click",(function(){const a=new FormData;a.append("_token","{{ csrf_token() }}"),a.append("pasar_id",$("#pasar").val()),a.append("jenis_bahan_pokok_id",$("#jenis_bahan_pokok").val()),a.append("kg_harga",$("#kg_harga").val()),a.append("tanggal_dibuat",$("#tanggal_dibuat").val()),$.ajax({type:"POST",url:"{{ route('api.dpp.store') }}",data:a,processData:!1,contentType:!1,success:function(a){$("#pasar").val(""),$("#jenis_bahan_pokok").val(""),$("#kg_harga").val(""),Swal.fire({title:"Berhasil!",text:`Data ${a.data.nama_bahan_pokok} telah disimpan.`,icon:"success",confirmButtonText:"OK"})},error:function(a){let n=a.responseJSON.errors,t="";$.each(n,(function(a,n){t+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:t})}})}));
 </script>

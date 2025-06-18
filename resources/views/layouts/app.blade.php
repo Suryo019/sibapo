@@ -11,17 +11,27 @@
 
     <link rel="icon" href="{{ asset('/storage/img/LogoPemda.png') }}" type="image/png">
 
-    {{-- SweetAlert2 --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('build/assets/app-B_jcilra.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-CwY9jbiq.css') }}">
+    <script type="module" src="{{ asset('build/assets/app-h9wISXzc.js') }}"></script>
+    
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+
+    {{-- Jquery --}}
+    <script src="{{ asset('/js/jquery.min.js') }}"></script>
+
+    {{-- ApexChart --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {{-- GG Font --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    {{-- Iconify Figma --}}
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <title>@yield('title', 'Default Title')</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col lg:flex-row">
     <div class="w-full h-screen flex justify-center lg:w-1/2 max-xl:h-[300px] max-xl:bg-gradient-to-b max-xl:from-pink-650 max-xl:from-45% max-xl:to-gray-10 max-xl:to-100%">

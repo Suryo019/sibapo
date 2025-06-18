@@ -157,11 +157,12 @@ class DPPController extends Controller
                 'pasar_id' => 'required|exists:pasar,id',
                 'jenis_bahan_pokok_id' => 'required|exists:jenis_bahan_pokok,id',
                 'kg_harga' => 'required|integer',
+                'tanggal_dibuat' => 'required|date'
             ]);
 
             // dd($request);
 
-            $validated['tanggal_dibuat'] = now();
+            // $validated['tanggal_dibuat'] = now();
             $validated['user_id'] = Auth::user()->id;
 
             $dpp = DPP::create($validated);
