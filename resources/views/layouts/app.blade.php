@@ -45,14 +45,13 @@
     
                 <!-- Deskripsi -->
                 <p class="text-sm lg:text-base leading-relaxed max-w-sm mx-auto mt-4 lg:mt-6 hidden lg:block">
-                Semua dicintai fawait.<br />
-                Sistem Informasi Bahan Pokok Penyusunan data kerja bahan peran di seluruh Kabupaten Jember, dengan pembaruan yang dilakukan setiap hari.
+                    Sistem informasi penyusunan data kerja bahan pokok di seluruh Kabupaten Jember.
                 </p>
             </div>
 
             <!-- Footer -->
             <div class="text-xs lg:text-lg hidden lg:block">
-                Bagian Tata Pemerintahan Setda<br />
+                Bidang Perekonomian <br />
                 Kabupaten Jember
             </div>
         </div>
