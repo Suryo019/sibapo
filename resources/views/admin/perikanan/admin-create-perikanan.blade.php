@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700">Volume Produksi (Ton)</label>
+                    <label class="block text-pink-500">Volume Produksi (Ton)</label>
                     <input type="text" placeholder="Contoh: 100" 
                            class="border p-2 w-full rounded-xl" id="ton_produksi">
                 </div>

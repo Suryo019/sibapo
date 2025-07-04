@@ -18,7 +18,7 @@ class ApiJenisIkanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_ikan' => 'required|string|max:255',
+            'nama_ikan' => 'required|string|max:255|unique:jenis_ikan,nama_ikan',
         ]);
         
         $nama_ikan = JenisIkan::create($validated);
@@ -38,10 +38,14 @@ class ApiJenisIkanController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $validated = $request->validate([
-                'nama_ikan' => 'sometimes|required|string|max:255'
-            ]);
-
+            $validated = [
+                'nama_ikan' => 'sometimes|required|string|max:255|unique:jenis_ikan,nama_ikan,' . $id,
+            ];
+            if ($validated['nama_ikan'] === $nama_ikan->nama_ikan) {
+                unset($validated['nama_ikan']);
+            }
+            $validated = $request->validate($validated);
+            
             $nama_ikan->update($validated);
 
             return response()->json([

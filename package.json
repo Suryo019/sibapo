@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "build:tailwind": "tailwindcss -i ./resources/css/app.css -o ./public/css/tailwind.css --minify"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",

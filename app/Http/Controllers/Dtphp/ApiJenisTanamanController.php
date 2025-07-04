@@ -18,7 +18,7 @@ class ApiJenisTanamanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_tanaman' => 'required|string|max:255',
+            'nama_tanaman' => 'required|string|max:255|unique:jenis_tanaman,nama_tanaman',
         ]);
         
         $nama_tanaman = JenisTanaman::create($validated);
@@ -38,9 +38,13 @@ class ApiJenisTanamanController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $validated = $request->validate([
-                'nama_tanaman' => 'sometimes|required|string|max:255'
-            ]);
+            $validated = [
+                'nama_tanaman' => 'sometimes|required|string|max:255|unique:jenis_tanaman,nama_tanaman,' . $id,
+            ];
+            if ($validated['nama_tanaman'] === $nama_tanaman->nama_tanaman) {
+                unset($validated['nama_tanaman']);
+            }
+            $validated = $request->validate($validated);
 
             $nama_tanaman->update($validated);
 

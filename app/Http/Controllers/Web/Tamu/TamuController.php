@@ -58,28 +58,35 @@ class TamuController extends Controller
         }
 
         $markets = Pasar::select('nama_pasar')->get();
+        $bahan_pokok = JenisBahanPokok::select('nama_bahan_pokok')->distinct()->get();
 
 
         return view('tamu.beranda', [
             'title' => 'Beranda',
             'data' => $data,
             'markets' => $markets,
+            'bahan_pokok' => $bahan_pokok,
             'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }
 
     public function komoditas_filter()
     {
+        $bahan_pokok = JenisBahanPokok::select('nama_bahan_pokok')->distinct()->get();
+
         return view('tamu.tamu-komoditas-filter', [
             'title' => 'Bahan Pokok',
+            'bahan_pokok' => $bahan_pokok,
             'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }
 
     public function pasar_filter()
     {
+        $markets = Pasar::select('nama_pasar')->distinct()->get();
         return view('tamu.tamu-pasar-filter', [
             'title' => 'Pasar',
+            'markets' => $markets,
             'kemarin' => Carbon::yesterday()->format('d F Y'),
         ]);
     }

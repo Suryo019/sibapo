@@ -9,6 +9,8 @@
         request()->is('jenis_tanaman*') => 'DTPHP',
         request()->is('perikanan*') => 'PERIKANAN',
         request()->is('jenis_ikan*') => 'PERIKANAN',
+        request()->is('makundinas*') => 'KELOLA DATA AKUN',
+        request()->is('notifikasi*') => 'NOTIFIKASI',
         default => 'DASHBOARD'
     };
 @endphp

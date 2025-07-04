@@ -18,11 +18,9 @@ class ApiPasarController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_pasar' => 'required|string|max:255',
+            'nama_pasar' => 'required|string|max:255|unique:pasar,nama_pasar',
         ]);
 
-        $validated['nama_pasar'] = 'Pasar ' . trim($validated['nama_pasar']);
-        
         $pasar = Pasar::create($validated);
 
         return response()->json([
@@ -40,9 +38,15 @@ class ApiPasarController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
-            $validated = $request->validate([
-                'nama_pasar' => 'sometimes|required|string|max:255'
-            ]);
+            $validated = [
+                'nama_pasar' => 'sometimes|required|string|max:255|unique:pasar,nama_pasar,' . $id,
+            ];
+
+            if ($validated['nama_pasar'] === $pasar->nama_pasar) {
+                unset($validated['nama_pasar']);
+            }
+
+            $validated = $request->validate($validated);
 
             $pasar->update($validated);
 

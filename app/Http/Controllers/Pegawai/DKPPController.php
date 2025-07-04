@@ -111,15 +111,16 @@ class DKPPController extends Controller
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $dkpp = DKPP::create($validated);
+
+            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $validated['jenis_komoditas_dkpp_id'],
+                'komoditas' =>  $nama_komoditas->nama_komoditas,
                 'aksi' => 'buat'
             ];
             
             Riwayat::create($riwayatStore);
-            $dkpp = DKPP::create($validated);
-            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
 
             return response()->json([
                 'message' => 'Data berhasil disimpan',
@@ -159,16 +160,16 @@ class DKPPController extends Controller
 
             $validated['keterangan'] = $validated['ton_neraca_mingguan'] > 0 ? 'Surplus' : ($validated['ton_neraca_mingguan'] < 0 ? 'Defisit' : 'Seimbang');
 
+            $dkpp->update($validated);
+            
+            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $validated['jenis_komoditas_dkpp_id'],
+                'komoditas' => $nama_komoditas->nama_komoditas,
                 'aksi' => 'ubah'
             ];
             
             Riwayat::create($riwayatStore);
-            $dkpp->update($validated);
-
-            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
 
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
@@ -196,18 +197,18 @@ class DKPPController extends Controller
             if (!$dkpp) {
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
-
+            $dkpp->delete();
+            
+            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
+            
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $dkpp->jenis_komoditas_dkpp_id,
+                'komoditas' => $nama_komoditas->nama_komoditas,
                 'aksi' => 'hapus'
             ];
             
             Riwayat::create($riwayatStore);
-            $dkpp->delete();
-
-            $nama_komoditas = JenisKomoditasDkpp::select('nama_komoditas')->where('id', $dkpp->jenis_komoditas_dkpp_id)->first();
-
+            
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $nama_komoditas]);
         } catch (\Throwable $th) {
             return response()->json([

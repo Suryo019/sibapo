@@ -2,7 +2,7 @@
   <!-- Bagian Atas Pink -->
   <div class="bg-pink-650 relative overflow-hidden py-14 px-6 md:px-20">
     <!-- Konten teks -->
-    <div class="max-w-8xl mx-auto flex flex-col gap-3 items-start text-left relative z-10 md:pr-40">
+    <div class="max-w-8xl mx-auto flex flex-col gap-3 items-start text-left relative md:pr-40">
       <h2 class="text-2xl md:text-5xl font-semibold">Butuh Bantuan?</h2>
       <p class="text-sm md:text-md mt-1 mb-6">Tanyakan apapun dan kami siap membantu Anda!</p>
       <a href="https://s.id/Wadul-Guse" target="_blank" class="bg-pink-650 text-white font-medium px-6 md:px-10 mb-6 py-2 rounded-full border border-white">

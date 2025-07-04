@@ -1,4 +1,4 @@
-<x-admin-layout title="Ubah Data Tanaman">
+<x-pegawai-layout title="Ubah Data Tanaman">
     <main class="flex-1 p-6 max-md:p-4 bg-gray-10 border-gray-20 border-[3px] rounded-[20px]">
         <div class="w-full flex items-center gap-2 mb-4">
             <a href="{{ route('pegawai.jenis-tanaman.index') }}" class="text-decoration-none text-dark flex-shrink-0">
@@ -34,7 +34,7 @@
         </div>
         
     </main>
-</x-admin-layout>
+</x-pegawai-layout>
 
 <script>
 const id=$("#jenis_tanaman_id").val();$("#submitBtn").on("click",(function(){$.ajax({type:"PUT",url:`/api/jenis-tanaman/${id}`,data:{_token:"{{ csrf_token() }}",nama_tanaman:$("#nama_tanaman").val()},success:function(a){$("#nama_tanaman").val(""),Swal.fire({title:"Berhasil!",text:`Data tanaman ${a.data.nama_tanaman} telah diperbarui.`,icon:"success",confirmButtonText:"OK"}).then((()=>{window.location.href="{{ route('jenis-tanaman.index') }}"}))},error:function(a,n,t){let e=a.responseJSON.errors,i="";$.each(e,(function(a,n){i+=n+"<br>"})),Swal.fire({icon:"error",title:"Oops...",html:i})}})}));

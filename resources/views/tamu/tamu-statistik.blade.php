@@ -83,5 +83,187 @@
 </x-tamu-layout>
 
 <script>
-$(document).ready((function(){const t=$("#sorting_category"),a=$("#sorting_item_list_container"),n=$("#sorting_item_list_container_injector"),e=$("#sorting_item_list_input"),s=$("#periode"),o=$("#search");function i(t,n){a.addClass("hidden"),$.ajax({type:"GET",url:t,data:{data:n,periode:s.val()},success:function(t){const a=t.data,n=t.jumlahHari;let e='\n            <tr class="shadow-pink-hard rounded-3xl bg-white">\n              <th class="px-4 py-5 text-center font-semibold rounded-l-3xl">No</th>\n              <th class="px-4 py-5 text-center font-semibold whitespace-nowrap">Pasar</th>\n              <th class="px-4 py-5 text-center font-semibold whitespace-nowrap">Bahan Pokok</th>\n          ';for(let t=1;t<=n;t++){e+=`<th class="px-4 py-5 text-center font-semibold ${t===n?"rounded-r-full":""}">${t}</th>`}e+="</tr>",$("#comoditiesThead").html(e);let s="";if(0===Object.keys(a).length)s=`\n              <tr class="bg-white">\n                <td colspan="${3+n}" class="py-5 px-8 bg-pink-50 text-gray-500 italic">\n                  Data tidak ditemukan.\n                </td>\n              </tr>\n            `;else{let t=1;Object.values(a).forEach((a=>{s+=`\n                <tr class="bg-white hover:bg-pink-50 rounded-full shadow-pink-hard transition duration-150">\n                  <td class="px-4 py-3 text-center rounded-l-full">${t++}</td>\n                  <td class="px-4 py-3 text-center whitespace-nowrap">${a.pasar}</td>\n                  <td class="px-4 py-3 text-center whitespace-nowrap jenis_bahan_pokok_col">${a.jenis_bahan_pokok}</td>\n              `;for(let t=1;t<=n;t++){const e=a.harga_per_tanggal[t],o=e?parseInt(e).toLocaleString("id-ID"):"-";s+=`<td class="px-4 py-3 text-center ${t===n?"rounded-r-full":""} whitespace-nowrap">Rp. ${o}</td>`}s+="</tr>"}))}$("#comoditiesTbody").html(s)},error:function(t,a,n){let e=t.responseJSON.errors,s="";$.each(e,(function(t,a){s+=a+"<br>"})),console.log(s)}})}t.on("change",(function(){const t=$(this).val();$.ajax({type:"GET",url:"/api/sorting_items",data:{data:t},success:function(a){const s=a.data;let o="",r="";"pasar"==t?($.each(s,(function(t,a){o+=`\n                <li data-pasar="${a.nama_pasar}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${a.nama_pasar}</li>\n              `})),e.val(s[0].nama_pasar),r="/api/statistik_pasar"):"jenis_bahan_pokok"==t&&($.each(s,(function(t,a){o+=`\n                <li data-jenis_bahan_pokok="${a.nama_bahan_pokok}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${a.nama_bahan_pokok}</li>\n              `})),e.val(s[0].nama_bahan_pokok),r="/api/statistik_jenis_bahan_pokok"),n.html(o),i(r,e.val())},error:function(t,a,n){let e=t.responseJSON.errors,s="";$.each(e,(function(t,a){s+=a+"<br>"})),console.log(s)}})})),$("#sorting_child").on("click",(function(){a.toggleClass("hidden")})),e.on("input",(function(){a.removeClass("hidden");const t=$(this).val().toLowerCase();n.find("li").each((function(){$(this).text().toLowerCase().includes(t)?$(this).removeClass("hidden"):$(this).addClass("hidden")}))})),i("/api/statistik_pasar",e.val()),$("#periode").on("change",(function(){const a=e.val();"pasar"==t.val()?i("/api/statistik_pasar",a):"jenis_bahan_pokok"==t.val()&&i("/api/statistik_jenis_bahan_pokok",a)})),$(document).on("click",".sorting_item_list",(function(){if("pasar"==t.val()){const t=$(this).data("pasar");e.val(t),i("/api/statistik_pasar",t)}else if("jenis_bahan_pokok"==t.val()){const t=$(this).data("jenis_bahan_pokok");e.val(t),i("/api/statistik_jenis_bahan_pokok",t)}})),o.on("input",(function(){const t=$(this).val().toLowerCase();$(".jenis_bahan_pokok_col").each((function(){$(this).text().toLowerCase().includes(t)?$(this).parent().removeClass("hidden"):$(this).parent().addClass("hidden")}))}))})),document.addEventListener("DOMContentLoaded",(()=>{const t=document.getElementById("mobileFilterBtn"),a=document.getElementById("mobileFilterDropdown"),n=document.getElementById("closeFilterDropdown");t.addEventListener("click",(()=>{a.classList.toggle("hidden")})),n.addEventListener("click",(()=>{a.classList.add("hidden")}))}));
+$(document).ready(function () {
+    const sortingCategory = $("#sorting_category");
+    const itemListContainer = $("#sorting_item_list_container");
+    const itemListInjector = $("#sorting_item_list_container_injector");
+    const itemListInput = $("#sorting_item_list_input");
+    const periodeSelect = $("#periode");
+    const search = $("#search");
+
+    function fetchTableData(url, keyword) {
+        itemListContainer.addClass("hidden");
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {
+                data: keyword,
+                periode: periodeSelect.val()
+            },
+            success: function (response) {
+                const data = response.data;
+                const jumlahHari = response.jumlahHari;
+
+                // Table head
+                let theadHTML = `
+                    <tr class="shadow-pink-hard rounded-3xl bg-white">
+                        <th class="px-4 py-5 text-center font-semibold rounded-l-3xl">No</th>
+                        <th class="px-4 py-5 text-center font-semibold whitespace-nowrap">Pasar</th>
+                        <th class="px-4 py-5 text-center font-semibold whitespace-nowrap">Bahan Pokok</th>
+                `;
+                for (let i = 1; i <= jumlahHari; i++) {
+                    theadHTML += `<th class="px-4 py-5 text-center font-semibold ${i === jumlahHari ? "rounded-r-full" : ""}">${i}</th>`;
+                }
+                theadHTML += "</tr>";
+                $("#comoditiesThead").html(theadHTML);
+
+                // Table body
+                let tbodyHTML = "";
+                if (Object.keys(data).length === 0) {
+                    tbodyHTML = `
+                        <tr class="bg-white">
+                            <td colspan="${3 + jumlahHari}" class="py-5 px-8 bg-pink-50 text-gray-500 italic">
+                                Data tidak ditemukan.
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    let no = 1;
+                    Object.values(data).forEach(item => {
+                        tbodyHTML += `
+                            <tr class="bg-white hover:bg-pink-50 rounded-full shadow-pink-hard transition duration-150">
+                                <td class="px-4 py-3 text-center rounded-l-full">${no++}</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap">${item.pasar}</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap jenis_bahan_pokok_col">${item.jenis_bahan_pokok}</td>
+                        `;
+                        for (let i = 1; i <= jumlahHari; i++) {
+                            const harga = item.harga_per_tanggal[i];
+                            const hargaDisplay = harga ? parseInt(harga).toLocaleString("id-ID") : "-";
+                            tbodyHTML += `<td class="px-4 py-3 text-center ${i === jumlahHari ? "rounded-r-full" : ""} whitespace-nowrap">Rp. ${hargaDisplay}</td>`;
+                        }
+                        tbodyHTML += "</tr>";
+                    });
+                }
+
+                $("#comoditiesTbody").html(tbodyHTML);
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                let errorMessage = "";
+                $.each(errors, function (key, value) {
+                    errorMessage += value + "<br>";
+                });
+                console.error(errorMessage);
+            }
+        });
+    }
+
+    sortingCategory.on("change", function () {
+        const selectedValue = $(this).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/api/sorting_items",
+            data: { data: selectedValue },
+            success: function (response) {
+                const items = response.data;
+                let listHTML = "";
+                let endpoint = "";
+
+                if (selectedValue === "pasar") {
+                    $.each(items, function (i, item) {
+                        listHTML += `<li data-pasar="${item.nama_pasar}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${item.nama_pasar}</li>`;
+                    });
+                    itemListInput.val(items[0].nama_pasar);
+                    endpoint = "/api/statistik_pasar";
+
+                } else if (selectedValue === "jenis_bahan_pokok") {
+                    $.each(items, function (i, item) {
+                        listHTML += `<li data-jenis_bahan_pokok="${item.nama_bahan_pokok}" class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">${item.nama_bahan_pokok}</li>`;
+                    });
+                    itemListInput.val(items[0].nama_bahan_pokok);
+                    endpoint = "/api/statistik_jenis_bahan_pokok";
+                }
+
+                itemListInjector.html(listHTML);
+                fetchTableData(endpoint, itemListInput.val());
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                let errorMessage = "";
+                $.each(errors, function (key, value) {
+                    errorMessage += value + "<br>";
+                });
+                console.error(errorMessage);
+            }
+        });
+    });
+
+    // Toggle dropdown
+    $("#sorting_child").on("click", function () {
+        itemListContainer.toggleClass("hidden");
+    });
+
+    // Filter input in dropdown
+    itemListInput.on("input", function () {
+        itemListContainer.removeClass("hidden");
+        const keyword = $(this).val().toLowerCase();
+        itemListInjector.find("li").each(function () {
+            const text = $(this).text().toLowerCase();
+            $(this).toggleClass("hidden", !text.includes(keyword));
+        });
+    });
+
+    // Load data awal
+    fetchTableData("/api/statistik_pasar", itemListInput.val());
+
+    // Perubahan periode
+    periodeSelect.on("change", function () {
+        const keyword = itemListInput.val();
+        const selected = sortingCategory.val();
+        if (selected === "pasar") {
+            fetchTableData("/api/statistik_pasar", keyword);
+        } else if (selected === "jenis_bahan_pokok") {
+            fetchTableData("/api/statistik_jenis_bahan_pokok", keyword);
+        }
+    });
+
+    // Klik pada item list
+    $(document).on("click", ".sorting_item_list", function () {
+        if (sortingCategory.val() === "pasar") {
+            const val = $(this).data("pasar");
+            itemListInput.val(val);
+            fetchTableData("/api/statistik_pasar", val);
+        } else if (sortingCategory.val() === "jenis_bahan_pokok") {
+            const val = $(this).data("jenis_bahan_pokok");
+            itemListInput.val(val);
+            fetchTableData("/api/statistik_jenis_bahan_pokok", val);
+        }
+    });
+
+    // Search filter
+    search.on("input", function () {
+        const keyword = $(this).val().toLowerCase();
+        $(".jenis_bahan_pokok_col").each(function () {
+            const text = $(this).text().toLowerCase();
+            $(this).parent().toggleClass("hidden", !text.includes(keyword));
+        });
+    });
+});
+
+// Toggle untuk tampilan mobile
+document.addEventListener("DOMContentLoaded", () => {
+    const filterBtn = document.getElementById("mobileFilterBtn");
+    const dropdown = document.getElementById("mobileFilterDropdown");
+    const closeBtn = document.getElementById("closeFilterDropdown");
+
+    filterBtn.addEventListener("click", () => {
+        dropdown.classList.toggle("hidden");
+    });
+
+    closeBtn.addEventListener("click", () => {
+        dropdown.classList.add("hidden");
+    });
+});
 </script>

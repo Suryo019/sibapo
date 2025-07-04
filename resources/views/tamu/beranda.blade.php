@@ -11,8 +11,8 @@
 
             <div class="flex flex-col items-center gap-2">
             <h2 class="text-3xl sm:text-5xl font-bold">Tren Harga</h2>
-            <h3 class="text-xl sm:text-3xl font-semibold text-yellow-550" id="pasar_placeholder">Cabai Pasar Tanjung</h3>
-            <h5 class="text-lg sm:text-2xl font-semibold text-gray-700" id="periode_placeholder">Januari 2025</h5>
+            <h3 class="text-xl sm:text-3xl font-semibold text-yellow-550 hidden" id="pasar_placeholder">Pasar Tanjung</h3>
+            <h5 class="text-lg sm:text-2xl font-semibold text-gray-700 hidden" id="periode_placeholder">Januari 2025</h5>
             </div>
 
             <iconify-icon icon="healthicons:market-stall" class="text-6xl md:text-7xl text-pink-650 max-md:hidden"></iconify-icon>
@@ -22,56 +22,92 @@
         <div class="mt-10 bg-gray-10 border-2 border-gray-200 rounded-2xl p-6 lg:mx-32 shadow-sm">
             {{-- Search & Filter --}}
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            {{-- Search --}}
-            <div class="flex items-center border bg-white rounded-[10px] w-full lg:w-64 h-9 px-5">
-                <input type="text" id="search" placeholder="Cari bahan pokok..." class="flex-grow outline-none bg-transparent">
-                <span class="bi bi-search text-gray-700"></span>
-            </div>
-
-            {{-- Filter + Modal --}}
-            <div class="w-full md:w-auto flex justify-end">
-                <x-filter></x-filter>
-
-                <x-filter-modal>
-                    <form action="" method="get" class="space-y-5">
-                        {{-- Pilih Pasar --}}
-                        <div class="flex flex-col">
-                        <label for="pilih_pasar" class="text-sm font-medium mb-1 max-md:text-xs">Pilih Pasar</label>
-                        <select name="pasar" id="pilih_pasar" class="border border-gray-300 p-2 rounded bg-white w-full text-sm max-md:text-xs">
-                            <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
-                            @foreach ($markets as $index => $market)
-                            <option value="{{ $market->nama_pasar }}"
-                                {{ old('pasar') == $market->nama_pasar ? 'selected' : ($index == 0 && !old('pasar') ? 'selected' : '') }}>
-                                {{ $market->nama_pasar }}
-                            </option>
+                {{-- Search --}}
+                <div class="w-full sm:w-auto relative">
+                    <div
+                        class="w-full border border-pink-650 px-4 py-2 rounded-[10px] bg-white text-sm text-gray-500 items-center cursor-pointer hidden"
+                        id="sorting_child">
+                        <input type="text" placeholder="Pilih Bahan Pokok"
+                            class="focus:outline-none flex-shrink bg-transparent w-full" id="sorting_item_list_input" name="market"
+                            autocomplete="off" readonly>
+                        
+                        <i class="bi bi-caret-down-fill text-pink-650 text-xs ml-2"></i>
+                    </div>
+                    <div
+                        class="w-full border border-pink-650 px-4 py-2 rounded-[10px] bg-gray-90 text-sm text-gray-500 flex items-center cursor-pointer"
+                        id="sorting_child_duplicate">
+                        <input type="text" placeholder="Pilih Bahan Pokok"
+                            class="focus:outline-none flex-shrink bg-transparent w-full"
+                            autocomplete="off" readonly>
+                        
+                        <i class="bi bi-caret-down-fill text-pink-650 text-xs ml-2"></i>
+                    </div>
+                    <ul class="bg-white border border-pink-650 rounded-2xl max-h-60 w-full absolute z-20 top-10 overflow-y-auto hidden"
+                        id="sorting_item_list_container">
+                        <div class="overflow-hidden w-full h-full border-pink-650 rounded-2xl p-1"
+                            id="sorting_item_list_container_injector">
+                            @foreach ($bahan_pokok as $single_bahan_pokok)
+                                <li data-jenis_bahan_pokok="{{ $single_bahan_pokok->nama_bahan_pokok }}"
+                                    class="p-2 hover:bg-pink-50 text-sm cursor-pointer sorting_item_list">
+                                    {{ $single_bahan_pokok->nama_bahan_pokok }}
+                                </li>
                             @endforeach
-                        </select>
                         </div>
+                    </ul>
+                </div>
 
-                        {{-- Pilih Periode --}}
-                        <div class="flex flex-col">
-                        <label for="pilih_periode" class="text-sm font-medium mb-1 max-md:text-xs">Pilih Periode</label>
-                        <input 
-                            type="month" 
-                            name="periode" 
-                            id="pilih_periode" 
-                            value="{{ old('periode', date('Y-m')) }}" 
-                            class="border border-gray-300 w-full p-2 rounded bg-white text-sm max-md:text-xs">
-                        </div>
+                {{-- Filter + Modal --}}
+                <div class="w-full md:w-auto flex justify-end">
+                    <x-filter></x-filter>
 
-                        {{-- Buttons --}}
-                        <div class="flex justify-end gap-4 mt-6">
-                        <button type="reset" class="bg-yellow-550 text-white px-4 py-1 rounded-lg hover:opacity-90 w-full md:w-24 text-sm">Reset</button>
-                        <button type="button" id="filter_btn" class="bg-pink-650 text-white px-4 py-1 rounded-lg hover:opacity-90 w-full md:w-24 text-sm">Cari</button>
-                        </div>
-                    </form>
-                </x-filter-modal>
-            </div>
+                    <x-filter-modal>
+                        <form action="" method="get" class="space-y-5">
+                            {{-- Pilih Pasar --}}
+                            <div class="flex flex-col">
+                            <label for="pilih_pasar" class="text-sm font-medium mb-1 max-md:text-xs">Pilih Pasar</label>
+                            <select name="pasar" id="pilih_pasar" class="border border-gray-300 p-2 rounded bg-white w-full text-sm max-md:text-xs">
+                                <option value="" disabled {{ old('pasar') ? '' : 'selected' }}>Pilih Pasar</option>
+                                @foreach ($markets as $index => $market)
+                                <option value="{{ $market->nama_pasar }}"
+                                    {{ old('pasar') == $market->nama_pasar ? 'selected' : ($index == 0 && !old('pasar') ? 'selected' : '') }}>
+                                    {{ $market->nama_pasar }}
+                                </option>
+                                @endforeach
+                            </select>
+                            </div>
+
+                            {{-- Pilih Periode --}}
+                            <div class="flex flex-col">
+                            <label for="pilih_periode" class="text-sm font-medium mb-1 max-md:text-xs">Pilih Periode</label>
+                            <input 
+                                type="month" 
+                                name="periode" 
+                                id="pilih_periode" 
+                                value="{{ old('periode', date('Y-m')) }}" 
+                                class="border border-gray-300 w-full p-2 rounded bg-white text-sm max-md:text-xs">
+                            </div>
+
+                            {{-- Buttons --}}
+                            <div class="flex justify-end gap-4 mt-6">
+                            <button type="reset" class="bg-yellow-550 text-white px-4 py-1 rounded-lg hover:opacity-90 w-full md:w-24 text-sm">Reset</button>
+                            <button type="button" id="filter_btn" class="bg-pink-650 text-white px-4 py-1 rounded-lg hover:opacity-90 w-full md:w-24 text-sm">Cari</button>
+                            </div>
+                        </form>
+                    </x-filter-modal>
+                </div>
             </div>
 
             {{-- Chart Grid --}}
-            <div id="chart_container" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+            <div id="chart_container" class="grid grid-cols-1 mt-6 max-h-[1000px] overflow-y-auto">
+                {{-- Placeholder for no data --}}
+                <div id="chart_container_msg">
+                    <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                        <h3 class="text-lg font-semibold text-gray-500">Tidak ada data terpilih</h3>
+                        <p class="text-gray-400">Pilih kriteria data pasar dan periode terlebih dahulu melalui <b class="text-pink-650">FILTER</b>.</p>
+                    </div>
+                </div>
             {{-- AJAX chart will be inserted here --}}
+            
             </div>
         </div>
     </section>
@@ -141,5 +177,176 @@
 </x-tamu-layout>
 
 <script>
-let chart,debounceTimer,pasar=$("#pilih_pasar").val(),periode=$("#pilih_periode").val();const search=$("#search");function renderCharts(e){const a=$("#chart_container");a.empty(),e&&0!==Object.keys(e).length?Object.keys(e).forEach(((t,r)=>{const n=e[t];n.sort(((e,a)=>e.hari-a.hari));const i=n.map((e=>e.hari)),o=n.map((e=>e.kg_harga)),d=`chart_${r}`;a.append(`\n                <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">\n                    <h4 class="text-center text-md font-bold mb-2 jenis_bahan_pokok_col">${t}</h4>\n                    <div id="${d}" class="w-full"></div>\n                </div>\n            `);new ApexCharts(document.querySelector(`#${d}`),{chart:{type:"line",height:300,animations:{enabled:!0,easing:"easeinout",speed:800}},series:[{name:"Harga (Rp)",data:o}],xaxis:{title:{text:"Hari"},categories:i,labels:{style:{fontSize:"12px"}}},yaxis:{title:{text:"Harga (Rp)"},labels:{formatter:function(e){return"Rp "+e.toLocaleString("id-ID")}}},tooltip:{y:{formatter:function(e){return"Rp "+e.toLocaleString("id-ID")}}}}).render()})):a.html('\n                <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">\n                    <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>\n                    <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>\n                </div>\n            ')}function fetchChartData(e,a){$.ajax({type:"GET",url:"{{ route('api.dpp.index') }}",data:{_token:"{{ csrf_token() }}",pasar:e,periode:a},success:function(a){$("#periode_placeholder").html(`${a.periode.toUpperCase()}`),$("#pasar_placeholder").html(e.toUpperCase()),renderCharts(a.data)},error:function(){$("#chart_container").html('\n                    <div class="text-center p-4 border-2 border-dashed border-red-300 rounded-lg shadow-md bg-red-50">\n                        <h3 class="text-lg font-semibold text-red-500">Gagal Memuat Data</h3>\n                        <p class="text-red-400">Terjadi kesalahan saat mengambil data.</p>\n                    </div>\n                ')}})}function toggleModal(){$("#filterModal").toggleClass("hidden flex")}fetchChartData(pasar,periode),$("#filter_btn").on("click",(function(){clearTimeout(debounceTimer),debounceTimer=setTimeout((()=>{const e=$("#pilih_pasar").val(),a=$("#pilih_periode").val();e&&a&&(pasar=e,periode=a,fetchChartData(pasar,periode))}),300)})),$("#filterBtn").on("click",toggleModal),search.on("input",(function(){const e=$(this).val().toLowerCase();$(".jenis_bahan_pokok_col").each((function(){$(this).text().toLowerCase().includes(e)?$(this).parent().removeClass("hidden"):$(this).parent().addClass("hidden")}))}));
+let chart, debounceTimer;
+let pasar = $("#pilih_pasar").val();
+let periode = $("#pilih_periode").val();
+
+const itemListContainer = $("#sorting_item_list_container");
+const itemListInjector = $("#sorting_item_list_container_injector");
+const sortingChildDuplicate = $("#sorting_child_duplicate");
+const sortingChild = $("#sorting_child");
+const search = $("#sorting_item_list_input");
+
+function renderCharts(data) {
+    const container = $("#chart_container");
+    container.empty();
+
+    if (data && Object.keys(data).length !== 0) {
+        Object.keys(data).forEach((key, i) => {
+            const values = data[key];
+            values.sort((a, b) => a.hari - b.hari);
+
+            const days = values.map(e => e.hari);
+            const prices = values.map(e => e.kg_harga);
+            const chartId = `chart_${i}`;
+
+            container.append(`
+                <div id="chart_container_msg"></div>
+                <div class="mb-5 w-full rounded-2xl bg-white shadow-md p-4 border">
+                    <h4 class="text-center text-md font-bold mb-2 jenis_bahan_pokok_col">${key}</h4>
+                    <div id="${chartId}" class="w-full"></div>
+                </div>
+            `);
+
+            new ApexCharts(document.querySelector(`#${chartId}`), {
+                chart: {
+                    type: "line",
+                    height: 300,
+                    animations: {
+                        enabled: true,
+                        easing: "easeinout",
+                        speed: 800
+                    }
+                },
+                series: [{
+                    name: "Harga (Rp)",
+                    data: prices
+                }],
+                xaxis: {
+                    title: { text: "Hari" },
+                    categories: days,
+                    labels: { style: { fontSize: "12px" } }
+                },
+                yaxis: {
+                    title: { text: "Harga (Rp)" },
+                    labels: {
+                        formatter: function (val) {
+                            return "Rp " + val.toLocaleString("id-ID");
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return "Rp " + val.toLocaleString("id-ID");
+                        }
+                    }
+                }
+            }).render();
+        });
+    } else {
+        container.html(`
+            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+            </div>
+        `);
+    }
+}
+
+function fetchChartData(pasar, periode) {
+    $.ajax({
+        type: "GET",
+        url: "{{ route('api.dpp.index') }}",
+        data: {
+            _token: "{{ csrf_token() }}",
+            pasar: pasar,
+            periode: periode
+        },
+        success: function (res) {
+            $("#periode_placeholder").html(res.periode.toUpperCase());
+            $("#pasar_placeholder").html(pasar.toUpperCase());
+            renderCharts(res.data);
+        },
+        error: function () {
+            $("#chart_container").html(`
+                <div class="text-center p-4 border-2 border-dashed border-red-300 rounded-lg shadow-md bg-red-50">
+                    <h3 class="text-lg font-semibold text-red-500">Gagal Memuat Data</h3>
+                    <p class="text-red-400">Terjadi kesalahan saat mengambil data.</p>
+                </div>
+            `);
+        }
+    });
+}
+
+function toggleModal() {
+    $("#filterModal").toggleClass("hidden flex");
+}
+
+function searchFunction(keyword) {
+    $(".jenis_bahan_pokok_col").each(function () {
+        const text = $(this).text().toLowerCase();
+        const card = $(this).parent();
+
+        if (text.includes(keyword)) {
+            card.removeClass("hidden");
+        } else {
+            card.addClass("hidden");
+        }
+    });
+
+    const visibleCount = $(".jenis_bahan_pokok_col").filter(function () {
+        return !$(this).parent().hasClass("hidden");
+    }).length;
+
+    if (visibleCount === 0) {
+        $("#chart_container_msg").html(`
+            <div class="text-center p-4 border-2 border-dashed border-gray-300 rounded-lg shadow-md bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-500">Data Tidak Ditemukan</h3>
+                <p class="text-gray-400">Tidak ada data untuk kriteria yang dipilih.</p>
+            </div>
+        `);
+    } else {
+        $("#chart_container_msg").empty();
+    }
+}
+
+// Event listeners
+$("#filter_btn").on("click", function () {
+    toggleModal();
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+        const selectedPasar = $("#pilih_pasar").val();
+        const selectedPeriode = $("#pilih_periode").val();
+
+        if (selectedPasar && selectedPeriode) {
+            pasar = selectedPasar;
+            periode = selectedPeriode;
+            fetchChartData(pasar, periode);
+        }
+    }, 300);
+
+    sortingChildDuplicate.addClass("hidden");
+    sortingChild.removeClass("hidden").addClass("flex");
+    $("#pasar_placeholder").removeClass("hidden");
+    $("#periode_placeholder").removeClass("hidden");
+});
+
+$("#filterBtn").on("click", toggleModal);
+
+$("#sorting_child").on("click", function () {
+    itemListContainer.toggleClass("hidden");
+});
+
+$(document).on("click", ".sorting_item_list", function () {
+    const value = $(this).data("jenis_bahan_pokok");
+    search.val(value);
+    itemListContainer.addClass("hidden");
+    searchFunction(search.val().toLowerCase());
+});
+
+search.on("input", function () {
+    searchFunction($(this).val().toLowerCase());
+});
 </script>

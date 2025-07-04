@@ -13,7 +13,18 @@
     <link rel="stylesheet" href="{{ asset('build/assets/app-CwY9jbiq.css') }}">
     <script type="module" src="{{ asset('build/assets/app-h9wISXzc.js') }}"></script>
     
-    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}"> --}}
+    {{-- @php
+        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+    @endphp
+
+    <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+    <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script> --}}
+
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Font Awesome --}}
 
     {{-- Jquery --}}
     <script src="{{ asset('/js/jquery.min.js') }}"></script>

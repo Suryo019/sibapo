@@ -18,7 +18,7 @@ class ApiBpokokController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_bahan_pokok' => 'required|string|max:255',
+            'nama_bahan_pokok' => 'required|string|max:255|unique:jenis_bahan_pokok,nama_bahan_pokok',
             'gambar_bahan_pokok' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -58,10 +58,15 @@ class ApiBpokokController extends Controller
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
 
-        $validated = $request->validate([
-            'nama_bahan_pokok' => 'sometimes|required|string|max:255',
-            'gambar_bahan_pokok' => 'nullable|image|file|max:2048',
-        ]);
+        $validated = [
+            'nama_bahan_pokok' => 'sometimes|required|string|max:255|unique:jenis_bahan_pokok,nama_bahan_pokok,' . $bpokok->id,
+            'gambar_bahan_pokok' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ];
+        
+        if (isset($validated['nama_bahan_pokok']) && $validated['nama_bahan_pokok'] === $bpokok->nama_bahan_pokok) {
+            unset($validated['nama_bahan_pokok']);
+        }
+        $validated = $request->validate($validated);
 
         // Cek apakah ada gambar baru yang diupload
         if ($request->hasFile('gambar_bahan_pokok')) {

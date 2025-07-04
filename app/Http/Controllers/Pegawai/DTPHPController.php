@@ -160,14 +160,16 @@ class DTPHPController extends Controller
                 'hektar_luas_panen' => 'sometimes|numeric'
             ]);
 
+            $dtphp->update($validated);
+
+            $data_stored = JenisTanaman::select('nama_tanaman')->where('id', $dtphp->jenis_tanaman_id)->first();
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $validated['jenis_tanaman_id'],
+                'komoditas' => $data_stored->nama_tanaman,
                 'aksi' => 'ubah'
             ];
             
             Riwayat::create($riwayatStore);
-            $dtphp->update($validated);
     
             return response()->json([
                 'message' => 'Data berhasil diperbarui',
@@ -192,14 +194,15 @@ class DTPHPController extends Controller
                 return response()->json(['message' => 'Data tidak ditemukan'], 404);
             }
 
+            $dtphp->delete();
+            $data_stored = JenisTanaman::select('nama_tanaman')->where('id', $dtphp->jenis_tanaman_id)->first();
             $riwayatStore = [
                 'user_id' => Auth::user()->id,
-                'komoditas' => $dtphp->jenis_tanaman_id,
+                'komoditas' => $data_stored->nama_tanaman,
                 'aksi' => 'hapus'
             ];
             
             Riwayat::create($riwayatStore);
-            $dtphp->delete();
 
             return response()->json(['message' => 'Data berhasil dihapus', 'data' => $dtphp]);
         } catch (\Throwable $th) {

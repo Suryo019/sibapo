@@ -16,7 +16,7 @@
                 <!-- Nama Pasar -->
                 <div class="mb-4">
                     <label class="block text-pink-500">Nama Pasar</label>
-                    <input type="text" placeholder="Contoh: Mangli" 
+                    <input type="text" placeholder="Contoh: Pasar Mangli" 
                            class="border p-2 w-full rounded-xl" id="nama_pasar">
                 </div>
     
